@@ -1,3 +1,30 @@
+# 🐘⛃ Install PostgreSQL
+
+### Install & Create Database
+[PostgreSQL](https://www.postgresql.org/download/)
+[Windows](https://www.postgresql.org/download/windows/)
+[MacOS](https://www.postgresql.org/download/macosx/)
+
+# .env Add local environment variables
+
+### An example is below
+```
+HOST=0.0.0.0
+PORT=1337
+APP_KEYS=
+ADMIN_JWT_SECRET=
+API_TOKEN_SALT=
+
+DATABASE_HOST=127.0.0.1
+DATABASE_PORT=5432
+DATABASE_NAME=
+DATABASE_USERNAME=
+DATABASE_PASSWORD=
+DATABASE_SSL=false
+```
+
+For get keys values: `APP_KEYS`, `ADMIN_JWT_SECRET`, `API_TOKEN_SALT` contact Andrew Petryk
+
 # 🚀 Getting started with Strapi
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html) (CLI) which lets you scaffold and manage your project in seconds.
@@ -7,8 +34,6 @@ Strapi comes with a full featured [Command Line Interface](https://docs.strapi.i
 Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html#strapi-develop)
 
 ```
-npm run develop
-# or
 yarn develop
 ```
 
@@ -17,8 +42,6 @@ yarn develop
 Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html#strapi-start)
 
 ```
-npm run start
-# or
 yarn start
 ```
 
@@ -27,8 +50,6 @@ yarn start
 Build your admin panel. [Learn more](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html#strapi-build)
 
 ```
-npm run build
-# or
 yarn build
 ```
 
