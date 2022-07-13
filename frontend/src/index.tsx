@@ -3,14 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import {
-	ApolloClient,
-	InMemoryCache,
-	ApolloProvider,
-	gql,
-} from "@apollo/client";
-import { ApolloProvider } from '@apollo/client';
-import { apolloClient } from './api';
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from "./api";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,
