@@ -10,7 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import Logo from "../assets/SoftBee_Logo.svg";
+import Logo from "../../assets/SoftBee_Logo.svg";
 
 const pages = ["Tracker", "Project", "Reports"];
 const settings = ["Profile", "Logout"];
@@ -46,16 +46,6 @@ export const NavBar = () => {
 							display: { xs: "flex", md: "none" },
 						}}
 					>
-						{/* <IconButton
-							size="large"
-							aria-label="account of current user"
-							aria-controls="menu-appbar"
-							aria-haspopup="true"
-							onClick={handleOpenNavMenu}
-							color="inherit"
-						>
-							<MenuIcon />
-						</IconButton> */}
 						<Menu
 							id="menu-appbar"
 							anchorEl={anchorElNav}
@@ -81,7 +71,6 @@ export const NavBar = () => {
 							))}
 						</Menu>
 					</Box>
-					{/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
 					<img alt="logo" src={Logo} width="120px" />
 					<Box
 						sx={{
