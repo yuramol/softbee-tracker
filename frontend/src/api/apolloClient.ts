@@ -26,20 +26,7 @@ const authLink = setContext((_, { headers }) => {
     };
   }
 
-  return {
-    headers: {
-      ...headers,
-    },
-  };
-});
-
-const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URI,
-});
-
-const link = ApolloLink.from([errorLink, authLink.concat(httpLink)]);
-
 export const apolloClient = new ApolloClient({
-  link,
-  cache: new InMemoryCache(),
+	uri: process.env.REACT_APP_GRAPHQL_URI,
+	cache: new InMemoryCache(),
 });
