@@ -1,3 +1,3 @@
-import { apolloClient } from "./apolloClient";
+import { apolloClient } from './apolloClient';
 
 export { apolloClient };
