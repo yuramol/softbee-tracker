@@ -1,8 +1,9 @@
+import React from 'react';
+
 export const LoginPage = () => {
-	return (
-		<div>
-			<p>Login page</p>
-			<input></input>{" "}
-		</div>
-	);
+  return (
+    <div>
+      <p>Login page</p>
+    </div>
+  );
 };
