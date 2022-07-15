@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from './api';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './theme';
 
