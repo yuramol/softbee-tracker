@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "note": {
+      "type": "text",
+      "maxLength": 1000
+    },
+    "picture": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "notes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::note.note",
+      "mappedBy": "project"
+    },
+    "trackers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tracker.tracker",
+      "mappedBy": "project"
+    }
+  }
+}
