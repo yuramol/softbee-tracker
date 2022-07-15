@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from './api';
 import App from './App';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './theme';
 
 import './index.css';
 
@@ -13,7 +15,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ApolloProvider client={apolloClient}>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </ApolloProvider>
   </React.StrictMode>
 );
