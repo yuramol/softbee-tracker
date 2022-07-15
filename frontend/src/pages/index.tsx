@@ -1,4 +1,3 @@
-import { HomePage } from './HomePage';
-import { LoginPage } from './LoginPage';
-import { ProfilePage } from './ProfilePage';
-export { HomePage, LoginPage, ProfilePage };
+export { HomePage } from './HomePage';
+export { LoginPage } from './LoginPage';
+export { ProfilePage } from './ProfilePage';
