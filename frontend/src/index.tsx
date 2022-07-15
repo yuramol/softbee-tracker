@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from './api';
-import App from './App';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './theme';
+import { App } from './App';
 
 import './index.css';
 

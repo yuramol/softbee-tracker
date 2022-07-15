@@ -1,9 +1,6 @@
 import React from 'react';
+import { Container } from '@mui/material';
 
 export const LoginPage = () => {
-  return (
-    <div>
-      <p>Login page</p>
-    </div>
-  );
+  return <Container></Container>;
 };
