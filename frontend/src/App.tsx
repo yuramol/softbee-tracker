@@ -1,14 +1,13 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { NavBar } from "./components";
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from './routes/Routes';
 
 function App() {
-	return (
-		<div className="App">
-			<NavBar />
-		</div>
-	);
+  return (
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
+  );
 }
 
 export default App;
