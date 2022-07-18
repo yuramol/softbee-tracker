@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { IconButton, Menu, MenuItem, Button } from '@mui/material';
+import { IconButton, Menu, MenuItem, Button, Box } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import { pages } from '../../constants';
@@ -18,7 +18,7 @@ export const MenuAppBar = ({
   handleCloseNavMenu,
 }: MenuAppBarProps) => {
   return (
-    <>
+    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
       <IconButton
         size="large"
         aria-label="account of current user"
@@ -66,6 +66,6 @@ export const MenuAppBar = ({
           </MenuItem>
         ))}
       </Menu>
-    </>
+    </Box>
   );
 };

@@ -26,13 +26,11 @@ export const Header = () => {
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <MenuAppBar
-              anchorElNav={anchorElNav}
-              handleOpenNavMenu={handleOpenNavMenu}
-              handleCloseNavMenu={handleCloseNavMenu}
-            />
-          </Box>
+          <MenuAppBar
+            anchorElNav={anchorElNav}
+            handleOpenNavMenu={handleOpenNavMenu}
+            handleCloseNavMenu={handleCloseNavMenu}
+          />
           <Logo />
           <NavBar />
           <HeaderAvatar
