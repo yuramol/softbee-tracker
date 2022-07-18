@@ -1,10 +1,53 @@
+import React, { FC, useState } from 'react';
+
 import { Box, Container, Typography } from '@mui/material';
+import { DayTrackerTabs } from '../DayTrackerTabs';
+import { ButtonDay } from '../buttons/ButtonDay';
+
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import React, { FC, useState } from 'react';
-import { ButtonDay } from '../buttons/ButtonDay';
+
 export const DayViewTracker: FC = () => {
   const [isDay, setIsDay] = useState(true);
+  const [tabsValue, setTabsValue] = useState(1);
+
+  const dataTabs = [
+    {
+      value: 3,
+      project: [
+        {
+          title: 'Mobile app',
+          duraction: '08:00',
+          description: 'pet project ',
+        },
+        {
+          title: 'Mobile app two',
+          duraction: '03:00',
+          description: 'pet project ',
+        },
+      ],
+    },
+    {
+      value: 2,
+      project: [
+        {
+          title: 'Mobile app',
+          duraction: '08:00',
+          description: 'pet project ',
+        },
+      ],
+    },
+    {
+      value: 1,
+      project: [
+        {
+          title: 'Mobile app two',
+          duraction: '03:00',
+          description: 'pet project ',
+        },
+      ],
+    },
+  ];
 
   return (
     <Container>
@@ -29,6 +72,15 @@ export const DayViewTracker: FC = () => {
           <Box onClick={isDay ? () => setIsDay(!isDay) : undefined}>
             <ButtonDay isActive={!isDay}>Week</ButtonDay>
           </Box>
+        </Box>
+      </Box>
+      <Box>
+        <Box sx={{ mt: '10px' }}>
+          <DayTrackerTabs
+            dataTabs={dataTabs}
+            setTabsValue={setTabsValue}
+            tabsValue={tabsValue}
+          />
         </Box>
       </Box>
     </Container>
