@@ -1,11 +1,11 @@
 import React from 'react';
 import { Header } from '../components';
 
-export const HomePage = () => {
+export const ProjectPage = () => {
   return (
     <div>
       <Header />
-      <p>Home page</p>
+      <p>Project page</p>
     </div>
   );
 };
