@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { pages } from '../../constants';
+import { NavButton } from './NavButton';
 
 export const NavBar = () => {
   return (
@@ -13,21 +13,7 @@ export const NavBar = () => {
       }}
     >
       {pages.map((page) => (
-        <Link
-          key={page.name}
-          to={page.href}
-          style={{ textDecoration: 'unset' }}
-        >
-          <Button
-            sx={{
-              px: '15px',
-              color: '#3b4649',
-              fontWeight: '700',
-            }}
-          >
-            {page.name}
-          </Button>
-        </Link>
+        <NavButton key={page.name} page={page} />
       ))}
     </Box>
   );

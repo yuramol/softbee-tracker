@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import {
   Box,
@@ -7,9 +6,9 @@ import {
   Menu,
   Avatar,
   Tooltip,
-  Button,
   MenuItem,
 } from '@mui/material';
+import { NavButton } from './NavButton';
 
 type HeaderAvatarProps = {
   anchorElUser: null | HTMLElement;
@@ -63,21 +62,7 @@ export const HeaderAvatar = ({
       >
         {menuItems.map((item) => (
           <MenuItem key={item.name} onClick={handleCloseUserMenu}>
-            <Link
-              key={item.name}
-              to={item.href}
-              style={{ textDecoration: 'unset' }}
-            >
-              <Button
-                sx={{
-                  px: '15px',
-                  color: '#3b4649',
-                  fontWeight: '700',
-                }}
-              >
-                {item.name}
-              </Button>
-            </Link>
+            <NavButton page={item} />
           </MenuItem>
         ))}
       </Menu>

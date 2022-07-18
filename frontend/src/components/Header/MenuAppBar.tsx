@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import { IconButton, Menu, MenuItem, Button, Box } from '@mui/material';
+import { IconButton, Menu, MenuItem, Box } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import { pages } from '../../constants';
+import { NavButton } from './NavButton';
 
 type MenuAppBarProps = {
   anchorElNav: null | HTMLElement;
@@ -45,21 +45,7 @@ export const MenuAppBar = ({
       >
         {pages.map((page) => (
           <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-            <Link
-              key={page.name}
-              to={page.href}
-              style={{ textDecoration: 'unset' }}
-            >
-              <Button
-                sx={{
-                  px: '15px',
-                  color: '#3b4649',
-                  fontWeight: '700',
-                }}
-              >
-                {page.name}
-              </Button>
-            </Link>
+            <NavButton page={page} />
           </MenuItem>
         ))}
       </Menu>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { AppBar, Box, Toolbar, Container } from '@mui/material';
+import { AppBar, Toolbar, Container } from '@mui/material';
 
 import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
