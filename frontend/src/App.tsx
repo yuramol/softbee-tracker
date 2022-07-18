@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { AuthProvider } from './AuthProvider';
 import { AppRouter } from './routes';
+import { DayViewTracker } from './components';
 
 export const App = () => {
   return (
@@ -10,6 +11,8 @@ export const App = () => {
       <AuthProvider>
         <AppRouter />
       </AuthProvider>
+      <AppRouter />
+      <DayViewTracker />
     </BrowserRouter>
   );
 };
