@@ -13,12 +13,14 @@ declare module '@mui/material/styles' {
     lightBackground?: string;
     brandYellow?: string;
   }
+
   interface SimplePaletteColorOptions {
     grey?: string;
     lightBackground?: string;
     brandYellow?: string;
     successGreen?: string;
   }
+
   interface CommonColors {
     grey: string;
     lightBackground: string;
