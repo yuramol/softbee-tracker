@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HomePage, LoginPage, ProfilePage, ProjectPage } from '../pages';
 
-const AppRouter = () => (
+export const AppRouter = () => (
   <Routes>
     <Route path="/" element={<HomePage />} />
     <Route path="/project" element={<ProjectPage />} />
@@ -10,5 +10,3 @@ const AppRouter = () => (
     <Route path="/profile" element={<ProfilePage />} />
   </Routes>
 );
-
-export default AppRouter;
