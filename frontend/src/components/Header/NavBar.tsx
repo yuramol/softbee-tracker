@@ -7,6 +7,7 @@ import { NavButton } from './NavButton';
 export const NavBar = () => {
   return (
     <Box
+      component="nav"
       sx={{
         flexGrow: 1,
         display: { xs: 'none', md: 'flex', justifyContent: 'right' },
