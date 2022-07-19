@@ -1,5 +1,6 @@
 import React from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { LOGIN_MUTATION } from '../api';
 import {
   Container,
   Grid,
@@ -20,26 +21,8 @@ type SubmitActions = {
   setSubmitting: (isSubmitting: boolean) => void;
 };
 
-const LOGIN = gql`
-  mutation Login($input: UsersPermissionsLoginInput!) {
-    login(input: $input) {
-      jwt
-      user {
-        id
-        username
-        email
-        role {
-          id
-          name
-          type
-        }
-      }
-    }
-  }
-`;
-
 export const LoginPage = () => {
-  const [login, { data, loading, error }] = useMutation(LOGIN);
+  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
 
   const handleLogin = async (
     values: LoginValues,

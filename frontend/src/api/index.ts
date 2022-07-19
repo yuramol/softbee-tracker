@@ -1,3 +1,3 @@
-import { apolloClient } from './apolloClient';
-
-export { apolloClient };
+export { apolloClient } from './apolloClient';
+export * from './graphql/query';
+export * from './graphql/mutation';
