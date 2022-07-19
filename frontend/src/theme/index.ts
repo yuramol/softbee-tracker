@@ -8,20 +8,23 @@ import Poppins900 from '../assets/fonts/poppins-v20-latin-900.woff2';
 import PoppinsRegular from '../assets/fonts/poppins-v20-latin-regular.woff2';
 declare module '@mui/material/styles' {
   interface PaletteOptions {
-    textDark?: string;
-    section?: string;
+    custom: { brandLightBlue?: string };
   }
 }
 export const theme = createTheme({
   palette: {
     primary: {
       main: '#104065',
+      light: '#f0f6f4',
     },
+
     secondary: {
       main: '#f5d040 ',
+      dark: '#3b4649',
     },
-    section: '#f0f6f4 ',
-    textDark: '#3b4649',
+    custom: {
+      brandLightBlue: '#f0f6f4 ',
+    },
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),

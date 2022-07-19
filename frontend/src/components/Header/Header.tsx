@@ -6,6 +6,7 @@ import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
+import { theme } from '../../theme';
 
 export const Header = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -22,7 +23,10 @@ export const Header = () => {
   return (
     <AppBar
       position="static"
-      sx={{ bgcolor: 'section', color: 'textDark', boxShadow: 0 }}
+      sx={{
+        bgcolor: theme.palette.primary.light,
+        boxShadow: 0,
+      }}
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
