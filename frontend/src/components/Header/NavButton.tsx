@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { StyledLink } from '../../legos/StyledLink';
+import { NavLink } from '../../legos';
 
 const HeaderButton = styled(Button)(({ theme }) => ({
   px: '15px',
@@ -13,7 +12,7 @@ const HeaderButton = styled(Button)(({ theme }) => ({
 type NavButtonProps = { page: { href: string; name: string } };
 
 export const NavButton = ({ page }: NavButtonProps) => (
-  <StyledLink key={page.name} to={page.href}>
+  <NavLink key={page.name} to={page.href}>
     <HeaderButton>{page.name}</HeaderButton>
-  </StyledLink>
+  </NavLink>
 );

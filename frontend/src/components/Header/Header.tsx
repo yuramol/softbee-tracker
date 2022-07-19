@@ -25,7 +25,6 @@ export const Header = () => {
       position="static"
       sx={{
         bgcolor: theme.palette.primary.light,
-        color: 'textDark',
         boxShadow: 0,
       }}
     >

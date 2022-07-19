@@ -1,3 +1,3 @@
-import { StyledLink } from './StyledLink';
+import { NavLink } from './NavLink';
 
-export { StyledLink };
+export { NavLink };
