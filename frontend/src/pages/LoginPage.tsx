@@ -1,9 +1,10 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
-import { LOGIN_MUTATION } from '../api';
-import { AppAuthContextInterface, useAuth } from '../AuthProvider';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+
+import { LOGIN_MUTATION } from '../api';
+import { useAuth } from '../AuthProvider';
 
 import {
   Container,
@@ -24,7 +25,7 @@ type SubmitActions = {
 };
 
 export const LoginPage = () => {
-  const { login } = useAuth() as AppAuthContextInterface;
+  const { login } = useAuth();
   const [loginMutation, { loading, error, reset }] =
     useMutation(LOGIN_MUTATION);
 
@@ -34,7 +35,7 @@ export const LoginPage = () => {
   ) => {
     loginMutation({ variables: { input: values } })
       .then(({ data }) => {
-        login(data.login.jwt);
+        login(data.login.jwt, data.login.user);
       })
       .catch(() => {
         setSubmitting(false);

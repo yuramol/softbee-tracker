@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from './hooks';
@@ -14,32 +20,34 @@ type AuthUser = {
   };
 };
 
-export interface AppAuthContextInterface {
+type AppAuthContext = {
   jwt: string | null;
-  user: () => Promise<AuthUser | null>;
-  login: (jwt: string) => Promise<void>;
+  user: AuthUser | boolean;
+  login: (jwt: string, authUser: AuthUser) => void;
   logout: () => void;
-}
+};
 
-const AuthContext = createContext<AppAuthContextInterface | null>(null);
+export const AuthContext = createContext<AppAuthContext>({} as AppAuthContext);
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [jwt, setJwt] = useLocalStorage('jwt', null);
-  const [meQuery] = useLazyQuery(ME_QUERY);
+  const [user, setUser] = useState<AuthUser | boolean>(!!jwt);
+  const [meQury] = useLazyQuery(ME_QUERY);
   const navigate = useNavigate();
 
-  const user = async () => {
-    if (jwt) {
-      const { data } = await meQuery();
+  useEffect(() => {
+    meQury()
+      .then(({ data }) => {
+        setUser(data.me);
+      })
+      .catch(() => {
+        setUser(false);
+      });
+  }, [jwt]);
 
-      return data.me;
-    }
-
-    return null;
-  };
-
-  const login = async (jwt: string) => {
+  const login = (jwt: string, authUser: AuthUser) => {
     setJwt(jwt);
+    setUser(authUser);
     navigate('/');
   };
 
@@ -48,14 +56,14 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     navigate('/login', { replace: true });
   };
 
-  const value: AppAuthContextInterface = useMemo(
+  const value: AppAuthContext = useMemo(
     () => ({
       jwt,
       user,
       login,
       logout,
     }),
-    [jwt]
+    [jwt, user]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
