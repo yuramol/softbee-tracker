@@ -1,6 +1,10 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_MUTATION } from '../api';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import { AppAuthContextInterface, useAuth } from '../AuthProvider';
+
 import {
   Container,
   Grid,
@@ -9,8 +13,6 @@ import {
   TextField,
   Button,
 } from '@mui/material';
-import { Formik } from 'formik';
-import * as yup from 'yup';
 
 type LoginValues = {
   identifier: string;
@@ -22,19 +24,25 @@ type SubmitActions = {
 };
 
 export const LoginPage = () => {
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
+  const { login } = useAuth() as AppAuthContextInterface;
+  const [loginMutation, { loading, error, reset }] = useMutation(
+    LOGIN_MUTATION,
+    {
+      onCompleted(data) {
+        login(data.login.jwt);
+      },
+    }
+  );
 
   const handleLogin = async (
     values: LoginValues,
     { setSubmitting }: SubmitActions
   ) => {
-    await login({ variables: { input: values } });
+    await loginMutation({ variables: { input: values } });
 
-    if (data) {
-      values.identifier = '';
-      values.password = '';
-      setSubmitting(false);
-    }
+    values.identifier = '';
+    values.password = '';
+    setSubmitting(false);
   };
 
   const validationSchema = yup.object({
@@ -62,7 +70,6 @@ export const LoginPage = () => {
               errors,
               touched,
               handleChange,
-              handleBlur,
               handleSubmit,
               isSubmitting,
             }) => (
@@ -75,32 +82,35 @@ export const LoginPage = () => {
                 <Typography variant="h4" component="h1" align="center">
                   Login
                 </Typography>
-                {!!error && (
-                  <Typography align="center" color="red" fontSize={12}>
-                    {error.message}
-                  </Typography>
-                )}
                 <TextField
                   variant="outlined"
                   label="Email"
                   type="email"
                   name="identifier"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={(e) => {
+                    handleChange(e);
+                    reset();
+                  }}
                   value={values.identifier}
-                  error={touched.identifier && !!errors.identifier}
-                  helperText={touched.identifier && errors.identifier}
+                  error={(touched.identifier && !!errors.identifier) || !!error}
+                  helperText={
+                    (touched.identifier && errors.identifier) || error?.message
+                  }
                 />
                 <TextField
                   variant="outlined"
                   label="Password"
                   type="password"
                   name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={(e) => {
+                    handleChange(e);
+                    reset();
+                  }}
                   value={values.password}
-                  error={touched.password && !!errors.password}
-                  helperText={touched.password && errors.password}
+                  error={(touched.password && !!errors.password) || !!error}
+                  helperText={
+                    (touched.password && errors.password) || error?.message
+                  }
                 />
                 <Button
                   variant="contained"
