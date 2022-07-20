@@ -2,10 +2,11 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { NavLink } from '../../legos';
+import { theme } from '../../theme';
 
-const HeaderButton = styled(Button)(({ theme }) => ({
+const HeaderButton = styled(Button)(() => ({
   px: '15px',
-  color: theme.palette.secondary.dark,
+  color: theme.palette.common.grey,
   fontWeight: '700',
 }));
 

@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { createTheme, Theme } from '@mui/material';
 import Poppins300 from '../assets/fonts/poppins-v20-latin-300.woff2';
 import Poppins500 from '../assets/fonts/poppins-v20-latin-500.woff2';
 import Poppins600 from '../assets/fonts/poppins-v20-latin-600.woff2';
@@ -6,26 +6,37 @@ import Poppins700 from '../assets/fonts/poppins-v20-latin-700.woff2';
 import Poppins800 from '../assets/fonts/poppins-v20-latin-800.woff2';
 import Poppins900 from '../assets/fonts/poppins-v20-latin-900.woff2';
 import PoppinsRegular from '../assets/fonts/poppins-v20-latin-regular.woff2';
+
 declare module '@mui/material/styles' {
-  interface PaletteOptions {
-    custom: { brandLightBlue?: string };
+  interface PaletteColor {
+    grey?: string;
+    lightBackground?: string;
+    brandYellow?: string;
+  }
+  interface SimplePaletteColorOptions {
+    grey?: string;
+    lightBackground?: string;
+    brandYellow?: string;
+  }
+  interface CommonColors {
+    grey: string;
+    lightBackground: string;
+
+    brandYellow: string;
   }
 }
-export const theme = createTheme({
+export const theme: Theme = createTheme({
   palette: {
     primary: {
       main: '#104065',
-      light: '#f0f6f4',
     },
-
-    secondary: {
-      main: '#f5d040 ',
-      dark: '#3b4649',
-    },
-    custom: {
-      brandLightBlue: '#f0f6f4 ',
+    common: {
+      grey: '#3b4649',
+      lightBackground: '#f0f6f4',
+      brandYellow: '#f5d040 ',
     },
   },
+
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
   },
