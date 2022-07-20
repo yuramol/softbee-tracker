@@ -2,19 +2,21 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import { Container } from '@mui/system';
 type Props = {
-  content: JSX.Element;
-  sidebar: JSX.Element;
+  children: JSX.Element;
+  sidebar?: JSX.Element;
 };
-export const MainWrapper = ({ content, sidebar }: Props) => {
+export const MainWrapper = ({ children, sidebar }: Props) => {
   return (
-    <Container maxWidth="lg">
+    <Container component="main" maxWidth="lg">
       <Grid container spacing={3}>
-        <Grid item md={9}>
-          {content}
+        <Grid item md={sidebar ? 9 : 12}>
+          {children}
         </Grid>
-        <Grid item md={3}>
-          {sidebar}
-        </Grid>
+        {sidebar && (
+          <Grid item md={3}>
+            {sidebar}
+          </Grid>
+        )}
       </Grid>
     </Container>
   );

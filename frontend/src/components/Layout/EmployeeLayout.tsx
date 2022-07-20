@@ -8,12 +8,12 @@ export const EmployeeLayout = () => {
 
   // console.log(user);
 
-  if (user === true) {
-    return <h1>Loading...</h1>;
-  }
-
   if (!user) {
     return <Navigate to={'/login'} />;
+  }
+
+  if (user === true) {
+    return <h1>Loading...</h1>;
   }
 
   return (
