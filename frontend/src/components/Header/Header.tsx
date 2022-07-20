@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { AppBar, Toolbar, Container } from '@mui/material';
+import { AppBar, Toolbar, Container, Slider } from '@mui/material';
 
 import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
@@ -24,7 +24,7 @@ export const Header = () => {
     <AppBar
       position="static"
       sx={{
-        bgcolor: theme.palette.primary.light,
+        bgcolor: 'common.lightBackground',
         boxShadow: 0,
       }}
     >
