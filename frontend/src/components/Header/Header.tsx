@@ -6,6 +6,7 @@ import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
+import { theme } from '../../theme';
 
 export const Header = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
