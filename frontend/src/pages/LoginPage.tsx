@@ -1,9 +1,9 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_MUTATION } from '../api';
+import { AppAuthContextInterface, useAuth } from '../AuthProvider';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { AppAuthContextInterface, useAuth } from '../AuthProvider';
 
 import {
   Container,
@@ -25,24 +25,20 @@ type SubmitActions = {
 
 export const LoginPage = () => {
   const { login } = useAuth() as AppAuthContextInterface;
-  const [loginMutation, { loading, error, reset }] = useMutation(
-    LOGIN_MUTATION,
-    {
-      onCompleted(data) {
-        login(data.login.jwt);
-      },
-    }
-  );
+  const [loginMutation, { loading, error, reset }] =
+    useMutation(LOGIN_MUTATION);
 
-  const handleLogin = async (
+  const handleLogin = (
     values: LoginValues,
     { setSubmitting }: SubmitActions
   ) => {
-    await loginMutation({ variables: { input: values } });
-
-    values.identifier = '';
-    values.password = '';
-    setSubmitting(false);
+    loginMutation({ variables: { input: values } })
+      .then(({ data }) => {
+        login(data.login.jwt);
+      })
+      .catch(() => {
+        setSubmitting(false);
+      });
   };
 
   const validationSchema = yup.object({
