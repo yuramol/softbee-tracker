@@ -1,10 +1,9 @@
 import React from 'react';
-
 import { Box } from '@mui/material';
-import { pages } from '../../constants';
 import { NavButton } from './NavButton';
+import { HeaderProps } from './types';
 
-export const NavBar = () => {
+export const NavBar: React.FC<HeaderProps> = ({ pages }) => {
   return (
     <Box
       component="nav"
@@ -14,7 +13,7 @@ export const NavBar = () => {
       }}
     >
       {pages.map((page) => (
-        <NavButton key={page.name} page={page} />
+        <NavButton key={page.name} {...page} />
       ))}
     </Box>
   );

@@ -1,9 +1,12 @@
 import React from 'react';
+import { MainWrapper } from '../components';
 
-export const ProjectPage = () => {
+const ProjectPage = () => {
   return (
-    <div>
-      <p>Project page</p>
-    </div>
+    <MainWrapper left sidebar={<p>Width left sidebar</p>}>
+      <h1>Project</h1>
+    </MainWrapper>
   );
 };
+
+export default ProjectPage;

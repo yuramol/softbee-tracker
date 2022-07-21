@@ -24,7 +24,7 @@ type SubmitActions = {
   setSubmitting: (isSubmitting: boolean) => void;
 };
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const { login } = useAuth();
   const [loginMutation, { loading, error, reset }] =
     useMutation(LOGIN_MUTATION);
@@ -125,3 +125,5 @@ export const LoginPage = () => {
     </Container>
   );
 };
+
+export default LoginPage;

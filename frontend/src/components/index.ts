@@ -1,3 +1,3 @@
-import { Header } from './Header';
-
-export { Header };
+export { Loader } from './Loader';
+export { Header } from './Header';
+export { MainWrapper } from './MainWrapper';

@@ -1,10 +1,12 @@
 import React from 'react';
-import { MainWrapper } from '../components/MainWrapper/MainWrapper';
+import { MainWrapper } from '../components';
 
-export const HomePage = () => {
+const HomePage = () => {
   return (
-    <MainWrapper sidebar={<p>Sidebar</p>}>
-      <h1>Home Page</h1>
+    <MainWrapper sidebar={<p>Width right sidebar</p>}>
+      <h1>Tracker</h1>
     </MainWrapper>
   );
 };
+
+export default HomePage;
