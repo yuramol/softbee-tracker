@@ -1,10 +1,5 @@
 import { lazy } from 'react';
-
-export enum Role {
-  Public = 'public',
-  Employee = 'employee',
-  Manager = 'manager',
-}
+import { Role } from './types';
 
 export const pages = [
   {

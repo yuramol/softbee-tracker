@@ -12,7 +12,7 @@ export const AppRouter = () => {
   if (user === true) return <Loader />;
   if (user && user.role === null) return <Loader />;
 
-  const userRole: Role = user && user.role ? user.role.type : Role.Public;
+  const userRole = user && user.role ? user.role.type : Role.Public;
   const currentPages = pages.filter(({ role }) => role.includes(userRole));
 
   return (
