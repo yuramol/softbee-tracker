@@ -1,12 +1,14 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import { Container } from '@mui/system';
+
 type Props = {
   children: React.ReactNode;
   sidebar?: JSX.Element;
   left?: boolean;
 };
-export const MainWrapper = ({ children, sidebar, left }: Props) => {
+
+export const MainWrapper: React.FC<Props> = ({ children, sidebar, left }) => {
   return (
     <Container component="main" maxWidth="lg">
       <Grid container spacing={3}>

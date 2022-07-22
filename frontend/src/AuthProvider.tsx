@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import React, {
   createContext,
   useContext,
@@ -6,9 +7,10 @@ import React, {
   useState,
 } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
+
 import { useLocalStorage } from './hooks';
 import { ME_QUERY } from './api';
+import { Role } from './constants';
 
 type Props = { children: React.ReactNode };
 
@@ -16,14 +18,14 @@ type AuthUser = {
   id: string;
   username: string;
   role: {
-    type: string;
+    type: Role;
   };
 };
 
 type AppAuthContext = {
   jwt: string | null;
   user: AuthUser | boolean;
-  login: (jwt: string, authUser: AuthUser) => void;
+  login: (jwt: string, authUser: AuthUser) => Promise<void>;
   logout: () => void;
 };
 
@@ -32,27 +34,30 @@ export const AuthContext = createContext<AppAuthContext>({} as AppAuthContext);
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [jwt, setJwt] = useLocalStorage('jwt', null);
   const [user, setUser] = useState<AuthUser | boolean>(!!jwt);
-  const [meQury] = useLazyQuery(ME_QUERY);
+  const [meQury] = useLazyQuery(ME_QUERY, { fetchPolicy: 'cache-and-network' });
   const navigate = useNavigate();
 
   useEffect(() => {
-    meQury()
-      .then(({ data }) => {
-        setUser(data.me);
-      })
-      .catch(() => {
-        setUser(false);
-      });
+    if (jwt !== null) {
+      meQury()
+        .then(({ data }) => {
+          setUser(data.me);
+        })
+        .catch(() => {
+          setUser(false);
+        });
+    }
   }, [jwt]);
 
-  const login = (jwt: string, authUser: AuthUser) => {
+  const login = async (jwt: string, authUser: AuthUser) => {
     setJwt(jwt);
     setUser(authUser);
-    navigate('/');
+    navigate('/', { replace: true });
   };
 
   const logout = () => {
     setJwt(null);
+    setUser(false);
     navigate('/login', { replace: true });
   };
 

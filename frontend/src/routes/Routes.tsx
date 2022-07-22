@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+
 import { useAuth } from '../AuthProvider';
-import { Loader } from '../components';
-import { Layout } from '../components/Layout';
-import { publicPages, employeePages, managerPages } from '../constants';
+import { Loader, Layout } from '../components';
 import { NotFoundPage } from '../pages';
+import { Role, pages } from '../constants';
 
 export const AppRouter = () => {
   const { user } = useAuth();
@@ -12,28 +12,17 @@ export const AppRouter = () => {
   if (user === true) return <Loader />;
   if (user && user.role === null) return <Loader />;
 
-  const userRole = user && user.role && user.role.type;
-  let pages = publicPages;
-
-  switch (userRole) {
-    case 'employee':
-      pages = employeePages;
-      break;
-    case 'manager':
-      pages = managerPages;
-      break;
-    default:
-      break;
-  }
+  const userRole: Role = user && user.role ? user.role.type : Role.Public;
+  const currentPages = pages.filter(({ role }) => role.includes(userRole));
 
   return (
     <Routes>
-      <Route element={<Layout pages={pages} />}>
+      <Route element={<Layout pages={currentPages} />}>
         <Route
           path="*"
           element={user ? <NotFoundPage /> : <Navigate to="/login" replace />}
         />
-        {pages.map(({ index, name, href, Component }) => (
+        {currentPages.map(({ index, name, href, Component }) => (
           <Route
             index={index}
             key={name}

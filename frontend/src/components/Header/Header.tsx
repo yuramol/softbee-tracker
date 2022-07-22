@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Container } from '@mui/material';
+
+import { useAuth } from '../../AuthProvider';
+
 import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
 import { HeaderProps } from './types';
-import { useAuth } from '../../AuthProvider';
 
 export const Header: React.FC<HeaderProps> = ({ pages }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);

@@ -1,1 +1,1 @@
-export { publicPages, employeePages, managerPages } from './pages';
+export { Role, pages } from './pages';

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
+
 import { NavButton } from './NavButton';
 import { HeaderProps } from './types';
 

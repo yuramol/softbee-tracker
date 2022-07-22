@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconButton, Menu, MenuItem, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+
 import { NavButton } from './NavButton';
 import { HeaderProps } from './types';
 

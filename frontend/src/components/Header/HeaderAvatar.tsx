@@ -7,8 +7,10 @@ import {
   Tooltip,
   MenuItem,
 } from '@mui/material';
+
 import { HeaderButton, NavButton } from './NavButton';
 import { HeaderProps } from './types';
+import { useAuth } from '../../AuthProvider';
 
 interface HeaderAvatarProps extends HeaderProps {
   anchorElUser: null | HTMLElement;
@@ -22,6 +24,8 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
   handleOpenUserMenu,
   handleCloseUserMenu,
 }) => {
+  const { logout } = useAuth();
+
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
@@ -61,7 +65,12 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
             <NavButton {...page} />
           </MenuItem>
         ))}
-        <MenuItem onClick={handleCloseUserMenu}>
+        <MenuItem
+          onClick={(e) => {
+            handleCloseUserMenu(e);
+            logout();
+          }}
+        >
           <HeaderButton>Logout</HeaderButton>
         </MenuItem>
       </Menu>

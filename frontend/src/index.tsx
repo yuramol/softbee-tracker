@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
-import { apolloClient } from './api';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { theme } from './theme';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+
 import { App } from './App';
+import { apolloClient } from './api';
+import { theme } from './theme';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

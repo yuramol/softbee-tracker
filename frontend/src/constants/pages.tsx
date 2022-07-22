@@ -1,12 +1,18 @@
 import { lazy } from 'react';
 
-// Public Pages
-export const publicPages = [
+export enum Role {
+  Public = 'public',
+  Employee = 'employee',
+  Manager = 'manager',
+}
+
+export const pages = [
   {
     index: true,
     name: 'Login',
     href: '/login',
     mainMenu: true,
+    role: [Role.Public],
     Component: lazy(() => import('../pages/LoginPage')),
   },
   {
@@ -14,17 +20,15 @@ export const publicPages = [
     name: 'Register',
     href: '/register',
     mainMenu: true,
+    role: [Role.Public],
     Component: lazy(() => import('../pages/LoginPage')),
   },
-];
-
-// Employee Pages
-export const employeePages = [
   {
     index: true,
     name: 'Tracker',
     href: '/',
     mainMenu: true,
+    role: [Role.Employee, Role.Manager],
     Component: lazy(() => import('../pages/HomePage')),
   },
   {
@@ -32,24 +36,7 @@ export const employeePages = [
     name: 'Profile',
     href: '/profile',
     mainMenu: false,
-    Component: lazy(() => import('../pages/ProfilePage')),
-  },
-];
-
-// Manager Pages
-export const managerPages = [
-  {
-    index: true,
-    name: 'Tracker',
-    href: '/',
-    mainMenu: true,
-    Component: lazy(() => import('../pages/HomePage')),
-  },
-  {
-    index: false,
-    name: 'Profile',
-    href: '/profile',
-    mainMenu: false,
+    role: [Role.Employee, Role.Manager],
     Component: lazy(() => import('../pages/ProfilePage')),
   },
   {
@@ -57,6 +44,7 @@ export const managerPages = [
     name: 'Projects',
     href: '/projects',
     mainMenu: true,
+    role: [Role.Manager],
     Component: lazy(() => import('../pages/ProjectPage')),
   },
   {
@@ -64,6 +52,7 @@ export const managerPages = [
     name: 'Reports',
     href: '/reports',
     mainMenu: true,
+    role: [Role.Manager],
     Component: lazy(() => import('../pages/ReportPage')),
   },
 ];
