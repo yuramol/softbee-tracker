@@ -1,23 +1,34 @@
-import moment from 'moment';
+import {
+  addDays,
+  endOfDay,
+  format,
+  lastDayOfWeek,
+  startOfWeek,
+} from 'date-fns';
 
 export const useCurrentWeek = () => {
-  const currentDate = moment();
-
-  const weekStart = currentDate.clone().startOf('isoWeek');
-  const weekEnd = currentDate.clone().endOf('isoWeek');
+  const currentDatas = new Date();
+  const weekEnd = lastDayOfWeek(currentDatas, {
+    weekStartsOn: 1,
+  });
+  const weekStart = startOfWeek(currentDatas, {
+    weekStartsOn: 1,
+  });
   const days = [];
 
   for (let i = 0; i <= 6; i++) {
     days.push({
-      day: moment(weekStart).add(i, 'days').format('dddd'),
-      date: moment(weekStart).add(i, 'days').format('Do MMM'),
-      fullDate: moment(weekStart).add(i, 'days').format('YYYY-MM-DD'),
+      day: format(addDays(weekStart, i), 'E'),
+      dayNumber: format(addDays(weekStart, i), 'i'),
+      date: format(addDays(weekStart, i), 'do MMM'),
+      fullDate: format(addDays(weekStart, i), 'yyyy-MM-dd'),
     });
   }
 
   return {
-    weekStart: weekStart.format('YYYY-MM-DD'),
-    weekEnd: weekEnd.format('YYYY-MM-DD'),
+    weekStart: format(weekStart, 'yyyy-MM-dd'),
+    weekEnd: format(weekEnd, 'yyyy-MM-dd'),
     days,
+    currentDay: format(endOfDay(new Date()), 'i'),
   };
 };
