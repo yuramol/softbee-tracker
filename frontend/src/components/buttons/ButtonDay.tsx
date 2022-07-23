@@ -12,10 +12,22 @@ type Props = {
   sx?: SxProps;
   isActive?: boolean;
   onClick?: () => void;
+  disabled?: boolean;
 };
-export const ButtonDay: FC<Props> = ({ children, sx, isActive }) => {
+export const ButtonDay: FC<Props> = ({
+  children,
+  sx,
+  isActive,
+  onClick,
+  disabled,
+}) => {
   return (
-    <StyledButton sx={sx} variant={isActive ? 'contained' : 'outlined'}>
+    <StyledButton
+      onClick={onClick}
+      sx={sx}
+      disabled={disabled}
+      variant={isActive ? 'contained' : 'outlined'}
+    >
       {children}
     </StyledButton>
   );

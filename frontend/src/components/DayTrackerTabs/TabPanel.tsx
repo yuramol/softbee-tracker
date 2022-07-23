@@ -1,69 +1,72 @@
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import React from 'react';
 
-import { gql, useQuery } from '@apollo/client';
+import { TrackerEntity } from '../../types/GraphqlTypes';
 import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { FC } from 'react';
+import { format, parse } from 'date-fns';
+import { useTotalTime } from '../../hooks';
+import { TabProject } from './TabProject';
 
-type TypeTabPanel = {
-  dataTabs: {
-    value: number;
-    project: {
-      title: string;
-      duraction: string;
-      description: string;
-    }[];
-  }[];
-  index: number;
+type Props = {
+  dataTabs: TrackerEntity[] | undefined;
   value: number;
+  index: number;
 };
+export const TabPanel = ({ dataTabs, index, value }: Props) => {
+  const { totalTime } = useTotalTime(dataTabs);
 
-export const TabPanel = (props: TypeTabPanel) => {
-  const { dataTabs, index, value } = props;
-  const currentData = dataTabs.find((el) => el.value === index);
-
-  if (currentData) {
+  if (value === index) {
+    if (dataTabs && dataTabs?.length > 0) {
+      return (
+        <Box sx={{ mt: '-2px' }}>
+          {dataTabs.map(({ attributes, id }, i) => {
+            const parseTime = parse(
+              attributes?.duration,
+              'HH:mm:ss.SSS',
+              new Date()
+            );
+            if (!isNaN(parseTime.getTime())) {
+              return (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    p: '15px',
+                    borderTop: '2px solid gray',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                  key={i}
+                >
+                  <TabProject
+                    id={id}
+                    attributes={attributes}
+                    parseTime={parseTime}
+                  />
+                </Box>
+              );
+            }
+          })}
+          <Typography
+            variant="h6"
+            sx={{ p: '15px', borderTop: '2px solid gray' }}
+          >
+            Total: {totalTime}
+          </Typography>
+        </Box>
+      );
+    }
     return (
-      <Box sx={{ display: index !== value ? 'none' : 'block' }}>
-        {currentData.value === value &&
-          currentData.project.map(({ duraction, title, description }, i) => (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                py: '15px',
-                borderTop: '1px solid gray',
-              }}
-              key={i}
-            >
-              <Typography variant="h6">
-                {title} - {description}
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography sx={{ mr: '20px' }} variant="h6">
-                  {duraction}
-                </Typography>
-                <Button variant="outlined">
-                  <AccessTimeIcon sx={{ mr: '5px' }} fontSize="small" /> Start
-                </Button>
-                <Button sx={{ ml: '5px' }} variant="outlined">
-                  Edit
-                </Button>
-              </Box>
-            </Box>
-          ))}
-        <Typography
-          variant="h6"
-          sx={{ py: '15px', borderTop: '1px solid gray' }}
-        >
-          Total: 08:00
-        </Typography>
-      </Box>
+      <Typography
+        sx={{
+          p: '15px',
+          mt: '-2px',
+          borderTop: '2px solid gray',
+        }}
+        variant="h6"
+      >
+        not tracked this day
+      </Typography>
     );
   }
-  return (
-    <Typography variant="h6" sx={{ py: '15px' }} hidden={value !== index}>
-      not tracked for this day
-    </Typography>
-  );
+  return null;
 };
