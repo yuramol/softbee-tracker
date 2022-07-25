@@ -11,7 +11,7 @@ export const HomePage = () => {
       <Header />
       <p>Home page</p>
       <StyledIconButton
-        sx={{ width: '40px', height: '40px', borderRadius: '10px' }}
+        sx={{ width: '40px', height: '40px' }}
         onClick={handleOpen}
       >
         <AddIcon />
