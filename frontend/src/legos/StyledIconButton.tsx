@@ -9,7 +9,4 @@ export const StyledIconButton = styled(IconButton)({
     backgroundColor: theme.palette.common.successGreen,
     opacity: 0.6,
   },
-  width: '40px',
-  height: '40px',
-  borderRadius: '10px',
 });

@@ -10,7 +10,10 @@ export const HomePage = () => {
     <div>
       <Header />
       <p>Home page</p>
-      <StyledIconButton onClick={handleOpen}>
+      <StyledIconButton
+        sx={{ width: '40px', height: '40px', borderRadius: '10px' }}
+        onClick={handleOpen}
+      >
         <AddIcon />
       </StyledIconButton>
       <ManualEntryForm open={open} onClose={handleClose} />
