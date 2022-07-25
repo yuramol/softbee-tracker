@@ -1,3 +1,3 @@
 import { Header } from './Header';
-
-export { Header };
+import { ManualEntryForm } from './Dialogs';
+export { Header, ManualEntryForm };
