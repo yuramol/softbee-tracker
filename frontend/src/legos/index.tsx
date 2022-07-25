@@ -1,3 +1,3 @@
 import { NavLink } from './NavLink';
-
-export { NavLink };
+import { StyledIconButton } from './StyledIconButton';
+export { NavLink, StyledIconButton };
