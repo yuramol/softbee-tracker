@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const MANUAL_TIMER_SELECT = gql`
+export const CREATE_TRACKER_MUTATION = gql`
   mutation CreateTracker(
     $desc: Text!
     $date: Date!
