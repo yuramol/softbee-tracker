@@ -6,10 +6,7 @@ import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 import { ModalSelect } from '../../legos/ModalSelect';
-const itemSelectProject = [
-  { label: 'softbee', value: '1s' },
-  { label: 'demigos', value: '2s' },
-];
+
 const style = {
   position: 'absolute' as const,
   top: '50%',
@@ -21,18 +18,20 @@ const style = {
   borderRadius: '10px',
   p: 4,
 };
-type ManualEntryDialogProps = {
+type ManualEntryFormProps = {
   open: boolean;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
 };
-export const ManualEntryDialog = ({
-  open,
-  onClose,
-}: ManualEntryDialogProps) => {
+export const ManualEntryForm = ({ open, onClose }: ManualEntryFormProps) => {
   const [time, setTime] = useState('');
+  // TODO add date and project options from BACKEND
   const today = new Date();
   const date =
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const itemSelectProject = [
+    { label: 'softbee', value: '1s' },
+    { label: 'demigos', value: '2s' },
+  ];
   return (
     <div>
       <Typography>New Entry</Typography>
@@ -41,8 +40,8 @@ export const ManualEntryDialog = ({
         open={open}
         closeAfterTransition
         onClose={onClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
       >
         <Box sx={style}>
           <Typography
@@ -71,8 +70,7 @@ export const ManualEntryDialog = ({
             multiline
             rows={4}
             maxRows={8}
-            id="outlined-basic"
-            // variant="outlined"
+            id="description-input"
             placeholder="Description"
           />
           <Box sx={{ marginTop: '20px' }}>
@@ -81,13 +79,14 @@ export const ManualEntryDialog = ({
               variant="contained"
               color="success"
             >
-              Start Timer
+              Save Time
             </Button>
             <Button
               sx={{ bgcolor: 'white', color: 'common.grey' }}
               variant="outlined"
+              onClick={onClose}
             >
-              Cancle
+              Cancel
             </Button>
           </Box>
         </Box>

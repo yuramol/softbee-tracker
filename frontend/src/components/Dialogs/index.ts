@@ -1,1 +1,1 @@
-export * from './ManualEntryDialog';
+export * from './ManualEntryForm';
