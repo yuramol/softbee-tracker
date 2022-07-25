@@ -25,7 +25,7 @@ type AuthUser = {
 type AppAuthContext = {
   jwt: string | null;
   user: AuthUser | boolean;
-  login: (jwt: string, authUser: AuthUser) => Promise<void>;
+  login: (jwt: string, authUser: AuthUser) => void;
   logout: () => void;
 };
 
@@ -34,12 +34,14 @@ export const AuthContext = createContext<AppAuthContext>({} as AppAuthContext);
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [jwt, setJwt] = useLocalStorage('jwt', null);
   const [user, setUser] = useState<AuthUser | boolean>(!!jwt);
-  const [meQury] = useLazyQuery(ME_QUERY, { fetchPolicy: 'cache-and-network' });
+  const [meQuery] = useLazyQuery(ME_QUERY, {
+    fetchPolicy: 'cache-and-network',
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
     if (jwt !== null) {
-      meQury()
+      meQuery()
         .then(({ data }) => {
           setUser(data.me);
         })
@@ -49,7 +51,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   }, [jwt]);
 
-  const login = async (jwt: string, authUser: AuthUser) => {
+  const login = (jwt: string, authUser: AuthUser) => {
     setJwt(jwt);
     setUser(authUser);
     navigate('/', { replace: true });
