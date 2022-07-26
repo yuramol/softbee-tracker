@@ -6,19 +6,18 @@ import { StyledIconButton } from '../legos';
 
 const HomePage = () => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  
+  const handleToggle = () => setOpen(!open);
+
   return (
     <MainWrapper sidebar={<p>Width right sidebar</p>}>
       <h1>Tracker</h1>
       <StyledIconButton
         sx={{ width: '40px', height: '40px' }}
-        onClick={handleOpen}
+        onClick={handleToggle}
       >
         <AddIcon />
       </StyledIconButton>
-      <ManualEntryForm open={open} onClose={handleClose} />
+      <ManualEntryForm open={open} onClose={handleToggle} />
     </MainWrapper>
   );
 };
