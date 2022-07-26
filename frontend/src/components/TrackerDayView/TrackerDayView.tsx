@@ -1,8 +1,7 @@
-import { Box, Container, Typography } from '@mui/material';
-import React, { createContext, FC, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
+import { Box, Typography, Button } from '@mui/material';
 import { DayTrackerTabs } from '../DayTrackerTabs';
-import { ButtonDay } from '../buttons/ButtonDay';
 
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -66,12 +65,12 @@ type TimeContextType = {
 
 export const TimeContext = createContext<TimeContextType | null>(null);
 
-export const DayViewTracker: FC = () => {
+export const TrackerDayView = () => {
   const { weekEnd, weekStart, days, currentDay } = useCurrentWeek();
   const { data, refetch } = useQuery<Query>(GET_CURRENT_WEEK_TRACKERS, {
     variables: { weekStart, weekEnd },
   });
-  const [isDay, setIsDay] = useState(true);
+  const [isDayWiew, setIsDayWiew] = useState(true);
   const [tabsValue, setTabsValue] = useState(+currentDay - 1);
   const [mutationTime] = useMutation(UPDATE_TIME_DURATION);
 
@@ -91,39 +90,54 @@ export const DayViewTracker: FC = () => {
     data?.usersPermissionsUser?.data?.attributes?.trackers?.data;
 
   return (
-    <Container>
+    <TimeContext.Provider value={{ onUpdateTime }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <ButtonDay sx={{ mr: '10px' }}>
+          <Button
+            variant="outlined"
+            sx={{ mr: '10px' }}
+            disabled={tabsValue === 0}
+            onClick={() => setTabsValue(tabsValue - 1)}
+          >
             <NavigateBeforeIcon />
-          </ButtonDay>
-          <ButtonDay>
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{ mr: '10px' }}
+            disabled={tabsValue === 6}
+            onClick={() => setTabsValue(tabsValue + 1)}
+          >
             <NavigateNextIcon />
-          </ButtonDay>
+          </Button>
           <Typography sx={{ ml: '10px' }} variant="h5">
-            Today: Monday, 11 Jul
+            {days[tabsValue].day} {days[tabsValue].date}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex' }}>
-          <Box onClick={!isDay ? () => setIsDay(!isDay) : undefined}>
-            <ButtonDay isActive={isDay} sx={{ mr: '10px' }}>
-              Day
-            </ButtonDay>
-          </Box>
-          <Box onClick={isDay ? () => setIsDay(!isDay) : undefined}>
-            <ButtonDay isActive={!isDay}>Week</ButtonDay>
-          </Box>
+          <Button
+            variant={isDayWiew ? 'contained' : 'outlined'}
+            sx={{ mr: '10px' }}
+            onClick={() => setIsDayWiew(isDayWiew ? true : !isDayWiew)}
+          >
+            Day
+          </Button>
+          <Button
+            variant={!isDayWiew ? 'contained' : 'outlined'}
+            onClick={() => setIsDayWiew(!isDayWiew ? false : !isDayWiew)}
+          >
+            Week
+          </Button>
         </Box>
       </Box>
       <Box>
         <Box sx={{ mt: '10px' }}>
           <DayTrackerTabs
-            dataTabs={dataTabs}
+            dataTabs={currentData}
             setTabsValue={setTabsValue}
             tabsValue={tabsValue}
           />
         </Box>
       </Box>
-    </Container>
+    </TimeContext.Provider>
   );
 };

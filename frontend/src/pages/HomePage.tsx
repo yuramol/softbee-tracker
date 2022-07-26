@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 
-import { DayViewTracker, MainWrapper, ManualEntryForm } from '../components';
+import { MainWrapper, ManualEntryForm, TrackerDayView } from '../components';
 import { StyledIconButton } from '../legos';
 
 const HomePage = () => {
@@ -18,7 +18,7 @@ const HomePage = () => {
         <AddIcon />
       </StyledIconButton>
       <ManualEntryForm open={open} onClose={handleToggle} />
-      <DayViewTracker />
+      <TrackerDayView />
     </MainWrapper>
   );
 };
