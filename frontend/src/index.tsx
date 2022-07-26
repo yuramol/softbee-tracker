@@ -5,7 +5,6 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 
 import { App } from './App';
 import { apolloClient } from './api';
-import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './theme';
 
 const root = ReactDOM.createRoot(
