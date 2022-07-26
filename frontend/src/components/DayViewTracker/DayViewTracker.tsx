@@ -63,6 +63,7 @@ type TimeContextType = {
     id: Maybe<string>
   ) => void;
 };
+
 export const TimeContext = createContext<TimeContextType | null>(null);
 
 export const DayViewTracker: FC = () => {
