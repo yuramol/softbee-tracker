@@ -1,47 +1,35 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { theme } from '../../theme';
 
+//TODO add project time info and limits
+const totalTime = [
+  {
+    type: 'Day',
+    totalTime: '2',
+    timeLimit: '5',
+  },
+  {
+    type: 'Week',
+    totalTime: '15',
+    timeLimit: '25',
+  },
+  {
+    type: 'Month',
+    totalTime: '98',
+    timeLimit: '110',
+  },
+];
+
 export const TotalTime = () => {
-  //TODO add project time info and limits
-  const totalTime = [
-    {
-      name: 'day',
-      day: '2',
-      week: '32',
-      month: '56',
-      dayLimit: '1',
-      weekLimit: '5',
-      monthLimit: '45',
-    },
-    {
-      name: 'week',
-      day: '2',
-      week: '32',
-      month: '56',
-      dayLimit: '1',
-      weekLimit: '5',
-      monthLimit: '45',
-    },
-    {
-      name: 'month',
-      day: '2',
-      week: '32',
-      month: '56',
-      dayLimit: '1',
-      weekLimit: '5',
-      monthLimit: '45',
-    },
-  ];
   return (
-    <Box>
+    <>
       <Typography variant="h6">Total time</Typography>
       <List>
-        {totalTime.map((pro) => (
+        {totalTime.map((time) => (
           <ListItem
-            key={pro.name}
+            key={time.type}
             sx={{
               p: 0,
               justifyContent: 'space-between',
@@ -52,13 +40,15 @@ export const TotalTime = () => {
             <AccessTimeIcon />
             <ListItemText
               sx={{ ml: 1, color: theme.palette.common.grey }}
-              primary={pro.name}
+              primary={time.type}
             />
-            <ListItemText sx={{ display: 'contents' }} />
-            <Typography>{pro.dayLimit}</Typography>
+            <ListItemText
+              sx={{ display: 'contents' }}
+              primary={`${time.totalTime} / ${time.timeLimit}`}
+            />
           </ListItem>
         ))}
       </List>
-    </Box>
+    </>
   );
 };
