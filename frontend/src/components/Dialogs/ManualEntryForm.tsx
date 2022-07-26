@@ -28,10 +28,7 @@ export const ManualEntryForm = ({ open, onClose }: ManualEntryFormProps) => {
   const today = new Date();
   const date =
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  const itemSelectProject = [
-    { label: 'softbee', value: '1s' },
-    { label: 'demigos', value: '2s' },
-  ];
+  const itemSelectProject = [{ label: 'softbee' }, { label: 'demigos' }];
   return (
     <div>
       <Typography>New Entry</Typography>
@@ -69,7 +66,6 @@ export const ManualEntryForm = ({ open, onClose }: ManualEntryFormProps) => {
             sx={{ width: '100%', marginTop: 2 }}
             multiline
             rows={4}
-            maxRows={8}
             id="description-input"
             placeholder="Description"
           />
