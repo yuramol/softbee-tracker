@@ -74,8 +74,6 @@ export const TrackerDayView = () => {
   const [tabsValue, setTabsValue] = useState(+currentDay - 1);
   const [mutationTime] = useMutation(UPDATE_TIME_DURATION);
 
-  console.log(tabsValue, isDayWiew);
-
   const onUpdateTime = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     id: Maybe<string>

@@ -1,44 +1,36 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { TextField } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Box, Button, Typography, Modal, TextField } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+
 import { ModalSelect } from '../../legos/ModalSelect';
 
 const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
-  bgcolor: 'common.lightBackground',
+  width: 600,
+  bgcolor: 'background.paper',
   boxShadow: 24,
-  borderRadius: '10px',
+  borderRadius: 1,
   p: 4,
 };
-type ManualEntryFormProps = {
-  open: boolean;
-  onClose: (event: React.MouseEvent<HTMLElement>) => void;
-};
-export const ManualEntryForm = ({ open, onClose }: ManualEntryFormProps) => {
+
+export const TrackerAddNewEntry = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [time, setTime] = useState('');
-  // TODO add date and project options from BACKEND
   const today = new Date();
   const date =
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   const itemSelectProject = [{ label: 'softbee' }, { label: 'demigos' }];
+
   return (
-    <div>
+    <>
+      <Button variant="contained" onClick={() => setIsOpenModal(!isOpenModal)}>
+        <AddIcon />
+      </Button>
       <Typography>New Entry</Typography>
       <Modal
-        title={'Title'}
-        open={open}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        open={isOpenModal}
         closeAfterTransition
-        onClose={onClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
+        onClose={() => setIsOpenModal(!isOpenModal)}
       >
         <Box sx={style}>
           <Typography
@@ -70,23 +62,18 @@ export const ManualEntryForm = ({ open, onClose }: ManualEntryFormProps) => {
             placeholder="Description"
           />
           <Box sx={{ marginTop: '20px' }}>
-            <Button
-              sx={{ marginRight: '10px' }}
-              variant="contained"
-              color="success"
-            >
+            <Button sx={{ mr: '10px' }} variant="contained">
               Save Time
             </Button>
             <Button
-              sx={{ bgcolor: 'white', color: 'common.grey' }}
               variant="outlined"
-              onClick={onClose}
+              onClick={() => setIsOpenModal(!isOpenModal)}
             >
               Cancel
             </Button>
           </Box>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 };
