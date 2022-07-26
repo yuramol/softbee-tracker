@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { AppBar, Toolbar, Container } from '@mui/material';
 
-import { AppBar, Toolbar, Container, Slider } from '@mui/material';
+import { useAuth } from '../../AuthProvider';
 
 import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
-import { theme } from '../../theme';
+import { HeaderProps } from './types';
 
-export const Header = () => {
+export const Header: React.FC<HeaderProps> = ({ pages }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -19,6 +20,10 @@ export const Header = () => {
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
+
+  const { user } = useAuth();
+  const mainMenuPages = pages.filter(({ mainMenu }) => mainMenu);
+  const avatarMenuPages = pages.filter(({ mainMenu }) => !mainMenu);
 
   return (
     <AppBar
@@ -31,17 +36,21 @@ export const Header = () => {
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <MenuAppBar
+            pages={mainMenuPages}
             anchorElNav={anchorElNav}
             handleOpenNavMenu={handleOpenNavMenu}
             handleCloseNavMenu={handleCloseNavMenu}
           />
           <Logo />
-          <NavBar />
-          <HeaderAvatar
-            anchorElUser={anchorElUser}
-            handleOpenUserMenu={handleOpenUserMenu}
-            handleCloseUserMenu={handleCloseUserMenu}
-          />
+          <NavBar pages={mainMenuPages} />
+          {user && (
+            <HeaderAvatar
+              pages={avatarMenuPages}
+              anchorElUser={anchorElUser}
+              handleOpenUserMenu={handleOpenUserMenu}
+              handleCloseUserMenu={handleCloseUserMenu}
+            />
+          )}
         </Toolbar>
       </Container>
     </AppBar>
