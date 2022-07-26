@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { TrackerEntity } from '../../types/GraphqlTypes';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { format, parse } from 'date-fns';
+import { parse } from 'date-fns';
 import { useTotalTime } from '../../hooks';
 import { TabProject } from './TabProject';
 
@@ -12,6 +12,7 @@ type Props = {
   value: number;
   index: number;
 };
+
 export const TabPanel = ({ dataTabs, index, value }: Props) => {
   const { totalTime } = useTotalTime(dataTabs);
 
