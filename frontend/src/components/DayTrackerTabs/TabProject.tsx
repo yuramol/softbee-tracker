@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { format } from 'date-fns';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Tracker } from '../../types/GraphqlTypes';
-import { TimeContext } from '../DayViewTracker/DayViewTracker';
+import { TimeContext } from '../TrackerDayView/TrackerDayView';
 
 type Props = {
   attributes: Maybe<Tracker>;
