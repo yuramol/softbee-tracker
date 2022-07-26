@@ -17,12 +17,13 @@ declare module '@mui/material/styles' {
     grey?: string;
     lightBackground?: string;
     brandYellow?: string;
+    successGreen?: string;
   }
   interface CommonColors {
     grey: string;
     lightBackground: string;
-
     brandYellow: string;
+    successGreen?: string;
   }
 }
 export const theme: Theme = createTheme({
@@ -35,6 +36,7 @@ export const theme: Theme = createTheme({
       grey: '#3b4649',
       lightBackground: '#f0f6f4',
       brandYellow: '#f5d040 ',
+      successGreen: '#2e7d32 ',
     },
   },
 
