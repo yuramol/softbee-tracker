@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 
-import { MainWrapper, ManualEntryForm } from '../components';
+import { MainWrapper, ManualEntryForm, TrackerCalendar } from '../components';
 import { StyledIconButton } from '../legos';
 
 const HomePage = () => {
@@ -9,7 +9,7 @@ const HomePage = () => {
   const handleToggle = () => setOpen(!open);
 
   return (
-    <MainWrapper sidebar={<p>Width right sidebar</p>}>
+    <MainWrapper sidebar={<TrackerCalendar />}>
       <h1>Tracker</h1>
       <StyledIconButton
         sx={{ width: '40px', height: '40px' }}
