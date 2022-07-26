@@ -1,22 +1,22 @@
 import React from 'react';
-
 import { IconButton, Menu, MenuItem, Box } from '@mui/material';
-
 import MenuIcon from '@mui/icons-material/Menu';
-import { pages } from '../../constants';
-import { NavButton } from './NavButton';
 
-type MenuAppBarProps = {
+import { NavButton } from './NavButton';
+import { HeaderProps } from './types';
+
+interface MenuAppBarProps extends HeaderProps {
   anchorElNav: null | HTMLElement;
   handleOpenNavMenu: (event: React.MouseEvent<HTMLElement>) => void;
   handleCloseNavMenu: (event: React.MouseEvent<HTMLElement>) => void;
-};
+}
 
-export const MenuAppBar = ({
+export const MenuAppBar: React.FC<MenuAppBarProps> = ({
+  pages,
   anchorElNav,
   handleOpenNavMenu,
   handleCloseNavMenu,
-}: MenuAppBarProps) => {
+}) => {
   return (
     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
       <IconButton
@@ -45,7 +45,7 @@ export const MenuAppBar = ({
       >
         {pages.map((page) => (
           <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-            <NavButton page={page} />
+            <NavButton {...page} />
           </MenuItem>
         ))}
       </Menu>

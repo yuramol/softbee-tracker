@@ -1,13 +1,13 @@
 import React from 'react';
 import { MainWrapper } from '../components';
 
-const ProfilePage = () => {
+const ReportPage = () => {
   return (
     <MainWrapper>
-      <h1>Profile</h1>
+      <h1>Report</h1>
       <p>Full width container</p>
     </MainWrapper>
   );
 };
 
-export default ProfilePage;
+export default ReportPage;
