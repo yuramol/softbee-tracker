@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
-import { Header, ManualEntryForm } from '../components';
 import AddIcon from '@mui/icons-material/Add';
+
+import { MainWrapper, ManualEntryForm } from '../components';
 import { StyledIconButton } from '../legos';
 
-export const HomePage = () => {
+const HomePage = () => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleToggle = () => setOpen(!open);
+
   return (
-    <div>
-      <Header />
-      <p>Home page</p>
+    <MainWrapper sidebar={<p>Width right sidebar</p>}>
+      <h1>Tracker</h1>
       <StyledIconButton
         sx={{ width: '40px', height: '40px' }}
-        onClick={handleOpen}
+        onClick={handleToggle}
       >
         <AddIcon />
       </StyledIconButton>
-      <ManualEntryForm open={open} onClose={handleClose} />
-    </div>
+      <ManualEntryForm open={open} onClose={handleToggle} />
+    </MainWrapper>
   );
 };
+
+export default HomePage;

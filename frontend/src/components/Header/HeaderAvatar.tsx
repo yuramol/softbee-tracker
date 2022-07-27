@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
   Box,
   IconButton,
@@ -8,24 +7,25 @@ import {
   Tooltip,
   MenuItem,
 } from '@mui/material';
-import { NavButton } from './NavButton';
 
-type HeaderAvatarProps = {
+import { HeaderButton, NavButton } from './NavButton';
+import { HeaderProps } from './types';
+import { useAuth } from '../../AuthProvider';
+
+interface HeaderAvatarProps extends HeaderProps {
   anchorElUser: null | HTMLElement;
   handleOpenUserMenu: (event: React.MouseEvent<HTMLElement>) => void;
   handleCloseUserMenu: (event: React.MouseEvent<HTMLElement>) => void;
-};
+}
 
-const menuItems = [
-  { name: 'Profile', href: '/profile' },
-  { name: 'Logout', href: '/logout' },
-];
-
-export const HeaderAvatar = ({
+export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
+  pages,
   anchorElUser,
   handleOpenUserMenu,
   handleCloseUserMenu,
-}: HeaderAvatarProps) => {
+}) => {
+  const { logout } = useAuth();
+
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
@@ -60,11 +60,19 @@ export const HeaderAvatar = ({
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {menuItems.map((item) => (
-          <MenuItem key={item.name} onClick={handleCloseUserMenu}>
-            <NavButton page={item} />
+        {pages.map((page) => (
+          <MenuItem key={page.name} onClick={handleCloseUserMenu}>
+            <NavButton {...page} />
           </MenuItem>
         ))}
+        <MenuItem
+          onClick={(e) => {
+            handleCloseUserMenu(e);
+            logout();
+          }}
+        >
+          <HeaderButton>Logout</HeaderButton>
+        </MenuItem>
       </Menu>
     </Box>
   );
