@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import React, {
   createContext,
   useContext,
@@ -6,6 +5,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 
 import { useLocalStorage } from './hooks';
