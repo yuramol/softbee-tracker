@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
-import { Box, Button, Typography, Modal, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import { ModalSelect } from '../../legos/ModalSelect';
+import { useCurrentWeek } from '../../hooks';
 
 const style = {
   width: 600,
@@ -15,17 +23,19 @@ const style = {
 export const TrackerAddNewEntry = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [time, setTime] = useState('');
-  const today = new Date();
-  const date =
-    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const { days, currentDay } = useCurrentWeek(new Date());
   const itemSelectProject = [{ label: 'softbee' }, { label: 'demigos' }];
 
   return (
     <>
-      <Button variant="contained" onClick={() => setIsOpenModal(!isOpenModal)}>
-        <AddIcon />
-      </Button>
-      <Typography>New Entry</Typography>
+      <Tooltip title="Add New Entry">
+        <Button
+          variant="contained"
+          onClick={() => setIsOpenModal(!isOpenModal)}
+        >
+          <AddIcon />
+        </Button>
+      </Tooltip>
       <Modal
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         open={isOpenModal}
@@ -33,15 +43,10 @@ export const TrackerAddNewEntry = () => {
         onClose={() => setIsOpenModal(!isOpenModal)}
       >
         <Box sx={style}>
-          <Typography
-            sx={{
-              textAlign: 'center',
-            }}
-          >
-            New time entry for {date}
-          </Typography>
           <Typography variant="h6" sx={{ marginBottom: '10px' }}>
-            Project/Task
+            {`New entry for ${days[+currentDay - 1].day}, ${
+              days[+currentDay - 1].date
+            }`}
           </Typography>
           <Box marginTop="20px" display="flex" justifyContent="space-between">
             <ModalSelect label={'Project'} items={itemSelectProject} />
