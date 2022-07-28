@@ -25,9 +25,9 @@ export const DayTabs: FC<Props> = ({ setTabsValue, tabsValue, dataTabs }) => {
             setTabsValue(newValue);
           }}
         >
-          {days.map(({ day, fullDate }, i) => (
+          {days.map(({ day, fullDate }) => (
             <Tab
-              key={i}
+              key={fullDate}
               label={
                 <>
                   <Typography fontWeight={600}>{day}</Typography>
@@ -50,7 +50,7 @@ export const DayTabs: FC<Props> = ({ setTabsValue, tabsValue, dataTabs }) => {
       </Grid>
       {days.map(({ fullDate }, i) => (
         <PanelTab
-          key={i}
+          key={fullDate}
           dataTabs={dataTabs?.filter(
             ({ attributes }) => attributes?.date === fullDate
           )}

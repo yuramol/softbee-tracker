@@ -15,12 +15,17 @@ type Props = {
 export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [time, setTime] = useState(trackerTime);
-  const onHaldlerTime = (detail: number) => {
-    if (detail === 2) setIsEdit(!isEdit);
-  };
   const { onUpdateTime } = useContext(TimeContext);
+
+  const handleBlur = () => {
+    onUpdateTime(time, id);
+    setIsEdit(!isEdit);
+  };
   const handleChange = (value: string) => {
     setTime(parseTrackerTime(value, 'HH:mm'));
+  };
+  const onHaldlerTime = (detail: number) => {
+    if (detail === 2) setIsEdit(!isEdit);
   };
 
   return (
@@ -39,10 +44,7 @@ export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
           <Input
             type="time"
             value={format(time, 'HH:mm:ss.SSS')}
-            onBlur={() => {
-              onUpdateTime(time, id);
-              setIsEdit(!isEdit);
-            }}
+            onBlur={handleBlur}
             onChange={(e) => handleChange(e.target.value)}
             onClick={(e) => onHaldlerTime(e.detail)}
           />
@@ -58,7 +60,7 @@ export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
           Start
         </Button>
         <Button onClick={() => setIsEdit(!isEdit)} variant="outlined">
-          edit
+          Edit
         </Button>
       </Grid>
     </>

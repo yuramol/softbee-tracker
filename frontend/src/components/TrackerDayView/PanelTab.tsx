@@ -23,7 +23,7 @@ export const PanelTab = ({ dataTabs, index, value }: Props) => {
             if (trackerTime) {
               return (
                 <Grid
-                  key={i}
+                  key={id}
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"

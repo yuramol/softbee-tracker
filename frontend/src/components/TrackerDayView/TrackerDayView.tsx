@@ -40,8 +40,8 @@ export const TrackerDayView = () => {
   const [mutationTime] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
 
   const onUpdateTime = (time: Date, id: Maybe<string>) => {
-    const parseTime = format(time, 'HH:mm:ss.SSS');
-    mutationTime({ variables: { id, time: parseTime } }).then(() => {
+    const formatedTime = format(time, 'HH:mm:ss.SSS');
+    mutationTime({ variables: { id, time: formatedTime } }).then(() => {
       refetch();
     });
   };
