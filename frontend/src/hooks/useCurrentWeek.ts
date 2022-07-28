@@ -1,9 +1,8 @@
 import { format, addDays, endOfDay, startOfWeek, endOfWeek } from 'date-fns';
 
-export const useCurrentWeek = () => {
-  const currentDate = new Date();
-  const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
-  const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 });
+export const useCurrentWeek = (date: Date) => {
+  const weekStart = startOfWeek(date, { weekStartsOn: 1 });
+  const weekEnd = endOfWeek(date, { weekStartsOn: 1 });
   const days = [];
 
   for (let i = 0; i <= 6; i++) {
@@ -16,7 +15,7 @@ export const useCurrentWeek = () => {
   }
 
   return {
-    currentDay: format(endOfDay(currentDate), 'i'),
+    currentDay: format(endOfDay(date), 'i'),
     weekStart: format(weekStart, 'yyyy-MM-dd'),
     weekEnd: format(weekEnd, 'yyyy-MM-dd'),
     days,
