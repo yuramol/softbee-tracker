@@ -7,10 +7,10 @@ import { NotFoundPage } from '../pages';
 import { Role, pages } from '../constants';
 
 export const AppRouter = () => {
-  const { user } = useAuth();
+  const { jwt, user } = useAuth();
 
-  if (user === true) return <Loader />;
-  if (user && user.role === null) return <Loader />;
+  if (jwt !== null && Object.keys(user).length === 0) return <Loader />;
+  if (user.role === null) return <Loader />;
 
   const userRole = user && user.role ? user.role.type : Role.Public;
   const currentPages = pages.filter(({ role }) => role.includes(userRole));

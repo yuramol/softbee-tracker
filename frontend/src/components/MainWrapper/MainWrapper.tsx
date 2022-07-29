@@ -10,8 +10,8 @@ type Props = {
 
 export const MainWrapper: React.FC<Props> = ({ children, sidebar, left }) => {
   return (
-    <Container component="main" maxWidth="lg">
-      <Grid container spacing={3}>
+    <Container component="main" maxWidth="lg" sx={{ paddingY: 4 }}>
+      <Grid container columnSpacing={3}>
         <Grid item order={left ? 1 : 'unset'} md={sidebar ? 9 : 12}>
           {children}
         </Grid>
