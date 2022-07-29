@@ -1,1 +1,0 @@
-export { ManualEntryForm } from './ManualEntryForm';

@@ -40,6 +40,9 @@ export const theme: Theme = createTheme({
       brandYellow: '#f5d040',
       successGreen: '#2e7d32',
     },
+    // text: {
+    //   primary: '#2e7d32',
+    // },
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
