@@ -11,7 +11,7 @@ type Props = {
   index: number;
 };
 
-export const PanelTab = ({ dataTabs, index, value }: Props) => {
+export const PanelTab: React.FC<Props> = ({ dataTabs, index, value }) => {
   const totalTime = getTotalTime(dataTabs);
 
   if (value === index) {
