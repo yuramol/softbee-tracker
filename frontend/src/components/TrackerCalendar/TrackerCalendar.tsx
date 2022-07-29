@@ -19,6 +19,7 @@ const testTrackerTime = [
 
 export const TrackerCalendar = () => {
   const [date, setDate] = useState<Date | null>(new Date());
+  const [curMonth, setCurMonth] = useState(date?.getMonth());
 
   return (
     <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
@@ -27,8 +28,11 @@ export const TrackerCalendar = () => {
           <CalendarPicker
             date={date}
             onChange={(newDate) => setDate(newDate)}
+            onMonthChange={(e) => {
+              setCurMonth(e.getMonth());
+            }}
             renderDay={(day, _value, DayComponentProps) => {
-              console.log(DayComponentProps);
+              console.log('====', day);
 
               const weekendStyles = {
                 backgroundColor: 'orange',
@@ -58,10 +62,10 @@ export const TrackerCalendar = () => {
                   time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
                 }
               });
-              return (
+              return day.getMonth() === curMonth ? (
                 <Badge
                   key={day.toString()}
-                  overlap='circular'
+                  overlap="circular"
                   badgeContent={
                     isWeekend ? (
                       <div style={weekendStyles}></div>
@@ -80,6 +84,8 @@ export const TrackerCalendar = () => {
                 >
                   <PickersDay {...DayComponentProps} />
                 </Badge>
+              ) : (
+                <PickersDay {...DayComponentProps} />
               );
             }}
           />
