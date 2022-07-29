@@ -7,15 +7,35 @@ import Badge from '@mui/material/Badge';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import enGb from 'date-fns/locale/en-GB';
 
+// TODO - change these working days data to real data from the server
 const testTrackerTime = [
   { time: 8, date: new Date(2022, 6, 25) },
   { time: 2, date: new Date(2022, 6, 26) },
   { time: 6, date: new Date(2022, 6, 27) },
   { time: 5, date: new Date(2022, 6, 28) },
   { time: 3, date: new Date(2022, 6, 29) },
-  { time: 3, date: new Date(2022, 7, 3) },
+  { time: 9, date: new Date(2022, 7, 30) },
+  { time: 3, date: new Date(2022, 7, 31) },
+  { time: 5, date: new Date(2022, 8, 1) },
 ];
-// Thu Jul 28 2022 00:00:00 GMT+0300 (Eastern European Summer Time)
+
+const weekendStyles = {
+  backgroundColor: 'orange',
+  marginLeft: '28.5px',
+  width: '8px',
+  height: '8px',
+  borderRadius: '50%',
+};
+
+const enoughHourStyles = {
+  ...weekendStyles,
+  backgroundColor: 'green',
+};
+
+const lessHourStyles = {
+  ...weekendStyles,
+  backgroundColor: 'red',
+};
 
 export const TrackerCalendar = () => {
   const [date, setDate] = useState<Date | null>(new Date());
@@ -28,30 +48,10 @@ export const TrackerCalendar = () => {
           <CalendarPicker
             date={date}
             onChange={(newDate) => setDate(newDate)}
-            onMonthChange={(e) => {
-              setCurMonth(e.getMonth());
+            onMonthChange={(newMonth) => {
+              setCurMonth(newMonth.getMonth());
             }}
             renderDay={(day, _value, DayComponentProps) => {
-              console.log('====', day);
-
-              const weekendStyles = {
-                backgroundColor: 'orange',
-                marginLeft: '28.5px',
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-              };
-
-              const enoughHourStyles = {
-                ...weekendStyles,
-                backgroundColor: 'green',
-              };
-
-              const lessHourStyles = {
-                ...weekendStyles,
-                backgroundColor: 'red',
-              };
-
               const isWeekend = day.getDay() === 0 || day.getDay() === 6;
               let isWorkDay;
               let isEnoughHours;
@@ -62,10 +62,11 @@ export const TrackerCalendar = () => {
                   time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
                 }
               });
+
               return day.getMonth() === curMonth ? (
                 <Badge
                   key={day.toString()}
-                  overlap="circular"
+                  overlap='circular'
                   badgeContent={
                     isWeekend ? (
                       <div style={weekendStyles}></div>
