@@ -35,13 +35,39 @@ export const theme: Theme = createTheme({
     common: {
       grey: '#3b4649',
       lightBackground: '#f0f6f4',
-      brandYellow: '#f5d040 ',
-      successGreen: '#2e7d32 ',
+      brandYellow: '#f5d040',
+      successGreen: '#2e7d32',
     },
+    // text: {
+    //   primary: '#2e7d32',
+    // },
   },
-
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
+    h1: {
+      fontSize: '2.566rem',
+      fontWeight: 600,
+    },
+    h2: {
+      fontSize: '2.281rem',
+      fontWeight: 600,
+    },
+    h3: {
+      fontSize: '2.027rem',
+      fontWeight: 600,
+    },
+    h4: {
+      fontSize: '1.802rem',
+      fontWeight: 600,
+    },
+    h5: {
+      fontSize: '1.602rem',
+      fontWeight: 600,
+    },
+    h6: {
+      fontSize: '1.424rem',
+      fontWeight: 600,
+    },
   },
   components: {
     MuiCssBaseline: {

@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
 
   return (
     <AppBar
-      position="static"
+      position="relative"
       sx={{
         bgcolor: 'common.lightBackground',
         boxShadow: 0,
