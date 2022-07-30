@@ -20,8 +20,7 @@ const testTrackerTime = [
 ];
 
 const weekendStyles = {
-  backgroundColor: 'orange',
-  marginLeft: '28.5px',
+  backgroundColor: '#ffa500',
   width: '8px',
   height: '8px',
   borderRadius: '50%',
@@ -29,12 +28,12 @@ const weekendStyles = {
 
 const enoughHourStyles = {
   ...weekendStyles,
-  backgroundColor: 'green',
+  backgroundColor: '#008000',
 };
 
 const lessHourStyles = {
   ...weekendStyles,
-  backgroundColor: 'red',
+  backgroundColor: '#ff0000',
 };
 
 export const TrackerCalendar = () => {
@@ -67,6 +66,12 @@ export const TrackerCalendar = () => {
                 <Badge
                   key={day.toString()}
                   overlap='circular'
+                  sx={{
+                    '& 	.MuiBadge-badge': {
+                      right: '20px',
+                      top: '30px',
+                    },
+                  }}
                   badgeContent={
                     isWeekend ? (
                       <div style={weekendStyles}></div>
@@ -78,10 +83,6 @@ export const TrackerCalendar = () => {
                       )
                     ) : null
                   }
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
                 >
                   <PickersDay {...DayComponentProps} />
                 </Badge>
