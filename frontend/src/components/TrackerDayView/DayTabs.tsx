@@ -6,8 +6,6 @@ import { PanelTab } from './PanelTab';
 import { useCurrentWeek } from '../../hooks';
 import { getTotalTime } from '../../helpers';
 import { TrackerEntity } from '../../types/GraphqlTypes';
-import { Role } from '../../constants';
-import { useAuth } from '../../AuthProvider';
 
 type Props = {
   currentDate: Date;
@@ -22,7 +20,6 @@ export const DayTabs: React.FC<Props> = ({
   tabsValue,
   setTabsValue,
 }) => {
-  const { user } = useAuth();
   const { days } = useCurrentWeek(currentDate);
   const totalTime = getTotalTime(dataTabs);
 
@@ -51,12 +48,10 @@ export const DayTabs: React.FC<Props> = ({
                 </>
               }
               disabled={
-                (isAfter(
+                isAfter(
                   startOfMonth(currentDate),
                   startOfDay(new Date(fullDate))
-                ) &&
-                  user.role.type === Role.Employee) ||
-                isFuture(new Date(fullDate))
+                ) || isFuture(new Date(fullDate))
               }
             />
           ))}

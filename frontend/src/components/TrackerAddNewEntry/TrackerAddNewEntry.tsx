@@ -51,9 +51,7 @@ export const TrackerAddNewEntry = () => {
         >
           <Grid sx={modalStyle}>
             <Typography variant="h6" marginBottom="10px">
-              {`New entry for ${days[+currentDay - 1].day}, ${
-                days[+currentDay - 1].date
-              }`}
+              {`New entry for ${days[currentDay].day}, ${days[currentDay].date}`}
             </Typography>
             <Grid
               marginTop="20px"

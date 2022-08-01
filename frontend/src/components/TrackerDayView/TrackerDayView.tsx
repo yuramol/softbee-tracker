@@ -22,20 +22,20 @@ import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
 import {
   TRECKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
+  DELETE_TRACKER_BY_ID_MUTATION,
 } from '../../api';
-import { Role } from '../../constants';
 import {
   Maybe,
+  Scalars,
   TrackerEntityResponseCollection,
 } from '../../types/GraphqlTypes';
 
-export type TimeContextType = {
-  onUpdateTime: (time: Date, id: Maybe<string> | undefined) => void;
+export type TrackerContext = {
+  onUpdateTracker: (time: Date, id: Maybe<string> | undefined) => void;
+  onDeleteTracker: (id: Maybe<string> | undefined) => void;
 };
 
-export const TimeContext = createContext<TimeContextType>(
-  {} as TimeContextType
-);
+export const TimeContext = createContext<TrackerContext>({} as TrackerContext);
 
 export const TrackerDayView = () => {
   const { user } = useAuth();
@@ -48,11 +48,18 @@ export const TrackerDayView = () => {
   }>(TRECKERS_BY_USER_ID_QUERY, {
     variables: { userId: user.id, weekStart, weekEnd },
   });
-  const [mutationTime] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
+  const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
+  const [deleteTracker] = useMutation(DELETE_TRACKER_BY_ID_MUTATION);
 
-  const onUpdateTime = (time: Date, id: Maybe<string>) => {
+  const onUpdateTracker = (time: Date, id: Maybe<Scalars['ID']>) => {
     const formatedTime = format(time, 'HH:mm:ss.SSS');
-    mutationTime({ variables: { id, time: formatedTime } }).then(() => {
+    updateTracker({ variables: { id, time: formatedTime } }).then(() => {
+      refetch();
+    });
+  };
+
+  const onDeleteTracker = (id: Maybe<Scalars['ID']>) => {
+    deleteTracker({ variables: { id } }).then(() => {
       refetch();
     });
   };
@@ -87,16 +94,17 @@ export const TrackerDayView = () => {
     startOfDay(new Date(days[tabsValue].fullDate))
   );
 
-  const isStartEditForEmployee =
-    isAfter(
-      startOfMonth(currentDate),
-      subDays(startOfDay(new Date(days[tabsValue].fullDate)), 1)
-    ) && user.role.type === Role.Employee;
+  const isStartEditForEmployee = isAfter(
+    startOfMonth(currentDate),
+    subDays(startOfDay(new Date(days[tabsValue].fullDate)), 1)
+  );
 
   const isEndEdit = isFuture(addDays(new Date(days[tabsValue].fullDate), 1));
 
   return (
-    <TimeContext.Provider value={{ onUpdateTime } as TimeContextType}>
+    <TimeContext.Provider
+      value={{ onUpdateTracker, onDeleteTracker } as TrackerContext}
+    >
       <Grid
         container
         gap={2}
