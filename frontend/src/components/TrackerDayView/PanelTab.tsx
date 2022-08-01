@@ -27,7 +27,7 @@ export const PanelTab: React.FC<Props> = ({ dataTabs, index, value }) => {
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
-                  padding="24px 16px"
+                  padding="24px 0 24px 16px"
                   borderTop={i !== 0 ? '1px solid gray' : 'none'}
                 >
                   <ProjectTab
