@@ -65,11 +65,15 @@ export const TrackerCalendar = () => {
               return day.getMonth() === curMonth ? (
                 <Badge
                   key={day.toString()}
-                  overlap='circular'
+                  overlap="circular"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
                   sx={{
                     '& 	.MuiBadge-badge': {
-                      right: '20px',
-                      top: '30px',
+                      width: '100%',
+                      paddingLeft: '2px',
                     },
                   }}
                   badgeContent={
