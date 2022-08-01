@@ -73,6 +73,7 @@ export const TrackerCalendar = () => {
                   sx={{
                     '& 	.MuiBadge-badge': {
                       width: '100%',
+                      justifyContent: 'left',
                       paddingLeft: '2px',
                     },
                   }}
