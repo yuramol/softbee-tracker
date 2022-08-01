@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
+import { useFormikContext } from 'formik';
 
 type ItemType = { label: string };
 type ModalSelectProps = {
   items: ItemType[];
   label: string;
   id: string;
+  name: string;
 };
 
-export const ModalSelect = ({ items, label }: ModalSelectProps) => {
-  const [project, setProject] = useState('');
-  const handleChange = (e: SelectChangeEvent) => {
-    setProject(e.target.value);
-  };
+export const ModalSelect = ({ items, label, name }: ModalSelectProps) => {
+  const { handleChange } = useFormikContext();
+
   return (
     <FormControl fullWidth sx={{ marginTop: 2 }}>
-      <InputLabel id='demo-simple-select-label'>{label}</InputLabel>
+      <InputLabel id="select-label">{label}</InputLabel>
       <Select
+        name={name}
         label={label}
-        value={project}
-        sx={{ width: 'auto' }}
         onChange={handleChange}
+        sx={{ width: 'auto' }}
       >
         {items.map((item) => (
           <MenuItem key={item.label} value={item.label}>
