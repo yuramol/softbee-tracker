@@ -72,11 +72,9 @@ export const TrackerAddNewEntry = () => {
                   </Typography>
                   <Grid
                     item
-                    container
                     marginTop="20px"
                     display="flex"
                     justifyContent="space-between"
-                    spacing={2}
                   >
                     <LocalizationProvider
                       adapterLocale={enGb}
@@ -98,7 +96,7 @@ export const TrackerAddNewEntry = () => {
                       name="time"
                       type="time"
                       variant="outlined"
-                      sx={{ width: '40%' }}
+                      sx={{ width: '60%', marginLeft: 2 }}
                       onChange={(e) => setTime(e.target.value || '00:00')}
                     />
                   </Grid>
