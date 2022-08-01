@@ -6,8 +6,6 @@ import { PanelTab } from './PanelTab';
 import { useCurrentWeek } from '../../hooks';
 import { getTotalTime } from '../../helpers';
 import { TrackerEntity } from '../../types/GraphqlTypes';
-import { Role } from '../../constants';
-import { useAuth } from '../../AuthProvider';
 
 type Props = {
   currentDate: Date;
