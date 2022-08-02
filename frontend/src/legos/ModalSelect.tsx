@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
-type ItemType = { label: string };
+export type ItemType = { label: string };
 type ModalSelectProps = {
   items: ItemType[];
   label: string;
