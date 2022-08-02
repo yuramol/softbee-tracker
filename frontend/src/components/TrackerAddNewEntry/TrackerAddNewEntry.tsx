@@ -73,7 +73,7 @@ export const TrackerAddNewEntry = () => {
             >
               <Grid sx={modalStyle}>
                 <Typography variant='h6' marginBottom='10px'>
-                  {`New time entry`}
+                  New time entry
                 </Typography>
                 <Grid
                   item
