@@ -6,9 +6,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import enGb from 'date-fns/locale/en-GB';
 
-export const CalendarPicker = () => {
+type CalendarPickerProps = {
+  name: string;
+};
+
+export const CalendarPicker = ({ name }: CalendarPickerProps) => {
   const [value, setValue] = React.useState<Date | null>(new Date());
-  const { setFieldValue } = useFormikContext();
+  const { values, setFieldValue } = useFormikContext();
+
   const firstDayOfMonth = new Date(
     new Date().getFullYear(),
     new Date().getMonth(),
@@ -17,11 +22,11 @@ export const CalendarPicker = () => {
   return (
     <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
       <DesktopDatePicker
-        value={value}
+        value={values.date || value}
         minDate={firstDayOfMonth}
         onChange={(newValue) => {
           setValue(newValue);
-          setFieldValue('date', newValue);
+          setFieldValue(name, newValue);
         }}
         renderInput={(params) => <TextField {...params} fullWidth />}
       />

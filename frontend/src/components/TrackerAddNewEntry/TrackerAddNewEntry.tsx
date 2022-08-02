@@ -81,7 +81,7 @@ export const TrackerAddNewEntry = () => {
                   display='flex'
                   justifyContent='space-between'
                 >
-                  <CalendarPicker />
+                  <CalendarPicker name='date' />
                   <TextField
                     id='time'
                     name='time'
