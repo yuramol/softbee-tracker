@@ -64,8 +64,13 @@ export const TrackerAddNewEntry = () => {
         onClose={() => setIsOpenModal(!isOpenModal)}
       >
         <FormikContext.Provider value={formik}>
-          <form onSubmit={handleSubmit}>
-            <Grid container justifyContent="center" alignItems="center">
+          <form onSubmit={handleSubmit} style={{ height: '100%' }}>
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+            >
               <Grid sx={modalStyle}>
                 <Typography variant="h6" marginBottom="10px">
                   {`New time entry`}
