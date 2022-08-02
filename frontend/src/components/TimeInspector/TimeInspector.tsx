@@ -1,102 +1,112 @@
 import React, { useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { format, endOfMonth, startOfMonth } from 'date-fns';
 import {
-  FormControl,
-  InputLabel,
   List,
   ListItem,
   ListItemText,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
+  ButtonGroup,
+  Button,
+  Divider,
+  Grid,
   Typography,
+  Tooltip,
 } from '@mui/material';
-import FolderIcon from '@mui/icons-material/Folder';
 
-import { theme } from '../../theme';
-
-const options = [
-  { id: 1, label: 'Day', value: 'day' },
-  { id: 2, label: 'Week', value: 'week' },
-  { id: 3, label: 'Month', value: 'month' },
-];
-//TODO add project time info and limits
-const Projects = [
-  {
-    name: 'tracker',
-    day: '2',
-    week: '32',
-    month: '56',
-    dayLimit: '1',
-    weekLimit: '5',
-    monthLimit: '45',
-  },
-  {
-    name: 'SoftBee Internal Work',
-    day: '2',
-    week: '32',
-    month: '56',
-    dayLimit: '1',
-    weekLimit: '5',
-    monthLimit: '45',
-  },
-];
+import { useAuth } from 'AuthProvider';
+import { useCurrentWeek } from 'hooks';
+import { getTotalTime } from 'helpers';
+import { PROJECTS_TRECKERS_BY_USER_ID_QUERY } from 'api';
+import {
+  ProjectEntityResponseCollection,
+  TrackerEntity,
+} from 'types/GraphqlTypes';
 
 export const TimeInspector = () => {
-  const [reportType, setReportType] = useState('');
-  const handleChange = (event: SelectChangeEvent) => {
-    setReportType(event.target.value as string);
+  const { user } = useAuth();
+  const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(new Date());
+  const inspectionTypes = [
+    {
+      label: 'Day',
+      value: 'day',
+      limit: 5,
+      filter: [days[currentDay].fullDate, days[currentDay].fullDate],
+    },
+    {
+      label: 'Week',
+      value: 'week',
+      limit: 25,
+      filter: [weekStart, weekEnd],
+    },
+    {
+      label: 'Month',
+      value: 'month',
+      limit: 110,
+      filter: [
+        format(startOfMonth(new Date(days[currentDay].fullDate)), 'yyyy-MM-dd'),
+        format(endOfMonth(new Date(days[currentDay].fullDate)), 'yyyy-MM-dd'),
+      ],
+    },
+  ];
+  const [inspectBy, setInspectBy] = useState(inspectionTypes[0]);
+
+  const { data } = useQuery<{
+    projects: ProjectEntityResponseCollection;
+  }>(PROJECTS_TRECKERS_BY_USER_ID_QUERY, {
+    variables: { userId: user.id, filterByDate: inspectBy.filter },
+  });
+
+  const handleClickButton = (index: number) => {
+    setInspectBy(inspectionTypes[index]);
   };
-  const getWorkedHours = (project: {
-    day: string;
-    week: string;
-    month: string;
-    dayLimit: string;
-    weekLimit: string;
-    monthLimit: string;
-  }) => {
-    if (reportType == 'day') {
-      return `${project.day} / ${project.dayLimit}`;
-    } else if (reportType == 'week') {
-      return `${project.week} / ${project.weekLimit}`;
-    } else {
-      return `${project.month} / ${project.monthLimit}`;
-    }
-  };
+
+  const projects = data?.projects.data;
+  const trackers = projects
+    ?.map(({ attributes }) => attributes?.trackers?.data)
+    .flat();
+  const totalTime = getTotalTime(trackers as TrackerEntity[]);
 
   return (
     <>
-      <Typography variant="h5">Time insperctor</Typography>
-
-      <FormControl fullWidth sx={{ my: 2 }}>
-        <InputLabel>Filter</InputLabel>
-        <Select label="Filter" value={reportType} onChange={handleChange}>
-          {options.map((item) => (
-            <MenuItem key={item.id} value={item.value}>
-              {item.label}
-            </MenuItem>
+      <Grid display="flex" justifyContent="center">
+        <ButtonGroup size="small">
+          {inspectionTypes.map(({ label, value }, i) => (
+            <Button
+              key={value}
+              variant={inspectBy.value === value ? 'contained' : 'outlined'}
+              onClick={() => handleClickButton(i)}
+            >
+              {label}
+            </Button>
           ))}
-        </Select>
-      </FormControl>
-      <List>
-        {Projects.map((project) => (
-          <ListItem
-            key={project.name}
-            sx={{
-              p: 0,
-              color: theme.palette.common.grey,
-            }}
-          >
-            <FolderIcon />
+        </ButtonGroup>
+      </Grid>
+      <List disablePadding sx={{ my: 4 }}>
+        {projects?.map(({ id, attributes }) => (
+          <ListItem key={id} disableGutters disablePadding>
+            <ListItemText primary={attributes?.name} />
             <ListItemText
-              sx={{ ml: 1, color: theme.palette.common.grey }}
-              primary={project.name}
-            />
-            <ListItemText
-              sx={{ display: 'contents' }}
-              primary={getWorkedHours(project)}
+              sx={{ ml: 2, display: 'contents' }}
+              primary={getTotalTime(attributes?.trackers?.data)}
             />
           </ListItem>
         ))}
+        <Divider sx={{ my: 2 }} />
+        <ListItem disableGutters disablePadding>
+          <ListItemText
+            primary={<Typography fontWeight={600}>Total time:</Typography>}
+          />
+          <ListItemText
+            sx={{ ml: 2, display: 'contents' }}
+            primary={
+              <Tooltip title={`${totalTime} from ${inspectBy.limit} hours`}>
+                <Typography fontWeight={600}>{`${totalTime.split(':')[0]} / ${
+                  inspectBy.limit
+                }`}</Typography>
+              </Tooltip>
+            }
+          />
+        </ListItem>
       </List>
     </>
   );
