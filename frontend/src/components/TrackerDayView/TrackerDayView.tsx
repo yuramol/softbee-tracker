@@ -30,7 +30,7 @@ export const TimeContext = createContext<TimeContextType>(
 export const TrackerDayView = () => {
   const { user } = useAuth();
   const { weekEnd, weekStart, days, currentDay } = useCurrentWeek(new Date());
-  const [tabsValue, setTabsValue] = useState(+currentDay - 1);
+  const [tabsValue, setTabsValue] = useState(currentDay);
 
   const { data, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
