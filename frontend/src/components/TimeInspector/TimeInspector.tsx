@@ -69,7 +69,7 @@ export const TimeInspector = () => {
   return (
     <>
       <Grid display="flex" justifyContent="center">
-        <ButtonGroup size="small" fullWidth>
+        <ButtonGroup size="small">
           {inspectionTypes.map(({ label, value }, i) => (
             <Button
               key={value}
@@ -82,21 +82,15 @@ export const TimeInspector = () => {
         </ButtonGroup>
       </Grid>
       <List disablePadding sx={{ my: 4 }}>
-        {(projects?.length as number) > 0 ? (
-          projects?.map(({ id, attributes }) => (
-            <ListItem key={id} disableGutters disablePadding>
-              <ListItemText primary={attributes?.name} />
-              <ListItemText
-                sx={{ ml: 2, display: 'contents' }}
-                primary={getTotalTime(attributes?.trackers?.data)}
-              />
-            </ListItem>
-          ))
-        ) : (
-          <ListItem disableGutters disablePadding>
-            <ListItemText primary="You are not attached to any project" />
+        {projects?.map(({ id, attributes }) => (
+          <ListItem key={id} disableGutters disablePadding>
+            <ListItemText primary={attributes?.name} />
+            <ListItemText
+              sx={{ ml: 2, display: 'contents' }}
+              primary={getTotalTime(attributes?.trackers?.data)}
+            />
           </ListItem>
-        )}
+        ))}
         <Divider sx={{ my: 2 }} />
         <ListItem disableGutters disablePadding>
           <ListItemText
