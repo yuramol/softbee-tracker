@@ -15,7 +15,7 @@ export const ModalSelect = ({ items, label, name }: ModalSelectProps) => {
 
   return (
     <FormControl fullWidth sx={{ marginTop: 2 }}>
-      <InputLabel id="select-label">{label}</InputLabel>
+      <InputLabel id='select-label'>{label}</InputLabel>
       <Select
         name={name}
         label={label}

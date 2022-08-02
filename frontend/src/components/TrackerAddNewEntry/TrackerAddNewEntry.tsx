@@ -11,7 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useFormik, FormikContext } from 'formik';
 
 import { ModalSelect } from '../../legos/ModalSelect';
-import { TrackerDate } from 'legos/TrackerDate';
+import { CalendarPicker } from 'legos/CalendarPicker';
 
 const modalStyle = {
   width: 600,
@@ -50,9 +50,9 @@ export const TrackerAddNewEntry = () => {
 
   return (
     <>
-      <Tooltip title="Add New Entry">
+      <Tooltip title='Add New Entry'>
         <Button
-          variant="contained"
+          variant='contained'
           onClick={() => setIsOpenModal(!isOpenModal)}
         >
           <AddIcon />
@@ -67,52 +67,52 @@ export const TrackerAddNewEntry = () => {
           <form onSubmit={handleSubmit} style={{ height: '100%' }}>
             <Grid
               container
-              justifyContent="center"
-              alignItems="center"
-              height="100%"
+              justifyContent='center'
+              alignItems='center'
+              height='100%'
             >
               <Grid sx={modalStyle}>
-                <Typography variant="h6" marginBottom="10px">
+                <Typography variant='h6' marginBottom='10px'>
                   {`New time entry`}
                 </Typography>
                 <Grid
                   item
-                  marginTop="20px"
-                  display="flex"
-                  justifyContent="space-between"
+                  marginTop='20px'
+                  display='flex'
+                  justifyContent='space-between'
                 >
-                  <TrackerDate />
+                  <CalendarPicker />
                   <TextField
-                    id="time"
-                    name="time"
-                    type="time"
-                    variant="outlined"
+                    id='time'
+                    name='time'
+                    type='time'
+                    variant='outlined'
                     sx={{ width: '60%', marginLeft: 2 }}
                     onChange={handleChange}
                   />
                 </Grid>
                 <ModalSelect
-                  id="project"
-                  name="project"
-                  label="Project"
+                  id='project'
+                  name='project'
+                  label='Project'
                   items={itemSelectProject}
                 />
                 <TextField
-                  id="description"
-                  name="description"
+                  id='description'
+                  name='description'
                   fullWidth
                   multiline
                   rows={4}
-                  placeholder="Description"
+                  placeholder='Description'
                   sx={{ marginTop: 2 }}
                   onChange={handleChange}
                 />
-                <Grid marginTop="20px">
-                  <Button sx={{ mr: '10px' }} variant="contained" type="submit">
+                <Grid marginTop='20px'>
+                  <Button sx={{ mr: '10px' }} variant='contained' type='submit'>
                     Save Time
                   </Button>
                   <Button
-                    variant="outlined"
+                    variant='outlined'
                     onClick={() => setIsOpenModal(!isOpenModal)}
                   >
                     Cancel
