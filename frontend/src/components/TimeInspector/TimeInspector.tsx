@@ -69,7 +69,7 @@ export const TimeInspector = () => {
   return (
     <>
       <Grid display="flex" justifyContent="center">
-        <ButtonGroup size="small">
+        <ButtonGroup size="small" fullWidth>
           {inspectionTypes.map(({ label, value }, i) => (
             <Button
               key={value}
