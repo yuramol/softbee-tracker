@@ -126,7 +126,7 @@ export const TrackerDayView = () => {
           >
             <NavigateNextIcon />
           </Button>
-          <Typography variant="h6" marginLeft={2}>
+          <Typography variant="h6" ml={2}>
             {days[tabsValue].day}, {days[tabsValue].date}
           </Typography>
         </Stack>
