@@ -82,15 +82,21 @@ export const TimeInspector = () => {
         </ButtonGroup>
       </Grid>
       <List disablePadding sx={{ my: 4 }}>
-        {projects?.map(({ id, attributes }) => (
-          <ListItem key={id} disableGutters disablePadding>
-            <ListItemText primary={attributes?.name} />
-            <ListItemText
-              sx={{ ml: 2, display: 'contents' }}
-              primary={getTotalTime(attributes?.trackers?.data)}
-            />
+        {(projects?.length as number) > 0 ? (
+          projects?.map(({ id, attributes }) => (
+            <ListItem key={id} disableGutters disablePadding>
+              <ListItemText primary={attributes?.name} />
+              <ListItemText
+                sx={{ ml: 2, display: 'contents' }}
+                primary={getTotalTime(attributes?.trackers?.data)}
+              />
+            </ListItem>
+          ))
+        ) : (
+          <ListItem disableGutters disablePadding>
+            <ListItemText primary="You are not attached to any project" />
           </ListItem>
-        ))}
+        )}
         <Divider sx={{ my: 2 }} />
         <ListItem disableGutters disablePadding>
           <ListItemText
