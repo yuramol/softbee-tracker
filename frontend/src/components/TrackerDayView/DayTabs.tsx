@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Tab, Tabs, Typography } from '@mui/material';
+import { Stack, Tab, Tabs, Typography } from '@mui/material';
 import { isAfter, isFuture, startOfDay, startOfMonth } from 'date-fns';
 
 import { PanelTab } from './PanelTab';
@@ -25,7 +25,12 @@ export const DayTabs: React.FC<Props> = ({
 
   return (
     <>
-      <Grid display="flex" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mt={4}
+      >
         <Tabs
           value={tabsValue}
           onChange={(_, newValue) => {
@@ -56,11 +61,11 @@ export const DayTabs: React.FC<Props> = ({
             />
           ))}
         </Tabs>
-        <Grid>
+        <Stack>
           <Typography fontWeight={600}>Week Total</Typography>
           <Typography textAlign="right">{totalTime}</Typography>
-        </Grid>
-      </Grid>
+        </Stack>
+      </Stack>
       {days.map(({ fullDate }, i) => (
         <PanelTab
           key={fullDate}

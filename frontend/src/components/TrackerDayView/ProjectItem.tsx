@@ -1,12 +1,12 @@
 import React, { FC, useContext, useState } from 'react';
 import {
   Button,
-  Grid,
   IconButton,
   Input,
   Popper,
   Typography,
   ClickAwayListener,
+  Stack,
 } from '@mui/material';
 import { format } from 'date-fns';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,7 +24,7 @@ type Props = {
   trackerTime: Date;
 };
 
-export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
+export const ProjectItem: FC<Props> = ({ id, attributes, trackerTime }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isTrackerStart, setIsTrackerStart] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
@@ -63,17 +63,21 @@ export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
   };
 
   return (
-    <>
-      <Grid marginRight={2}>
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+      borderBottom="1px solid gray"
+      py={4}
+      pl={2}
+    >
+      <Stack mr={2}>
         <Typography variant="h6">
-          {attributes?.project?.data?.attributes?.name
-            ? attributes.project.data.attributes.name
-            : 'no project'}
-          :
+          {attributes?.project?.data?.attributes?.name}
         </Typography>
         <Typography>{attributes?.description}</Typography>
-      </Grid>
-      <Grid display="flex" alignItems="center">
+      </Stack>
+      <Stack direction="row" alignItems="center" gap={1}>
         {isEdit ? (
           <Input
             type="time"
@@ -90,17 +94,13 @@ export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
             {format(time, 'HH:mm')}
           </Typography>
         )}
-        <IconButton
-          color="primary"
-          sx={{ ml: 2 }}
-          onClick={() => setIsEdit(!isEdit)}
-        >
+        <IconButton color="primary" onClick={() => setIsEdit(!isEdit)}>
           <EditIcon fontSize="small" />
         </IconButton>
         <IconButton
           size="large"
           color="primary"
-          sx={{ mx: 1, border: '1px solid' }}
+          sx={{ border: '1px solid' }}
           onClick={() => setIsTrackerStart(!isTrackerStart)}
         >
           {isTrackerStart ? (
@@ -118,18 +118,16 @@ export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
         {isPopperOpen && (
           <ClickAwayListener onClickAway={handleClickAway}>
             <Popper open={isPopperOpen} anchorEl={anchorEl}>
-              <Grid
-                display="flex"
+              <Stack
                 bgcolor="background.paper"
                 border="1px solid"
                 borderRadius={1}
-                padding={3}
-                flexDirection="column"
+                p={2}
               >
                 <Typography marginBottom={2}>
                   Are you sure to delete this timesheet?
                 </Typography>
-                <Grid display="flex" justifyContent="flex-end">
+                <Stack direction="row" justifyContent="flex-end" gap={2}>
                   <Button
                     size="small"
                     variant="outlined"
@@ -141,17 +139,16 @@ export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
                     size="small"
                     variant="outlined"
                     color="error"
-                    sx={{ ml: 2 }}
                     onClick={handleDelete}
                   >
                     Yes
                   </Button>
-                </Grid>
-              </Grid>
+                </Stack>
+              </Stack>
             </Popper>
           </ClickAwayListener>
         )}
-      </Grid>
-    </>
+      </Stack>
+    </Stack>
   );
 };

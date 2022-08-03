@@ -11,7 +11,7 @@ import {
   startOfMonth,
   subDays,
 } from 'date-fns';
-import { Typography, Button, Grid } from '@mui/material';
+import { Typography, Button, Stack } from '@mui/material';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
@@ -105,14 +105,13 @@ export const TrackerDayView = () => {
     <TimeContext.Provider
       value={{ onUpdateTracker, onDeleteTracker } as TrackerContext}
     >
-      <Grid
-        container
-        gap={2}
-        marginTop={6}
+      <Stack
+        direction="row"
         justifyContent="space-between"
         alignItems="center"
+        mt={6}
       >
-        <Grid display="flex" gap={2}>
+        <Stack direction="row" gap={2}>
           <Button
             variant="outlined"
             disabled={isStartEditForEmployee}
@@ -130,23 +129,19 @@ export const TrackerDayView = () => {
           <Typography variant="h6" marginLeft={2}>
             {days[tabsValue].day}, {days[tabsValue].date}
           </Typography>
-        </Grid>
+        </Stack>
         {!isToday && (
-          <Grid>
-            <Button variant="contained" onClick={handleCurrentDate}>
-              Today
-            </Button>
-          </Grid>
+          <Button variant="contained" onClick={handleCurrentDate}>
+            Today
+          </Button>
         )}
-      </Grid>
-      <Grid marginY={4}>
-        <DayTabs
-          currentDate={currentDate}
-          dataTabs={data?.trackers.data}
-          tabsValue={tabsValue}
-          setTabsValue={setTabsValue}
-        />
-      </Grid>
+      </Stack>
+      <DayTabs
+        currentDate={currentDate}
+        dataTabs={data?.trackers.data}
+        tabsValue={tabsValue}
+        setTabsValue={setTabsValue}
+      />
       <TrackerAddNewEntry />
     </TimeContext.Provider>
   );
