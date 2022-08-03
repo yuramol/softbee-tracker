@@ -10,7 +10,7 @@ type ModalSelectProps = {
   name: string;
 };
 
-export const ModalSelect = ({ items, label, name }: ModalSelectProps) => {
+export const SelectField = ({ items, label, name }: ModalSelectProps) => {
   const { handleChange } = useFormikContext();
 
   return (

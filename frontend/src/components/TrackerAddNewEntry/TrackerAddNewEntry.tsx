@@ -10,7 +10,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { useFormik, FormikContext } from 'formik';
 
-import { ModalSelect } from '../../legos/ModalSelect';
+import { SelectField } from '../../legos/SelectField';
 import { CalendarPicker } from 'legos/CalendarPicker';
 
 const modalStyle = {
@@ -91,7 +91,7 @@ export const TrackerAddNewEntry = () => {
                     onChange={handleChange}
                   />
                 </Grid>
-                <ModalSelect
+                <SelectField
                   id='project'
                   name='project'
                   label='Project'
