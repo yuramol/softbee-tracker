@@ -1,11 +1,11 @@
 import React from 'react';
-
 import { Typography } from '@mui/material';
-import { MainWrapper, TrackerDayView } from '../components';
+
+import { MainWrapper, TrackerCalendar, TrackerDayView } from '../components';
 
 const HomePage = () => {
   return (
-    <MainWrapper sidebar={<p>Width right sidebar</p>}>
+    <MainWrapper sidebar={<TrackerCalendar />}>
       <Typography variant="h1">Tracker</Typography>
       <TrackerDayView />
     </MainWrapper>
