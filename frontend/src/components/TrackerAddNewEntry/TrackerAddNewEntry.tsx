@@ -11,7 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useFormik, FormikContext } from 'formik';
 
 import { SelectField } from '../../legos/SelectField';
-import { CalendarPicker } from 'legos/CalendarPicker';
+import { CalendarPickerFormik } from 'legos/CalendarPicker';
 
 const modalStyle = {
   width: 600,
@@ -21,11 +21,17 @@ const modalStyle = {
   p: 4,
 };
 
-interface TimeEntryValues {
-  date: string;
-  time: string;
-  description: string;
-  project: string;
+const FIELD_TIME_ENTRY = {
+  date: 'DATE',
+  time: 'TIME',
+  description: 'DESCRIPTION',
+  project: 'PROJECT',
+} as const;
+export interface TimeEntryValues {
+  [FIELD_TIME_ENTRY.date]: Date;
+  [FIELD_TIME_ENTRY.time]: string;
+  [FIELD_TIME_ENTRY.description]: string;
+  [FIELD_TIME_ENTRY.project]: string;
 }
 
 export const TrackerAddNewEntry = () => {
@@ -33,26 +39,24 @@ export const TrackerAddNewEntry = () => {
 
   // TODO Add projects from backend
   const itemSelectProject = [{ label: 'softbee' }, { label: 'demigos' }];
-
+  const initialValues: TimeEntryValues = {
+    [FIELD_TIME_ENTRY.date]: new Date(),
+    [FIELD_TIME_ENTRY.time]: '',
+    [FIELD_TIME_ENTRY.description]: '',
+    [FIELD_TIME_ENTRY.project]: '',
+  };
   const formik = useFormik<TimeEntryValues>({
-    initialValues: {
-      date: '',
-      time: '',
-      description: '',
-      project: '',
-    },
+    initialValues,
     onSubmit: (values) => {
       console.log('===', values);
     },
   });
-
   const { handleChange, handleSubmit } = formik;
-
   return (
     <>
-      <Tooltip title='Add New Entry'>
+      <Tooltip title="Add New Entry">
         <Button
-          variant='contained'
+          variant="contained"
           onClick={() => setIsOpenModal(!isOpenModal)}
         >
           <AddIcon />
@@ -67,52 +71,52 @@ export const TrackerAddNewEntry = () => {
           <form onSubmit={handleSubmit} style={{ height: '100%' }}>
             <Grid
               container
-              justifyContent='center'
-              alignItems='center'
-              height='100%'
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
             >
               <Grid sx={modalStyle}>
-                <Typography variant='h6' marginBottom='10px'>
+                <Typography variant="h6" marginBottom="10px">
                   New time entry
                 </Typography>
                 <Grid
                   item
-                  marginTop='20px'
-                  display='flex'
-                  justifyContent='space-between'
+                  marginTop="20px"
+                  display="flex"
+                  justifyContent="space-between"
                 >
-                  <CalendarPicker name='date' />
+                  <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
                   <TextField
-                    id='time'
-                    name='time'
-                    type='time'
-                    variant='outlined'
+                    id={FIELD_TIME_ENTRY.time}
+                    name={FIELD_TIME_ENTRY.time}
+                    type="time"
+                    variant="outlined"
                     sx={{ width: '60%', marginLeft: 2 }}
                     onChange={handleChange}
                   />
                 </Grid>
                 <SelectField
-                  id='project'
-                  name='project'
-                  label='Project'
+                  id={FIELD_TIME_ENTRY.project}
+                  name={FIELD_TIME_ENTRY.project}
+                  label="Project"
                   items={itemSelectProject}
                 />
                 <TextField
-                  id='description'
-                  name='description'
+                  id={FIELD_TIME_ENTRY.description}
+                  name={FIELD_TIME_ENTRY.description}
                   fullWidth
                   multiline
                   rows={4}
-                  placeholder='Description'
+                  placeholder="Description"
                   sx={{ marginTop: 2 }}
                   onChange={handleChange}
                 />
-                <Grid marginTop='20px'>
-                  <Button sx={{ mr: '10px' }} variant='contained' type='submit'>
+                <Grid marginTop="20px">
+                  <Button sx={{ mr: '10px' }} variant="contained" type="submit">
                     Save Time
                   </Button>
                   <Button
-                    variant='outlined'
+                    variant="outlined"
                     onClick={() => setIsOpenModal(!isOpenModal)}
                   >
                     Cancel
