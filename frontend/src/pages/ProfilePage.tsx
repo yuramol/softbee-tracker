@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 
-import {
-  Avatar,
-  Box,
-  Grid,
-  IconButton,
-  TextField,
-  Typography,
-  Button,
-} from '@mui/material';
+import { Box, Grid, TextField, Typography, Button } from '@mui/material';
 import {
   CalendarMonth,
   Email,
@@ -17,9 +9,10 @@ import {
   Person,
   Phone,
   Work,
+  Money,
 } from '@mui/icons-material';
 
-import { MainWrapper } from 'components';
+import { MainWrapper, AvatarUpload } from 'components';
 import { ModalSelect } from 'legos';
 
 type inintialValuesType = {
@@ -30,11 +23,15 @@ type inintialValuesType = {
   position: string;
   link: string;
   dateOfEmployment: string;
+  avatar: string;
+  rate: string;
 };
 
 type values = {
   [key: string]: string;
 };
+
+//TODO add information about user
 
 const profileInfo = [
   {
@@ -50,17 +47,20 @@ const profileInfo = [
     type: 'text',
   },
   {
+    label: 'Position',
+    fieldName: 'position',
+    component: 'select',
+    items: [
+      { label: 'Dev', value: 'Dev' },
+      { label: 'manager', value: 'manager' },
+    ],
+    type: 'text',
+  },
+  {
     label: 'Email',
     fieldName: 'email',
     component: 'input',
     type: 'email',
-  },
-  {
-    label: 'Position',
-    fieldName: 'position',
-    component: 'select',
-    items: [{ label: 'dev' }, { label: 'manager' }],
-    type: 'text',
   },
   {
     label: 'Link',
@@ -80,16 +80,24 @@ const profileInfo = [
     component: 'input',
     type: 'text',
   },
+  {
+    label: 'Rate',
+    fieldName: 'rate',
+    component: 'input',
+    type: 'text',
+  },
 ];
 
 const initialValues: inintialValuesType = {
-  firstName: 'stas',
-  lastName: 'babuch',
+  firstName: 'Stas',
+  lastName: 'Babuch',
   email: 'stasbs@mail.com',
-  phone: '278347394857348975',
-  position: 'dev',
+  phone: '+380636312452',
+  position: 'Dev',
   link: 'google.con',
   dateOfEmployment: 'string',
+  avatar: 'https://i.pravatar.cc/300',
+  rate: '3$',
 };
 
 const ProfilePage = () => {
@@ -99,11 +107,6 @@ const ProfilePage = () => {
     initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(
-        '%c jordan values',
-        'color: lime; font-weight: bold; font-size: 16px; text-transform: uppercase',
-        values
-      );
       setEdit(false);
     },
   });
@@ -120,8 +123,12 @@ const ProfilePage = () => {
         return <CalendarMonth />;
       case 'position':
         return <Work />;
-      case 'firstName' || 'lastName':
+      case 'lastName':
         return <Person />;
+      case 'firstName':
+        return <Person />;
+      case 'rate':
+        return <Money />;
       default:
         return '';
     }
@@ -129,14 +136,13 @@ const ProfilePage = () => {
 
   return (
     <MainWrapper>
-      <h1>Profile</h1>
       <Grid container spacing={3}>
         <Grid container item xs={12} justifyContent="space-between">
-          <Box ml={1}>
+          <Box ml={3}>
             <Typography
               fontWeight={700}
               fontSize={32}
-            >{`${formik.values.firstName} ${formik.values.firstName}`}</Typography>
+            >{`${formik.values.firstName} ${formik.values.lastName}`}</Typography>
           </Box>
           {edit ? (
             <Button variant="contained" onClick={formik.submitForm}>
@@ -149,43 +155,34 @@ const ProfilePage = () => {
           )}
         </Grid>
         <Grid container item xs={3} justifyContent="center">
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <Avatar
-              sx={{ width: '250px', height: '250px' }}
-              alt="User avatar"
-              src="https://i.pravatar.cc/300"
-            />
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            >
-              <Typography>Upload new photo</Typography>
-              <input hidden accept="image/*" type="file" />
-            </IconButton>
-          </Box>
+          <AvatarUpload
+            name={`${formik.values.firstName} ${formik.values.lastName}`}
+            avatar={formik.values.avatar}
+          />
         </Grid>
         <Grid item xs={6}>
           {profileInfo.map(({ fieldName, component, items, label, type }) => {
             if (component === 'select') {
               return (
-                <Box display="flex" alignItems="center" my={2}>
+                <Box display="flex" alignItems="center" my={1}>
                   {iconRender(fieldName)}
-                  <Box width={8} />
-                  {edit ? (
-                    <Box width="100%">
-                      {items?.length && (
-                        <ModalSelect items={items} label={label} />
-                      )}
-                    </Box>
-                  ) : (
-                    <Box ml={1}>
-                      <Typography>{label}</Typography>
-                      <Typography>
-                        {(formik.values as values)[fieldName]}
-                      </Typography>
-                    </Box>
-                  )}
+
+                  <Box width="100%" ml={1}>
+                    {items?.length && (
+                      <ModalSelect
+                        variant="standard"
+                        value={(formik.values as values)[fieldName]}
+                        onChange={(value) =>
+                          formik.setFieldValue(fieldName, value)
+                        }
+                        disabled={!edit}
+                        items={items}
+                        label={label}
+                        disableUnderline={!edit}
+                        IconComponent={() => null}
+                      />
+                    )}
+                  </Box>
                 </Box>
               );
             }
@@ -193,26 +190,22 @@ const ProfilePage = () => {
               return (
                 <Box display="flex" alignItems="center" my={2}>
                   {iconRender(fieldName)}
-                  {edit ? (
-                    <Box ml={1} width="100%">
-                      <TextField
-                        fullWidth
-                        value={(formik.values as values)[fieldName]}
-                        label={label}
-                        type={type}
-                        onChange={(e) =>
-                          formik.setFieldValue(fieldName, e.target.value)
-                        }
-                      />
-                    </Box>
-                  ) : (
-                    <Box ml={1}>
-                      <Typography color="common.lightGrey">{label}</Typography>
-                      <Typography>
-                        {(formik.values as values)[fieldName]}
-                      </Typography>
-                    </Box>
-                  )}
+                  <Box ml={1} width="100%">
+                    <TextField
+                      InputProps={{
+                        disableUnderline: !edit,
+                      }}
+                      variant="standard"
+                      disabled={!edit}
+                      fullWidth
+                      value={(formik.values as values)[fieldName]}
+                      label={label}
+                      type={type}
+                      onChange={(e) =>
+                        formik.setFieldValue(fieldName, e.target.value)
+                      }
+                    />
+                  </Box>
                 </Box>
               );
             }

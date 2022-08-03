@@ -4,3 +4,4 @@ export { Header } from './Header';
 export { MainWrapper } from './MainWrapper';
 export { TrackerAddNewEntry } from './TrackerAddNewEntry';
 export { TrackerDayView } from './TrackerDayView';
+export { AvatarUpload } from './AvatarUpload';

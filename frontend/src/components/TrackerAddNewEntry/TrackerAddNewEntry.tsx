@@ -60,12 +60,16 @@ export const TrackerAddNewEntry = () => {
               display="flex"
               justifyContent="space-between"
             >
-              <ModalSelect label={'Project'} items={itemSelectProject} />
+              <ModalSelect
+                onChange={(value) => console.log(value)}
+                label={'Project'}
+                items={itemSelectProject}
+              />
               <TextField
                 value={time}
                 type="time"
                 variant="outlined"
-                sx={{ width: '40%' }}
+                sx={{ width: '40%', pl: 1 }}
                 onChange={(e) => setTime(e.target.value || '00:00')}
               />
             </Grid>
