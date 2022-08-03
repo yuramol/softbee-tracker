@@ -111,12 +111,6 @@
       "target": "api::note.note",
       "mappedBy": "users_permissions_user"
     },
-    "trackers": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::tracker.tracker",
-      "mappedBy": "users_permissions_user"
-    },
     "create_notes": {
       "type": "relation",
       "relation": "oneToMany",
@@ -128,6 +122,12 @@
       "relation": "manyToMany",
       "target": "api::project.project",
       "inversedBy": "users"
+    },
+    "trackers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tracker.tracker",
+      "mappedBy": "user"
     }
   }
 }
