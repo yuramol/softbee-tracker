@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import EditIcon from '@mui/icons-material/Edit';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { TimeContext } from './TrackerDayView';
@@ -24,6 +26,7 @@ type Props = {
 
 export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
   const [isEdit, setIsEdit] = useState(false);
+  const [isTrackerStart, setIsTrackerStart] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
 
   const [time, setTime] = useState(trackerTime);
@@ -89,15 +92,23 @@ export const ProjectTab: FC<Props> = ({ id, attributes, trackerTime }) => {
         )}
         <IconButton
           color="primary"
-          size="small"
-          sx={{ ml: '10px' }}
+          sx={{ ml: 2 }}
           onClick={() => setIsEdit(!isEdit)}
         >
-          <EditIcon fontSize="inherit" />
+          <EditIcon fontSize="small" />
         </IconButton>
-        <Button sx={{ mr: '10px', ml: '10px' }} variant="outlined">
-          Start
-        </Button>
+        <IconButton
+          size="large"
+          color="primary"
+          sx={{ mx: 1, border: '1px solid' }}
+          onClick={() => setIsTrackerStart(!isTrackerStart)}
+        >
+          {isTrackerStart ? (
+            <PauseIcon fontSize="inherit" />
+          ) : (
+            <PlayArrowIcon fontSize="inherit" />
+          )}
+        </IconButton>
         <IconButton
           color="error"
           onClick={(e) => handleClickDeleteButton(e.currentTarget)}
