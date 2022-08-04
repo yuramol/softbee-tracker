@@ -1,17 +1,19 @@
-import * as React from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import React, { useState } from 'react';
 import {
+  FormControl,
   InputLabel,
   List,
   ListItem,
   ListItemText,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   Typography,
 } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
+
 import { theme } from '../../theme';
-import { useState } from 'react';
+
 const options = [
   { id: 1, label: 'Day', value: 'day' },
   { id: 2, label: 'Week', value: 'week' },
