@@ -16,19 +16,19 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { useAuth } from '../../AuthProvider';
-import { useCurrentWeek } from '../../hooks';
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
+import { useCurrentWeek } from 'hooks';
 import {
   TRECKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
-} from '../../api';
+} from 'api';
 import {
   Maybe,
   Scalars,
   TrackerEntityResponseCollection,
-} from '../../types/GraphqlTypes';
+} from 'types/GraphqlTypes';
 
 export type TrackerContext = {
   onUpdateTracker: (time: Date, id: Maybe<string> | undefined) => void;

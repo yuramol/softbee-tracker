@@ -3,9 +3,9 @@ import { Stack, Tab, Tabs, Typography } from '@mui/material';
 import { isAfter, isFuture, startOfDay, startOfMonth } from 'date-fns';
 
 import { PanelTab } from './PanelTab';
-import { useCurrentWeek } from '../../hooks';
-import { getTotalTime } from '../../helpers';
-import { TrackerEntity } from '../../types/GraphqlTypes';
+import { useCurrentWeek } from 'hooks';
+import { getTotalTime } from 'helpers';
+import { TrackerEntity } from 'types/GraphqlTypes';
 
 type Props = {
   currentDate: Date;
@@ -30,6 +30,8 @@ export const DayTabs: React.FC<Props> = ({
         alignItems="center"
         justifyContent="space-between"
         mt={4}
+        borderBottom={2}
+        borderColor="gray"
       >
         <Tabs
           value={tabsValue}

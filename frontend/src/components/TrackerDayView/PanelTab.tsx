@@ -1,9 +1,9 @@
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
-import { ProjectItem } from './ProjectItem';
-import { getTotalTime, parseTrackerTime } from '../../helpers';
-import { TrackerEntity } from '../../types/GraphqlTypes';
+import { TrackerItem } from './TrackerItem';
+import { getTotalTime, parseTrackerTime } from 'helpers';
+import { TrackerEntity } from 'types/GraphqlTypes';
 
 type Props = {
   dataTabs: TrackerEntity[] | undefined;
@@ -17,12 +17,12 @@ export const PanelTab: React.FC<Props> = ({ dataTabs, index, value }) => {
   if (value === index) {
     if (dataTabs && dataTabs?.length > 0) {
       return (
-        <Stack mt="-2px" mb={4} borderTop="2px solid gray">
+        <Stack>
           {dataTabs.map(({ attributes, id }) => {
             const trackerTime = parseTrackerTime(attributes?.duration);
             if (trackerTime) {
               return (
-                <ProjectItem
+                <TrackerItem
                   key={id}
                   id={id}
                   attributes={attributes}
@@ -31,7 +31,7 @@ export const PanelTab: React.FC<Props> = ({ dataTabs, index, value }) => {
               );
             }
           })}
-          <Typography variant="h6" py={4} px={2} borderTop="1px solid gray">
+          <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
             Total: {totalTime}
           </Typography>
         </Stack>
@@ -41,11 +41,10 @@ export const PanelTab: React.FC<Props> = ({ dataTabs, index, value }) => {
     return (
       <Typography
         variant="h6"
-        mt="-2px"
-        mb={4}
+        borderBottom={2}
+        borderColor="gray"
         py={4}
-        px={2}
-        borderTop="2px solid gray"
+        mb={4}
       >
         Not tracked this day
       </Typography>

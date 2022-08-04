@@ -15,8 +15,8 @@ import PauseIcon from '@mui/icons-material/Pause';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { TimeContext } from './TrackerDayView';
-import { parseTrackerTime } from '../../helpers';
-import { Maybe, Tracker } from '../../types/GraphqlTypes';
+import { parseTrackerTime } from 'helpers';
+import { Maybe, Tracker } from 'types/GraphqlTypes';
 
 type Props = {
   id: Maybe<string> | undefined;
@@ -24,7 +24,7 @@ type Props = {
   trackerTime: Date;
 };
 
-export const ProjectItem: FC<Props> = ({ id, attributes, trackerTime }) => {
+export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isTrackerStart, setIsTrackerStart] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
@@ -67,11 +67,12 @@ export const ProjectItem: FC<Props> = ({ id, attributes, trackerTime }) => {
       direction="row"
       justifyContent="space-between"
       alignItems="center"
-      borderBottom="1px solid gray"
+      gap={3}
+      borderBottom={1}
+      borderColor="gray"
       py={4}
-      pl={2}
     >
-      <Stack mr={2}>
+      <Stack>
         <Typography variant="h6">
           {attributes?.project?.data?.attributes?.name}
         </Typography>
