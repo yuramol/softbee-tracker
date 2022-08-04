@@ -8,7 +8,6 @@ import {
   ButtonGroup,
   Button,
   Divider,
-  Grid,
   Typography,
   Tooltip,
 } from '@mui/material';
@@ -68,19 +67,17 @@ export const TimeInspector = () => {
 
   return (
     <>
-      <Grid display="flex" justifyContent="center">
-        <ButtonGroup size="small" fullWidth>
-          {inspectionTypes.map(({ label, value }, i) => (
-            <Button
-              key={value}
-              variant={inspectBy.value === value ? 'contained' : 'outlined'}
-              onClick={() => handleClickButton(i)}
-            >
-              {label}
-            </Button>
-          ))}
-        </ButtonGroup>
-      </Grid>
+      <ButtonGroup size="small" fullWidth>
+        {inspectionTypes.map(({ label, value }, i) => (
+          <Button
+            key={value}
+            variant={inspectBy.value === value ? 'contained' : 'outlined'}
+            onClick={() => handleClickButton(i)}
+          >
+            {label}
+          </Button>
+        ))}
+      </ButtonGroup>
       <List disablePadding sx={{ my: 4 }}>
         {(projects?.length as number) > 0 ? (
           projects?.map(({ id, attributes }) => (

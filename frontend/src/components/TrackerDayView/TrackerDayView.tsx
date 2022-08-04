@@ -15,9 +15,9 @@ import { Typography, Button, Stack } from '@mui/material';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
-import { useAuth } from '../../AuthProvider';
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
+import { useAuth } from 'AuthProvider';
 import { useCurrentWeek } from 'hooks';
 import {
   TRECKERS_BY_USER_ID_QUERY,
