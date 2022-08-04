@@ -18,7 +18,7 @@ const modalStyle = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 1,
-  p: 4,
+  p: 3,
 };
 
 const FIELD_TIME_ENTRY = {
@@ -75,43 +75,57 @@ export const TrackerAddNewEntry = () => {
               alignItems="center"
               height="100%"
             >
-              <Grid sx={modalStyle}>
-                <Typography variant="h6" marginBottom="10px">
-                  New time entry
-                </Typography>
-                <Grid
-                  item
-                  marginTop="20px"
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
-                  <TextField
-                    id={FIELD_TIME_ENTRY.time}
-                    name={FIELD_TIME_ENTRY.time}
-                    type="time"
-                    variant="outlined"
-                    sx={{ width: '60%', marginLeft: 2 }}
-                    onChange={handleChange}
-                  />
+              <Grid container sx={modalStyle}>
+                <Grid item xs={12}>
+                  <Typography variant="h6" margin="10px">
+                    New time entry
+                  </Typography>
                 </Grid>
-                <SelectField
-                  id={FIELD_TIME_ENTRY.project}
-                  name={FIELD_TIME_ENTRY.project}
-                  label="Project"
-                  items={itemSelectProject}
-                />
-                <TextField
-                  id={FIELD_TIME_ENTRY.description}
-                  name={FIELD_TIME_ENTRY.description}
-                  fullWidth
-                  multiline
-                  rows={4}
-                  placeholder="Description"
-                  sx={{ marginTop: 2 }}
-                  onChange={handleChange}
-                />
-                <Grid marginTop="20px">
+
+                <Grid item container xs={12}>
+                  <Grid
+                    container
+                    margin="10px"
+                    direction="row"
+                    justifyContent="space-between"
+                  >
+                    <Grid item xs={8}>
+                      <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <TextField
+                        id={FIELD_TIME_ENTRY.time}
+                        name={FIELD_TIME_ENTRY.time}
+                        type="time"
+                        variant="outlined"
+                        fullWidth
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  <Grid item margin="10px" xs={12}>
+                    <SelectField
+                      id={FIELD_TIME_ENTRY.project}
+                      name={FIELD_TIME_ENTRY.project}
+                      label="Project"
+                      items={itemSelectProject}
+                    />
+                  </Grid>
+                  <Grid item margin="10px" xs={12}>
+                    <TextField
+                      id={FIELD_TIME_ENTRY.description}
+                      name={FIELD_TIME_ENTRY.description}
+                      fullWidth
+                      multiline
+                      rows={4}
+                      placeholder="Description"
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid item margin="10px" xs={12}>
                   <Button sx={{ mr: '10px' }} variant="contained" type="submit">
                     Save Time
                   </Button>
