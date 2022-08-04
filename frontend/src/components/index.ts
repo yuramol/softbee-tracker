@@ -5,3 +5,4 @@ export { MainWrapper } from './MainWrapper';
 export { TrackerCalendar } from './TrackerCalendar';
 export { TrackerAddNewEntry } from './TrackerAddNewEntry';
 export { TrackerDayView } from './TrackerDayView';
+export { ProjectLayout, TeamProject, SummaryProject } from './ProjectLayout';

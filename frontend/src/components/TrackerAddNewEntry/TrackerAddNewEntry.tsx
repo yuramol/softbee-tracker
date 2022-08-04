@@ -95,6 +95,7 @@ export const TrackerAddNewEntry = () => {
                   id='project'
                   name='project'
                   label='Project'
+                  size='medium'
                   items={itemSelectProject}
                 />
                 <TextField
