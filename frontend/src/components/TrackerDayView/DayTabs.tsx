@@ -1,24 +1,38 @@
-import React, { FC } from 'react';
-import { Grid, Tab, Tabs, Typography } from '@mui/material';
+import React from 'react';
+import { Stack, Tab, Tabs, Typography } from '@mui/material';
+import { isAfter, isFuture, startOfDay, startOfMonth } from 'date-fns';
 
 import { PanelTab } from './PanelTab';
-import { useCurrentWeek } from '../../hooks';
-import { getTotalTime } from '../../helpers';
-import { TrackerEntity } from '../../types/GraphqlTypes';
+import { useCurrentWeek } from 'hooks';
+import { getTotalTime } from 'helpers';
+import { TrackerEntity } from 'types/GraphqlTypes';
 
 type Props = {
+  currentDate: Date;
+  dataTabs: TrackerEntity[] | undefined;
   tabsValue: number;
   setTabsValue: (newValue: number) => void;
-  dataTabs: TrackerEntity[] | undefined;
 };
 
-export const DayTabs: FC<Props> = ({ setTabsValue, tabsValue, dataTabs }) => {
-  const { days } = useCurrentWeek(new Date());
+export const DayTabs: React.FC<Props> = ({
+  currentDate,
+  dataTabs,
+  tabsValue,
+  setTabsValue,
+}) => {
+  const { days } = useCurrentWeek(currentDate);
   const totalTime = getTotalTime(dataTabs);
 
   return (
     <>
-      <Grid display="flex" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mt={4}
+        borderBottom={2}
+        borderColor="gray"
+      >
         <Tabs
           value={tabsValue}
           onChange={(_, newValue) => {
@@ -40,14 +54,20 @@ export const DayTabs: FC<Props> = ({ setTabsValue, tabsValue, dataTabs }) => {
                   </Typography>
                 </>
               }
+              disabled={
+                isAfter(
+                  startOfMonth(currentDate),
+                  startOfDay(new Date(fullDate))
+                ) || isFuture(new Date(fullDate))
+              }
             />
           ))}
         </Tabs>
-        <Grid>
+        <Stack>
           <Typography fontWeight={600}>Week Total</Typography>
           <Typography textAlign="right">{totalTime}</Typography>
-        </Grid>
-      </Grid>
+        </Stack>
+      </Stack>
       {days.map(({ fullDate }, i) => (
         <PanelTab
           key={fullDate}

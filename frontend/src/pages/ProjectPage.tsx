@@ -1,10 +1,11 @@
 import React from 'react';
+import { Typography } from '@mui/material';
 import { MainWrapper } from '../components';
 
 const ProjectPage = () => {
   return (
-    <MainWrapper left sidebar={<p>Width left sidebar</p>}>
-      <h1>Project</h1>
+    <MainWrapper sidebar={<p>Width left sidebar</p>}>
+      <Typography variant="h1">Project</Typography>
     </MainWrapper>
   );
 };
