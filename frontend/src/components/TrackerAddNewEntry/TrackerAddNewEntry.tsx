@@ -5,14 +5,19 @@ import {
   Modal,
   TextField,
   Tooltip,
-  Grid,
+  Stack,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { useFormik, FormikContext } from 'formik';
 
-import { ModalSelect } from '../../legos/ModalSelect';
-import { useCurrentWeek } from '../../hooks';
+import { SelectField } from '../../legos/SelectField';
+import { CalendarPickerFormik } from 'legos/CalendarPicker';
 
 const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 600,
   bgcolor: 'background.paper',
   boxShadow: 24,
@@ -20,14 +25,37 @@ const modalStyle = {
   p: 4,
 };
 
+const FIELD_TIME_ENTRY = {
+  date: 'DATE',
+  time: 'TIME',
+  description: 'DESCRIPTION',
+  project: 'PROJECT',
+} as const;
+export interface TimeEntryValues {
+  [FIELD_TIME_ENTRY.date]: Date;
+  [FIELD_TIME_ENTRY.time]: string;
+  [FIELD_TIME_ENTRY.description]: string;
+  [FIELD_TIME_ENTRY.project]: string;
+}
+
 export const TrackerAddNewEntry = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [time, setTime] = useState('');
-  const { days, currentDay } = useCurrentWeek(new Date());
 
   // TODO Add projects from backend
   const itemSelectProject = [{ label: 'softbee' }, { label: 'demigos' }];
-
+  const initialValues: TimeEntryValues = {
+    [FIELD_TIME_ENTRY.date]: new Date(),
+    [FIELD_TIME_ENTRY.time]: '',
+    [FIELD_TIME_ENTRY.description]: '',
+    [FIELD_TIME_ENTRY.project]: '',
+  };
+  const formik = useFormik<TimeEntryValues>({
+    initialValues,
+    onSubmit: (values) => {
+      console.log('===', values);
+    },
+  });
+  const { handleChange, handleSubmit } = formik;
   return (
     <>
       <Tooltip title="Add New Entry">
@@ -43,50 +71,56 @@ export const TrackerAddNewEntry = () => {
         closeAfterTransition
         onClose={() => setIsOpenModal(!isOpenModal)}
       >
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-          height="100vh"
-        >
-          <Grid sx={modalStyle}>
-            <Typography variant="h6" marginBottom="10px">
-              {`New entry for ${days[currentDay].day}, ${days[currentDay].date}`}
-            </Typography>
-            <Grid
-              marginTop="20px"
-              display="flex"
-              justifyContent="space-between"
-            >
-              <ModalSelect label={'Project'} items={itemSelectProject} />
-              <TextField
-                value={time}
-                type="time"
-                variant="outlined"
-                sx={{ width: '40%' }}
-                onChange={(e) => setTime(e.target.value || '00:00')}
-              />
-            </Grid>
-            <TextField
-              placeholder="Description"
-              sx={{ marginTop: 2 }}
-              fullWidth
-              multiline
-              rows={4}
-            />
-            <Grid marginTop="20px">
-              <Button sx={{ mr: '10px' }} variant="contained">
-                Save Time
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => setIsOpenModal(!isOpenModal)}
-              >
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
+        <FormikContext.Provider value={formik}>
+          <form onSubmit={handleSubmit}>
+            <Stack sx={modalStyle}>
+              <Stack>
+                <Typography variant="h6">New time entry</Typography>
+              </Stack>
+
+              <Stack my={3} gap={3}>
+                <Stack direction="row" gap={3}>
+                  <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
+                  <TextField
+                    id={FIELD_TIME_ENTRY.time}
+                    name={FIELD_TIME_ENTRY.time}
+                    type="time"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                  />
+                </Stack>
+                <SelectField
+                  id={FIELD_TIME_ENTRY.project}
+                  name={FIELD_TIME_ENTRY.project}
+                  label="Project"
+                  items={itemSelectProject}
+                />
+                <TextField
+                  id={FIELD_TIME_ENTRY.description}
+                  name={FIELD_TIME_ENTRY.description}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  placeholder="Description"
+                  onChange={handleChange}
+                />
+              </Stack>
+
+              <Stack direction="row" gap={2}>
+                <Button variant="contained" type="submit">
+                  Save Time
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsOpenModal(!isOpenModal)}
+                >
+                  Cancel
+                </Button>
+              </Stack>
+            </Stack>
+          </form>
+        </FormikContext.Provider>
       </Modal>
     </>
   );
