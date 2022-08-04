@@ -5,12 +5,7 @@ import {
   PickersDay,
 } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import {
-  LocalizationProvider,
-  CalendarPicker,
-  PickersDay,
-} from '@mui/x-date-pickers';
-import { Grid, Badge } from '@mui/material';
+import { Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
 
 // TODO - change these working days data to real data from the server
