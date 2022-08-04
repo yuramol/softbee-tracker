@@ -41,5 +41,14 @@ const link = ApolloLink.from([errorLink, authLink.concat(httpLink)]);
 
 export const apolloClient = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Tracker: {
+        merge: true,
+      },
+      Project: {
+        merge: true,
+      },
+    },
+  }),
 });
