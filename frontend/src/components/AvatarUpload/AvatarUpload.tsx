@@ -23,12 +23,7 @@ export const AvatarUpload = ({
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-        <UniversalAvatar
-          width="150px"
-          height="150px"
-          name={name}
-          avatar={path}
-        />
+        <UniversalAvatar width={180} height={180} name={name} avatar={path} />
         <Button component="label" color="primary" aria-label="upload picture">
           <Typography fontSize={12}>Upload new photo</Typography>
           <input hidden accept="image/*" type="file" onChange={onChange} />

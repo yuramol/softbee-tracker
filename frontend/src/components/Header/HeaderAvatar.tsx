@@ -34,8 +34,8 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
           }}
         >
           <UniversalAvatar
-            width="40px"
-            height="40px"
+            width={40}
+            height={40}
             name={`${userPermission?.firstName} ${userPermission?.lastName}`}
             avatar={`https://dev.strapi.track.softbee.io${userPermission?.avatar.data?.attributes?.url}`}
           />

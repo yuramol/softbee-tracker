@@ -6,8 +6,8 @@ import { getInitials } from 'utils';
 type UniversalAvatarProps = {
   avatar?: string;
   name: string;
-  width?: string;
-  height?: string;
+  width?: number;
+  height?: number;
 };
 
 export const UniversalAvatar = ({
@@ -17,6 +17,8 @@ export const UniversalAvatar = ({
   height,
 }: UniversalAvatarProps) => (
   <Avatar sx={{ width: { width }, height: { height } }} src={avatar}>
-    <Typography fontSize={12}>{getInitials(name)}</Typography>
+    <Typography fontSize={width ? width / 3 : 14}>
+      {getInitials(name)}
+    </Typography>
   </Avatar>
 );
