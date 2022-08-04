@@ -1,15 +1,19 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-import { MainWrapper, TrackerCalendar, TrackerDayView } from '../components';
-import { TimeSection } from 'components/TimeInspector/TimeSection';
+import {
+  MainWrapper,
+  TimeInspector,
+  TrackerCalendar,
+  TrackerDayView,
+} from '../components';
 
 const HomePage = () => {
   return (
     <MainWrapper
       sidebar={
         <>
-          <TimeSection />
+          <TimeInspector />
           <TrackerCalendar />
         </>
       }
