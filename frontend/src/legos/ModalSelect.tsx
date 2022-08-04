@@ -15,8 +15,8 @@ export const ModalSelect = ({ items, label, name, size }: ModalSelectProps) => {
   const { handleChange } = useFormikContext();
 
   return (
-    <FormControl fullWidth sx={{ marginTop: 2 }} size={size}>
-      <InputLabel id='select-label'>{label}</InputLabel>
+    <FormControl fullWidth size={size}>
+      <InputLabel id="select-label">{label}</InputLabel>
       <Select
         name={name}
         label={label}
