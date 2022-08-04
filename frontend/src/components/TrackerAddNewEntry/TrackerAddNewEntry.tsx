@@ -119,69 +119,6 @@ export const TrackerAddNewEntry = () => {
                 </Button>
               </Stack>
             </Stack>
-
-            {/* <Grid container sx={modalStyle}>
-              <Grid item xs={12}>
-                <Typography variant="h6" margin="10px">
-                  New time entry
-                </Typography>
-              </Grid>
-
-              <Grid item container xs={12}>
-                <Grid
-                  container
-                  margin="10px"
-                  direction="row"
-                  justifyContent="space-between"
-                >
-                  <Grid item xs={8}>
-                    <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField
-                      id={FIELD_TIME_ENTRY.time}
-                      name={FIELD_TIME_ENTRY.time}
-                      type="time"
-                      variant="outlined"
-                      fullWidth
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                </Grid>
-
-                <Grid item margin="10px" xs={12}>
-                  <SelectField
-                    id={FIELD_TIME_ENTRY.project}
-                    name={FIELD_TIME_ENTRY.project}
-                    label="Project"
-                    items={itemSelectProject}
-                  />
-                </Grid>
-                <Grid item margin="10px" xs={12}>
-                  <TextField
-                    id={FIELD_TIME_ENTRY.description}
-                    name={FIELD_TIME_ENTRY.description}
-                    fullWidth
-                    multiline
-                    rows={4}
-                    placeholder="Description"
-                    onChange={handleChange}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid item margin="10px" xs={12}>
-                <Button sx={{ mr: '10px' }} variant="contained" type="submit">
-                  Save Time
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => setIsOpenModal(!isOpenModal)}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-            </Grid> */}
           </form>
         </FormikContext.Provider>
       </Modal>
