@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-import { ModalSelect } from '../../legos/ModalSelect';
+import { Select } from 'legos';
 import { useCurrentWeek } from '../../hooks';
 
 const modalStyle = {
@@ -60,7 +60,7 @@ export const TrackerAddNewEntry = () => {
               display="flex"
               justifyContent="space-between"
             >
-              <ModalSelect
+              <Select
                 onChange={(value) => console.log(value)}
                 label={'Project'}
                 items={itemSelectProject}

@@ -1,5 +1,7 @@
+import { Input } from './Input';
+import { Select } from './Select';
 import { NavLink } from './NavLink';
-import { StyledIconButton } from './StyledIconButton';
 import { UniversalAvatar } from './UniversalAvatar';
-import { ModalSelect } from './ModalSelect';
-export { NavLink, StyledIconButton, UniversalAvatar, ModalSelect };
+import { StyledIconButton } from './StyledIconButton';
+
+export { NavLink, StyledIconButton, UniversalAvatar, Select, Input };

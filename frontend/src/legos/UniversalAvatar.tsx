@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Avatar } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import { getInitials } from 'utils';
 
 type UniversalAvatarProps = {
@@ -17,6 +17,6 @@ export const UniversalAvatar = ({
   height,
 }: UniversalAvatarProps) => (
   <Avatar sx={{ width: { width }, height: { height } }} src={avatar}>
-    {getInitials(name)}
+    <Typography fontSize={12}>{getInitials(name)}</Typography>
   </Avatar>
 );
