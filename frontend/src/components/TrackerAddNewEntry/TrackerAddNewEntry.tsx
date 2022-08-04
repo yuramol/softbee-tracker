@@ -5,7 +5,7 @@ import {
   Modal,
   TextField,
   Tooltip,
-  Grid,
+  Stack,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useFormik, FormikContext } from 'formik';
@@ -14,11 +14,15 @@ import { SelectField } from '../../legos/SelectField';
 import { CalendarPickerFormik } from 'legos/CalendarPicker';
 
 const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 600,
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 1,
-  p: 3,
+  p: 4,
 };
 
 const FIELD_TIME_ENTRY = {
@@ -68,76 +72,116 @@ export const TrackerAddNewEntry = () => {
         onClose={() => setIsOpenModal(!isOpenModal)}
       >
         <FormikContext.Provider value={formik}>
-          <form onSubmit={handleSubmit} style={{ height: '100%' }}>
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              height="100%"
-            >
-              <Grid container sx={modalStyle}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" margin="10px">
-                    New time entry
-                  </Typography>
-                </Grid>
+          <form onSubmit={handleSubmit}>
+            <Stack sx={modalStyle}>
+              <Stack>
+                <Typography variant="h6">New time entry</Typography>
+              </Stack>
 
-                <Grid item container xs={12}>
-                  <Grid
-                    container
-                    margin="10px"
-                    direction="row"
-                    justifyContent="space-between"
-                  >
-                    <Grid item xs={8}>
-                      <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <TextField
-                        id={FIELD_TIME_ENTRY.time}
-                        name={FIELD_TIME_ENTRY.time}
-                        type="time"
-                        variant="outlined"
-                        fullWidth
-                        onChange={handleChange}
-                      />
-                    </Grid>
-                  </Grid>
+              <Stack my={3} gap={3}>
+                <Stack direction="row" gap={3}>
+                  <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
+                  <TextField
+                    id={FIELD_TIME_ENTRY.time}
+                    name={FIELD_TIME_ENTRY.time}
+                    type="time"
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                  />
+                </Stack>
+                <SelectField
+                  id={FIELD_TIME_ENTRY.project}
+                  name={FIELD_TIME_ENTRY.project}
+                  label="Project"
+                  items={itemSelectProject}
+                />
+                <TextField
+                  id={FIELD_TIME_ENTRY.description}
+                  name={FIELD_TIME_ENTRY.description}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  placeholder="Description"
+                  onChange={handleChange}
+                />
+              </Stack>
 
-                  <Grid item margin="10px" xs={12}>
-                    <SelectField
-                      id={FIELD_TIME_ENTRY.project}
-                      name={FIELD_TIME_ENTRY.project}
-                      label="Project"
-                      items={itemSelectProject}
-                    />
+              <Stack direction="row" gap={2}>
+                <Button variant="contained" type="submit">
+                  Save Time
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsOpenModal(!isOpenModal)}
+                >
+                  Cancel
+                </Button>
+              </Stack>
+            </Stack>
+
+            {/* <Grid container sx={modalStyle}>
+              <Grid item xs={12}>
+                <Typography variant="h6" margin="10px">
+                  New time entry
+                </Typography>
+              </Grid>
+
+              <Grid item container xs={12}>
+                <Grid
+                  container
+                  margin="10px"
+                  direction="row"
+                  justifyContent="space-between"
+                >
+                  <Grid item xs={8}>
+                    <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
                   </Grid>
-                  <Grid item margin="10px" xs={12}>
+                  <Grid item xs={4}>
                     <TextField
-                      id={FIELD_TIME_ENTRY.description}
-                      name={FIELD_TIME_ENTRY.description}
+                      id={FIELD_TIME_ENTRY.time}
+                      name={FIELD_TIME_ENTRY.time}
+                      type="time"
+                      variant="outlined"
                       fullWidth
-                      multiline
-                      rows={4}
-                      placeholder="Description"
                       onChange={handleChange}
                     />
                   </Grid>
                 </Grid>
 
                 <Grid item margin="10px" xs={12}>
-                  <Button sx={{ mr: '10px' }} variant="contained" type="submit">
-                    Save Time
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={() => setIsOpenModal(!isOpenModal)}
-                  >
-                    Cancel
-                  </Button>
+                  <SelectField
+                    id={FIELD_TIME_ENTRY.project}
+                    name={FIELD_TIME_ENTRY.project}
+                    label="Project"
+                    items={itemSelectProject}
+                  />
+                </Grid>
+                <Grid item margin="10px" xs={12}>
+                  <TextField
+                    id={FIELD_TIME_ENTRY.description}
+                    name={FIELD_TIME_ENTRY.description}
+                    fullWidth
+                    multiline
+                    rows={4}
+                    placeholder="Description"
+                    onChange={handleChange}
+                  />
                 </Grid>
               </Grid>
-            </Grid>
+
+              <Grid item margin="10px" xs={12}>
+                <Button sx={{ mr: '10px' }} variant="contained" type="submit">
+                  Save Time
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsOpenModal(!isOpenModal)}
+                >
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid> */}
           </form>
         </FormikContext.Provider>
       </Modal>
