@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+// import { useQuery, useMutation } from '@apollo/client';
 import {
   Button,
   Typography,
@@ -8,7 +9,9 @@ import {
   Stack,
 } from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
+import { format, startOfDay } from 'date-fns';
 
+import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
 import { Select, Icon } from 'legos';
 import { CalendarPickerFormik } from 'legos/CalendarPicker';
 
@@ -25,51 +28,59 @@ const modalStyle = {
 };
 
 const FIELD_TIME_ENTRY = {
-  date: 'DATE',
-  time: 'TIME',
-  description: 'DESCRIPTION',
-  project: 'PROJECT',
+  date: 'date',
+  duration: 'duration',
+  description: 'description',
+  project: 'project',
 } as const;
+
 export interface TimeEntryValues {
   [FIELD_TIME_ENTRY.date]: Date;
-  [FIELD_TIME_ENTRY.time]: string;
+  [FIELD_TIME_ENTRY.duration]: string;
   [FIELD_TIME_ENTRY.description]: string;
   [FIELD_TIME_ENTRY.project]: string;
 }
 
 export const TrackerAddNewEntry = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { onCreateTracker } = useContext(TimeContext);
 
   // TODO Add projects from backend
-  const itemSelectProject = [{ label: 'softbee' }, { label: 'demigos' }];
+  const itemSelectProject = [
+    { id: 1, label: 'LuxWash' },
+    { id: 3, label: 'UpWork' },
+    { id: 4, label: 'SoftBee' },
+  ];
+
   const initialValues: TimeEntryValues = {
     [FIELD_TIME_ENTRY.date]: new Date(),
-    [FIELD_TIME_ENTRY.time]: '',
+    [FIELD_TIME_ENTRY.duration]: format(startOfDay(new Date()), 'HH:mm'),
     [FIELD_TIME_ENTRY.description]: '',
     [FIELD_TIME_ENTRY.project]: '',
   };
+
+  const toggleOpenModal = () => {
+    setIsOpenModal(!isOpenModal);
+  };
+
   const formik = useFormik<TimeEntryValues>({
     initialValues,
     onSubmit: (values) => {
-      console.log('===', values);
+      onCreateTracker(values);
+      toggleOpenModal();
     },
   });
+
   const { handleChange, handleSubmit } = formik;
+
   return (
     <>
       <Tooltip title="Add New Entry">
-        <Button
-          variant="contained"
-          onClick={() => setIsOpenModal(!isOpenModal)}
-        >
+        <Button variant="contained" onClick={toggleOpenModal}>
           <Icon icon="add" />
         </Button>
       </Tooltip>
-      <Modal
-        open={isOpenModal}
-        closeAfterTransition
-        onClose={() => setIsOpenModal(!isOpenModal)}
-      >
+      <Modal open={isOpenModal} closeAfterTransition onClose={toggleOpenModal}>
         <FormikContext.Provider value={formik}>
           <form onSubmit={handleSubmit}>
             <Stack sx={modalStyle}>
@@ -81,29 +92,27 @@ export const TrackerAddNewEntry = () => {
                 <Stack direction="row" gap={3}>
                   <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
                   <TextField
-                    id={FIELD_TIME_ENTRY.time}
-                    name={FIELD_TIME_ENTRY.time}
+                    name={FIELD_TIME_ENTRY.duration}
                     type="time"
                     variant="outlined"
                     fullWidth
+                    value={formik.values.duration}
                     onChange={handleChange}
                   />
                 </Stack>
                 <Select
-                  id={FIELD_TIME_ENTRY.project}
-                  name={FIELD_TIME_ENTRY.project}
                   label="Project"
+                  name={FIELD_TIME_ENTRY.project}
                   items={itemSelectProject}
                   onChange={handleChange}
                   variant="outlined"
                 />
                 <TextField
-                  id={FIELD_TIME_ENTRY.description}
+                  label="Description"
                   name={FIELD_TIME_ENTRY.description}
                   fullWidth
                   multiline
                   rows={4}
-                  placeholder="Description"
                   onChange={handleChange}
                 />
               </Stack>
@@ -112,10 +121,7 @@ export const TrackerAddNewEntry = () => {
                 <Button variant="contained" type="submit">
                   Save Time
                 </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => setIsOpenModal(!isOpenModal)}
-                >
+                <Button variant="outlined" onClick={toggleOpenModal}>
                   Cancel
                 </Button>
               </Stack>
