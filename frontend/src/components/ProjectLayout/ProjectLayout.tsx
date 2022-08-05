@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Button,
+  ButtonGroup,
   Typography,
   TextField,
   IconButton,
@@ -52,6 +53,25 @@ export const ProjectLayout = () => {
 
   const { handleChange, handleSubmit } = formik;
 
+  const paymentTypes = [
+    {
+      label: 'Time & Material',
+      value: 'Time & Material',
+    },
+    {
+      label: 'Fixed Price',
+      value: 'Fixed Price',
+    },
+    {
+      label: 'Non Profit',
+      value: 'Non Profit',
+    },
+  ];
+  const [paymentBy, setPaymentBy] = useState(paymentTypes[0]);
+  const handleClickButton = (index: number) => {
+    setPaymentBy(paymentTypes[index]);
+  };
+
   return (
     <FormikContext.Provider value={formik}>
       <form onSubmit={handleSubmit}>
@@ -64,6 +84,18 @@ export const ProjectLayout = () => {
           </Stack>
 
           <Stack my={3} gap={3}>
+            <ButtonGroup size="small" fullWidth>
+              {paymentTypes.map(({ label, value }, i) => (
+                <Button
+                  key={value}
+                  size="large"
+                  variant={paymentBy.value === value ? 'contained' : 'outlined'}
+                  onClick={() => handleClickButton(i)}
+                >
+                  {label}
+                </Button>
+              ))}
+            </ButtonGroup>
             <TextField
               id={FIELD_NEW_PROJECT_ENTRY.name}
               name={FIELD_NEW_PROJECT_ENTRY.name}
