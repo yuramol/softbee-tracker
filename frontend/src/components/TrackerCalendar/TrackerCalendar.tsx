@@ -5,7 +5,7 @@ import {
   CalendarPicker,
   PickersDay,
 } from '@mui/x-date-pickers';
-import { Grid, Badge } from '@mui/material';
+import { Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
 
 // TODO - change these working days data to real data from the server
@@ -43,62 +43,58 @@ export const TrackerCalendar = () => {
 
   return (
     <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <CalendarPicker
-            date={date}
-            onChange={(newDate) => setDate(newDate)}
-            onMonthChange={(newMonth) => {
-              setCurMonth(newMonth.getMonth());
-            }}
-            renderDay={(day, _value, DayComponentProps) => {
-              const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-              let isWorkDay;
-              let isEnoughHours;
+      <CalendarPicker
+        date={date}
+        onChange={(newDate) => setDate(newDate)}
+        onMonthChange={(newMonth) => {
+          setCurMonth(newMonth.getMonth());
+        }}
+        renderDay={(day, _value, DayComponentProps) => {
+          const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+          let isWorkDay;
+          let isEnoughHours;
 
-              testTrackerTime.find(({ time, date }) => {
-                if (day.getTime() === date.getTime()) {
-                  isWorkDay = true;
-                  time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
-                }
-              });
+          testTrackerTime.find(({ time, date }) => {
+            if (day.getTime() === date.getTime()) {
+              isWorkDay = true;
+              time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
+            }
+          });
 
-              return day.getMonth() === curMonth ? (
-                <Badge
-                  key={day.toString()}
-                  overlap="circular"
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  sx={{
-                    '& 	.MuiBadge-badge': {
-                      width: '100%',
-                      justifyContent: 'left',
-                      paddingLeft: '2px',
-                    },
-                  }}
-                  badgeContent={
-                    isWeekend ? (
-                      <div style={weekendStyles}></div>
-                    ) : isWorkDay ? (
-                      isEnoughHours ? (
-                        <div style={enoughHourStyles}></div>
-                      ) : (
-                        <div style={lessHourStyles}></div>
-                      )
-                    ) : null
-                  }
-                >
-                  <PickersDay {...DayComponentProps} />
-                </Badge>
-              ) : (
-                <PickersDay {...DayComponentProps} />
-              );
-            }}
-          />
-        </Grid>
-      </Grid>
+          return day.getMonth() === curMonth ? (
+            <Badge
+              key={day.toString()}
+              overlap="circular"
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              sx={{
+                '& 	.MuiBadge-badge': {
+                  width: '100%',
+                  justifyContent: 'left',
+                  paddingLeft: '2px',
+                },
+              }}
+              badgeContent={
+                isWeekend ? (
+                  <div style={weekendStyles}></div>
+                ) : isWorkDay ? (
+                  isEnoughHours ? (
+                    <div style={enoughHourStyles}></div>
+                  ) : (
+                    <div style={lessHourStyles}></div>
+                  )
+                ) : null
+              }
+            >
+              <PickersDay {...DayComponentProps} />
+            </Badge>
+          ) : (
+            <PickersDay {...DayComponentProps} />
+          );
+        }}
+      />
     </LocalizationProvider>
   );
 };
