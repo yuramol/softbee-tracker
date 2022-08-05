@@ -14,7 +14,7 @@ export const CalendarPickerFormik = ({
   ...arg
 }: CalendarPickerFormikProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [{ value }, _, { setValue }] = useField<Date>(field);
+  const [{ value }, _, { setValue }] = useField(field);
   return (
     <CalendarPicker
       {...arg}

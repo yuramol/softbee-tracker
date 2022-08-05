@@ -23,14 +23,18 @@ import {
   TRECKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
+  CREATE_TRACKER_BY_USER_ID_MUTATION,
 } from 'api';
 import {
   Maybe,
   Scalars,
   TrackerEntityResponseCollection,
+  TrackerInput,
 } from 'types/GraphqlTypes';
+import { parseTrackerTime } from 'helpers';
 
 export type TrackerContext = {
+  onCreateTracker: (values: TrackerInput) => void;
   onUpdateTracker: (time: Date, id: Maybe<string> | undefined) => void;
   onDeleteTracker: (id: Maybe<string> | undefined) => void;
 };
@@ -48,8 +52,27 @@ export const TrackerDayView = () => {
   }>(TRECKERS_BY_USER_ID_QUERY, {
     variables: { userId: user.id, weekStart, weekEnd },
   });
+  const [createTracker] = useMutation(CREATE_TRACKER_BY_USER_ID_MUTATION);
   const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
   const [deleteTracker] = useMutation(DELETE_TRACKER_BY_ID_MUTATION);
+
+  const onCreateTracker = (values: TrackerInput) => {
+    const data = {
+      ...values,
+      date: format(values.date, 'yyyy-MM-dd'),
+      duration: format(
+        parseTrackerTime(values.duration, 'HH:mm'),
+        'HH:mm:ss.SSS'
+      ),
+      user: user.id,
+    };
+
+    console.log(data);
+
+    createTracker({ variables: { data } }).then(() => {
+      refetch();
+    });
+  };
 
   const onUpdateTracker = (time: Date, id: Maybe<Scalars['ID']>) => {
     const formatedTime = format(time, 'HH:mm:ss.SSS');
@@ -103,7 +126,9 @@ export const TrackerDayView = () => {
 
   return (
     <TimeContext.Provider
-      value={{ onUpdateTracker, onDeleteTracker } as TrackerContext}
+      value={
+        { onCreateTracker, onUpdateTracker, onDeleteTracker } as TrackerContext
+      }
     >
       <Stack
         direction="row"
