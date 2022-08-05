@@ -11,7 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { useFormik, FormikContext } from 'formik';
 
-import { ModalSelect } from 'legos';
+import { SelectField } from 'legos';
 
 const modalStyle = {
   marginLeft: 'auto',
@@ -23,21 +23,29 @@ const modalStyle = {
   p: 4,
 };
 
-interface TimeEntryValues {
-  manager: string;
-  hourlyRate: string;
-  employee: string;
-  rate: string;
+const FIELD_TEAM_ENTRY = {
+  manager: 'MANAGER',
+  hourlyRate: 'HOURLYRATE',
+  employee: 'EMPLOYEE',
+  rate: 'RATE',
+} as const;
+
+interface TeamEntryValues {
+  [FIELD_TEAM_ENTRY.manager]: string;
+  [FIELD_TEAM_ENTRY.hourlyRate]: string;
+  [FIELD_TEAM_ENTRY.employee]: string;
+  [FIELD_TEAM_ENTRY.rate]: string;
 }
 
 export const TeamProject = () => {
-  const formik = useFormik<TimeEntryValues>({
-    initialValues: {
-      manager: '',
-      hourlyRate: '',
-      employee: '',
-      rate: '',
-    },
+  const initialValues: TeamEntryValues = {
+    [FIELD_TEAM_ENTRY.manager]: '',
+    [FIELD_TEAM_ENTRY.hourlyRate]: '',
+    [FIELD_TEAM_ENTRY.employee]: '',
+    [FIELD_TEAM_ENTRY.rate]: '',
+  };
+  const formik = useFormik<TeamEntryValues>({
+    initialValues,
     onSubmit: (values) => {
       console.log('===', values);
     },
@@ -69,40 +77,36 @@ export const TeamProject = () => {
 
           <Stack my={3} gap={3}>
             <Stack>
-              <ModalSelect
-                id="manager"
-                name="manager"
+              <SelectField
+                id={FIELD_TEAM_ENTRY.manager}
+                name={FIELD_TEAM_ENTRY.manager}
                 label="Project manager"
-                size="small"
                 items={itemSelectManager}
               />
             </Stack>
 
             <TextField
-              id="hourlyRate"
-              name="hourlyRate"
+              id={FIELD_TEAM_ENTRY.hourlyRate}
+              name={FIELD_TEAM_ENTRY.hourlyRate}
               label="Hourly rate agreements"
-              size="small"
               fullWidth
               multiline
               onChange={handleChange}
             />
             <Stack direction="row" gap={2}>
               <Grid item xs={8}>
-                <ModalSelect
-                  id="employee"
-                  name="employee"
+                <SelectField
+                  id={FIELD_TEAM_ENTRY.employee}
+                  name={FIELD_TEAM_ENTRY.employee}
                   label="Employee"
-                  size="small"
                   items={itemSelectEmployee}
                 />
               </Grid>
               <Grid item xs={4}>
                 <Stack direction="row">
                   <TextField
-                    id="rate"
-                    name="rate"
-                    size="small"
+                    id={FIELD_TEAM_ENTRY.rate}
+                    name={FIELD_TEAM_ENTRY.rate}
                     label="Rate"
                     fullWidth
                     onChange={handleChange}

@@ -10,7 +10,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik, FormikContext } from 'formik';
 
-import { CalendarPicker } from 'legos/CalendarPicker';
+import { CalendarPickerFormik } from 'legos';
 
 const modalStyle = {
   marginLeft: 'auto',
@@ -22,21 +22,29 @@ const modalStyle = {
   p: 4,
 };
 
-interface TimeEntryValues {
-  name: string;
-  client: string;
-  startDate: Date;
-  endDate: Date;
+const FIELD_NEW_PROJECT_ENTRY = {
+  name: 'NAME',
+  client: 'CLIENT',
+  startDate: 'STARTDATE',
+  endDate: 'ENDDATE',
+} as const;
+
+interface NewProjectEntryValues {
+  [FIELD_NEW_PROJECT_ENTRY.name]: string;
+  [FIELD_NEW_PROJECT_ENTRY.client]: string;
+  [FIELD_NEW_PROJECT_ENTRY.startDate]: Date;
+  [FIELD_NEW_PROJECT_ENTRY.endDate]: Date;
 }
 
 export const ProjectLayout = () => {
-  const formik = useFormik<TimeEntryValues>({
-    initialValues: {
-      name: '',
-      client: '',
-      startDate: new Date(),
-      endDate: new Date(),
-    },
+  const initialValues: NewProjectEntryValues = {
+    [FIELD_NEW_PROJECT_ENTRY.name]: '',
+    [FIELD_NEW_PROJECT_ENTRY.client]: '',
+    [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
+    [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(),
+  };
+  const formik = useFormik<NewProjectEntryValues>({
+    initialValues,
     onSubmit: (values) => {
       console.log('===', values);
     },
@@ -57,18 +65,16 @@ export const ProjectLayout = () => {
 
           <Stack my={3} gap={3}>
             <TextField
-              id="name"
-              name="name"
+              id={FIELD_NEW_PROJECT_ENTRY.name}
+              name={FIELD_NEW_PROJECT_ENTRY.name}
               label="Name"
-              size="small"
               multiline
               onChange={handleChange}
             />
             <TextField
-              id="client"
-              name="client"
+              id={FIELD_NEW_PROJECT_ENTRY.client}
+              name={FIELD_NEW_PROJECT_ENTRY.client}
               label="Client"
-              size="small"
               multiline
               onChange={handleChange}
             />
@@ -78,13 +84,15 @@ export const ProjectLayout = () => {
                 <InputLabel>
                   Start Date<span style={{ color: 'red' }}>*</span>
                 </InputLabel>
-                <CalendarPicker />
+                <CalendarPickerFormik
+                  field={FIELD_NEW_PROJECT_ENTRY.startDate}
+                />
               </Stack>
               <Stack>
                 <InputLabel>
                   End Date<span style={{ color: 'red' }}>*</span>
                 </InputLabel>
-                <CalendarPicker />
+                <CalendarPickerFormik field={FIELD_NEW_PROJECT_ENTRY.endDate} />
               </Stack>
             </Stack>
           </Stack>
