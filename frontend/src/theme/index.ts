@@ -1,4 +1,6 @@
 import { createTheme, Theme } from '@mui/material';
+import type {} from '@mui/x-date-pickers/themeAugmentation';
+
 import Poppins300 from '../assets/fonts/poppins-v20-latin-300.woff2';
 import Poppins500 from '../assets/fonts/poppins-v20-latin-500.woff2';
 import Poppins600 from '../assets/fonts/poppins-v20-latin-600.woff2';
@@ -70,6 +72,13 @@ export const theme: Theme = createTheme({
     },
   },
   components: {
+    MuiCalendarPicker: {
+      styleOverrides: {
+        root: {
+          width: '288px',
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: `
         @font-face {
