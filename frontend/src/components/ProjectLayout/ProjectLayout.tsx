@@ -25,7 +25,8 @@ const modalStyle = {
 interface TimeEntryValues {
   name: string;
   client: string;
-  date: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 export const ProjectLayout = () => {
@@ -33,7 +34,8 @@ export const ProjectLayout = () => {
     initialValues: {
       name: '',
       client: '',
-      date: '',
+      startDate: new Date(),
+      endDate: new Date(),
     },
     onSubmit: (values) => {
       console.log('===', values);
@@ -54,33 +56,22 @@ export const ProjectLayout = () => {
           </Stack>
 
           <Stack my={3} gap={3}>
-            <Stack>
-              <InputLabel>
-                Name<span style={{ color: 'red' }}>*</span>
-              </InputLabel>
-              <TextField
-                id="name"
-                name="name"
-                size="small"
-                fullWidth
-                multiline
-                onChange={handleChange}
-              />
-            </Stack>
-            <Stack>
-              <InputLabel>
-                Client<span style={{ color: 'red' }}>*</span>
-              </InputLabel>
-              <TextField
-                id="client"
-                name="client"
-                size="small"
-                placeholder="Select a client"
-                fullWidth
-                multiline
-                onChange={handleChange}
-              />
-            </Stack>
+            <TextField
+              id="name"
+              name="name"
+              label="Name"
+              size="small"
+              multiline
+              onChange={handleChange}
+            />
+            <TextField
+              id="client"
+              name="client"
+              label="Client"
+              size="small"
+              multiline
+              onChange={handleChange}
+            />
 
             <Stack direction="row" justifyContent="space-between">
               <Stack>
@@ -97,7 +88,7 @@ export const ProjectLayout = () => {
               </Stack>
             </Stack>
           </Stack>
-          <Stack direction="row" gap={2}>
+          <Stack direction="row" justifyContent="flex-end" gap={2}>
             <Button variant="outlined">Cancel</Button>
             <Button variant="contained" type="submit">
               Next

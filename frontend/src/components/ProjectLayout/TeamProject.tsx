@@ -6,7 +6,6 @@ import {
   Grid,
   IconButton,
   Stack,
-  InputLabel,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -59,7 +58,7 @@ export const TeamProject = () => {
 
   return (
     <FormikContext.Provider value={formik}>
-      <form onSubmit={handleSubmit} style={{ height: '100%' }}>
+      <form onSubmit={handleSubmit}>
         <Stack sx={modalStyle}>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6">Team</Typography>
