@@ -1,9 +1,9 @@
 import React from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
-import { ProjectTab } from './ProjectTab';
-import { getTotalTime, parseTrackerTime } from '../../helpers';
-import { TrackerEntity } from '../../types/GraphqlTypes';
+import { TrackerItem } from './TrackerItem';
+import { getTotalTime, parseTrackerTime } from 'helpers';
+import { TrackerEntity } from 'types/GraphqlTypes';
 
 type Props = {
   dataTabs: TrackerEntity[] | undefined;
@@ -11,51 +11,40 @@ type Props = {
   index: number;
 };
 
-export const PanelTab = ({ dataTabs, index, value }: Props) => {
+export const PanelTab: React.FC<Props> = ({ dataTabs, index, value }) => {
   const totalTime = getTotalTime(dataTabs);
 
   if (value === index) {
     if (dataTabs && dataTabs?.length > 0) {
       return (
-        <Grid marginTop="-2px" borderTop="2px solid gray">
-          {dataTabs.map(({ attributes, id }, i) => {
+        <Stack>
+          {dataTabs.map(({ attributes, id }) => {
             const trackerTime = parseTrackerTime(attributes?.duration);
             if (trackerTime) {
               return (
-                <Grid
+                <TrackerItem
                   key={id}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  padding="24px 16px"
-                  borderTop={i !== 0 ? '1px solid gray' : 'none'}
-                >
-                  <ProjectTab
-                    id={id}
-                    attributes={attributes}
-                    trackerTime={trackerTime}
-                  />
-                </Grid>
+                  id={id}
+                  attributes={attributes}
+                  trackerTime={trackerTime}
+                />
               );
             }
           })}
-          <Typography
-            variant="h6"
-            padding="24px 16px"
-            borderTop="2px solid gray"
-          >
+          <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
             Total: {totalTime}
           </Typography>
-        </Grid>
+        </Stack>
       );
     }
 
     return (
       <Typography
         variant="h6"
-        marginTop="-2px"
-        padding="24px 16px"
-        borderTop="2px solid gray"
+        borderBottom={2}
+        borderColor="gray"
+        py={4}
+        mb={4}
       >
         Not tracked this day
       </Typography>

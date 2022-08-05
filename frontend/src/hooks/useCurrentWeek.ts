@@ -15,7 +15,7 @@ export const useCurrentWeek = (date: Date) => {
   }
 
   return {
-    currentDay: format(endOfDay(date), 'i'),
+    currentDay: +format(endOfDay(date), 'i') - 1,
     weekStart: format(weekStart, 'yyyy-MM-dd'),
     weekEnd: format(weekEnd, 'yyyy-MM-dd'),
     days,

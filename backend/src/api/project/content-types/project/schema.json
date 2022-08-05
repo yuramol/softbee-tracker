@@ -40,6 +40,12 @@
       "relation": "oneToMany",
       "target": "api::tracker.tracker",
       "mappedBy": "project"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "projects"
     }
   }
 }

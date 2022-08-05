@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
-import Grid from '@mui/material/Grid';
-import Badge from '@mui/material/Badge';
-import { PickersDay } from '@mui/x-date-pickers/PickersDay';
+import {
+  LocalizationProvider,
+  CalendarPicker,
+  PickersDay,
+} from '@mui/x-date-pickers';
+import { Grid, Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
 
 // TODO - change these working days data to real data from the server
@@ -65,11 +66,16 @@ export const TrackerCalendar = () => {
               return day.getMonth() === curMonth ? (
                 <Badge
                   key={day.toString()}
-                  overlap='circular'
+                  overlap="circular"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
                   sx={{
                     '& 	.MuiBadge-badge': {
-                      right: '20px',
-                      top: '30px',
+                      width: '100%',
+                      justifyContent: 'left',
+                      paddingLeft: '2px',
                     },
                   }}
                   badgeContent={
