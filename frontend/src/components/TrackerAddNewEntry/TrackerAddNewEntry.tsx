@@ -10,7 +10,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { useFormik, FormikContext } from 'formik';
 
-import { SelectField } from '../../legos/SelectField';
+import { SelectField } from 'legos';
 import { CalendarPickerFormik } from 'legos/CalendarPicker';
 
 const modalStyle = {
