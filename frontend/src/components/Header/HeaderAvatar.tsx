@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-  Box,
-  IconButton,
-  Menu,
-  Avatar,
-  Tooltip,
-  MenuItem,
-} from '@mui/material';
+import { Box, IconButton, Menu, Tooltip, MenuItem } from '@mui/material';
 
 import { HeaderButton, NavButton } from './NavButton';
 import { HeaderProps } from './types';
 import { useAuth } from '../../AuthProvider';
+import { useUsersPermissionsUser } from 'hooks';
+import { UniversalAvatar } from 'legos';
 
 interface HeaderAvatarProps extends HeaderProps {
   anchorElUser: null | HTMLElement;
@@ -24,7 +19,8 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
   handleOpenUserMenu,
   handleCloseUserMenu,
 }) => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const { userPermission } = useUsersPermissionsUser(user.id);
 
   return (
     <Box sx={{ flexGrow: 0 }}>
@@ -37,10 +33,11 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
             maxHeight: '40px',
           }}
         >
-          <Avatar
-            alt="User avatar"
-            src="https://i.pravatar.cc/300
-"
+          <UniversalAvatar
+            width={40}
+            height={40}
+            name={`${userPermission?.firstName} ${userPermission?.lastName}`}
+            avatar={`https://dev.strapi.track.softbee.io${userPermission?.avatar.data?.attributes?.url}`}
           />
         </IconButton>
       </Tooltip>
