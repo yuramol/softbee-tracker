@@ -6,7 +6,8 @@ import { Box, Grid, Typography, Button, Stack } from '@mui/material';
 import { useAuth } from 'AuthProvider';
 import {
   UPDATE_USERS_PERMISSIONS_USER_MUTATION,
-  UPLOAD_FILE_MUTATION,
+  CREATE_UPLOAD_FILE_MUTATION,
+  UPLOAD_MUTATION,
 } from 'api';
 import { Select, Input } from 'legos';
 import { renderIcons } from './renderIcons';
@@ -14,6 +15,19 @@ import { useUsersPermissionsUser } from 'hooks';
 import { initialValuesType, valuesType } from './types';
 import { profileInfo, validationSchema } from './helpers';
 import { MainWrapper, AvatarUpload, Loader } from 'components';
+
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+
+import { createUploadLink } from 'apollo-upload-client';
+
+const cache = new InMemoryCache();
+
+const client = new ApolloClient({
+  cache,
+  link: createUploadLink({
+    uri: 'http://localhost:3000/graphql',
+  }),
+});
 
 const ProfilePage = () => {
   const { user } = useAuth();
@@ -28,7 +42,8 @@ const ProfilePage = () => {
     UPDATE_USERS_PERMISSIONS_USER_MUTATION
   );
 
-  const [uploadFileMutation] = useMutation(UPLOAD_FILE_MUTATION);
+  // const [uploadFileMutation] = useMutation(CREATE_UPLOAD_FILE_MUTATION);
+  const [uploadMutation] = useMutation(UPLOAD_MUTATION);
 
   const initialValues: initialValuesType = {
     email: userPermission?.email || '',
@@ -63,21 +78,23 @@ const ProfilePage = () => {
     const [file] = e.target.files;
 
     if (file) {
-      uploadFileMutation({
-        variables: {
-          data: {
-            name: file.name,
-            hash: new URL(URL.createObjectURL(file)).hash,
-            size: file.size,
-            mime: file.type,
-            provider: 'local',
-            url: `/uploads/${URL.createObjectURL(file).replace(
-              'blob:http://localhost:3000/',
-              ''
-            )}.jpeg`,
+      console.log(
+        '%c jordan file',
+        'color: lime; font-weight: bold; font-size: 16px; text-transform: uppercase',
+        file
+      );
+      // uploadMutation({
+      //   variables: {
+      //     file: e.target.files[0],
+      //   },
+      // })
+      client
+        .mutate({
+          mutation: UPLOAD_MUTATION,
+          variables: {
+            file,
           },
-        },
-      })
+        })
         .then(({ data }) => {
           if (data?.createUploadFile?.data.id) {
             updateUserMutation({

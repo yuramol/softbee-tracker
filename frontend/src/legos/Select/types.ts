@@ -10,6 +10,6 @@ export type SelectProps = {
   disableUnderline?: boolean;
   onChange: (value: string) => void;
   variant?: 'standard' | 'outlined' | 'filled' | undefined;
-  IconComponent?: () => ReactElement<any, any> | null;
+  IconComponent?: () => ReactElement | null;
   colorDisabledValue?: string;
 };
