@@ -24,10 +24,10 @@ const modalStyle = {
 };
 
 const FIELD_TEAM_ENTRY = {
-  manager: 'MANAGER',
-  hourlyRate: 'HOURLYRATE',
-  employee: 'EMPLOYEE',
-  rate: 'RATE',
+  manager: 'manager',
+  hourlyRate: 'hourlyRate',
+  employee: 'employee',
+  rate: 'rate',
 } as const;
 
 interface TeamEntryValues {

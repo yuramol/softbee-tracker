@@ -24,13 +24,15 @@ const modalStyle = {
 };
 
 const FIELD_NEW_PROJECT_ENTRY = {
-  name: 'NAME',
-  client: 'CLIENT',
-  startDate: 'STARTDATE',
-  endDate: 'ENDDATE',
+  profit: 'profit',
+  name: 'name',
+  client: 'client',
+  startDate: 'startDate',
+  endDate: 'endDate',
 } as const;
 
 interface NewProjectEntryValues {
+  [FIELD_NEW_PROJECT_ENTRY.profit]: string;
   [FIELD_NEW_PROJECT_ENTRY.name]: string;
   [FIELD_NEW_PROJECT_ENTRY.client]: string;
   [FIELD_NEW_PROJECT_ENTRY.startDate]: Date;
@@ -39,6 +41,7 @@ interface NewProjectEntryValues {
 
 export const ProjectLayout = () => {
   const initialValues: NewProjectEntryValues = {
+    [FIELD_NEW_PROJECT_ENTRY.profit]: '',
     [FIELD_NEW_PROJECT_ENTRY.name]: '',
     [FIELD_NEW_PROJECT_ENTRY.client]: '',
     [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
@@ -51,7 +54,9 @@ export const ProjectLayout = () => {
     },
   });
 
-  const { handleChange, handleSubmit } = formik;
+  const [isOpenModal, setIsOpenModal] = useState(true);
+
+  const { handleChange, handleSubmit, setFieldValue } = formik;
 
   const paymentTypes = [
     {
@@ -70,6 +75,7 @@ export const ProjectLayout = () => {
   const [paymentBy, setPaymentBy] = useState(paymentTypes[0]);
   const handleClickButton = (index: number) => {
     setPaymentBy(paymentTypes[index]);
+    setFieldValue(FIELD_NEW_PROJECT_ENTRY.profit, paymentTypes[index].label);
   };
 
   return (
@@ -78,7 +84,7 @@ export const ProjectLayout = () => {
         <Stack sx={modalStyle}>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6">New project</Typography>
-            <IconButton>
+            <IconButton onClick={() => setIsOpenModal(!isOpenModal)}>
               <CloseIcon />
             </IconButton>
           </Stack>
@@ -129,7 +135,12 @@ export const ProjectLayout = () => {
             </Stack>
           </Stack>
           <Stack direction="row" justifyContent="flex-end" gap={2}>
-            <Button variant="outlined">Cancel</Button>
+            <Button
+              variant="outlined"
+              onClick={() => setIsOpenModal(!isOpenModal)}
+            >
+              Cancel
+            </Button>
             <Button variant="contained" type="submit">
               Next
             </Button>
