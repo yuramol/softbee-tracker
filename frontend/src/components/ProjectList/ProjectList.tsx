@@ -1,12 +1,8 @@
 import React, { Fragment } from 'react';
 import { Avatar, Grid, IconButton, Link, Typography } from '@mui/material';
 
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
-import MoneyOffIcon from '@mui/icons-material/MoneyOff';
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Box } from '@mui/system';
-import { UniversalAvatar } from 'legos';
+import { UniversalAvatar, Icon } from 'legos';
 
 //TODO add projects info and info about PR
 const projects = [
@@ -51,17 +47,9 @@ export const ProjectList = () => (
           <Grid item xs={4} container alignItems="center">
             <Avatar sx={{ backgroundColor: 'common.lightBackground', mr: 3 }}>
               {project.type == 'paid' ? (
-                <PaidOutlinedIcon
-                  sx={{
-                    color: 'blue',
-                  }}
-                />
+                <Icon icon="paidOutlined" color="blue" />
               ) : (
-                <MoneyOffIcon
-                  sx={{
-                    color: 'red',
-                  }}
-                />
+                <Icon icon="moneyOff" color="red" />
               )}
             </Avatar>
             <Box>
@@ -80,10 +68,10 @@ export const ProjectList = () => (
           </Grid>
           <Grid item container xs={2}>
             <IconButton aria-label="edit">
-              <EditOutlinedIcon />
+              <Icon icon="editOutlined" />
             </IconButton>
             <IconButton aria-label="archive">
-              <ArchiveOutlinedIcon />
+              <Icon icon="archiveOutlined" />
             </IconButton>
           </Grid>
         </Fragment>

@@ -7,10 +7,9 @@ import {
   Tooltip,
   Stack,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import { useFormik, FormikContext } from 'formik';
 
-import { SelectField } from 'legos';
+import { SelectField, Icon } from 'legos';
 import { CalendarPickerFormik } from 'legos/CalendarPicker';
 
 const modalStyle = {
@@ -63,7 +62,7 @@ export const TrackerAddNewEntry = () => {
           variant="contained"
           onClick={() => setIsOpenModal(!isOpenModal)}
         >
-          <AddIcon />
+          <Icon icon="add" />
         </Button>
       </Tooltip>
       <Modal
