@@ -8,6 +8,11 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
 
+type TrackerCalendarProps = {
+  date: Date | null;
+  setDateHandler: (date: Date) => void;
+};
+
 // TODO - change these working days data to real data from the server
 const testTrackerTime = [
   { time: 8, date: new Date(2022, 6, 25) },
@@ -37,17 +42,25 @@ const lessHourStyles = {
   backgroundColor: '#ff0000',
 };
 
-export const TrackerCalendar = () => {
-  const [date, setDate] = useState<Date | null>(new Date());
-  const [curMonth, setCurMonth] = useState(date?.getMonth());
+export const TrackerCalendar = ({
+  date,
+  setDateHandler,
+}: TrackerCalendarProps) => {
+  const [curDate, setDate] = useState<Date | null>(date);
+  const [currentMonth, setCurrentMonth] = useState(date?.getMonth());
 
   return (
     <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
       <CalendarPicker
-        date={date}
-        onChange={(newDate) => setDate(newDate)}
+        date={curDate}
+        onChange={(newDate) => {
+          if (newDate) {
+            setDateHandler(newDate);
+          }
+          setDate(newDate);
+        }}
         onMonthChange={(newMonth) => {
-          setCurMonth(newMonth.getMonth());
+          setCurrentMonth(newMonth.getMonth());
         }}
         renderDay={(day, _value, DayComponentProps) => {
           const isWeekend = day.getDay() === 0 || day.getDay() === 6;
@@ -61,7 +74,7 @@ export const TrackerCalendar = () => {
             }
           });
 
-          return day.getMonth() === curMonth ? (
+          return day.getMonth() === currentMonth ? (
             <Badge
               key={day.toString()}
               overlap="circular"

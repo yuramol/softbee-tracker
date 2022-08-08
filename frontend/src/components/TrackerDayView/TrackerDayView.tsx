@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 import { useQuery, useMutation } from '@apollo/client';
 import {
@@ -35,13 +35,23 @@ export type TrackerContext = {
   onDeleteTracker: (id: Maybe<string> | undefined) => void;
 };
 
+type TrackerDayViewProps = {
+  date: Date;
+};
+
 export const TimeContext = createContext<TrackerContext>({} as TrackerContext);
 
-export const TrackerDayView = () => {
+export const TrackerDayView = ({ date }: TrackerDayViewProps) => {
   const { user } = useAuth();
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(date);
   const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(currentDate);
   const [tabsValue, setTabsValue] = useState(currentDay);
+
+  useEffect(() => {
+    const { currentDay } = useCurrentWeek(date);
+    setCurrentDate(date);
+    setTabsValue(currentDay);
+  }, [date]);
 
   const { data, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
