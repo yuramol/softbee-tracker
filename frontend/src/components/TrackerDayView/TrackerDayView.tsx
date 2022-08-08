@@ -12,6 +12,8 @@ import {
   subDays,
 } from 'date-fns';
 import { Typography, Button, Stack } from '@mui/material';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
@@ -141,14 +143,14 @@ export const TrackerDayView = () => {
             disabled={isStartEditForEmployee}
             onClick={handlePrevDate}
           >
-            <Icon icon="navigateBefore" />
+            <NavigateBeforeIcon />
           </Button>
           <Button
             variant="outlined"
             disabled={isEndEdit}
             onClick={handleNextDate}
           >
-            <Icon icon="navigateNext" />
+            <NavigateNextIcon />
           </Button>
           <Typography variant="h6" ml={2}>
             {days[tabsValue].day}, {days[tabsValue].date}
