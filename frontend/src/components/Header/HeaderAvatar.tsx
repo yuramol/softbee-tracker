@@ -5,7 +5,7 @@ import { HeaderButton, NavButton } from './NavButton';
 import { HeaderProps } from './types';
 import { useAuth } from '../../AuthProvider';
 import { useUsersPermissionsUser } from 'hooks';
-import { UniversalAvatar } from 'legos';
+import { Avatar } from 'legos';
 
 interface HeaderAvatarProps extends HeaderProps {
   anchorElUser: null | HTMLElement;
@@ -33,7 +33,7 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
             maxHeight: '40px',
           }}
         >
-          <UniversalAvatar
+          <Avatar
             width={40}
             height={40}
             name={`${userPermission?.firstName} ${userPermission?.lastName}`}

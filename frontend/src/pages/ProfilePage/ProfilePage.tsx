@@ -4,10 +4,7 @@ import { useMutation } from '@apollo/client';
 import { Box, Grid, Typography, Button, Stack } from '@mui/material';
 
 import { useAuth } from 'AuthProvider';
-import {
-  UPDATE_USERS_PERMISSIONS_USER_MUTATION,
-  UPLOAD_FILE_MUTATION,
-} from 'api';
+import { UPDATE_USERS_PERMISSIONS_USER_MUTATION, UPLOAD_MUTATION } from 'api';
 import { Select, Input, Icon } from 'legos';
 import { useUsersPermissionsUser } from 'hooks';
 import { initialValuesType, valuesType } from './types';
@@ -27,10 +24,10 @@ const ProfilePage = () => {
     UPDATE_USERS_PERMISSIONS_USER_MUTATION
   );
 
-  const [uploadFileMutation] = useMutation(UPLOAD_FILE_MUTATION);
+  const [uploadMutation] = useMutation(UPLOAD_MUTATION);
 
   const initialValues: initialValuesType = {
-    email: userPermission?.email || '',
+    email: userPermission?.email ?? '',
     phone: userPermission?.phone || '',
     lastName: userPermission?.lastName || '',
     position: userPermission?.position || '',
@@ -62,27 +59,17 @@ const ProfilePage = () => {
     const [file] = e.target.files;
 
     if (file) {
-      uploadFileMutation({
+      uploadMutation({
         variables: {
-          data: {
-            name: file.name,
-            hash: new URL(URL.createObjectURL(file)).hash,
-            size: file.size,
-            mime: file.type,
-            provider: 'local',
-            url: `/uploads/${URL.createObjectURL(file).replace(
-              'blob:http://localhost:3000/',
-              ''
-            )}.jpeg`,
-          },
+          file,
         },
       })
         .then(({ data }) => {
-          if (data?.createUploadFile?.data.id) {
+          if (data?.upload?.data.id) {
             updateUserMutation({
               variables: {
                 id: user.id,
-                data: { avatar: data?.createUploadFile?.data.id },
+                data: { avatar: data?.upload?.data.id },
               },
             });
           }
@@ -91,6 +78,17 @@ const ProfilePage = () => {
       setAvatar(file);
     }
   };
+  console.log(
+    '%c jordan formik.errors',
+    'color: lime; font-weight: bold; font-size: 16px; text-transform: uppercase',
+    formik.errors
+  );
+
+  console.log(
+    '%c jordan formik.values',
+    'color: lime; font-weight: bold; font-size: 16px; text-transform: uppercase',
+    formik.values
+  );
 
   return (
     <MainWrapper>
@@ -219,9 +217,12 @@ const ProfilePage = () => {
                           onChange={(value) =>
                             formik.setFieldValue(fieldName, value)
                           }
+                          helperText={(formik.errors as valuesType)[fieldName]}
                           error={
-                            (formik.touched as valuesType)[fieldName] &&
-                            (formik.errors as valuesType)[fieldName]
+                            !!(
+                              (formik.touched as valuesType)[fieldName] &&
+                              (formik.errors as valuesType)[fieldName]
+                            )
                           }
                         />
                       </Box>

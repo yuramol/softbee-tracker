@@ -1,8 +1,14 @@
 import React, { Fragment } from 'react';
-import { Avatar, Grid, IconButton, Link, Typography } from '@mui/material';
+import {
+  Avatar as MuiAvatar,
+  Grid,
+  IconButton,
+  Link,
+  Typography,
+} from '@mui/material';
 
 import { Box } from '@mui/system';
-import { UniversalAvatar, Icon } from 'legos';
+import { Avatar, Icon } from 'legos';
 
 //TODO add projects info and info about PR
 const projects = [
@@ -45,20 +51,22 @@ export const ProjectList = () => (
       {projects.map((project) => (
         <Fragment key={project.id}>
           <Grid item xs={4} container alignItems="center">
-            <Avatar sx={{ backgroundColor: 'common.lightBackground', mr: 3 }}>
+            <MuiAvatar
+              sx={{ backgroundColor: 'common.lightBackground', mr: 3 }}
+            >
               {project.type == 'paid' ? (
                 <Icon icon="paidOutlined" color="blue" />
               ) : (
                 <Icon icon="moneyOff" color="red" />
               )}
-            </Avatar>
+            </MuiAvatar>
             <Box>
               <Link href="*">{project.projectName}</Link>
               <Typography fontSize="10px">{project.timeLine}</Typography>
             </Box>
           </Grid>
           <Grid container gap={2} item xs={4} alignItems="center">
-            <UniversalAvatar
+            <Avatar
               avatar={project.projectManagerAvatar}
               name={project.projectManager}
             />
