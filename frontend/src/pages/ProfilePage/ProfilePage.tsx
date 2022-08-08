@@ -8,8 +8,7 @@ import {
   UPDATE_USERS_PERMISSIONS_USER_MUTATION,
   UPLOAD_FILE_MUTATION,
 } from 'api';
-import { Select, Input } from 'legos';
-import { renderIcons } from './renderIcons';
+import { Select, Input, Icon } from 'legos';
 import { useUsersPermissionsUser } from 'hooks';
 import { initialValuesType, valuesType } from './types';
 import { profileInfo, validationSchema } from './helpers';
@@ -136,98 +135,101 @@ const ProfilePage = () => {
             />
           </Grid>
           <Grid item xs={6}>
-            {profileInfo.map(({ fieldName, component, items, label, type }) => {
-              if (
-                !isManager &&
-                (fieldName === 'dateEmployment' || fieldName === 'salaryInfo')
-              ) {
-                return null;
-              }
-              if (!edit && fieldName === 'linkedIn') {
-                return (
-                  <Box
-                    key={fieldName}
-                    display="flex"
-                    alignItems="center"
-                    height={48}
-                  >
-                    {renderIcons(fieldName)}
-                    <Box ml={1}>
-                      <a
-                        style={{
-                          color: 'black',
-                        }}
-                        href={formik.values.linkedIn}
-                        target="blank"
-                        rel="noreferrer"
-                      >
-                        <Typography color="black">LinkedIn</Typography>
-                      </a>
-                    </Box>
-                  </Box>
-                );
-              }
-              if (component === 'select') {
-                return (
-                  <Box
-                    key={fieldName}
-                    display="flex"
-                    alignItems="center"
-                    my={1}
-                  >
-                    {renderIcons(fieldName)}
+            {profileInfo.map(
+              ({ fieldName, component, items, label, type, icon }) => {
+                if (
+                  !isManager &&
+                  (fieldName === 'dateEmployment' || fieldName === 'salaryInfo')
+                ) {
+                  return null;
+                }
+                if (!edit && fieldName === 'linkedIn') {
+                  return (
+                    <Box
+                      key={fieldName}
+                      display="flex"
+                      alignItems="center"
+                      height={48}
+                    >
+                      <Icon icon={icon} />
 
-                    <Box width="100%" ml={1}>
-                      {items?.length && (
-                        <Select
+                      <Box ml={1}>
+                        <a
+                          style={{
+                            color: 'black',
+                          }}
+                          href={formik.values.linkedIn}
+                          target="blank"
+                          rel="noreferrer"
+                        >
+                          <Typography color="black">LinkedIn</Typography>
+                        </a>
+                      </Box>
+                    </Box>
+                  );
+                }
+                if (component === 'select') {
+                  return (
+                    <Box
+                      key={fieldName}
+                      display="flex"
+                      alignItems="center"
+                      my={1}
+                    >
+                      <Icon icon={icon} />
+
+                      <Box width="100%" ml={1}>
+                        {items?.length && (
+                          <Select
+                            variant="standard"
+                            value={(formik.values as valuesType)[fieldName]}
+                            onChange={(value) =>
+                              formik.setFieldValue(fieldName, value)
+                            }
+                            disabled={!edit}
+                            items={items}
+                            label={label}
+                            disableUnderline={!edit}
+                            IconComponent={() => null}
+                            colorDisabledValue="black"
+                          />
+                        )}
+                      </Box>
+                    </Box>
+                  );
+                }
+                if (component === 'input') {
+                  return (
+                    <Box
+                      key={fieldName}
+                      display="flex"
+                      alignItems="center"
+                      my={2}
+                    >
+                      <Icon icon={icon} />
+                      <Box ml={1} width="100%">
+                        <Input
+                          disableUnderline={!edit}
                           variant="standard"
+                          disabled={!edit}
+                          fullWidth
                           value={(formik.values as valuesType)[fieldName]}
+                          label={label}
+                          type={type}
                           onChange={(value) =>
                             formik.setFieldValue(fieldName, value)
                           }
-                          disabled={!edit}
-                          items={items}
-                          label={label}
-                          disableUnderline={!edit}
-                          IconComponent={() => null}
-                          colorDisabledValue="black"
+                          error={
+                            (formik.touched as valuesType)[fieldName] &&
+                            (formik.errors as valuesType)[fieldName]
+                          }
                         />
-                      )}
+                      </Box>
                     </Box>
-                  </Box>
-                );
+                  );
+                }
               }
-              if (component === 'input') {
-                return (
-                  <Box
-                    key={fieldName}
-                    display="flex"
-                    alignItems="center"
-                    my={2}
-                  >
-                    {renderIcons(fieldName)}
-                    <Box ml={1} width="100%">
-                      <Input
-                        disableUnderline={!edit}
-                        variant="standard"
-                        disabled={!edit}
-                        fullWidth
-                        value={(formik.values as valuesType)[fieldName]}
-                        label={label}
-                        type={type}
-                        onChange={(value) =>
-                          formik.setFieldValue(fieldName, value)
-                        }
-                        error={
-                          (formik.touched as valuesType)[fieldName] &&
-                          (formik.errors as valuesType)[fieldName]
-                        }
-                      />
-                    </Box>
-                  </Box>
-                );
-              }
-            })}
+            )}
           </Grid>
         </Grid>
       )}
