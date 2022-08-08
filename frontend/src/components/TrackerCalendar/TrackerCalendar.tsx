@@ -53,6 +53,7 @@ export const TrackerCalendar = ({
     <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
       <CalendarPicker
         date={curDate}
+        views={['day']}
         onChange={(newDate) => {
           if (newDate) {
             setDateHandler(newDate);
