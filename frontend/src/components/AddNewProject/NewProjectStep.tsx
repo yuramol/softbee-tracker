@@ -31,7 +31,7 @@ const FIELD_NEW_PROJECT_ENTRY = {
   endDate: 'endDate',
 } as const;
 
-interface NewProjectEntryValues {
+interface NewProjectStepEntryValues {
   [FIELD_NEW_PROJECT_ENTRY.profit]: string;
   [FIELD_NEW_PROJECT_ENTRY.name]: string;
   [FIELD_NEW_PROJECT_ENTRY.client]: string;
@@ -39,15 +39,15 @@ interface NewProjectEntryValues {
   [FIELD_NEW_PROJECT_ENTRY.endDate]: Date;
 }
 
-export const ProjectLayout = () => {
-  const initialValues: NewProjectEntryValues = {
+export const NewProjectStep = () => {
+  const initialValues: NewProjectStepEntryValues = {
     [FIELD_NEW_PROJECT_ENTRY.profit]: '',
     [FIELD_NEW_PROJECT_ENTRY.name]: '',
     [FIELD_NEW_PROJECT_ENTRY.client]: '',
     [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
     [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(),
   };
-  const formik = useFormik<NewProjectEntryValues>({
+  const formik = useFormik<NewProjectStepEntryValues>({
     initialValues,
     onSubmit: (values) => {
       console.log('===', values);

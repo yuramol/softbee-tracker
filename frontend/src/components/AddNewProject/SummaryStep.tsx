@@ -27,15 +27,15 @@ const modalStyle = {
   p: 4,
 };
 
-interface TimeEntryValues {
+interface SummaryStepEntryValues {
   manager: string;
   hourlyRate: string;
   employee: string;
   rate: string;
 }
 
-export const SummaryProject = () => {
-  const formik = useFormik<TimeEntryValues>({
+export const SummaryStep = () => {
+  const formik = useFormik<SummaryStepEntryValues>({
     initialValues: {
       manager: '',
       hourlyRate: '',
@@ -86,7 +86,7 @@ export const SummaryProject = () => {
                 <ListItemText primary={text} />
               </ListItem>
             </List>
-            <Typography variant="subtitle1" component="div">
+            <Typography variant="h6" fontWeight={300}>
               Rate agreements
             </Typography>
 

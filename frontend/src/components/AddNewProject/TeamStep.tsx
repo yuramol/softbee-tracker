@@ -30,21 +30,21 @@ const FIELD_TEAM_ENTRY = {
   rate: 'rate',
 } as const;
 
-interface TeamEntryValues {
+interface TeamStepEntryValues {
   [FIELD_TEAM_ENTRY.manager]: string;
   [FIELD_TEAM_ENTRY.hourlyRate]: string;
   [FIELD_TEAM_ENTRY.employee]: string;
   [FIELD_TEAM_ENTRY.rate]: string;
 }
 
-export const TeamProject = () => {
-  const initialValues: TeamEntryValues = {
+export const TeamStep = () => {
+  const initialValues: TeamStepEntryValues = {
     [FIELD_TEAM_ENTRY.manager]: '',
     [FIELD_TEAM_ENTRY.hourlyRate]: '',
     [FIELD_TEAM_ENTRY.employee]: '',
     [FIELD_TEAM_ENTRY.rate]: '',
   };
-  const formik = useFormik<TeamEntryValues>({
+  const formik = useFormik<TeamStepEntryValues>({
     initialValues,
     onSubmit: (values) => {
       console.log('===', values);
