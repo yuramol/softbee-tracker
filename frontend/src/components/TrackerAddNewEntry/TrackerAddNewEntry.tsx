@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-// import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import {
   Button,
   Typography,
@@ -9,11 +9,15 @@ import {
   Stack,
 } from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
-import { format, startOfDay } from 'date-fns';
+import { format, startOfDay, startOfMonth, subMonths } from 'date-fns';
+import * as yup from 'yup';
 
 import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
 import { Select, Icon } from 'legos';
 import { CalendarPickerFormik } from 'legos/CalendarPicker';
+import { PROJECTS_BY_USER_ID_QUERY } from 'api';
+import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
+import { useAuth } from 'AuthProvider';
 
 const modalStyle = {
   position: 'absolute',
@@ -42,15 +46,15 @@ export interface TimeEntryValues {
 }
 
 export const TrackerAddNewEntry = () => {
+  const { user } = useAuth();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { onCreateTracker } = useContext(TimeContext);
 
-  // TODO Add projects from backend
-  const itemSelectProject = [
-    { id: 1, label: 'LuxWash' },
-    { id: 3, label: 'UpWork' },
-    { id: 4, label: 'SoftBee' },
-  ];
+  const { data } = useQuery<{
+    projects: ProjectEntityResponseCollection;
+  }>(PROJECTS_BY_USER_ID_QUERY, {
+    variables: { userId: user.id },
+  });
 
   const initialValues: TimeEntryValues = {
     [FIELD_TIME_ENTRY.date]: new Date(),
@@ -63,15 +67,24 @@ export const TrackerAddNewEntry = () => {
     setIsOpenModal(!isOpenModal);
   };
 
+  const validationSchema = yup.object({
+    [FIELD_TIME_ENTRY.project]: yup.string().required('Should not be empty'),
+    [FIELD_TIME_ENTRY.description]: yup
+      .string()
+      .min(5, 'Description must be at least 5 characters')
+      .required('Should not be empty'),
+  });
+
   const formik = useFormik<TimeEntryValues>({
     initialValues,
+    validationSchema,
     onSubmit: (values) => {
       onCreateTracker(values);
       toggleOpenModal();
     },
   });
 
-  const { handleChange, handleSubmit } = formik;
+  const { handleChange, handleSubmit, errors, touched } = formik;
 
   return (
     <>
@@ -90,20 +103,29 @@ export const TrackerAddNewEntry = () => {
 
               <Stack my={3} gap={3}>
                 <Stack direction="row" gap={3}>
-                  <CalendarPickerFormik field={FIELD_TIME_ENTRY.date} />
+                  <CalendarPickerFormik
+                    field={FIELD_TIME_ENTRY.date}
+                    minDate={startOfMonth(subMonths(new Date(), 1))}
+                    disableFuture
+                    views={['day']}
+                  />
                   <TextField
                     name={FIELD_TIME_ENTRY.duration}
                     type="time"
                     variant="outlined"
                     fullWidth
-                    value={formik.values.duration}
+                    value={formik.values[FIELD_TIME_ENTRY.duration]}
                     onChange={handleChange}
                   />
                 </Stack>
                 <Select
                   label="Project"
                   name={FIELD_TIME_ENTRY.project}
-                  items={itemSelectProject}
+                  items={data?.projects.data}
+                  error={
+                    touched[FIELD_TIME_ENTRY.project] &&
+                    errors[FIELD_TIME_ENTRY.project]
+                  }
                   onChange={handleChange}
                   variant="outlined"
                 />
@@ -113,6 +135,14 @@ export const TrackerAddNewEntry = () => {
                   fullWidth
                   multiline
                   rows={4}
+                  error={
+                    touched[FIELD_TIME_ENTRY.description] &&
+                    !!errors[FIELD_TIME_ENTRY.description]
+                  }
+                  helperText={
+                    touched[FIELD_TIME_ENTRY.description] &&
+                    errors[FIELD_TIME_ENTRY.description]
+                  }
                   onChange={handleChange}
                 />
               </Stack>
