@@ -42,9 +42,9 @@ export const ProjectList = () => (
         <Grid item xs={4} container alignItems="center">
           <Avatar>
             {project.type == 'paid' ? (
-              <Icon icon="paidOutlined" color="blue" />
+              <Icon icon="paidOutlined" color="primary" />
             ) : (
-              <Icon icon="moneyOff" color="red" />
+              <Icon icon="moneyOff" color="secondary" />
             )}
           </Avatar>
           <Link href="*" sx={{ ml: 3 }}>
