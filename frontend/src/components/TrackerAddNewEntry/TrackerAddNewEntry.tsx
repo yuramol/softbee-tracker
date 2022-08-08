@@ -122,6 +122,7 @@ export const TrackerAddNewEntry = () => {
                   label="Project"
                   name={FIELD_TIME_ENTRY.project}
                   items={data?.projects.data}
+                  value={formik.values[FIELD_TIME_ENTRY.project]}
                   error={
                     touched[FIELD_TIME_ENTRY.project] &&
                     errors[FIELD_TIME_ENTRY.project]

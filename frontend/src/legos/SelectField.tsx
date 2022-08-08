@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   FormControl,
   FormHelperText,
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
 } from '@mui/material';
 import { useFormikContext } from 'formik';
 import { ProjectEntity } from 'types/GraphqlTypes';
@@ -14,6 +13,7 @@ type ModalSelectProps = {
   items: ProjectEntity[] | undefined;
   label: string;
   name: string;
+  value: string;
   error: boolean | string | undefined;
 };
 
@@ -21,16 +21,10 @@ export const SelectField = ({
   items,
   label,
   name,
+  value,
   error,
 }: ModalSelectProps) => {
   const { handleChange } = useFormikContext();
-
-  const [value, setValue] = useState('');
-
-  const handleChangeSelect = (event: SelectChangeEvent) => {
-    setValue(event.target.value as string);
-    handleChange(event);
-  };
 
   return (
     <FormControl fullWidth error={!!error}>
@@ -39,7 +33,7 @@ export const SelectField = ({
         name={name}
         label={label}
         value={value}
-        onChange={(e) => handleChangeSelect(e)}
+        onChange={handleChange}
         sx={{ width: 'auto' }}
       >
         {items?.map(({ id, attributes }) => (
