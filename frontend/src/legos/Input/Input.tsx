@@ -7,7 +7,7 @@ const StyledInput = styled(({ ...otherProps }) => (
 ))`
   & .css-ochvjn-MuiFormLabel-root-MuiInputLabel-root.Mui-disabled {
     color: #6c757d;
-    font-size: 16px;
+    font-size: 14px;
   }
   & .css-1x51dt5-MuiInputBase-input-MuiInput-input.Mui-disabled {
     -webkit-text-fill-color: black;

@@ -4,6 +4,7 @@ import { NavLink } from './NavLink';
 import { UniversalAvatar } from './UniversalAvatar';
 import { StyledIconButton } from './StyledIconButton';
 import { SelectField } from './SelectField';
+import { Icon } from './Icon';
 
 export {
   NavLink,
@@ -12,4 +13,5 @@ export {
   Select,
   Input,
   SelectField,
+  Icon,
 };
