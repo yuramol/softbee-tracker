@@ -1,3 +1,5 @@
+import { IconsNames } from 'legos/Icon';
+
 export type initialValuesType = {
   firstName: string;
   lastName: string;
@@ -12,4 +14,13 @@ export type initialValuesType = {
 
 export type valuesType = {
   [key: string]: string;
+};
+
+export type ProfileInfoType = {
+  label: string;
+  fieldName: string;
+  component: string;
+  type: string;
+  icon: IconsNames;
+  items?: { label: string }[];
 };

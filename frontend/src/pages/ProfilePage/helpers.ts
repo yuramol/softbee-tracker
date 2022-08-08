@@ -1,17 +1,20 @@
 import * as yup from 'yup';
+import { ProfileInfoType } from './types';
 
-export const profileInfo = [
+export const profileInfo: ProfileInfoType[] = [
   {
     label: 'First name',
     fieldName: 'firstName',
     component: 'input',
     type: 'text',
+    icon: 'person',
   },
   {
     label: 'Last name',
     fieldName: 'lastName',
     component: 'input',
     type: 'text',
+    icon: 'person',
   },
   {
     label: 'Position',
@@ -24,36 +27,42 @@ export const profileInfo = [
       { label: 'cto' },
     ],
     type: 'text',
+    icon: 'work',
   },
   {
     label: 'Email',
     fieldName: 'email',
     component: 'input',
     type: 'email',
+    icon: 'email',
   },
   {
     label: 'linkedIn',
     fieldName: 'linkedIn',
     component: 'input',
     type: 'text',
+    icon: 'link',
   },
   {
     label: 'Phone',
     fieldName: 'phone',
     component: 'input',
     type: 'text',
+    icon: 'phone',
   },
   {
     label: 'Date Of Employment',
     fieldName: 'dateEmployment',
     component: 'input',
     type: 'text',
+    icon: 'calendarMonth',
   },
   {
     label: 'Salary Info',
     fieldName: 'salaryInfo',
     component: 'input',
     type: 'text',
+    icon: 'money',
   },
 ];
 

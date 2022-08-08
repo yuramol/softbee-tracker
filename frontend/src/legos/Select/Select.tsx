@@ -7,8 +7,8 @@ import {
 } from '@mui/material';
 import styled from 'styled-components';
 
-import { ArrowDropDown } from '@mui/icons-material';
 import { SelectProps } from './types';
+import { Icon } from 'legos/Icon';
 
 const StyledSelect = styled(({ ...otherProps }) => (
   <MuiSelect {...otherProps} />
@@ -28,7 +28,7 @@ export const Select = ({
   onChange,
   variant = 'standard',
   colorDisabledValue,
-  IconComponent = () => <ArrowDropDown />,
+  IconComponent = () => <Icon icon="arrowDropDown" />,
 }: SelectProps) => (
   <FormControl variant={variant} fullWidth>
     <InputLabel id="select-label">{label}</InputLabel>
