@@ -78,17 +78,6 @@ const ProfilePage = () => {
       setAvatar(file);
     }
   };
-  console.log(
-    '%c jordan formik.errors',
-    'color: lime; font-weight: bold; font-size: 16px; text-transform: uppercase',
-    formik.errors
-  );
-
-  console.log(
-    '%c jordan formik.values',
-    'color: lime; font-weight: bold; font-size: 16px; text-transform: uppercase',
-    formik.values
-  );
 
   return (
     <MainWrapper>
