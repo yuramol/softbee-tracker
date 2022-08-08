@@ -8,10 +8,10 @@ type InputProps = TextFieldProps & {
   onChange: (value: string) => void;
 };
 
-const StyledInput = styled(TextField)(() => ({
-  ' & .css-ochvjn-MuiFormLabel-root-MuiInputLabel-root.Mui-disabled': {
-    color: '#6c757d',
+const StyledInput = styled(TextField)((props) => ({
+  '& label': {
     fontSize: '16px',
+    color: props.disabled ? '#6c757d !important' : 'inherit',
   },
   '& .css-1x51dt5-MuiInputBase-input-MuiInput-input.Mui-disabled': {
     '-webkit-text-fill-color': 'black',
