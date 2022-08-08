@@ -1,32 +1,54 @@
-import React from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import { useFormikContext } from 'formik';
+import { ProjectEntity } from 'types/GraphqlTypes';
 
-type ItemType = { id: number; label: string };
 type ModalSelectProps = {
-  items: ItemType[];
+  items: ProjectEntity[] | undefined;
   label: string;
   name: string;
+  error: boolean | string | undefined;
 };
 
-export const SelectField = ({ items, label, name }: ModalSelectProps) => {
+export const SelectField = ({
+  items,
+  label,
+  name,
+  error,
+}: ModalSelectProps) => {
   const { handleChange } = useFormikContext();
 
+  const [value, setValue] = useState('');
+
+  const handleChangeSelect = (event: SelectChangeEvent) => {
+    setValue(event.target.value as string);
+    handleChange(event);
+  };
+
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth error={!!error}>
       <InputLabel id="select-label">{label}</InputLabel>
       <Select
         name={name}
         label={label}
-        onChange={handleChange}
+        value={value}
+        onChange={(e) => handleChangeSelect(e)}
         sx={{ width: 'auto' }}
       >
-        {items.map(({ id, label }) => (
-          <MenuItem key={label} value={id}>
-            {label}
+        {items?.map(({ id, attributes }) => (
+          <MenuItem key={id} value={id as string}>
+            {attributes?.name}
           </MenuItem>
         ))}
       </Select>
+      {error && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
 };

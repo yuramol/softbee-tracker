@@ -32,7 +32,6 @@ import {
   TrackerInput,
 } from 'types/GraphqlTypes';
 import { parseTrackerTime } from 'helpers';
-import { Icon } from 'legos';
 
 export type TrackerContext = {
   onCreateTracker: (values: TrackerInput) => void;
@@ -67,8 +66,6 @@ export const TrackerDayView = () => {
       ),
       user: user.id,
     };
-
-    console.log(data);
 
     createTracker({ variables: { data } }).then(() => {
       refetch();
