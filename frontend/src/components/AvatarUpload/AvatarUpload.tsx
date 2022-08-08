@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Typography, Box, Button } from '@mui/material';
-import { UniversalAvatar } from 'legos';
+import { Avatar } from 'legos';
 
 type AvatarUploadProps = {
   avatar: Blob | MediaSource;
@@ -23,7 +23,7 @@ export const AvatarUpload = ({
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-        <UniversalAvatar width={180} height={180} name={name} avatar={path} />
+        <Avatar width={180} height={180} name={name} avatar={path} />
         <Button component="label" color="primary" aria-label="upload picture">
           <Typography fontSize={12}>Upload new photo</Typography>
           <input hidden accept="image/*" type="file" onChange={onChange} />
