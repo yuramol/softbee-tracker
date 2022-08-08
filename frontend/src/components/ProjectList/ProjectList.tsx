@@ -55,9 +55,9 @@ export const ProjectList = () => (
               sx={{ backgroundColor: 'common.lightBackground', mr: 3 }}
             >
               {project.type == 'paid' ? (
-                <Icon icon="paidOutlined" color="blue" />
+                <Icon icon="paidOutlined" color="primary" />
               ) : (
-                <Icon icon="moneyOff" color="red" />
+                <Icon icon="moneyOff" color="secondary" />
               )}
             </MuiAvatar>
             <Box>
