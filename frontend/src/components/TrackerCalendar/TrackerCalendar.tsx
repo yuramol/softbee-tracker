@@ -7,6 +7,7 @@ import {
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
+import { LegendCalendar } from './LegendCalendar';
 
 type TrackerCalendarProps = {
   date: Date | null;
@@ -50,65 +51,70 @@ export const TrackerCalendar = ({
   const [currentMonth, setCurrentMonth] = useState(date?.getMonth());
 
   return (
-    <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
-      <CalendarPicker
-        date={curDate}
-        views={['day']}
-        onChange={(newDate) => {
-          if (newDate) {
-            setDateHandler(newDate);
-          }
-          setDate(newDate);
-        }}
-        onMonthChange={(newMonth) => {
-          setCurrentMonth(newMonth.getMonth());
-        }}
-        renderDay={(day, _value, DayComponentProps) => {
-          const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-          let isWorkDay;
-          let isEnoughHours;
-
-          testTrackerTime.find(({ time, date }) => {
-            if (day.getTime() === date.getTime()) {
-              isWorkDay = true;
-              time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
+    <>
+      <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
+        <CalendarPicker
+          date={curDate}
+          views={['day']}
+          onChange={(newDate) => {
+            if (newDate) {
+              setDateHandler(newDate);
             }
-          });
+            setDate(newDate);
+          }}
+          onMonthChange={(newMonth) => {
+            setCurrentMonth(newMonth.getMonth());
+          }}
+          renderDay={(day, _value, DayComponentProps) => {
+            const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+            let isWorkDay;
+            let isEnoughHours;
 
-          return day.getMonth() === currentMonth ? (
-            <Badge
-              key={day.toString()}
-              overlap="circular"
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              sx={{
-                '& 	.MuiBadge-badge': {
-                  width: '100%',
-                  justifyContent: 'left',
-                  paddingLeft: '2px',
-                },
-              }}
-              badgeContent={
-                isWeekend ? (
-                  <div style={weekendStyles}></div>
-                ) : isWorkDay ? (
-                  isEnoughHours ? (
-                    <div style={enoughHourStyles}></div>
-                  ) : (
-                    <div style={lessHourStyles}></div>
-                  )
-                ) : null
+            testTrackerTime.find(({ time, date }) => {
+              if (day.getTime() === date.getTime()) {
+                isWorkDay = true;
+                time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
               }
-            >
+            });
+
+            return day.getMonth() === currentMonth ? (
+              <Badge
+                key={day.toString()}
+                overlap="circular"
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                sx={{
+                  '& 	.MuiBadge-badge': {
+                    width: '100%',
+                    justifyContent: 'left',
+                    paddingLeft: '2px',
+                  },
+                }}
+                badgeContent={
+                  isWeekend ? (
+                    <div style={weekendStyles}></div>
+                  ) : isWorkDay ? (
+                    isEnoughHours ? (
+                      <div style={enoughHourStyles}></div>
+                    ) : (
+                      <div style={lessHourStyles}></div>
+                    )
+                  ) : null
+                }
+              >
+                <PickersDay {...DayComponentProps} />
+              </Badge>
+            ) : (
               <PickersDay {...DayComponentProps} />
-            </Badge>
-          ) : (
-            <PickersDay {...DayComponentProps} />
-          );
-        }}
-      />
-    </LocalizationProvider>
+            );
+          }}
+        />
+      </LocalizationProvider>
+      <LegendCalendar></LegendCalendar>
+    </>
   );
 };
+
+// weekendStyles={weekendStyles} enoughHourStyles={enoughHourStyles} lessHourStyles={lessHourStyles}
