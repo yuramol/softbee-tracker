@@ -13,8 +13,7 @@ import { format, startOfDay, startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
 
 import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
-import { SelectField, Icon } from 'legos';
-import { CalendarPickerFormik } from 'legos/CalendarPicker';
+import { SelectField, Icon, CalendarPickerFormik } from 'legos';
 import { PROJECTS_BY_USER_ID_QUERY } from 'api';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 import { useAuth } from 'AuthProvider';
