@@ -22,16 +22,6 @@ type SummaryStepProps = {
   handleBack: () => void;
 };
 
-const modalStyle = {
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  width: 600,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  borderRadius: 1,
-  p: 4,
-};
-
 interface SummaryStepEntryValues {
   manager: string;
   hourlyRate: string;
@@ -71,7 +61,7 @@ export const SummaryStep = ({ handleNext, handleBack }: SummaryStepProps) => {
   return (
     <FormikContext.Provider value={formik}>
       <form onSubmit={handleSubmit}>
-        <Stack sx={modalStyle}>
+        <Stack>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6">Summary</Typography>
             <IconButton>

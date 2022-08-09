@@ -18,16 +18,6 @@ type TeamStepProps = {
   handleBack: () => void;
 };
 
-const modalStyle = {
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  width: 600,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  borderRadius: 1,
-  p: 4,
-};
-
 const FIELD_TEAM_ENTRY = {
   manager: 'manager',
   hourlyRate: 'hourlyRate',
@@ -77,7 +67,7 @@ export const TeamStep = ({ handleNext, handleBack }: TeamStepProps) => {
   return (
     <FormikContext.Provider value={formik}>
       <form onSubmit={handleSubmit}>
-        <Stack sx={modalStyle}>
+        <Stack>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6">Team</Typography>
             <IconButton>

@@ -17,16 +17,6 @@ type NewProjectStepProps = {
   handleNext: () => void;
 };
 
-const modalStyle = {
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  // width: 600,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  borderRadius: 1,
-  p: 4,
-};
-
 const FIELD_NEW_PROJECT_ENTRY = {
   profit: 'profit',
   name: 'name',
@@ -78,7 +68,7 @@ export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
   const { handleChange, handleSubmit, setFieldValue } = formik;
 
   const [paymentBy, setPaymentBy] = useState(paymentTypes[0]);
-  const handleClickButton = (index: number) => {
+  const handlePaymentType = (index: number) => {
     setPaymentBy(paymentTypes[index]);
     setFieldValue(FIELD_NEW_PROJECT_ENTRY.profit, paymentTypes[index].label);
   };
@@ -90,8 +80,8 @@ export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
 
   return (
     <FormikContext.Provider value={formik}>
-      <form style={{ width: '600px' }} onSubmit={handleSubmit}>
-        <Stack sx={modalStyle}>
+      <form onSubmit={handleSubmit}>
+        <Stack>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6">New project</Typography>
             <IconButton onClick={() => setIsOpenModal(!isOpenModal)}>
@@ -106,7 +96,7 @@ export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
                   key={value}
                   size="large"
                   variant={paymentBy.value === value ? 'contained' : 'outlined'}
-                  onClick={() => handleClickButton(i)}
+                  onClick={() => handlePaymentType(i)}
                 >
                   {label}
                 </Button>
