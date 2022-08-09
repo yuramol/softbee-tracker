@@ -1,23 +1,9 @@
-import React, { ChangeEvent } from 'react';
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select as MuiSelect,
-} from '@mui/material';
-import styled from 'styled-components';
+import React from 'react';
+import { FormControl, InputLabel, MenuItem } from '@mui/material';
 
-import { SelectProps } from './types';
-import { Icon } from 'legos/Icon';
-
-const StyledSelect = styled(({ ...otherProps }) => (
-  <MuiSelect {...otherProps} />
-))`
-  &
-    .css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input.Mui-disabled {
-    -webkit-text-fill-color: ${(props) => props.colordisabledvalue};
-  }
-`;
+import { SelectPropsType } from './types';
+import { Icon } from '../Icon';
+import { StyledSelect } from './styled';
 
 export const Select = ({
   items,
@@ -27,19 +13,19 @@ export const Select = ({
   disableUnderline = false,
   onChange,
   variant = 'standard',
-  colorDisabledValue,
+  readOnly,
   IconComponent = () => <Icon icon="arrowDropDown" />,
-}: SelectProps) => (
+}: SelectPropsType) => (
   <FormControl variant={variant} fullWidth>
     <InputLabel id="select-label">{label}</InputLabel>
     <StyledSelect
-      colordisabledvalue={colorDisabledValue}
       IconComponent={IconComponent}
       disableUnderline={disableUnderline}
-      disabled={disabled}
       label={label}
       value={value}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
+      disabled={disabled}
+      readOnly={readOnly}
+      onChange={({ target: { value } }) => onChange(value)}
       sx={{ maxWidth: '100%', paddingRight: 1 }}
     >
       {items.map((item) => (

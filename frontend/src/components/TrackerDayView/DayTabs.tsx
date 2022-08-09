@@ -8,19 +8,19 @@ import { getTotalTime } from 'helpers';
 import { TrackerEntity } from 'types/GraphqlTypes';
 
 type Props = {
-  currentDate: Date;
+  currentWeekDay: Date;
   dataTabs: TrackerEntity[] | undefined;
   tabsValue: number;
   setTabsValue: (newValue: number) => void;
 };
 
 export const DayTabs: React.FC<Props> = ({
-  currentDate,
+  currentWeekDay,
   dataTabs,
   tabsValue,
   setTabsValue,
 }) => {
-  const { days } = useCurrentWeek(currentDate);
+  const { days } = useCurrentWeek(currentWeekDay);
   const totalTime = getTotalTime(dataTabs);
 
   return (
@@ -56,7 +56,7 @@ export const DayTabs: React.FC<Props> = ({
               }
               disabled={
                 isAfter(
-                  startOfMonth(currentDate),
+                  startOfMonth(currentWeekDay),
                   startOfDay(new Date(fullDate))
                 ) || isFuture(new Date(fullDate))
               }

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 import { useQuery, useMutation } from '@apollo/client';
 import {
@@ -34,13 +34,24 @@ export type TrackerContext = {
   onDeleteTracker: (id: Maybe<string> | undefined) => void;
 };
 
+type TrackerDayViewProps = {
+  selectedDay: Date;
+};
+
 export const TimeContext = createContext<TrackerContext>({} as TrackerContext);
 
-export const TrackerDayView = () => {
+export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
   const { user } = useAuth();
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(currentDate);
+  const [currentWeekDay, setCurrentWeekDay] = useState(selectedDay);
+  const { weekStart, weekEnd, days, currentDay } =
+    useCurrentWeek(currentWeekDay);
   const [tabsValue, setTabsValue] = useState(currentDay);
+
+  useEffect(() => {
+    const { currentDay } = useCurrentWeek(selectedDay);
+    setCurrentWeekDay(selectedDay);
+    setTabsValue(currentDay);
+  }, [selectedDay]);
 
   const { data, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
@@ -64,14 +75,14 @@ export const TrackerDayView = () => {
   };
 
   const handleCurrentDate = () => {
-    setCurrentDate(new Date());
+    setCurrentWeekDay(new Date());
     setTabsValue(+format(new Date(), 'i') - 1);
   };
 
   const handlePrevDate = () => {
     if (tabsValue === 0) {
       setTabsValue(6);
-      setCurrentDate(subDays(new Date(weekStart), 1));
+      setCurrentWeekDay(subDays(new Date(weekStart), 1));
       return;
     }
 
@@ -81,7 +92,7 @@ export const TrackerDayView = () => {
   const handleNextDate = () => {
     if (tabsValue === 6) {
       setTabsValue(0);
-      setCurrentDate(addDays(new Date(weekEnd), 1));
+      setCurrentWeekDay(addDays(new Date(weekEnd), 1));
       return;
     }
 
@@ -94,7 +105,7 @@ export const TrackerDayView = () => {
   );
 
   const isStartEditForEmployee = isAfter(
-    startOfMonth(currentDate),
+    startOfMonth(currentWeekDay),
     subDays(startOfDay(new Date(days[tabsValue].fullDate)), 1)
   );
 
@@ -136,7 +147,7 @@ export const TrackerDayView = () => {
         )}
       </Stack>
       <DayTabs
-        currentDate={currentDate}
+        currentWeekDay={currentWeekDay}
         dataTabs={data?.trackers.data}
         tabsValue={tabsValue}
         setTabsValue={setTabsValue}

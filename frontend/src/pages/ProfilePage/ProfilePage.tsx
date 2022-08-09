@@ -168,17 +168,16 @@ const ProfilePage = () => {
                       <Box width="100%" ml={1}>
                         {items?.length && (
                           <Select
-                            variant="standard"
                             value={(formik.values as valuesType)[fieldName]}
-                            onChange={(value) =>
-                              formik.setFieldValue(fieldName, value)
-                            }
                             disabled={!edit}
                             items={items}
                             label={label}
                             disableUnderline={!edit}
                             IconComponent={() => null}
-                            colorDisabledValue="black"
+                            readOnly={!edit}
+                            onChange={(value) =>
+                              formik.setFieldValue(fieldName, value)
+                            }
                           />
                         )}
                       </Box>
@@ -198,7 +197,6 @@ const ProfilePage = () => {
                         <Input
                           disableUnderline={!edit}
                           variant="standard"
-                          disabled={!edit}
                           fullWidth
                           value={(formik.values as valuesType)[fieldName]}
                           label={label}
@@ -206,6 +204,9 @@ const ProfilePage = () => {
                           onChange={(value) =>
                             formik.setFieldValue(fieldName, value)
                           }
+                          InputProps={{
+                            readOnly: !edit,
+                          }}
                           helperText={(formik.errors as valuesType)[fieldName]}
                           error={
                             !!(

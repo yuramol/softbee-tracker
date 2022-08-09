@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
 
-import { SelectField, Icon } from 'legos';
+import { Select, Icon } from 'legos';
 import { CalendarPickerFormik } from 'legos/CalendarPicker';
 
 const modalStyle = {
@@ -89,11 +89,13 @@ export const TrackerAddNewEntry = () => {
                     onChange={handleChange}
                   />
                 </Stack>
-                <SelectField
+                <Select
                   id={FIELD_TIME_ENTRY.project}
                   name={FIELD_TIME_ENTRY.project}
                   label="Project"
                   items={itemSelectProject}
+                  onChange={handleChange}
+                  variant="outlined"
                 />
                 <TextField
                   id={FIELD_TIME_ENTRY.description}
