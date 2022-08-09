@@ -108,7 +108,6 @@ const ProfilePage = () => {
                   title="Save"
                   variant="contained"
                   onClick={formik.submitForm}
-                  icon="edit"
                 />
               </Stack>
             ) : (
