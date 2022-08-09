@@ -28,6 +28,7 @@ declare module '@mui/material/styles' {
     brandYellow: string;
     successGreen?: string;
     lightGrey?: string;
+    black: string;
   }
 }
 export const theme: Theme = createTheme({
@@ -42,6 +43,7 @@ export const theme: Theme = createTheme({
       brandYellow: '#f5d040',
       successGreen: '#2e7d32',
       lightGrey: '#6c757d',
+      black: '#000000',
     },
     // text: {
     //   primary: '#2e7d32',
