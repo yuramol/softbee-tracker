@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import {
   LocalizationProvider,
   CalendarPicker,
   PickersDay,
 } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
+import { LegendCalendar } from './LegendCalendar';
+
+type TrackerCalendarProps = {
+  selectedDay: Date | null;
+  setSelectedDay: (date: Date) => void;
+};
 
 // TODO - change these working days data to real data from the server
 const testTrackerTime = [
@@ -37,64 +43,76 @@ const lessHourStyles = {
   backgroundColor: '#ff0000',
 };
 
-export const TrackerCalendar = () => {
-  const [date, setDate] = useState<Date | null>(new Date());
-  const [curMonth, setCurMonth] = useState(date?.getMonth());
+export const TrackerCalendar = ({
+  selectedDay,
+  setSelectedDay,
+}: TrackerCalendarProps) => {
+  const [curDay, setCurDay] = useState<Date | null>(selectedDay);
+  const [curMonth, setCurMonth] = useState(selectedDay?.getMonth());
 
   return (
-    <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
-      <CalendarPicker
-        date={date}
-        onChange={(newDate) => setDate(newDate)}
-        onMonthChange={(newMonth) => {
-          setCurMonth(newMonth.getMonth());
-        }}
-        renderDay={(day, _value, DayComponentProps) => {
-          const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-          let isWorkDay;
-          let isEnoughHours;
-
-          testTrackerTime.find(({ time, date }) => {
-            if (day.getTime() === date.getTime()) {
-              isWorkDay = true;
-              time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
+    <>
+      <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
+        <CalendarPicker
+          date={curDay}
+          views={['day']}
+          onChange={(newDate) => {
+            if (newDate) {
+              setSelectedDay(newDate);
             }
-          });
+            setCurDay(newDate);
+          }}
+          onMonthChange={(newMonth) => {
+            setCurMonth(newMonth.getMonth());
+          }}
+          renderDay={(day, _value, DayComponentProps) => {
+            const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+            let isWorkDay;
+            let isEnoughHours;
 
-          return day.getMonth() === curMonth ? (
-            <Badge
-              key={day.toString()}
-              overlap="circular"
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              sx={{
-                '& 	.MuiBadge-badge': {
-                  width: '100%',
-                  justifyContent: 'left',
-                  paddingLeft: '2px',
-                },
-              }}
-              badgeContent={
-                isWeekend ? (
-                  <div style={weekendStyles}></div>
-                ) : isWorkDay ? (
-                  isEnoughHours ? (
-                    <div style={enoughHourStyles}></div>
-                  ) : (
-                    <div style={lessHourStyles}></div>
-                  )
-                ) : null
+            testTrackerTime.find(({ time, date }) => {
+              if (day.getTime() === date.getTime()) {
+                isWorkDay = true;
+                time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
               }
-            >
+            });
+
+            return day.getMonth() === curMonth ? (
+              <Badge
+                key={day.toString()}
+                overlap="circular"
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                sx={{
+                  '& 	.MuiBadge-badge': {
+                    width: '100%',
+                    justifyContent: 'left',
+                    paddingLeft: '2px',
+                  },
+                }}
+                badgeContent={
+                  isWeekend ? (
+                    <div style={weekendStyles}></div>
+                  ) : isWorkDay ? (
+                    isEnoughHours ? (
+                      <div style={enoughHourStyles}></div>
+                    ) : (
+                      <div style={lessHourStyles}></div>
+                    )
+                  ) : null
+                }
+              >
+                <PickersDay {...DayComponentProps} />
+              </Badge>
+            ) : (
               <PickersDay {...DayComponentProps} />
-            </Badge>
-          ) : (
-            <PickersDay {...DayComponentProps} />
-          );
-        }}
-      />
-    </LocalizationProvider>
+            );
+          }}
+        />
+      </LocalizationProvider>
+      <LegendCalendar />
+    </>
   );
 };

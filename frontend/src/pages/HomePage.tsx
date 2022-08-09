@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 
 import {
@@ -9,17 +9,22 @@ import {
 } from '../components';
 
 const HomePage = () => {
+  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
+
   return (
     <MainWrapper
       sidebar={
         <>
           <TimeInspector />
-          <TrackerCalendar />
+          <TrackerCalendar
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+          />
         </>
       }
     >
       <Typography variant="h1">Tracker</Typography>
-      <TrackerDayView />
+      <TrackerDayView selectedDay={selectedDay} />
     </MainWrapper>
   );
 };
