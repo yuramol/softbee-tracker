@@ -11,10 +11,6 @@ import {
 const HomePage = () => {
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
-  const setDateHandler = (date: Date) => {
-    setSelectedDay(date);
-  };
-
   return (
     <MainWrapper
       sidebar={
@@ -22,7 +18,7 @@ const HomePage = () => {
           <TimeInspector />
           <TrackerCalendar
             selectedDay={selectedDay}
-            setDateHandler={setDateHandler}
+            setSelectedDay={setSelectedDay}
           />
         </>
       }

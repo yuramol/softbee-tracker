@@ -11,7 +11,7 @@ import { LegendCalendar } from './LegendCalendar';
 
 type TrackerCalendarProps = {
   selectedDay: Date | null;
-  setDateHandler: (date: Date) => void;
+  setSelectedDay: (date: Date) => void;
 };
 
 // TODO - change these working days data to real data from the server
@@ -45,25 +45,25 @@ const lessHourStyles = {
 
 export const TrackerCalendar = ({
   selectedDay,
-  setDateHandler,
+  setSelectedDay,
 }: TrackerCalendarProps) => {
-  const [curDate, setDate] = useState<Date | null>(selectedDay);
-  const [curMonth, setcurMonth] = useState(selectedDay?.getMonth());
+  const [curDay, setCurDay] = useState<Date | null>(selectedDay);
+  const [curMonth, setCurMonth] = useState(selectedDay?.getMonth());
 
   return (
     <>
       <LocalizationProvider adapterLocale={enGb} dateAdapter={AdapterDateFns}>
         <CalendarPicker
-          date={curDate}
+          date={curDay}
           views={['day']}
           onChange={(newDate) => {
             if (newDate) {
-              setDateHandler(newDate);
+              setSelectedDay(newDate);
             }
-            setDate(newDate);
+            setCurDay(newDate);
           }}
           onMonthChange={(newMonth) => {
-            setcurMonth(newMonth.getMonth());
+            setCurMonth(newMonth.getMonth());
           }}
           renderDay={(day, _value, DayComponentProps) => {
             const isWeekend = day.getDay() === 0 || day.getDay() === 6;
