@@ -17,6 +17,11 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik, FormikContext } from 'formik';
 
+type SummaryStepProps = {
+  handleNext: () => void;
+  handleBack: () => void;
+};
+
 const modalStyle = {
   marginLeft: 'auto',
   marginRight: 'auto',
@@ -34,7 +39,7 @@ interface SummaryStepEntryValues {
   rate: string;
 }
 
-export const SummaryStep = () => {
+export const SummaryStep = ({ handleNext, handleBack }: SummaryStepProps) => {
   const formik = useFormik<SummaryStepEntryValues>({
     initialValues: {
       manager: '',
@@ -57,6 +62,11 @@ export const SummaryStep = () => {
   ];
 
   const text = `Client: ${10}`;
+
+  const handleNextWindow = () => {
+    handleNext();
+    handleSubmit();
+  };
 
   return (
     <FormikContext.Provider value={formik}>
@@ -128,10 +138,14 @@ export const SummaryStep = () => {
           </Stack>
 
           <Stack direction="row" justifyContent="flex-end">
-            <Button sx={{ mr: '10px' }} variant="outlined">
+            <Button onClick={handleBack} sx={{ mr: '10px' }} variant="outlined">
               Back
             </Button>
-            <Button variant="contained" type="submit">
+            <Button
+              onClick={handleNextWindow}
+              variant="contained"
+              type="submit"
+            >
               Create
             </Button>
           </Stack>

@@ -13,6 +13,11 @@ import { useFormik, FormikContext } from 'formik';
 
 import { SelectField } from 'legos';
 
+type TeamStepProps = {
+  handleNext: () => void;
+  handleBack: () => void;
+};
+
 const modalStyle = {
   marginLeft: 'auto',
   marginRight: 'auto',
@@ -37,7 +42,7 @@ interface TeamStepEntryValues {
   [FIELD_TEAM_ENTRY.rate]: string;
 }
 
-export const TeamStep = () => {
+export const TeamStep = ({ handleNext, handleBack }: TeamStepProps) => {
   const initialValues: TeamStepEntryValues = {
     [FIELD_TEAM_ENTRY.manager]: '',
     [FIELD_TEAM_ENTRY.hourlyRate]: '',
@@ -63,6 +68,11 @@ export const TeamStep = () => {
     { label: 'Oleg' },
     { label: 'Michael' },
   ];
+
+  const handleNextWindow = () => {
+    handleNext();
+    handleSubmit();
+  };
 
   return (
     <FormikContext.Provider value={formik}>
@@ -120,8 +130,14 @@ export const TeamStep = () => {
           </Stack>
 
           <Stack direction="row" justifyContent="flex-end" gap={2}>
-            <Button variant="outlined">Back</Button>
-            <Button variant="contained" type="submit">
+            <Button onClick={handleBack} variant="outlined">
+              Back
+            </Button>
+            <Button
+              onClick={handleNextWindow}
+              variant="contained"
+              type="submit"
+            >
               Next
             </Button>
           </Stack>

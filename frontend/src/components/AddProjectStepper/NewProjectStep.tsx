@@ -13,10 +13,14 @@ import { useFormik, FormikContext } from 'formik';
 
 import { CalendarPickerFormik } from 'legos';
 
+type NewProjectStepProps = {
+  handleNext: () => void;
+};
+
 const modalStyle = {
   marginLeft: 'auto',
   marginRight: 'auto',
-  width: 600,
+  // width: 600,
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 1,
@@ -39,9 +43,24 @@ interface NewProjectStepEntryValues {
   [FIELD_NEW_PROJECT_ENTRY.endDate]: Date;
 }
 
-export const NewProjectStep = () => {
+const paymentTypes = [
+  {
+    label: 'Time & Material',
+    value: 'Time & Material',
+  },
+  {
+    label: 'Fixed Price',
+    value: 'Fixed Price',
+  },
+  {
+    label: 'Non Profit',
+    value: 'Non Profit',
+  },
+];
+
+export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
   const initialValues: NewProjectStepEntryValues = {
-    [FIELD_NEW_PROJECT_ENTRY.profit]: '',
+    [FIELD_NEW_PROJECT_ENTRY.profit]: 'Time & Material',
     [FIELD_NEW_PROJECT_ENTRY.name]: '',
     [FIELD_NEW_PROJECT_ENTRY.client]: '',
     [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
@@ -58,29 +77,20 @@ export const NewProjectStep = () => {
 
   const { handleChange, handleSubmit, setFieldValue } = formik;
 
-  const paymentTypes = [
-    {
-      label: 'Time & Material',
-      value: 'Time & Material',
-    },
-    {
-      label: 'Fixed Price',
-      value: 'Fixed Price',
-    },
-    {
-      label: 'Non Profit',
-      value: 'Non Profit',
-    },
-  ];
   const [paymentBy, setPaymentBy] = useState(paymentTypes[0]);
   const handleClickButton = (index: number) => {
     setPaymentBy(paymentTypes[index]);
     setFieldValue(FIELD_NEW_PROJECT_ENTRY.profit, paymentTypes[index].label);
   };
 
+  const handleNextWindow = () => {
+    handleNext();
+    handleSubmit();
+  };
+
   return (
     <FormikContext.Provider value={formik}>
-      <form onSubmit={handleSubmit}>
+      <form style={{ width: '600px' }} onSubmit={handleSubmit}>
         <Stack sx={modalStyle}>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h6">New project</Typography>
@@ -141,7 +151,11 @@ export const NewProjectStep = () => {
             >
               Cancel
             </Button>
-            <Button variant="contained" type="submit">
+            <Button
+              onClick={handleNextWindow}
+              variant="contained"
+              type="submit"
+            >
               Next
             </Button>
           </Stack>
