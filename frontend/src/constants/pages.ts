@@ -8,7 +8,7 @@ export const pages = [
     href: '/login',
     mainMenu: true,
     role: [Role.Public],
-    Component: lazy(() => import('../pages/LoginPage')),
+    Component: lazy(() => import('pages/LoginPage')),
   },
   {
     index: false,
@@ -16,7 +16,7 @@ export const pages = [
     href: '/register',
     mainMenu: true,
     role: [Role.Public],
-    Component: lazy(() => import('../pages/LoginPage')),
+    Component: lazy(() => import('pages/LoginPage')),
   },
   {
     index: true,
@@ -24,7 +24,7 @@ export const pages = [
     href: '/',
     mainMenu: true,
     role: [Role.Employee, Role.Manager],
-    Component: lazy(() => import('../pages/HomePage')),
+    Component: lazy(() => import('pages/HomePage')),
   },
   {
     index: false,
@@ -32,7 +32,7 @@ export const pages = [
     href: '/profile',
     mainMenu: false,
     role: [Role.Employee, Role.Manager],
-    Component: lazy(() => import('../pages/ProfilePage')),
+    Component: lazy(() => import('pages/ProfilePage/ProfilePage')),
   },
   {
     index: false,
@@ -40,7 +40,7 @@ export const pages = [
     href: '/projects',
     mainMenu: true,
     role: [Role.Manager],
-    Component: lazy(() => import('../pages/ProjectPage')),
+    Component: lazy(() => import('pages/ProjectPage')),
   },
   {
     index: false,
@@ -48,6 +48,6 @@ export const pages = [
     href: '/reports',
     mainMenu: true,
     role: [Role.Manager],
-    Component: lazy(() => import('../pages/ReportPage')),
+    Component: lazy(() => import('pages/ReportPage')),
   },
 ];

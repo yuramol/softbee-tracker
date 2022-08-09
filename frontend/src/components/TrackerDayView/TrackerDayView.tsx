@@ -12,8 +12,6 @@ import {
   subDays,
 } from 'date-fns';
 import { Typography, Button, Stack } from '@mui/material';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
@@ -29,6 +27,7 @@ import {
   Scalars,
   TrackerEntityResponseCollection,
 } from 'types/GraphqlTypes';
+import { Icon } from 'legos';
 
 export type TrackerContext = {
   onUpdateTracker: (time: Date, id: Maybe<string> | undefined) => void;
@@ -128,14 +127,14 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
             disabled={isStartEditForEmployee}
             onClick={handlePrevDate}
           >
-            <NavigateBeforeIcon />
+            <Icon icon="navigateBefore" />
           </Button>
           <Button
             variant="outlined"
             disabled={isEndEdit}
             onClick={handleNextDate}
           >
-            <NavigateNextIcon />
+            <Icon icon="navigateNext" />
           </Button>
           <Typography variant="h6" ml={2}>
             {days[tabsValue].day}, {days[tabsValue].date}

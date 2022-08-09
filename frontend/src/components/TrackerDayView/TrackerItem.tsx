@@ -9,14 +9,11 @@ import {
   Stack,
 } from '@mui/material';
 import { format } from 'date-fns';
-import EditIcon from '@mui/icons-material/Edit';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { TimeContext } from './TrackerDayView';
 import { parseTrackerTime } from 'helpers';
 import { Maybe, Tracker } from 'types/GraphqlTypes';
+import { Icon } from 'legos';
 
 type Props = {
   id: Maybe<string> | undefined;
@@ -96,7 +93,7 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
           </Typography>
         )}
         <IconButton color="primary" onClick={() => setIsEdit(!isEdit)}>
-          <EditIcon fontSize="small" />
+          <Icon icon="edit" size="small" />
         </IconButton>
         <IconButton
           size="large"
@@ -105,16 +102,16 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
           onClick={() => setIsTrackerStart(!isTrackerStart)}
         >
           {isTrackerStart ? (
-            <PauseIcon fontSize="inherit" />
+            <Icon icon="pause" size="inherit" />
           ) : (
-            <PlayArrowIcon fontSize="inherit" />
+            <Icon icon="playArrow" size="inherit" />
           )}
         </IconButton>
         <IconButton
           color="error"
           onClick={(e) => handleClickDeleteButton(e.currentTarget)}
         >
-          <DeleteOutlineIcon />
+          <Icon icon="deleteOutline" />
         </IconButton>
         {isPopperOpen && (
           <ClickAwayListener onClickAway={handleClickAway}>

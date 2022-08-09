@@ -1,12 +1,12 @@
 import {
   ApolloClient,
   ApolloLink,
-  createHttpLink,
   InMemoryCache,
   ServerError,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
+import { createUploadLink } from 'apollo-upload-client';
 
 const errorLink = onError(({ networkError }) => {
   if (networkError && (networkError as ServerError).statusCode === 401) {
@@ -33,7 +33,7 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
   uri: process.env.REACT_APP_GRAPHQL_URI,
 });
 
