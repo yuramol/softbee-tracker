@@ -52,7 +52,7 @@ export const TimeInspector = () => {
   const { data } = useQuery<{
     projects: ProjectEntityResponseCollection;
   }>(PROJECTS_TRECKERS_BY_USER_ID_QUERY, {
-    variables: { userId: user.id, filterByDate: inspectBy.filter },
+    variables: { userId: user.id, period: inspectBy.filter },
   });
 
   const handleClickButton = (index: number) => {
