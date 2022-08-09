@@ -13,8 +13,7 @@ import { format, startOfDay, startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
 
 import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
-import { Select, Icon } from 'legos';
-import { CalendarPickerFormik } from 'legos/CalendarPicker';
+import { Select, Icon, CalendarPickerFormik } from 'legos';
 import { PROJECTS_BY_USER_ID_QUERY } from 'api';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 import { useAuth } from 'AuthProvider';
@@ -127,7 +126,6 @@ export const TrackerAddNewEntry = () => {
                     touched[FIELD_TIME_ENTRY.project] &&
                     errors[FIELD_TIME_ENTRY.project]
                   }
-                  onChange={handleChange}
                   variant="outlined"
                 />
                 <TextField
