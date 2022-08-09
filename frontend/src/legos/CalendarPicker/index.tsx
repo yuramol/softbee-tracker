@@ -1,3 +1,2 @@
-import { CalendarPicker } from './CalendarPicker';
-import { CalendarPickerFormik } from './CalendarPickerFormik';
-export { CalendarPicker, CalendarPickerFormik };
+export { CalendarPicker } from './CalendarPicker';
+export { CalendarPickerFormik } from './CalendarPickerFormik';

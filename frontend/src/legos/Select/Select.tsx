@@ -1,38 +1,48 @@
 import React from 'react';
-import { FormControl, InputLabel, MenuItem } from '@mui/material';
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+} from '@mui/material';
 
 import { SelectPropsType } from './types';
 import { Icon } from '../Icon';
 import { StyledSelect } from './styled';
 
 export const Select = ({
+  name,
   items,
   label,
   disabled,
   value,
-  disableUnderline = false,
+  error,
+  errorText,
   onChange,
   variant = 'standard',
   readOnly,
   IconComponent = () => <Icon icon="arrowDropDown" />,
+  ...props
 }: SelectPropsType) => (
-  <FormControl variant={variant} fullWidth>
+  <FormControl variant={variant} fullWidth error={error}>
     <InputLabel id="select-label">{label}</InputLabel>
     <StyledSelect
       IconComponent={IconComponent}
-      disableUnderline={disableUnderline}
       label={label}
       value={value}
+      name={name}
       disabled={disabled}
       readOnly={readOnly}
-      onChange={({ target: { value } }) => onChange(value)}
+      onChange={onChange}
       sx={{ maxWidth: '100%', paddingRight: 1 }}
+      {...props}
     >
-      {items.map((item) => (
-        <MenuItem key={item.label} value={item.label}>
-          {item.label}
+      {items?.map(({ id, attributes }) => (
+        <MenuItem key={id} value={id as string}>
+          {attributes?.name}
         </MenuItem>
       ))}
     </StyledSelect>
+    {error && <FormHelperText>{errorText}</FormHelperText>}
   </FormControl>
 );

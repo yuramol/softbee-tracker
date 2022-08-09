@@ -1,33 +1,48 @@
 import React from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
 import { useFormikContext } from 'formik';
+import { ProjectEntity } from 'types/GraphqlTypes';
 
-type ItemType = { label: string };
 type ModalSelectProps = {
-  items: ItemType[];
+  items: ProjectEntity[] | undefined;
   label: string;
-  id: string;
   name: string;
+  value: string;
+  error: boolean | string | undefined;
 };
 
-export const SelectField = ({ items, label, name }: ModalSelectProps) => {
+export const SelectField = ({
+  items,
+  label,
+  name,
+  value,
+  error,
+}: ModalSelectProps) => {
   const { handleChange } = useFormikContext();
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth error={!!error}>
       <InputLabel id="select-label">{label}</InputLabel>
       <Select
         name={name}
         label={label}
+        value={value}
         onChange={handleChange}
         sx={{ width: 'auto' }}
       >
-        {items.map((item) => (
-          <MenuItem key={item.label} value={item.label}>
-            {item.label}
+        {items?.map(({ id, attributes }) => (
+          <MenuItem key={id} value={id as string}>
+            {attributes?.name}
           </MenuItem>
         ))}
       </Select>
+      {error && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
 };
