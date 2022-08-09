@@ -36,22 +36,22 @@ export type TrackerContext = {
 };
 
 type TrackerDayViewProps = {
-  date: Date;
+  selectedDay: Date;
 };
 
 export const TimeContext = createContext<TrackerContext>({} as TrackerContext);
 
-export const TrackerDayView = ({ date }: TrackerDayViewProps) => {
+export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
   const { user } = useAuth();
-  const [currentDate, setCurrentDate] = useState(date);
+  const [currentDate, setCurrentDate] = useState(selectedDay);
   const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(currentDate);
   const [tabsValue, setTabsValue] = useState(currentDay);
 
   useEffect(() => {
-    const { currentDay } = useCurrentWeek(date);
-    setCurrentDate(date);
+    const { currentDay } = useCurrentWeek(selectedDay);
+    setCurrentDate(selectedDay);
     setTabsValue(currentDay);
-  }, [date]);
+  }, [selectedDay]);
 
   const { data, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;

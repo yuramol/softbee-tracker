@@ -10,7 +10,7 @@ import enGb from 'date-fns/locale/en-GB';
 import { LegendCalendar } from './LegendCalendar';
 
 type TrackerCalendarProps = {
-  date: Date | null;
+  selectedDay: Date | null;
   setDateHandler: (date: Date) => void;
 };
 
@@ -44,11 +44,11 @@ const lessHourStyles = {
 };
 
 export const TrackerCalendar = ({
-  date,
+  selectedDay,
   setDateHandler,
 }: TrackerCalendarProps) => {
-  const [curDate, setDate] = useState<Date | null>(date);
-  const [currentMonth, setCurrentMonth] = useState(date?.getMonth());
+  const [curDate, setDate] = useState<Date | null>(selectedDay);
+  const [curMonth, setcurMonth] = useState(selectedDay?.getMonth());
 
   return (
     <>
@@ -63,7 +63,7 @@ export const TrackerCalendar = ({
             setDate(newDate);
           }}
           onMonthChange={(newMonth) => {
-            setCurrentMonth(newMonth.getMonth());
+            setcurMonth(newMonth.getMonth());
           }}
           renderDay={(day, _value, DayComponentProps) => {
             const isWeekend = day.getDay() === 0 || day.getDay() === 6;
@@ -77,7 +77,7 @@ export const TrackerCalendar = ({
               }
             });
 
-            return day.getMonth() === currentMonth ? (
+            return day.getMonth() === curMonth ? (
               <Badge
                 key={day.toString()}
                 overlap="circular"
@@ -112,9 +112,7 @@ export const TrackerCalendar = ({
           }}
         />
       </LocalizationProvider>
-      <LegendCalendar></LegendCalendar>
+      <LegendCalendar />
     </>
   );
 };
-
-// weekendStyles={weekendStyles} enoughHourStyles={enoughHourStyles} lessHourStyles={lessHourStyles}

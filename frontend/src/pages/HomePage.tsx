@@ -9,10 +9,10 @@ import {
 } from '../components';
 
 const HomePage = () => {
-  const [currentDate, setDate] = useState<Date>(new Date());
+  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
   const setDateHandler = (date: Date) => {
-    setDate(date);
+    setSelectedDay(date);
   };
 
   return (
@@ -20,12 +20,15 @@ const HomePage = () => {
       sidebar={
         <>
           <TimeInspector />
-          <TrackerCalendar date={currentDate} setDateHandler={setDateHandler} />
+          <TrackerCalendar
+            selectedDay={selectedDay}
+            setDateHandler={setDateHandler}
+          />
         </>
       }
     >
       <Typography variant="h1">Tracker</Typography>
-      <TrackerDayView date={currentDate} />
+      <TrackerDayView selectedDay={selectedDay} />
     </MainWrapper>
   );
 };
