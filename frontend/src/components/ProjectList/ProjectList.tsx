@@ -1,14 +1,9 @@
 import React, { Fragment } from 'react';
-import {
-  Avatar as MuiAvatar,
-  Grid,
-  IconButton,
-  Link,
-  Typography,
-} from '@mui/material';
+import { IconButton, Link, Stack, Typography } from '@mui/material';
 
 import { Box } from '@mui/system';
-import { Avatar, Icon } from 'legos';
+import { Avatar, Icon, Select, SelectField } from 'legos';
+import { Filter } from '@mui/icons-material';
 
 //TODO add projects info and info about PR
 const projects = [
@@ -35,55 +30,67 @@ const projects = [
     projectManagerAvatar: 'https://i.pravatar.cc/300',
   },
 ];
+const itemSelectProject = [{ label: 'date' }, { label: 'pm' }];
 
 export const ProjectList = () => (
   <>
-    <Typography sx={{ mt: 3 }} variant="h5">
-      Projects
-    </Typography>
-    <Grid
-      sx={{ mt: 2 }}
-      container
-      spacing={2}
-      justifyContent="space-between"
-      alignItems="flex-start"
-    >
+    {/* <Icon icon="Filter" color="success" /> */}
+    <Select
+      onChange={() => {
+        console.log('s');
+      }}
+      label="Filters"
+      items={itemSelectProject}
+    />
+    <Stack spacing={2}>
       {projects.map((project) => (
         <Fragment key={project.id}>
-          <Grid item xs={4} container alignItems="center">
-            <MuiAvatar
-              sx={{ backgroundColor: 'common.lightBackground', mr: 3 }}
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Box>
+                {project.type == 'paid' ? (
+                  <Icon icon="paidOutlined" color="success" />
+                ) : (
+                  <Icon icon="moneyOff" color="warning" />
+                )}
+              </Box>
+
+              <Box>
+                <Link href="*">{project.projectName}</Link>
+                <Typography fontSize="10px">{project.timeLine}</Typography>
+              </Box>
+            </Stack>
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1}
+              width="300px"
             >
-              {project.type == 'paid' ? (
-                <Icon icon="paidOutlined" color="primary" />
-              ) : (
-                <Icon icon="moneyOff" color="secondary" />
-              )}
-            </MuiAvatar>
+              <Avatar
+                avatar={project.projectManagerAvatar}
+                name={project.projectManager}
+              />
+              <Link href="*" underline="none">
+                {project.projectManager}
+              </Link>
+            </Stack>
+
             <Box>
-              <Link href="*">{project.projectName}</Link>
-              <Typography fontSize="10px">{project.timeLine}</Typography>
+              <IconButton aria-label="edit">
+                <Icon icon="editOutlined" />
+              </IconButton>
+              <IconButton aria-label="archive">
+                <Icon icon="archiveOutlined" />
+              </IconButton>
             </Box>
-          </Grid>
-          <Grid container gap={2} item xs={4} alignItems="center">
-            <Avatar
-              avatar={project.projectManagerAvatar}
-              name={project.projectManager}
-            />
-            <Link href="*" underline="none">
-              {project.projectManager}
-            </Link>
-          </Grid>
-          <Grid item container xs={2}>
-            <IconButton aria-label="edit">
-              <Icon icon="editOutlined" />
-            </IconButton>
-            <IconButton aria-label="archive">
-              <Icon icon="archiveOutlined" />
-            </IconButton>
-          </Grid>
+          </Stack>
         </Fragment>
       ))}
-    </Grid>
+    </Stack>
   </>
 );
