@@ -12,6 +12,8 @@ import {
   subDays,
 } from 'date-fns';
 import { Typography, Button, Stack } from '@mui/material';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
@@ -21,15 +23,18 @@ import {
   TRECKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
+  CREATE_TRACKER_BY_USER_ID_MUTATION,
 } from 'api';
 import {
   Maybe,
   Scalars,
   TrackerEntityResponseCollection,
+  TrackerInput,
 } from 'types/GraphqlTypes';
-import { Icon } from 'legos';
+import { parseTrackerTime } from 'helpers';
 
 export type TrackerContext = {
+  onCreateTracker: (values: TrackerInput) => void;
   onUpdateTracker: (time: Date, id: Maybe<string> | undefined) => void;
   onDeleteTracker: (id: Maybe<string> | undefined) => void;
 };
@@ -58,8 +63,25 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
   }>(TRECKERS_BY_USER_ID_QUERY, {
     variables: { userId: user.id, weekStart, weekEnd },
   });
+  const [createTracker] = useMutation(CREATE_TRACKER_BY_USER_ID_MUTATION);
   const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
   const [deleteTracker] = useMutation(DELETE_TRACKER_BY_ID_MUTATION);
+
+  const onCreateTracker = (values: TrackerInput) => {
+    const data = {
+      ...values,
+      date: format(values.date, 'yyyy-MM-dd'),
+      duration: format(
+        parseTrackerTime(values.duration, 'HH:mm'),
+        'HH:mm:ss.SSS'
+      ),
+      user: user.id,
+    };
+
+    createTracker({ variables: { data } }).then(() => {
+      refetch();
+    });
+  };
 
   const onUpdateTracker = (time: Date, id: Maybe<Scalars['ID']>) => {
     const formatedTime = format(time, 'HH:mm:ss.SSS');
@@ -113,7 +135,9 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
 
   return (
     <TimeContext.Provider
-      value={{ onUpdateTracker, onDeleteTracker } as TrackerContext}
+      value={
+        { onCreateTracker, onUpdateTracker, onDeleteTracker } as TrackerContext
+      }
     >
       <Stack
         direction="row"
@@ -127,14 +151,14 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
             disabled={isStartEditForEmployee}
             onClick={handlePrevDate}
           >
-            <Icon icon="navigateBefore" />
+            <NavigateBeforeIcon />
           </Button>
           <Button
             variant="outlined"
             disabled={isEndEdit}
             onClick={handleNextDate}
           >
-            <Icon icon="navigateNext" />
+            <NavigateNextIcon />
           </Button>
           <Typography variant="h6" ml={2}>
             {days[tabsValue].day}, {days[tabsValue].date}

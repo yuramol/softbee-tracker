@@ -22,5 +22,5 @@ export type ProfileInfoType = {
   component: string;
   type: string;
   icon: IconsNames;
-  items?: { label: string }[];
+  items?: { id: string; attributes: { name: string } }[];
 };
