@@ -18,7 +18,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
 import { useAuth } from 'AuthProvider';
-import { useCurrentWeek } from 'hooks';
+import { useCurrentWeek, useNormalizedTrackers } from 'hooks';
 import {
   TRECKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
@@ -57,6 +57,8 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
     setCurrentWeekDay(selectedDay);
     setTabsValue(currentDay);
   }, [selectedDay]);
+
+  useNormalizedTrackers(user.id, ['2022-08-01', '2022-08-31']);
 
   const { data, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
