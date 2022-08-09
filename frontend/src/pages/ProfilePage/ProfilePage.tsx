@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { useMutation } from '@apollo/client';
-import { Box, Grid, Typography, Button, Stack } from '@mui/material';
+import { Box, Grid, Typography, Stack } from '@mui/material';
 
 import { useAuth } from 'AuthProvider';
 import { UPDATE_USERS_PERMISSIONS_USER_MUTATION, UPLOAD_MUTATION } from 'api';
-import { Select, Input, Icon } from 'legos';
+import { Select, Input, Icon, Button } from 'legos';
 import { useUsersPermissionsUser } from 'hooks';
 import { initialValuesType, valuesType } from './types';
 import { profileInfo, validationSchema } from './helpers';
@@ -92,25 +92,32 @@ const ProfilePage = () => {
                 fontSize={32}
               >{`${userPermission?.firstName} ${userPermission?.lastName}`}</Typography>
             </Box>
+
             {edit ? (
               <Stack direction="row" gap={1}>
                 <Button
+                  title="cancel"
                   variant="outlined"
                   onClick={() => {
                     setEdit(false);
                     formik.resetForm();
                   }}
-                >
-                  cancel
-                </Button>
-                <Button variant="contained" onClick={formik.submitForm}>
-                  Save
-                </Button>
+                />
+
+                <Button
+                  title="Save"
+                  variant="contained"
+                  onClick={formik.submitForm}
+                  icon="edit"
+                />
               </Stack>
             ) : (
-              <Button variant="outlined" onClick={() => setEdit(true)}>
-                Edit
-              </Button>
+              <Button
+                title="Edit"
+                variant="outlined"
+                onClick={() => setEdit(true)}
+                icon="edit"
+              />
             )}
           </Grid>
           <Grid container item xs={3} justifyContent="center">
