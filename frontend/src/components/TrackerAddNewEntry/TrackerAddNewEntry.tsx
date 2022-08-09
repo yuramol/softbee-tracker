@@ -124,9 +124,11 @@ export const TrackerAddNewEntry = () => {
                   value={formik.values[FIELD_TIME_ENTRY.project]}
                   error={
                     touched[FIELD_TIME_ENTRY.project] &&
-                    errors[FIELD_TIME_ENTRY.project]
+                    !!errors[FIELD_TIME_ENTRY.project]
                   }
+                  errorText={errors[FIELD_TIME_ENTRY.project]}
                   variant="outlined"
+                  onChange={handleChange}
                 />
                 <TextField
                   label="Description"
