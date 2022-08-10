@@ -38,5 +38,5 @@ export interface IconProps {
     | 'success'
     | 'warning';
   icon: IconsNames;
-  size?: 'inherit' | 'large' | 'medium' | 'small' | string;
+  size?: 'inherit' | 'large' | 'medium' | 'small';
 }
