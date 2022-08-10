@@ -42,7 +42,9 @@ export const TrackerDayView = () => {
   const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(currentDate);
   const [tabsValue, setTabsValue] = useState(currentDay);
 
-  useNormalizedTrackers(user.id, ['2022-08-01', '2022-08-31']);
+  const trackers = useNormalizedTrackers(user.id, ['2022-08-01', '2022-08-31']);
+
+  console.log(trackers);
 
   const { data, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
