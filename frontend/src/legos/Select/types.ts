@@ -1,16 +1,16 @@
 import { ReactElement } from 'react';
 
 import { SelectProps } from '@mui/material';
+import { ProjectEntity } from 'types/GraphqlTypes';
 
 export type ItemType = { label: string };
 
 export type SelectPropsType = SelectProps & {
-  items: ItemType[];
+  items: ProjectEntity[] | undefined;
   label: string;
-  disabled?: boolean;
-  value?: string;
-  disableUnderline?: boolean;
+  // disabled?: boolean;
+  // value?: string;
+  errorText?: string;
   onChange: (value: unknown) => void;
-  variant?: 'standard' | 'outlined' | 'filled' | undefined;
   IconComponent?: () => ReactElement | null;
 };
