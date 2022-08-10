@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -9,143 +9,115 @@ import {
   Stack,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { useFormik, FormikContext } from 'formik';
+import { Formik, FormikProps } from 'formik';
 
 import { CalendarPickerFormik } from 'legos';
-
-type NewProjectStepProps = {
-  handleNext: (values: any) => void;
-};
-
-const FIELD_NEW_PROJECT_ENTRY = {
-  profit: 'profit',
-  name: 'name',
-  client: 'client',
-  startDate: 'startDate',
-  endDate: 'endDate',
-} as const;
-
-interface NewProjectStepEntryValues {
-  [FIELD_NEW_PROJECT_ENTRY.profit]: string;
-  [FIELD_NEW_PROJECT_ENTRY.name]: string;
-  [FIELD_NEW_PROJECT_ENTRY.client]: string;
-  [FIELD_NEW_PROJECT_ENTRY.startDate]: Date;
-  [FIELD_NEW_PROJECT_ENTRY.endDate]: Date;
-}
+import { AddNewProjectValues, FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
 
 const paymentTypes = [
   {
     label: 'Time & Material',
-    value: 'Time & Material',
+    value: 'timeMaterial',
   },
   {
     label: 'Fixed Price',
-    value: 'Fixed Price',
+    value: 'fixedPrice',
   },
   {
-    label: 'Non Profit',
-    value: 'Non Profit',
+    label: 'Non profit',
+    value: 'nonProfit',
   },
 ];
 
-export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
-  const initialValues: NewProjectStepEntryValues = {
-    [FIELD_NEW_PROJECT_ENTRY.profit]: paymentTypes[0].value,
-    [FIELD_NEW_PROJECT_ENTRY.name]: '',
-    [FIELD_NEW_PROJECT_ENTRY.client]: '',
-    [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
-    [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(),
-  };
-  const formik = useFormik<NewProjectStepEntryValues>({
-    initialValues,
-    onSubmit: (values) => {
-      handleNext(values);
-    },
-  });
+export const NewProjectStep = forwardRef<FormikProps<AddNewProjectValues>>(
+  (_, ref) => {
+    const initialValues: AddNewProjectValues = {
+      [FIELD_NEW_PROJECT_ENTRY.payment_method]: paymentTypes[0].value,
+      [FIELD_NEW_PROJECT_ENTRY.name]: '',
+      [FIELD_NEW_PROJECT_ENTRY.client]: '',
+      [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
+      [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(),
+    };
+    const [isOpenModal, setIsOpenModal] = useState(true);
 
-  const [isOpenModal, setIsOpenModal] = useState(true);
-
-  const { handleChange, handleSubmit, setFieldValue } = formik;
-
-  const [paymentBy, setPaymentBy] = useState(paymentTypes[0]);
-  const handlePaymentType = (index: number) => {
-    setPaymentBy(paymentTypes[index]);
-    setFieldValue(FIELD_NEW_PROJECT_ENTRY.profit, paymentTypes[index].value);
-  };
-
-  return (
-    <FormikContext.Provider value={formik}>
-      <form onSubmit={handleSubmit}>
-        <Stack>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h6">New project</Typography>
-            <IconButton onClick={() => setIsOpenModal(!isOpenModal)}>
-              <CloseIcon />
-            </IconButton>
-          </Stack>
-
-          <Stack mt={3} mb={1} gap={3}>
-            <ButtonGroup size="small" fullWidth>
-              {paymentTypes.map(({ label, value }, i) => (
-                <Button
-                  key={value}
-                  size="large"
-                  variant={paymentBy.value === value ? 'contained' : 'outlined'}
-                  onClick={() => handlePaymentType(i)}
-                >
-                  {label}
-                </Button>
-              ))}
-            </ButtonGroup>
-            <TextField
-              id={FIELD_NEW_PROJECT_ENTRY.name}
-              name={FIELD_NEW_PROJECT_ENTRY.name}
-              label="Name"
-              multiline
-              onChange={handleChange}
-            />
-            <TextField
-              id={FIELD_NEW_PROJECT_ENTRY.client}
-              name={FIELD_NEW_PROJECT_ENTRY.client}
-              label="Client"
-              multiline
-              onChange={handleChange}
-            />
-
-            <Stack direction="row" justifyContent="space-between">
-              <Stack>
-                <InputLabel>
-                  Start Date<span style={{ color: 'red' }}>*</span>
-                </InputLabel>
-                <CalendarPickerFormik
-                  field={FIELD_NEW_PROJECT_ENTRY.startDate}
-                />
+    return (
+      <Formik
+        innerRef={ref}
+        initialValues={initialValues}
+        onSubmit={(values) => {
+          console.log('values===', values);
+        }}
+      >
+        {({ values, handleChange, setFieldValue }) => (
+          <form>
+            <Stack>
+              <Stack direction="row" justifyContent="space-between">
+                <Typography variant="h6">New project</Typography>
+                <IconButton onClick={() => setIsOpenModal(!isOpenModal)}>
+                  <CloseIcon />
+                </IconButton>
               </Stack>
-              <Stack>
-                <InputLabel>
-                  End Date<span style={{ color: 'red' }}>*</span>
-                </InputLabel>
-                <CalendarPickerFormik field={FIELD_NEW_PROJECT_ENTRY.endDate} />
+
+              <Stack mt={3} mb={1} gap={3}>
+                <ButtonGroup size="small" fullWidth>
+                  {paymentTypes.map(({ label, value }) => (
+                    <Button
+                      key={value}
+                      size="large"
+                      variant={
+                        value === values.payment_method
+                          ? 'contained'
+                          : 'outlined'
+                      }
+                      onClick={() => {
+                        console.log('====', value);
+                        setFieldValue('payment_method', value);
+                      }}
+                    >
+                      {label}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+                <TextField
+                  id={FIELD_NEW_PROJECT_ENTRY.name}
+                  name={FIELD_NEW_PROJECT_ENTRY.name}
+                  label="Name"
+                  multiline
+                  onChange={handleChange}
+                />
+                <TextField
+                  id={FIELD_NEW_PROJECT_ENTRY.client}
+                  name={FIELD_NEW_PROJECT_ENTRY.client}
+                  label="Client"
+                  multiline
+                  onChange={handleChange}
+                />
+
+                <Stack direction="row" justifyContent="space-between">
+                  <Stack>
+                    <InputLabel>
+                      Start Date<span style={{ color: 'red' }}>*</span>
+                    </InputLabel>
+                    <CalendarPickerFormik
+                      field={FIELD_NEW_PROJECT_ENTRY.startDate}
+                    />
+                  </Stack>
+                  <Stack>
+                    <InputLabel>
+                      End Date<span style={{ color: 'red' }}>*</span>
+                    </InputLabel>
+                    <CalendarPickerFormik
+                      field={FIELD_NEW_PROJECT_ENTRY.endDate}
+                    />
+                  </Stack>
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
-          {/* <Stack direction="row" justifyContent="flex-end" gap={2}>
-            <Button
-              variant="outlined"
-              onClick={() => setIsOpenModal(!isOpenModal)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleNextWindow}
-              variant="contained"
-              type="submit"
-            >
-              Next
-            </Button>
-          </Stack> */}
-        </Stack>
-      </form>
-    </FormikContext.Provider>
-  );
-};
+          </form>
+        )}
+      </Formik>
+    );
+  }
+);
+
+NewProjectStep.displayName = 'NewProjectStep';

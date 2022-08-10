@@ -13,10 +13,6 @@ import { useFormik, FormikContext } from 'formik';
 
 import { SelectField } from 'legos';
 
-type TeamStepProps = {
-  handleNext: (values: any) => void;
-};
-
 const FIELD_TEAM_ENTRY = {
   manager: 'manager',
   hourlyRate: 'hourlyRate',
@@ -31,7 +27,7 @@ interface TeamStepEntryValues {
   [FIELD_TEAM_ENTRY.rate]: string;
 }
 
-export const TeamStep = ({ handleNext }: TeamStepProps) => {
+export const TeamStep = () => {
   const initialValues: TeamStepEntryValues = {
     [FIELD_TEAM_ENTRY.manager]: '',
     [FIELD_TEAM_ENTRY.hourlyRate]: '',
@@ -40,9 +36,6 @@ export const TeamStep = ({ handleNext }: TeamStepProps) => {
   };
   const formik = useFormik<TeamStepEntryValues>({
     initialValues,
-    onSubmit: (values) => {
-      handleNext(values);
-    },
   });
 
   const { handleChange, handleSubmit } = formik;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Box,
   Button,
@@ -12,15 +12,44 @@ import {
 import { NewProjectStep } from './NewProjectStep';
 import { TeamStep } from './TeamStep';
 import { SummaryStep } from './SummaryStep';
+import { FormikProps } from 'formik';
 
 const steps = ['New project', 'Team', 'Summary'];
+
+export const FIELD_NEW_PROJECT_ENTRY = {
+  payment_method: 'payment_method',
+  name: 'name',
+  client: 'client',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  manager: 'manager',
+  hourlyRate: 'hourlyRate',
+  employee: 'employee',
+  rate: 'rate',
+} as const;
+
+export interface AddNewProjectValues {
+  [FIELD_NEW_PROJECT_ENTRY.payment_method]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.name]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.client]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.startDate]?: Date;
+  [FIELD_NEW_PROJECT_ENTRY.endDate]?: Date;
+  [FIELD_NEW_PROJECT_ENTRY.manager]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.hourlyRate]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.employee]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.rate]?: string;
+}
 
 export const AddNewProject = () => {
   const [activeStep, setActiveStep] = React.useState(0);
 
-  const handleNext = (values: any) => {
-    setActiveStep(activeStep + 1);
-    console.log('===', values);
+  const formikRef = useRef<FormikProps<AddNewProjectValues>>(null);
+
+  const handleNext = () => {
+    if (formikRef.current) {
+      formikRef.current.submitForm();
+      setActiveStep(activeStep + 1);
+    }
   };
 
   const handleBack = () => {
@@ -30,11 +59,11 @@ export const AddNewProject = () => {
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <NewProjectStep handleNext={handleNext} />;
+        return <NewProjectStep ref={formikRef} />;
       case 1:
-        return <TeamStep handleNext={handleNext} />;
+        return <TeamStep />;
       case 2:
-        return <SummaryStep handleNext={handleNext} />;
+        return <SummaryStep />;
       default:
         throw new Error('Unknown step');
     }
@@ -60,6 +89,7 @@ export const AddNewProject = () => {
               {activeStep !== 0 && (
                 <Button
                   variant="outlined"
+                  type="submit"
                   onClick={handleBack}
                   sx={{ mt: 1, ml: 1 }}
                 >

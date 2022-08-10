@@ -16,11 +16,6 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik, FormikContext } from 'formik';
-
-type SummaryStepProps = {
-  handleNext: (values: any) => void;
-};
-
 interface SummaryStepEntryValues {
   manager: string;
   hourlyRate: string;
@@ -28,7 +23,7 @@ interface SummaryStepEntryValues {
   rate: string;
 }
 
-export const SummaryStep = ({ handleNext }: SummaryStepProps) => {
+export const SummaryStep = () => {
   const formik = useFormik<SummaryStepEntryValues>({
     initialValues: {
       manager: '',
@@ -37,12 +32,11 @@ export const SummaryStep = ({ handleNext }: SummaryStepProps) => {
       rate: '',
     },
     onSubmit: (values) => {
-      handleNext(values);
       console.log('===', values);
     },
   });
 
-  const { handleChange, handleSubmit } = formik;
+  const { handleSubmit } = formik;
 
   // TODO Add work data from backend
   const rows = [
