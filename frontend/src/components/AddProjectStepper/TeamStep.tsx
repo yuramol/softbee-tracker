@@ -14,8 +14,7 @@ import { useFormik, FormikContext } from 'formik';
 import { SelectField } from 'legos';
 
 type TeamStepProps = {
-  handleNext: () => void;
-  handleBack: () => void;
+  handleNext: (values: any) => void;
 };
 
 const FIELD_TEAM_ENTRY = {
@@ -32,7 +31,7 @@ interface TeamStepEntryValues {
   [FIELD_TEAM_ENTRY.rate]: string;
 }
 
-export const TeamStep = ({ handleNext, handleBack }: TeamStepProps) => {
+export const TeamStep = ({ handleNext }: TeamStepProps) => {
   const initialValues: TeamStepEntryValues = {
     [FIELD_TEAM_ENTRY.manager]: '',
     [FIELD_TEAM_ENTRY.hourlyRate]: '',
@@ -42,7 +41,7 @@ export const TeamStep = ({ handleNext, handleBack }: TeamStepProps) => {
   const formik = useFormik<TeamStepEntryValues>({
     initialValues,
     onSubmit: (values) => {
-      console.log('===', values);
+      handleNext(values);
     },
   });
 
@@ -59,11 +58,6 @@ export const TeamStep = ({ handleNext, handleBack }: TeamStepProps) => {
     { label: 'Michael' },
   ];
 
-  const handleNextWindow = () => {
-    handleNext();
-    handleSubmit();
-  };
-
   return (
     <FormikContext.Provider value={formik}>
       <form onSubmit={handleSubmit}>
@@ -75,7 +69,7 @@ export const TeamStep = ({ handleNext, handleBack }: TeamStepProps) => {
             </IconButton>
           </Stack>
 
-          <Stack my={3} gap={3}>
+          <Stack mt={3} mb={1} gap={3}>
             <Stack>
               <SelectField
                 id={FIELD_TEAM_ENTRY.manager}
@@ -117,19 +111,6 @@ export const TeamStep = ({ handleNext, handleBack }: TeamStepProps) => {
                 </Stack>
               </Grid>
             </Stack>
-          </Stack>
-
-          <Stack direction="row" justifyContent="flex-end" gap={2}>
-            <Button onClick={handleBack} variant="outlined">
-              Back
-            </Button>
-            <Button
-              onClick={handleNextWindow}
-              variant="contained"
-              type="submit"
-            >
-              Next
-            </Button>
           </Stack>
         </Stack>
       </form>

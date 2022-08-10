@@ -14,7 +14,7 @@ import { useFormik, FormikContext } from 'formik';
 import { CalendarPickerFormik } from 'legos';
 
 type NewProjectStepProps = {
-  handleNext: () => void;
+  handleNext: (values: any) => void;
 };
 
 const FIELD_NEW_PROJECT_ENTRY = {
@@ -50,7 +50,7 @@ const paymentTypes = [
 
 export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
   const initialValues: NewProjectStepEntryValues = {
-    [FIELD_NEW_PROJECT_ENTRY.profit]: 'Time & Material',
+    [FIELD_NEW_PROJECT_ENTRY.profit]: paymentTypes[0].value,
     [FIELD_NEW_PROJECT_ENTRY.name]: '',
     [FIELD_NEW_PROJECT_ENTRY.client]: '',
     [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
@@ -59,7 +59,7 @@ export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
   const formik = useFormik<NewProjectStepEntryValues>({
     initialValues,
     onSubmit: (values) => {
-      console.log('===', values);
+      handleNext(values);
     },
   });
 
@@ -70,12 +70,7 @@ export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
   const [paymentBy, setPaymentBy] = useState(paymentTypes[0]);
   const handlePaymentType = (index: number) => {
     setPaymentBy(paymentTypes[index]);
-    setFieldValue(FIELD_NEW_PROJECT_ENTRY.profit, paymentTypes[index].label);
-  };
-
-  const handleNextWindow = () => {
-    handleNext();
-    handleSubmit();
+    setFieldValue(FIELD_NEW_PROJECT_ENTRY.profit, paymentTypes[index].value);
   };
 
   return (
@@ -89,7 +84,7 @@ export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
             </IconButton>
           </Stack>
 
-          <Stack my={3} gap={3}>
+          <Stack mt={3} mb={1} gap={3}>
             <ButtonGroup size="small" fullWidth>
               {paymentTypes.map(({ label, value }, i) => (
                 <Button
@@ -134,7 +129,7 @@ export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
               </Stack>
             </Stack>
           </Stack>
-          <Stack direction="row" justifyContent="flex-end" gap={2}>
+          {/* <Stack direction="row" justifyContent="flex-end" gap={2}>
             <Button
               variant="outlined"
               onClick={() => setIsOpenModal(!isOpenModal)}
@@ -148,7 +143,7 @@ export const NewProjectStep = ({ handleNext }: NewProjectStepProps) => {
             >
               Next
             </Button>
-          </Stack>
+          </Stack> */}
         </Stack>
       </form>
     </FormikContext.Provider>

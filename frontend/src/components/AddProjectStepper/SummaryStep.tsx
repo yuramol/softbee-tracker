@@ -18,8 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useFormik, FormikContext } from 'formik';
 
 type SummaryStepProps = {
-  handleNext: () => void;
-  handleBack: () => void;
+  handleNext: (values: any) => void;
 };
 
 interface SummaryStepEntryValues {
@@ -29,7 +28,7 @@ interface SummaryStepEntryValues {
   rate: string;
 }
 
-export const SummaryStep = ({ handleNext, handleBack }: SummaryStepProps) => {
+export const SummaryStep = ({ handleNext }: SummaryStepProps) => {
   const formik = useFormik<SummaryStepEntryValues>({
     initialValues: {
       manager: '',
@@ -38,6 +37,7 @@ export const SummaryStep = ({ handleNext, handleBack }: SummaryStepProps) => {
       rate: '',
     },
     onSubmit: (values) => {
+      handleNext(values);
       console.log('===', values);
     },
   });
@@ -47,16 +47,9 @@ export const SummaryStep = ({ handleNext, handleBack }: SummaryStepProps) => {
   // TODO Add work data from backend
   const rows = [
     { employee: 'Andriy P', allocation: 1, rate: 88 },
-    { employee: 'Andriy P', allocation: 1, rate: 88 },
-    { employee: 'Andriy P', allocation: 1, rate: 88 },
+    { employee: 'Andriy R', allocation: 1, rate: 88 },
+    { employee: 'Andriy S', allocation: 1, rate: 88 },
   ];
-
-  const text = `Client: ${10}`;
-
-  const handleNextWindow = () => {
-    handleNext();
-    handleSubmit();
-  };
 
   return (
     <FormikContext.Provider value={formik}>
@@ -69,21 +62,16 @@ export const SummaryStep = ({ handleNext, handleBack }: SummaryStepProps) => {
             </IconButton>
           </Stack>
 
-          <Stack my={3} gap={2}>
+          <Stack mt={3} mb={1} gap={2}>
             <Typography variant="subtitle1" component="div">
               Please review the information before creation
             </Typography>
             <List>
-              {/* {[1, 2, 3].map((el) => (
-                <ListItem sx={{ paddingLeft: 0 }} key={el}>
-                  <ListItemText primary={el} />
-                </ListItem>
-              ))} */}
               <ListItem sx={{ paddingLeft: 0 }}>
                 <ListItemText primary="Project name:" />
               </ListItem>
               <ListItem sx={{ paddingLeft: 0 }}>
-                <ListItemText primary={text} />
+                <ListItemText primary="Client:" />
               </ListItem>
             </List>
             <Typography variant="h6" fontWeight={300}>
@@ -125,19 +113,6 @@ export const SummaryStep = ({ handleNext, handleBack }: SummaryStepProps) => {
                 </TableBody>
               </Table>
             </TableContainer>
-          </Stack>
-
-          <Stack direction="row" justifyContent="flex-end">
-            <Button onClick={handleBack} sx={{ mr: '10px' }} variant="outlined">
-              Back
-            </Button>
-            <Button
-              onClick={handleNextWindow}
-              variant="contained"
-              type="submit"
-            >
-              Create
-            </Button>
           </Stack>
         </Stack>
       </form>
