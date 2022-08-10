@@ -32,7 +32,7 @@ const paymentTypes = [
 export const NewProjectStep = forwardRef<FormikProps<AddNewProjectValues>>(
   (_, ref) => {
     const initialValues: AddNewProjectValues = {
-      [FIELD_NEW_PROJECT_ENTRY.payment_method]: paymentTypes[0].value,
+      [FIELD_NEW_PROJECT_ENTRY.paymentMethod]: paymentTypes[0].value,
       [FIELD_NEW_PROJECT_ENTRY.name]: '',
       [FIELD_NEW_PROJECT_ENTRY.client]: '',
       [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
@@ -65,13 +65,13 @@ export const NewProjectStep = forwardRef<FormikProps<AddNewProjectValues>>(
                       key={value}
                       size="large"
                       variant={
-                        value === values.payment_method
+                        value === values.paymentMethod
                           ? 'contained'
                           : 'outlined'
                       }
                       onClick={() => {
                         console.log('====', value);
-                        setFieldValue('payment_method', value);
+                        setFieldValue('paymentMethod', value);
                       }}
                     >
                       {label}

@@ -17,7 +17,7 @@ import { FormikProps } from 'formik';
 const steps = ['New project', 'Team', 'Summary'];
 
 export const FIELD_NEW_PROJECT_ENTRY = {
-  payment_method: 'payment_method',
+  paymentMethod: 'paymentMethod',
   name: 'name',
   client: 'client',
   startDate: 'startDate',
@@ -29,7 +29,7 @@ export const FIELD_NEW_PROJECT_ENTRY = {
 } as const;
 
 export interface AddNewProjectValues {
-  [FIELD_NEW_PROJECT_ENTRY.payment_method]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.paymentMethod]?: string;
   [FIELD_NEW_PROJECT_ENTRY.name]?: string;
   [FIELD_NEW_PROJECT_ENTRY.client]?: string;
   [FIELD_NEW_PROJECT_ENTRY.startDate]?: Date;
@@ -42,6 +42,7 @@ export interface AddNewProjectValues {
 
 export const AddNewProject = () => {
   const [activeStep, setActiveStep] = React.useState(0);
+  console.log(activeStep, activeStep === steps.length);
 
   const formikRef = useRef<FormikProps<AddNewProjectValues>>(null);
 
@@ -61,7 +62,7 @@ export const AddNewProject = () => {
       case 0:
         return <NewProjectStep ref={formikRef} />;
       case 1:
-        return <TeamStep />;
+        return <TeamStep ref={formikRef} />;
       case 2:
         return <SummaryStep />;
       default:
