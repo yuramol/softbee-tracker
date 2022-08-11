@@ -1,8 +1,7 @@
 import { useQuery } from '@apollo/client';
 
 import { TRECKERS_BY_USER_ID_QUERY } from 'api';
-import { format, hoursToMinutes, minutesToHours } from 'date-fns';
-import { parseTrackerTime } from 'helpers';
+import { getHours, getMinutes } from 'helpers';
 import {
   Scalars,
   TrackerEntity,
@@ -21,29 +20,18 @@ type TrackerByDay = {
   total: string;
 };
 
-const getMinutes = (time: string, f?: string) =>
-  hoursToMinutes(+format(parseTrackerTime(time, f), 'HH')) +
-  +format(parseTrackerTime(time, f), 'mm');
-
-const getHours = (minutes: number) => {
-  const hours = minutesToHours(minutes);
-  const mm = minutes - hours * 60;
-
-  return `${hours}:${mm < 10 ? `0${mm}` : mm}`;
-};
-
 export const useNormalizedTrackers = (
   userId: Scalars['ID'],
   period: Array<Scalars['Date']>
 ) => {
-  const { data } = useQuery<{
+  const { data, loading, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
   }>(TRECKERS_BY_USER_ID_QUERY, {
     fetchPolicy: 'network-only',
     variables: { userId, period },
   });
 
-  return data?.trackers.data.reduce((trackers, tracker) => {
+  const trackers = data?.trackers.data.reduce((trackers, tracker) => {
     const date = tracker.attributes?.date;
     const projectName = tracker.attributes?.project?.data?.attributes?.name;
 
@@ -86,18 +74,6 @@ export const useNormalizedTrackers = (
 
     return trackers;
   }, [] as TrackerByDay[]);
-};
 
-// const normalizedTrackers = [
-//   {
-//     day: 'data',
-//     trackersByProject: [
-//       {
-//         projectName: 'name',
-//         trackers: [],
-//         totalByProject: 'number',
-//       },
-//     ],
-//     totalByDay: 'number',
-//   },
-// ];
+  return { trackers, loading, refetch };
+};
