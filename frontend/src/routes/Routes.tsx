@@ -7,9 +7,9 @@ import { NotFoundPage } from '../pages';
 import { Role, pages } from '../constants';
 
 export const AppRouter = () => {
-  const { jwt, user } = useAuth();
+  const { jwt, user, isAuth } = useAuth();
 
-  if (jwt !== null && Object.keys(user).length === 0) return <Loader />;
+  if (jwt !== null && !isAuth) return <Loader />;
   if (user.role === null) return <Loader />;
 
   const userRole = user && user.role ? user.role.type : Role.Public;
