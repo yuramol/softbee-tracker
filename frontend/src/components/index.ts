@@ -6,4 +6,4 @@ export { TimeInspector } from './TimeInspector';
 export { TrackerCalendar } from './TrackerCalendar';
 export { TrackerAddNewEntry } from './TrackerAddNewEntry';
 export { TrackerDayView } from './TrackerDayView';
-export { AddNewProject } from './AddProjectStepper';
+export { NewProjectStep, SummaryStep, TeamStep } from './AddProjectStepper';

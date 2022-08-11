@@ -1,7 +1,6 @@
 import React, { forwardRef, useState } from 'react';
 import {
   Typography,
-  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -13,110 +12,145 @@ import {
   TableRow,
   TableCell,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import { FormikProps, Formik } from 'formik';
-import { AddNewProjectValues } from './AddNewProject';
+import { AddNewProjectValues } from '../../pages/AddNewProject';
+import { format } from 'date-fns';
 
-export const SummaryStep = forwardRef<FormikProps<AddNewProjectValues>>(
-  (_, ref) => {
-    const initialValues: AddNewProjectValues = {};
+type SummaryStepProps = {
+  newProjectData: any;
+};
 
-    // TODO Add work data from backend
-    const rows = [
-      { employee: 'Andriy P', allocation: 1, rate: 88 },
-      { employee: 'Andriy R', allocation: 1, rate: 88 },
-      { employee: 'Andriy S', allocation: 1, rate: 88 },
-    ];
+export const SummaryStep = forwardRef<
+  FormikProps<AddNewProjectValues>,
+  SummaryStepProps
+>(({ newProjectData }, ref) => {
+  const initialValues: AddNewProjectValues = {};
+  console.log(newProjectData);
 
-    return (
-      <Formik
-        innerRef={ref}
-        initialValues={initialValues}
-        onSubmit={(values) => {
-          console.log('values===', values);
-        }}
-      >
-        {(props) => (
-          <form>
-            <Stack>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography variant="h6">Summary</Typography>
-                <IconButton>
-                  <CloseIcon />
-                </IconButton>
-              </Stack>
+  // TODO Add work data from backend
+  const rows = [
+    { employee: 'Andriy P', allocation: 1, rate: 88 },
+    { employee: 'Andriy R', allocation: 1, rate: 88 },
+    { employee: 'Andriy S', allocation: 1, rate: 88 },
+  ];
 
-              <Stack mt={3} mb={1} gap={2}>
-                <Typography variant="subtitle1" component="div">
-                  Please review the information before creation
-                </Typography>
-                <List>
-                  <ListItem sx={{ paddingLeft: 0 }}>
-                    <ListItemText primary="Project name:" />
-                  </ListItem>
-                  <ListItem sx={{ paddingLeft: 0 }}>
-                    <ListItemText primary="Client:" />
-                  </ListItem>
-                  <ListItem sx={{ paddingLeft: 0 }}>
-                    <ListItemText primary="Project type" />
-                  </ListItem>
-                  <ListItem sx={{ paddingLeft: 0 }}>
-                    <ListItemText primary="Project duration" />
-                  </ListItem>
-                  <ListItem sx={{ paddingLeft: 0 }}>
-                    <ListItemText primary="Project manager" />
-                  </ListItem>
-                </List>
-                <Typography variant="h6" fontWeight={300}>
-                  Rate agreements
-                </Typography>
+  const {
+    name,
+    client,
+    paymentMethod,
+    startDate,
+    endDate,
+    manager,
+    hourlyRate,
+    employee,
+    rate,
+  } = newProjectData;
 
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow
-                        sx={{
-                          '& .MuiTableCell-root': {
-                            borderBottom: '1.5px solid rgba(0, 0, 0)',
-                          },
-                        }}
-                      >
-                        <TableCell
-                          sx={{ fontWeight: 900, paddingRight: '100px' }}
-                        >
-                          Employee
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: 900 }}>
-                          Allocation, %
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: 900 }}>Rate, $</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow
-                          key={row.employee}
-                          sx={{
-                            '&:last-child td, &:last-child th': { border: 0 },
-                          }}
-                        >
-                          <TableCell component="th" scope="row">
-                            {row.employee}
-                          </TableCell>
-                          <TableCell>{row.allocation}</TableCell>
-                          <TableCell>{row.rate}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Stack>
+  return (
+    <Formik
+      innerRef={ref}
+      initialValues={initialValues}
+      onSubmit={(values) => {
+        console.log('values===', values);
+      }}
+    >
+      {(props) => (
+        <form>
+          <Stack>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography variant="h6">Summary</Typography>
             </Stack>
-          </form>
-        )}
-      </Formik>
-    );
-  }
-);
+
+            <Stack mt={3} mb={1} gap={2}>
+              <Typography variant="subtitle1" component="div">
+                Please review the information before creation
+              </Typography>
+              <List>
+                <ListItem sx={{ paddingLeft: 0 }}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="subtitle1">{`Project name: ${name}`}</Typography>
+                    }
+                  />
+                </ListItem>
+                <ListItem sx={{ paddingLeft: 0 }}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="subtitle1">{`Client: ${client}`}</Typography>
+                    }
+                  />
+                </ListItem>
+                <ListItem sx={{ paddingLeft: 0 }}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="subtitle1">{`Project type: ${paymentMethod}`}</Typography>
+                    }
+                  />
+                </ListItem>
+                <ListItem sx={{ paddingLeft: 0 }}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="subtitle1">{`Project duration: ${format(
+                        startDate,
+                        'dd MMM YYY'
+                      )} - ${format(endDate, 'dd MMM YYY')}`}</Typography>
+                    }
+                  />
+                </ListItem>
+                <ListItem sx={{ paddingLeft: 0 }}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="subtitle1">{`Project manager: ${manager}`}</Typography>
+                    }
+                  />
+                </ListItem>
+              </List>
+              <Typography variant="h6" fontWeight={300}>
+                Rate agreements
+              </Typography>
+
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow
+                      sx={{
+                        '& .MuiTableCell-root': {
+                          borderBottom: '1.5px solid rgba(0, 0, 0)',
+                        },
+                      }}
+                    >
+                      <TableCell
+                        sx={{ fontWeight: 900, paddingRight: '100px' }}
+                      >
+                        Employee
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: 900 }}>
+                        Allocation, %
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: 900 }}>Rate, $</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow
+                      sx={{
+                        '&:last-child td, &:last-child th': { border: 0 },
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {employee}
+                      </TableCell>
+                      <TableCell>{1}</TableCell>
+                      <TableCell>{rate}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Stack>
+          </Stack>
+        </form>
+      )}
+    </Formik>
+  );
+});
 
 SummaryStep.displayName = 'SummaryStep';
