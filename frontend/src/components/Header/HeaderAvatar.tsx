@@ -21,7 +21,9 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
 }) => {
   const { user, logout } = useAuth();
   const { userPermission } = useUsersPermissionsUser(user.id);
-
+  const pathAvatar = userPermission?.avatar?.data?.attributes?.url
+    ? `https://dev.strapi.track.softbee.io${userPermission?.avatar?.data?.attributes?.url}`
+    : '';
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
@@ -37,7 +39,7 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
             width={40}
             height={40}
             name={`${userPermission?.firstName} ${userPermission?.lastName}`}
-            avatar={`https://dev.strapi.track.softbee.io${userPermission?.avatar.data?.attributes?.url}`}
+            avatar={pathAvatar}
           />
         </IconButton>
       </Tooltip>
