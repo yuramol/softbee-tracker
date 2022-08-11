@@ -5,3 +5,4 @@ export { UPDATE_USERS_PERMISSIONS_USER_MUTATION } from './updateUsersPermissions
 export { UPLOAD_FILE_MUTATION } from './uploadFile';
 export { DELETE_TRACKER_BY_ID_MUTATION } from './deleteTrackerById';
 export { UPLOAD_MUTATION } from './upload';
+export { REMOVE_FILE_MUTATION } from './removeFile';
