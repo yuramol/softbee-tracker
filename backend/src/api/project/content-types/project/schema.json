@@ -46,6 +46,38 @@
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
       "inversedBy": "projects"
+    },
+    "client": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "time_material",
+        "fixed_price",
+        "non_profit"
+      ],
+      "default": "fixed_price",
+      "required": true
+    },
+    "start": {
+      "type": "date"
+    },
+    "managers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "manager_projects"
+    },
+    "end": {
+      "type": "date"
+    },
+    "salary": {
+      "displayName": "salary",
+      "type": "component",
+      "repeatable": true,
+      "component": "project.salary"
     }
   }
 }
