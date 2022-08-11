@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_project_salaries",
+  "info": {
+    "displayName": "salary",
+    "icon": "dollar-sign",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "users": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "rate": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    }
+  }
+}
