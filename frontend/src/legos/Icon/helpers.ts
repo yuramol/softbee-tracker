@@ -19,6 +19,7 @@ import {
   NavigateBefore,
   NavigateNext,
   ArrowDropDown,
+  FilterAlt,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -44,4 +45,5 @@ export const IconsMap: IconsNamesMapType = {
   navigateBefore: NavigateBefore,
   navigateNext: NavigateNext,
   arrowDropDown: ArrowDropDown,
+  filter: FilterAlt,
 };

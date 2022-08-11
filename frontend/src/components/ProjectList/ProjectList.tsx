@@ -1,96 +1,70 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactElement } from 'react';
+
 import { IconButton, Link, Stack, Typography } from '@mui/material';
+import { Avatar, Icon } from 'legos';
 
-import { Box } from '@mui/system';
-import { Avatar, Icon, Select, SelectField } from 'legos';
-import { Filter } from '@mui/icons-material';
+type ProjectListType = {
+  id: string | number;
+  projectName: string;
+  timeLine: string;
+  projectManager: string;
+  type: string;
+  projectManagerAvatar?: string;
+};
+type ProjectListProps = {
+  projectList: ProjectListType[];
+};
 
-//TODO add projects info and info about PR
-const projects = [
-  {
-    id: 1,
-    projectName: 'UpWork',
-    timeLine: '20.11.21-12.12.23',
-    projectManager: 'Oleksandr Zastavnyi',
-    type: 'paid',
-  },
-  {
-    id: 3,
-    projectName: 'Plumbid',
-    timeLine: '20.11.21-12.12.23',
-    projectManager: 'Yura Moldavchuk',
-    type: 'paid',
-  },
-  {
-    id: 4,
-    projectName: 'PalPal',
-    timeLine: '20.11.21-12.12.23',
-    projectManager: 'Andrev Antonuch',
-    type: 'unpaid',
-    projectManagerAvatar: 'https://i.pravatar.cc/300',
-  },
-];
-const itemSelectProject = [{ label: 'date' }, { label: 'pm' }];
-
-export const ProjectList = () => (
+const getProjectIcon: (type: string) => JSX.Element | null = (type) => {
+  switch (type) {
+    case 'timeMaterial':
+      return <Icon icon="paidOutlined" color="warning" />;
+    case 'fixedPrice':
+      return <Icon icon="paidOutlined" color="success" />;
+    case 'nonProfit':
+      return <Icon icon="paidOutlined" color="error" />;
+    default:
+      return null;
+  }
+};
+export const ProjectList = ({ projectList }: ProjectListProps) => (
   <>
-    {/* <Icon icon="Filter" color="success" /> */}
-    <Select
-      onChange={() => {
-        console.log('s');
-      }}
-      label="Filters"
-      items={itemSelectProject}
-    />
-    <Stack spacing={2}>
-      {projects.map((project) => (
-        <Fragment key={project.id}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <Box>
-                {project.type == 'paid' ? (
-                  <Icon icon="paidOutlined" color="success" />
-                ) : (
-                  <Icon icon="moneyOff" color="warning" />
-                )}
-              </Box>
+    {projectList.map((project) => (
+      <Fragment key={project.id}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack>{getProjectIcon(project.type)}</Stack>
 
-              <Box>
-                <Link href="*">{project.projectName}</Link>
-                <Typography fontSize="10px">{project.timeLine}</Typography>
-              </Box>
+            <Stack>
+              <Link href="*">{project.projectName}</Link>
+              <Typography fontSize="10px">{project.timeLine}</Typography>
             </Stack>
-
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={1}
-              width="300px"
-            >
-              <Avatar
-                avatar={project.projectManagerAvatar}
-                name={project.projectManager}
-              />
-              <Link href="*" underline="none">
-                {project.projectManager}
-              </Link>
-            </Stack>
-
-            <Box>
-              <IconButton aria-label="edit">
-                <Icon icon="editOutlined" />
-              </IconButton>
-              <IconButton aria-label="archive">
-                <Icon icon="archiveOutlined" />
-              </IconButton>
-            </Box>
           </Stack>
-        </Fragment>
-      ))}
-    </Stack>
+
+          <Stack direction="row" alignItems="center" spacing={1} width="300px">
+            <Avatar
+              avatar={project.projectManagerAvatar}
+              name={project.projectManager}
+            />
+            <Link href="*" underline="none">
+              {project.projectManager}
+            </Link>
+          </Stack>
+
+          <Stack direction="row">
+            <IconButton aria-label="edit">
+              <Icon icon="editOutlined" />
+            </IconButton>
+            <IconButton aria-label="archive">
+              <Icon icon="archiveOutlined" />
+            </IconButton>
+          </Stack>
+        </Stack>
+      </Fragment>
+    ))}
   </>
 );
