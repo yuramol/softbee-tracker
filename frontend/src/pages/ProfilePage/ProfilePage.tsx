@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { useMutation } from '@apollo/client';
-import { Box, Grid, Typography, Stack } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 import { useAuth } from 'AuthProvider';
-import { UPDATE_USERS_PERMISSIONS_USER_MUTATION, UPLOAD_MUTATION } from 'api';
-import { Select, Input, Icon, Button } from 'legos';
+import {
+  UPDATE_USERS_PERMISSIONS_USER_MUTATION,
+  UPLOAD_MUTATION,
+  REMOVE_FILE_MUTATION,
+} from 'api';
+import { Select, Input, Icon } from 'legos';
 import { useUsersPermissionsUser } from 'hooks';
-import { initialValuesType, valuesType } from './types';
+import { InitialValuesType, valuesType } from './types';
 import { profileInfo, validationSchema } from './helpers';
 import { MainWrapper, AvatarUpload, Loader } from 'components';
+import { ProfileHeader } from './ProfileHeader';
+import { changeAvatar } from './changeAvatar';
 
 const ProfilePage = () => {
   const { user } = useAuth();
@@ -18,27 +24,26 @@ const ProfilePage = () => {
   const isManager = user.role.type === 'manager';
 
   const [edit, setEdit] = useState(false);
-  const [avatar, setAvatar] = useState(null);
 
   const [updateUserMutation] = useMutation(
     UPDATE_USERS_PERMISSIONS_USER_MUTATION
   );
-
   const [uploadMutation] = useMutation(UPLOAD_MUTATION);
+  const [removeFileMutation] = useMutation(REMOVE_FILE_MUTATION);
 
-  const initialValues: initialValuesType = {
+  const initialValues: InitialValuesType = {
     email: userPermission?.email ?? '',
-    phone: userPermission?.phone || '',
-    lastName: userPermission?.lastName || '',
-    position: userPermission?.position || '',
-    linkedIn: userPermission?.linkedIn || '',
-    firstName: userPermission?.firstName || '',
-    salaryInfo: userPermission?.salaryInfo || '',
-    dateEmployment: userPermission?.dateEmployment || '',
+    phone: userPermission?.phone ?? '',
+    lastName: userPermission?.lastName ?? '',
+    position: userPermission?.position ?? '',
+    linkedIn: userPermission?.linkedIn ?? '',
+    firstName: userPermission?.firstName ?? '',
+    salaryInfo: userPermission?.salaryInfo ?? '',
+    dateEmployment: userPermission?.dateEmployment ?? '',
     avatar: userPermission?.avatar.data?.attributes?.url,
   };
 
-  const formik = useFormik<initialValuesType>({
+  const formik = useFormik<InitialValuesType>({
     initialValues,
     enableReinitialize: true,
     validationSchema,
@@ -55,29 +60,8 @@ const ProfilePage = () => {
     },
   });
 
-  const handleChangeAvatar = (e: any) => {
-    const [file] = e.target.files;
-
-    if (file) {
-      uploadMutation({
-        variables: {
-          file,
-        },
-      })
-        .then(({ data }) => {
-          if (data?.upload?.data.id) {
-            updateUserMutation({
-              variables: {
-                id: user.id,
-                data: { avatar: data?.upload?.data.id },
-              },
-            });
-          }
-        })
-        .catch((error) => console.log(error));
-      setAvatar(file);
-    }
-  };
+  const { values, resetForm, submitForm, setFieldValue, errors, touched } =
+    formik;
 
   return (
     <MainWrapper>
@@ -86,45 +70,29 @@ const ProfilePage = () => {
       ) : (
         <Grid container spacing={3}>
           <Grid container item xs={12} justifyContent="space-between">
-            <Box ml={3}>
-              <Typography
-                fontWeight={700}
-                fontSize={32}
-              >{`${userPermission?.firstName} ${userPermission?.lastName}`}</Typography>
-            </Box>
-
-            {edit ? (
-              <Stack direction="row" gap={1}>
-                <Button
-                  title="cancel"
-                  variant="outlined"
-                  onClick={() => {
-                    setEdit(false);
-                    formik.resetForm();
-                  }}
-                />
-
-                <Button
-                  title="Save"
-                  variant="contained"
-                  onClick={formik.submitForm}
-                />
-              </Stack>
-            ) : (
-              <Button
-                title="Edit"
-                variant="outlined"
-                onClick={() => setEdit(true)}
-                icon="edit"
-              />
-            )}
+            <ProfileHeader
+              firstName={userPermission?.firstName}
+              lastName={userPermission?.lastName}
+              setEdit={setEdit}
+              edit={edit}
+              resetForm={resetForm}
+              submitForm={submitForm}
+            />
           </Grid>
           <Grid container item xs={3} justifyContent="center">
             <AvatarUpload
-              name={`${formik.values.firstName} ${formik.values.lastName}`}
-              isLocalPath={!!avatar}
-              avatar={avatar || userPermission?.avatar.data?.attributes?.url}
-              onChange={handleChangeAvatar}
+              name={`${values.firstName} ${values.lastName}`}
+              avatar={userPermission?.avatar.data?.attributes?.url}
+              onChange={(event) =>
+                changeAvatar({
+                  event,
+                  userId: user.id,
+                  avatarId: userPermission?.avatar.data?.id,
+                  uploadMutation,
+                  removeFileMutation,
+                  updateUserMutation,
+                })
+              }
             />
           </Grid>
           <Grid item xs={6}>
@@ -151,7 +119,7 @@ const ProfilePage = () => {
                           style={{
                             color: 'black',
                           }}
-                          href={formik.values.linkedIn}
+                          href={values.linkedIn}
                           target="blank"
                           rel="noreferrer"
                         >
@@ -174,7 +142,7 @@ const ProfilePage = () => {
                       <Box width="100%" ml={1}>
                         {items?.length && (
                           <Select
-                            value={(formik.values as valuesType)[fieldName]}
+                            value={(values as valuesType)[fieldName]}
                             disabled={!edit}
                             items={items}
                             label={label}
@@ -182,7 +150,7 @@ const ProfilePage = () => {
                             IconComponent={() => null}
                             readOnly={!edit}
                             onChange={(value) =>
-                              formik.setFieldValue(fieldName, value)
+                              setFieldValue(fieldName, value)
                             }
                           />
                         )}
@@ -204,20 +172,18 @@ const ProfilePage = () => {
                           disableUnderline={!edit}
                           variant="standard"
                           fullWidth
-                          value={(formik.values as valuesType)[fieldName]}
+                          value={(values as valuesType)[fieldName]}
                           label={label}
                           type={type}
-                          onChange={(value) =>
-                            formik.setFieldValue(fieldName, value)
-                          }
+                          onChange={(value) => setFieldValue(fieldName, value)}
                           InputProps={{
                             readOnly: !edit,
                           }}
-                          helperText={(formik.errors as valuesType)[fieldName]}
+                          helperText={(errors as valuesType)[fieldName]}
                           error={
                             !!(
-                              (formik.touched as valuesType)[fieldName] &&
-                              (formik.errors as valuesType)[fieldName]
+                              (touched as valuesType)[fieldName] &&
+                              (errors as valuesType)[fieldName]
                             )
                           }
                         />

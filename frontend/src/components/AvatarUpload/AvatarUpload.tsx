@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { Typography, Box, Button } from '@mui/material';
 import { Avatar } from 'legos';
@@ -6,19 +6,11 @@ import { Avatar } from 'legos';
 type AvatarUploadProps = {
   avatar: Blob | MediaSource;
   name: string;
-  isLocalPath?: boolean;
-  onChange: (data: any) => void;
+  onChange: (data: ChangeEvent) => void;
 };
 
-export const AvatarUpload = ({
-  avatar,
-  name,
-  onChange,
-  isLocalPath,
-}: AvatarUploadProps) => {
-  const path = isLocalPath
-    ? URL.createObjectURL(avatar)
-    : `https://dev.strapi.track.softbee.io${avatar}`;
+export const AvatarUpload = ({ avatar, name, onChange }: AvatarUploadProps) => {
+  const path = `https://dev.strapi.track.softbee.io${avatar}`;
 
   return (
     <>
