@@ -75,4 +75,3 @@ export const useNormalizedTrackers = (
   });
 
   return { trackers, loading, refetch };
-};
