@@ -25,6 +25,7 @@ type AuthUser = {
 type AppAuthContext = {
   jwt: string | null;
   user: AuthUser;
+  isAuth: boolean;
   login: (jwt: string, authUser: AuthUser) => void;
   logout: () => void;
 };
@@ -51,6 +52,8 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   }, [jwt]);
 
+  const isAuth = Object.keys(user).length !== 0;
+
   const login = (jwt: string, authUser: AuthUser) => {
     setJwt(jwt);
     setUser(authUser);
@@ -67,6 +70,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     () => ({
       jwt,
       user,
+      isAuth,
       login,
       logout,
     }),
