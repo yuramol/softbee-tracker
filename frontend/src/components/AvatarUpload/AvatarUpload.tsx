@@ -11,7 +11,6 @@ type AvatarUploadProps = {
 
 export const AvatarUpload = ({ avatar, name, onChange }: AvatarUploadProps) => {
   const path = avatar ? `https://dev.strapi.track.softbee.io${avatar}` : '';
-  // https://dev.strapi.track.softbee.io
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
