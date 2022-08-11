@@ -45,9 +45,6 @@ export const theme: Theme = createTheme({
       lightGrey: '#6c757d',
       black: '#000000',
     },
-    // text: {
-    //   primary: '#2e7d32',
-    // },
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),

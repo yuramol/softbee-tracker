@@ -8,8 +8,8 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 
-import { useLocalStorage } from './hooks';
-import { ME_QUERY } from './api';
+import { useLocalStorage } from 'hooks';
+import { ME_QUERY } from 'api';
 import { Role } from './constants';
 
 type Props = { children: React.ReactNode };

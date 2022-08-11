@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 
-import { App } from './App';
-import { apolloClient } from './api';
+import { App } from 'App';
+import { apolloClient } from 'api';
 import { theme } from 'theme';
 
 const root = ReactDOM.createRoot(

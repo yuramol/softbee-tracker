@@ -1,3 +1,1 @@
-import { getInitials } from './getInitials';
-
-export { getInitials };
+export { getInitials } from './getInitials';
