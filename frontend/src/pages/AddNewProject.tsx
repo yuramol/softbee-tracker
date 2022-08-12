@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -10,10 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { FormikProps } from 'formik';
+import { Formik } from 'formik';
 import { MainWrapper, NewProjectStep, SummaryStep, TeamStep } from 'components';
-
-const steps = ['New project', 'Team', 'Summary'];
 
 export const FIELD_NEW_PROJECT_ENTRY = {
   paymentMethod: 'paymentMethod',
@@ -39,41 +37,24 @@ export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.rate]?: string;
 }
 
-export type NewProjectData = {
-  name: string;
-  client: string;
-  paymentMethod: string;
-  startDate: Date;
-  endDate: Date;
-  manager: string;
-  hourlyRate: string;
-  employee: string;
-  rate: string;
-};
-
-const addNewProjectData: NewProjectData = {
-  name: '',
-  client: '',
-  paymentMethod: '',
-  startDate: new Date(),
-  endDate: new Date(),
-  manager: '',
-  hourlyRate: '',
-  employee: '',
-  rate: '',
-};
+const steps = ['New project', 'Team', 'Summary'];
 
 const AddNewProject = () => {
+  const initialValues: AddNewProjectValues = {
+    [FIELD_NEW_PROJECT_ENTRY.paymentMethod]: 'Time & Material',
+    [FIELD_NEW_PROJECT_ENTRY.name]: '',
+    [FIELD_NEW_PROJECT_ENTRY.client]: '',
+    [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
+    [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(),
+    [FIELD_NEW_PROJECT_ENTRY.hourlyRate]: '',
+    [FIELD_NEW_PROJECT_ENTRY.manager]: '',
+    [FIELD_NEW_PROJECT_ENTRY.employee]: '',
+    [FIELD_NEW_PROJECT_ENTRY.rate]: '',
+  };
   const [activeStep, setActiveStep] = useState(0);
-  const [newProjectData, setNewProjectData] = useState(addNewProjectData);
-
-  const formikRef = useRef<FormikProps<AddNewProjectValues>>(null);
 
   const handleNext = () => {
-    if (formikRef.current) {
-      formikRef.current.submitForm();
-      setActiveStep(activeStep + 1);
-    }
+    setActiveStep(activeStep + 1);
   };
 
   const handleBack = () => {
@@ -83,22 +64,11 @@ const AddNewProject = () => {
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return (
-          <NewProjectStep
-            ref={formikRef}
-            setNewProjectData={setNewProjectData}
-          />
-        );
+        return <NewProjectStep />;
       case 1:
-        return (
-          <TeamStep
-            ref={formikRef}
-            setNewProjectData={setNewProjectData}
-            newProjectData={newProjectData}
-          />
-        );
+        return <TeamStep />;
       case 2:
-        return <SummaryStep newProjectData={newProjectData} />;
+        return <SummaryStep />;
       default:
         throw new Error('Unknown step');
     }
@@ -123,35 +93,45 @@ const AddNewProject = () => {
               Thank you for your order.
             </Typography>
           ) : (
-            <>
-              {getStepContent(activeStep)}
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {activeStep !== 0 && (
-                  <Button
-                    variant="outlined"
-                    type="submit"
-                    onClick={handleBack}
-                    sx={{ mt: 1, ml: 1 }}
-                  >
-                    Back
-                  </Button>
-                )}
-                {activeStep === 0 && (
-                  <Button variant="outlined" sx={{ mt: 1, ml: 1 }}>
-                    Cancel
-                  </Button>
-                )}
+            <Formik
+              initialValues={initialValues}
+              onSubmit={(values) => {
+                console.log('values===', values);
+              }}
+            >
+              {({ handleSubmit }) => (
+                <form onSubmit={handleSubmit}>
+                  {getStepContent(activeStep)}
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    {activeStep !== 0 && (
+                      <Button
+                        variant="outlined"
+                        onClick={handleBack}
+                        sx={{ mt: 1, ml: 1 }}
+                      >
+                        Back
+                      </Button>
+                    )}
+                    {activeStep === 0 && (
+                      <Button variant="outlined" sx={{ mt: 1, ml: 1 }}>
+                        Cancel
+                      </Button>
+                    )}
 
-                <Button
-                  variant="contained"
-                  type="submit"
-                  onClick={handleNext}
-                  sx={{ mt: 1, ml: 1 }}
-                >
-                  {activeStep === steps.length - 1 ? 'Create' : 'Next'}
-                </Button>
-              </Box>
-            </>
+                    <Button
+                      variant="contained"
+                      type={
+                        activeStep === steps.length - 1 ? 'submit' : 'button'
+                      }
+                      onClick={handleNext}
+                      sx={{ mt: 1, ml: 1 }}
+                    >
+                      {activeStep === steps.length - 1 ? 'Create' : 'Next'}
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Formik>
           )}
         </Stack>
       </Container>
