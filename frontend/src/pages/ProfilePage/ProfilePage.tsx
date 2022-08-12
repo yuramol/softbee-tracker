@@ -44,15 +44,22 @@ const ProfilePage = () => {
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
-        updateUserMutation({
+        const {
+          data: { updateUsersPermissionsUser },
+        } = await updateUserMutation({
           variables: { id: user.id, data: { ...values } },
         });
+        if (updateUsersPermissionsUser?.data?.id) {
+          showNotification({
+            message: 'Changes are saved!',
+            variant: 'success',
+          });
+        }
       } catch (error) {
         showNotification({ error });
       } finally {
-        showNotification({ message: 'Changes are saved!', variant: 'success' });
         setEdit(false);
       }
     },
