@@ -27,11 +27,12 @@ export const useNormalizedTrackers = (
   const { data, loading, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
   }>(TRECKERS_BY_USER_ID_QUERY, {
-    fetchPolicy: 'network-only',
     variables: { userId, period },
   });
 
-  const trackers = data?.trackers.data.reduce((trackers, tracker) => {
+  const trackers: TrackerByDay[] = [];
+
+  data?.trackers.data.forEach((tracker) => {
     const date = tracker.attributes?.date;
     const projectName = tracker.attributes?.project?.data?.attributes?.name;
 
@@ -71,9 +72,7 @@ export const useNormalizedTrackers = (
     } else {
       trackers.push(trackerByDay);
     }
-
-    return trackers;
-  }, [] as TrackerByDay[]);
+  });
 
   return { trackers, loading, refetch };
 };
