@@ -13,7 +13,7 @@ import { format, startOfDay, startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
 
 import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
-import { Select, Icon, CalendarPickerFormik } from 'legos';
+import { Select, Icon, CalendarPickerFormik, Input } from 'legos';
 import { PROJECTS_BY_USER_ID_QUERY } from 'api';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 import { useAuth } from 'AuthProvider';
@@ -116,6 +116,7 @@ export const TrackerAddNewEntry = () => {
                     value={formik.values[FIELD_TIME_ENTRY.duration]}
                     onChange={handleChange}
                   />
+                  <Input onChange={handleChange}></Input>
                 </Stack>
                 <Select
                   label="Project"
