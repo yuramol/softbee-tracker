@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Box,
   Button,
-  Container,
   Stack,
   Step,
   StepLabel,
@@ -11,7 +9,7 @@ import {
 } from '@mui/material';
 
 import { Formik } from 'formik';
-import { MainWrapper, NewProjectStep, SummaryStep, TeamStep } from 'components';
+import { NewProjectStep, SummaryStep, TeamStep } from 'components';
 
 export const FIELD_NEW_PROJECT_ENTRY = {
   paymentMethod: 'paymentMethod',
@@ -39,7 +37,7 @@ export interface AddNewProjectValues {
 
 const steps = ['New project', 'Team', 'Summary'];
 
-const AddNewProject = () => {
+export const AddNewProject = () => {
   const initialValues: AddNewProjectValues = {
     [FIELD_NEW_PROJECT_ENTRY.paymentMethod]: 'Time & Material',
     [FIELD_NEW_PROJECT_ENTRY.name]: '',
@@ -74,7 +72,7 @@ const AddNewProject = () => {
     }
   };
   return (
-    <MainWrapper>
+    <>
       <Stack mb={6}>
         <Typography variant="h1">Add new project</Typography>
       </Stack>
@@ -135,8 +133,6 @@ const AddNewProject = () => {
           </Formik>
         )}
       </Stack>
-    </MainWrapper>
+    </>
   );
 };
-
-export default AddNewProject;

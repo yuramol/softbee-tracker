@@ -11,7 +11,7 @@ import {
 import { FormikValues, useFormikContext } from 'formik';
 
 import { CalendarPickerFormik } from 'legos';
-import { FIELD_NEW_PROJECT_ENTRY } from '../../pages/AddNewProject';
+import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
 
 const paymentTypes = [
   {

@@ -44,14 +44,6 @@ export const pages = [
   },
   {
     index: false,
-    name: 'Add new project',
-    href: '/projects/add',
-    mainMenu: true,
-    role: [Role.Manager],
-    Component: lazy(() => import('../pages/AddNewProject')),
-  },
-  {
-    index: false,
     name: 'Reports',
     href: '/reports',
     mainMenu: true,

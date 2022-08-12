@@ -3,7 +3,7 @@ import { Typography, TextField, Grid, Stack } from '@mui/material';
 import { useFormikContext } from 'formik';
 
 import { SelectField } from 'legos';
-import { FIELD_NEW_PROJECT_ENTRY } from '../../pages/AddNewProject';
+import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
 
 export const TeamStep = () => {
   const { handleChange } = useFormikContext();
