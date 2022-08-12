@@ -20,7 +20,7 @@ export const AppRouter = () => {
       <Route element={<Layout pages={currentPages} />}>
         <Route
           path="*"
-          element={user ? <NotFoundPage /> : <Navigate to="/login" replace />}
+          element={isAuth ? <NotFoundPage /> : <Navigate to="/login" replace />}
         />
         {currentPages.map(({ index, name, href, Component }) => (
           <Route
