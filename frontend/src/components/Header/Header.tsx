@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
     setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
-  const { user } = useAuth();
+  const { isAuth } = useAuth();
   const mainMenuPages = pages.filter(({ mainMenu }) => mainMenu);
   const avatarMenuPages = pages.filter(({ mainMenu }) => !mainMenu);
 
@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
           />
           <Logo />
           <NavBar pages={mainMenuPages} />
-          {user && (
+          {isAuth && (
             <HeaderAvatar
               pages={avatarMenuPages}
               anchorElUser={anchorElUser}
