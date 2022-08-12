@@ -17,7 +17,7 @@ export const useNotification = () => {
       if (error) {
         enqueueSnackbar(formatGraphqlError(error), {
           variant: 'error',
-          autoHideDuration: 3000,
+          autoHideDuration: 4000,
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'right',
@@ -28,7 +28,7 @@ export const useNotification = () => {
       if (message) {
         enqueueSnackbar(message, {
           variant,
-          autoHideDuration: 30000,
+          autoHideDuration: 3000,
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'right',
