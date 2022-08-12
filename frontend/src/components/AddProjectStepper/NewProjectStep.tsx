@@ -28,18 +28,6 @@ const paymentTypes = [
   },
 ];
 
-export type NewProjectData = {
-  name: string;
-  client: string;
-  paymentMethod: string;
-  startDate: Date;
-  endDate: Date;
-  manager: string;
-  hourlyRate: string;
-  employee: string;
-  rate: string;
-};
-
 export const NewProjectStep = () => {
   const { values, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();

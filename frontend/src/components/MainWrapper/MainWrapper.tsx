@@ -16,7 +16,7 @@ export const MainWrapper: React.FC<Props> = ({ children, sidebar, left }) => {
           item
           order={left ? 1 : 'unset'}
           md={sidebar ? 9 : 12}
-          paddingRight={4}
+          paddingRight={sidebar ? 4 : 0}
         >
           {children}
         </Grid>

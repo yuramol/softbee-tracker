@@ -75,34 +75,34 @@ const AddNewProject = () => {
   };
   return (
     <MainWrapper>
-      <Container component="main">
-        <Stack mb={6}>
-          <Typography variant="h1">Add new project</Typography>
-        </Stack>
+      <Stack mb={6}>
+        <Typography variant="h1">Add new project</Typography>
+      </Stack>
 
-        <Stack alignItems="stretch" gap={4}>
-          <Stepper activeStep={activeStep}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          {activeStep === steps.length ? (
-            <Typography variant="h5" gutterBottom>
-              Thank you for your order.
-            </Typography>
-          ) : (
-            <Formik
-              initialValues={initialValues}
-              onSubmit={(values) => {
-                console.log('values===', values);
-              }}
-            >
-              {({ handleSubmit }) => (
-                <form onSubmit={handleSubmit}>
+      <Stack gap={4}>
+        <Stepper activeStep={activeStep}>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep === steps.length ? (
+          <Typography variant="h5" gutterBottom>
+            Thank you for your order.
+          </Typography>
+        ) : (
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values) => {
+              console.log('values===', values);
+            }}
+          >
+            {({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Stack justifyContent="space-between">
                   {getStepContent(activeStep)}
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Stack direction="row" justifyContent="flex-end">
                     {activeStep !== 0 && (
                       <Button
                         variant="outlined"
@@ -128,13 +128,13 @@ const AddNewProject = () => {
                     >
                       {activeStep === steps.length - 1 ? 'Create' : 'Next'}
                     </Button>
-                  </Box>
-                </form>
-              )}
-            </Formik>
-          )}
-        </Stack>
-      </Container>
+                  </Stack>
+                </Stack>
+              </form>
+            )}
+          </Formik>
+        )}
+      </Stack>
     </MainWrapper>
   );
 };
