@@ -39,12 +39,24 @@ export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.rate]?: string;
 }
 
-const AddNewProjectData = {
+export type NewProjectData = {
+  name: string;
+  client: string;
+  paymentMethod: string;
+  startDate: Date;
+  endDate: Date;
+  manager: string;
+  hourlyRate: string;
+  employee: string;
+  rate: string;
+};
+
+const addNewProjectData: NewProjectData = {
   name: '',
   client: '',
   paymentMethod: '',
-  startDate: '',
-  endDate: '',
+  startDate: new Date(),
+  endDate: new Date(),
   manager: '',
   hourlyRate: '',
   employee: '',
@@ -53,7 +65,7 @@ const AddNewProjectData = {
 
 const AddNewProject = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [newProjectData, setNewProjectData] = useState(AddNewProjectData);
+  const [newProjectData, setNewProjectData] = useState(addNewProjectData);
 
   const formikRef = useRef<FormikProps<AddNewProjectValues>>(null);
 

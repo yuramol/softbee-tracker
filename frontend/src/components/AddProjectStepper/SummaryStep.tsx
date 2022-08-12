@@ -13,11 +13,11 @@ import {
   TableCell,
 } from '@mui/material';
 import { FormikProps, Formik } from 'formik';
-import { AddNewProjectValues } from '../../pages/AddNewProject';
+import { NewProjectData, AddNewProjectValues } from '../../pages/AddNewProject';
 import { format } from 'date-fns';
 
 type SummaryStepProps = {
-  newProjectData: any;
+  newProjectData: NewProjectData;
 };
 
 export const SummaryStep = forwardRef<
@@ -25,14 +25,6 @@ export const SummaryStep = forwardRef<
   SummaryStepProps
 >(({ newProjectData }, ref) => {
   const initialValues: AddNewProjectValues = {};
-  console.log(newProjectData);
-
-  // TODO Add work data from backend
-  const rows = [
-    { employee: 'Andriy P', allocation: 1, rate: 88 },
-    { employee: 'Andriy R', allocation: 1, rate: 88 },
-    { employee: 'Andriy S', allocation: 1, rate: 88 },
-  ];
 
   const {
     name,

@@ -4,13 +4,14 @@ import { Formik, FormikProps } from 'formik';
 
 import { SelectField } from 'legos';
 import {
+  NewProjectData,
   AddNewProjectValues,
   FIELD_NEW_PROJECT_ENTRY,
 } from '../../pages/AddNewProject';
 
 type TeamStepProps = {
   setNewProjectData: any;
-  newProjectData: object;
+  newProjectData: NewProjectData;
 };
 
 export const TeamStep = forwardRef<
