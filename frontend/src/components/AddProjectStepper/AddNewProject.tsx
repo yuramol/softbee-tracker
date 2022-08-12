@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Formik } from 'formik';
+import { FormikContext, useFormik } from 'formik';
 import { NewProjectStep, SummaryStep, TeamStep } from 'components';
 
 export const FIELD_NEW_PROJECT_ENTRY = {
@@ -19,9 +19,15 @@ export const FIELD_NEW_PROJECT_ENTRY = {
   endDate: 'endDate',
   manager: 'manager',
   hourlyRate: 'hourlyRate',
-  employee: 'employee',
-  rate: 'rate',
+  employees: 'employees',
 } as const;
+
+type EmployeeValues = {
+  id: string | number;
+  firstName: string;
+  lastName: string;
+  rate?: number;
+};
 
 export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.paymentMethod]?: string;
@@ -31,8 +37,7 @@ export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.endDate]?: Date;
   [FIELD_NEW_PROJECT_ENTRY.manager]?: string;
   [FIELD_NEW_PROJECT_ENTRY.hourlyRate]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.employee]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.rate]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.employees]?: EmployeeValues[];
 }
 
 const steps = ['New project', 'Team', 'Summary'];
@@ -43,11 +48,14 @@ export const AddNewProject = () => {
     [FIELD_NEW_PROJECT_ENTRY.name]: '',
     [FIELD_NEW_PROJECT_ENTRY.client]: '',
     [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
-    [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(),
+    [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(
+      new Date().getFullYear() + 1,
+      new Date().getMonth(),
+      new Date().getDate()
+    ),
     [FIELD_NEW_PROJECT_ENTRY.hourlyRate]: '',
     [FIELD_NEW_PROJECT_ENTRY.manager]: '',
-    [FIELD_NEW_PROJECT_ENTRY.employee]: '',
-    [FIELD_NEW_PROJECT_ENTRY.rate]: '',
+    [FIELD_NEW_PROJECT_ENTRY.employees]: [],
   };
   const [activeStep, setActiveStep] = useState(0);
 
@@ -71,65 +79,56 @@ export const AddNewProject = () => {
         throw new Error('Unknown step');
     }
   };
-  return (
-    <>
-      <Stack gap={4} height="100%">
-        <Typography variant="h1">Add new project</Typography>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        {activeStep === steps.length ? (
-          <Typography variant="h5" gutterBottom>
-            Thank you for your order.
-          </Typography>
-        ) : (
-          <Formik
-            initialValues={initialValues}
-            onSubmit={(values) => {
-              console.log('values===', values);
-            }}
-          >
-            {({ handleSubmit }) => (
-              <form onSubmit={handleSubmit} style={{ height: '100%' }}>
-                <Stack justifyContent="space-between" height="100%">
-                  {getStepContent(activeStep)}
-                  <Stack direction="row" justifyContent="flex-end">
-                    {activeStep !== 0 && (
-                      <Button
-                        variant="outlined"
-                        onClick={handleBack}
-                        sx={{ mt: 1, ml: 1 }}
-                      >
-                        Back
-                      </Button>
-                    )}
-                    {activeStep === 0 && (
-                      <Button variant="outlined" sx={{ mt: 1, ml: 1 }}>
-                        Cancel
-                      </Button>
-                    )}
 
-                    <Button
-                      variant="contained"
-                      type={
-                        activeStep === steps.length - 1 ? 'submit' : 'button'
-                      }
-                      onClick={handleNext}
-                      sx={{ mt: 1, ml: 1 }}
-                    >
-                      {activeStep === steps.length - 1 ? 'Create' : 'Next'}
-                    </Button>
-                  </Stack>
-                </Stack>
-              </form>
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: (values) => {
+      console.log('===', values);
+    },
+  });
+
+  return (
+    <FormikContext.Provider value={formik}>
+      <form onSubmit={formik.handleSubmit} style={{ height: '100%' }}>
+        <Stack height="100%" justifyContent="space-between">
+          <Stack gap={4}>
+            <Typography variant="h4">Add new project</Typography>
+            <Stepper activeStep={activeStep}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            {getStepContent(activeStep)}
+          </Stack>
+          <Stack direction="row" justifyContent="flex-end">
+            {activeStep !== 0 && (
+              <Button
+                variant="outlined"
+                onClick={handleBack}
+                sx={{ mt: 1, ml: 1 }}
+              >
+                Back
+              </Button>
             )}
-          </Formik>
-        )}
-      </Stack>
-    </>
+            {activeStep === 0 && (
+              <Button variant="outlined" sx={{ mt: 1, ml: 1 }}>
+                Cancel
+              </Button>
+            )}
+
+            <Button
+              variant="contained"
+              type={activeStep === steps.length - 1 ? 'submit' : 'button'}
+              onClick={handleNext}
+              sx={{ mt: 1, ml: 1 }}
+            >
+              {activeStep === steps.length - 1 ? 'Create' : 'Next'}
+            </Button>
+          </Stack>
+        </Stack>
+      </form>
+    </FormikContext.Provider>
   );
 };

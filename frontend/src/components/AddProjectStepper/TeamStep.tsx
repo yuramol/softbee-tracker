@@ -1,12 +1,12 @@
 import React from 'react';
-import { Typography, TextField, Grid, Stack } from '@mui/material';
-import { useFormikContext } from 'formik';
+import { Typography, TextField, Grid, Stack, Button } from '@mui/material';
+import { FieldArray, FormikValues, useFormikContext } from 'formik';
 
 import { SelectField } from 'legos';
 import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
 
 export const TeamStep = () => {
-  const { handleChange } = useFormikContext();
+  const { values, handleChange } = useFormikContext<FormikValues>();
 
   // TODO Add manager from backend
   const itemSelectManager = [{ label: 'Andriy' }, { label: 'Stas' }];
@@ -26,15 +26,12 @@ export const TeamStep = () => {
       </Stack>
 
       <Stack mt={3} mb={1} gap={3}>
-        <Stack>
-          <SelectField
-            id={FIELD_NEW_PROJECT_ENTRY.manager}
-            name={FIELD_NEW_PROJECT_ENTRY.manager}
-            label="Project manager"
-            items={itemSelectManager}
-          />
-        </Stack>
-
+        <SelectField
+          id={FIELD_NEW_PROJECT_ENTRY.manager}
+          name={FIELD_NEW_PROJECT_ENTRY.manager}
+          label="Project manager"
+          items={itemSelectManager}
+        />
         <TextField
           id={FIELD_NEW_PROJECT_ENTRY.hourlyRate}
           name={FIELD_NEW_PROJECT_ENTRY.hourlyRate}
@@ -43,25 +40,61 @@ export const TeamStep = () => {
           multiline
           onChange={handleChange}
         />
-        <Stack direction="row" gap={2}>
-          <Grid item xs={8}>
-            <SelectField
-              id={FIELD_NEW_PROJECT_ENTRY.employee}
-              name={FIELD_NEW_PROJECT_ENTRY.employee}
-              label="Employee"
-              items={itemSelectEmployee}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              id={FIELD_NEW_PROJECT_ENTRY.rate}
-              name={FIELD_NEW_PROJECT_ENTRY.rate}
-              label="Rate"
-              fullWidth
-              onChange={handleChange}
-            />
-          </Grid>
-        </Stack>
+        <FieldArray
+          name={FIELD_NEW_PROJECT_ENTRY.employees}
+          render={(arrayHelpers: any) => (
+            <>
+              {values.employees.length > 0 &&
+                values.employees.map((employee: any, index: number) => (
+                  <Grid
+                    key={`${employee.firstName} ${employee.lastName}`}
+                    container
+                    columnSpacing={2}
+                  >
+                    <Grid item xs={6}>
+                      <SelectField
+                        id={employee.id ?? 1}
+                        name={`${employee.firstName} ${employee.lastName}`}
+                        label="Employee"
+                        items={itemSelectEmployee}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <TextField
+                        name={employee.rate}
+                        label="Rate"
+                        fullWidth
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Button
+                        size="large"
+                        variant="outlined"
+                        onClick={() => arrayHelpers.remove(index)}
+                      >
+                        -
+                      </Button>
+                    </Grid>
+                  </Grid>
+                ))}
+              <Button
+                variant="contained"
+                onClick={() =>
+                  arrayHelpers.push({
+                    id: null,
+                    firstName: '',
+                    lastName: '',
+                    rate: null,
+                  })
+                }
+                sx={{ width: 200 }}
+              >
+                + Add Employee
+              </Button>
+            </>
+          )}
+        />
       </Stack>
     </Stack>
   );

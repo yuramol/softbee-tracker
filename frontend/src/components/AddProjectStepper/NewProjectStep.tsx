@@ -70,7 +70,7 @@ export const NewProjectStep = () => {
           onChange={handleChange}
         />
 
-        <Stack direction="row" justifyContent="space-between" gap={2}>
+        <Grid container justifyContent="space-between" columnSpacing={2}>
           <Grid item xs={6}>
             <InputLabel>
               Start Date<span style={{ color: 'red' }}>*</span>
@@ -83,7 +83,7 @@ export const NewProjectStep = () => {
             </InputLabel>
             <CalendarPickerFormik field={FIELD_NEW_PROJECT_ENTRY.endDate} />
           </Grid>
-        </Stack>
+        </Grid>
       </Stack>
     </Stack>
   );

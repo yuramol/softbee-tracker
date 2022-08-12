@@ -17,17 +17,7 @@ import { format } from 'date-fns';
 
 export const SummaryStep = () => {
   const { values } = useFormikContext<FormikValues>();
-  const {
-    name,
-    client,
-    paymentMethod,
-    startDate,
-    endDate,
-    manager,
-    hourlyRate,
-    employee,
-    rate,
-  } = values;
+  const { name, client, paymentMethod, startDate, endDate, manager } = values;
   return (
     <Stack>
       <Stack direction="row" justifyContent="space-between">
@@ -78,42 +68,47 @@ export const SummaryStep = () => {
             />
           </ListItem>
         </List>
-        <Typography variant="h6" fontWeight={300}>
-          Rate agreements
-        </Typography>
+        {values.employees.length > 0 && (
+          <>
+            <Typography variant="h6" fontWeight={300}>
+              Rate agreements
+            </Typography>
 
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow
-                sx={{
-                  '& .MuiTableCell-root': {
-                    borderBottom: '1.5px solid rgba(0, 0, 0)',
-                  },
-                }}
-              >
-                <TableCell sx={{ fontWeight: 900, paddingRight: '100px' }}>
-                  Employee
-                </TableCell>
-                <TableCell sx={{ fontWeight: 900 }}>Allocation, %</TableCell>
-                <TableCell sx={{ fontWeight: 900 }}>Rate, $</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow
-                sx={{
-                  '&:last-child td, &:last-child th': { border: 0 },
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {employee}
-                </TableCell>
-                <TableCell>---</TableCell>
-                <TableCell>{rate}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow
+                    sx={{
+                      '& .MuiTableCell-root': {
+                        borderBottom: '1.5px solid rgba(0, 0, 0)',
+                      },
+                    }}
+                  >
+                    <TableCell sx={{ fontWeight: 900, paddingRight: '100px' }}>
+                      Employee
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 900 }}>Rate, $</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {values.employees.map((employee: any) => (
+                    <TableRow
+                      key={`${employee.firstName} ${employee.lastName}`}
+                      sx={{
+                        '&:last-child td, &:last-child th': { border: 0 },
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {`${employee.firstName} ${employee.lastName}`}
+                      </TableCell>
+                      <TableCell>{employee.rate}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        )}
       </Stack>
     </Stack>
   );

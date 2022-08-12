@@ -3,7 +3,7 @@ import { AddNewProject, MainWrapper } from '../components';
 
 const ProjectPage = () => {
   return (
-    <MainWrapper sidebar={<p>Width left sidebar</p>}>
+    <MainWrapper>
       <AddNewProject />
     </MainWrapper>
   );
