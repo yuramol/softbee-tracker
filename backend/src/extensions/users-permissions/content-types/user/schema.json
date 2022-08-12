@@ -121,13 +121,19 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::project.project",
-      "inversedBy": "users"
+      "mappedBy": "users"
     },
     "trackers": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::tracker.tracker",
       "mappedBy": "user"
+    },
+    "manager_projects": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::project.project",
+      "inversedBy": "managers"
     }
   }
 }

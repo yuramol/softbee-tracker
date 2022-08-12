@@ -1,10 +1,9 @@
 import React from 'react';
 import { IconButton, Menu, MenuItem, Box } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 
 import { NavButton } from './NavButton';
 import { HeaderProps } from './types';
-
+import { Icon } from 'legos';
 interface MenuAppBarProps extends HeaderProps {
   anchorElNav: null | HTMLElement;
   handleOpenNavMenu: (event: React.MouseEvent<HTMLElement>) => void;
@@ -26,7 +25,7 @@ export const MenuAppBar: React.FC<MenuAppBarProps> = ({
         aria-haspopup="true"
         onClick={handleOpenNavMenu}
       >
-        <MenuIcon />
+        <Icon icon="menu" />
       </IconButton>
       <Menu
         id="menu-appbar"
