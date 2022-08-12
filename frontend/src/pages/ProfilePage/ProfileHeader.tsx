@@ -21,6 +21,7 @@ export const ProfileHeader = ({
     {edit ? (
       <Stack direction="row" gap={1}>
         <Button
+          sx={{ width: '40px' }}
           title="cancel"
           variant="outlined"
           onClick={() => {
@@ -29,7 +30,12 @@ export const ProfileHeader = ({
           }}
         />
 
-        <Button title="Save" variant="contained" onClick={submitForm} />
+        <Button
+          sx={{ width: '40px' }}
+          title="Save"
+          variant="contained"
+          onClick={submitForm}
+        />
       </Stack>
     ) : (
       <Button

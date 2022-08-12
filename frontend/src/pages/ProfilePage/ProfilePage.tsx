@@ -9,7 +9,13 @@ import { Select, Input, Icon } from 'legos';
 import { useUsersPermissionsUser } from 'hooks';
 import { InitialValuesType, valuesType } from './types';
 import { profileInfo, validationSchema } from './helpers';
-import { MainWrapper, AvatarUpload, Loader } from 'components';
+import {
+  MainWrapper,
+  AvatarUpload,
+  Loader,
+  TrackerCalendar,
+  TimeInspector,
+} from 'components';
 import { ProfileHeader } from './ProfileHeader';
 import { useChangeAvatar } from './useChangeAvatar';
 import { useNotification } from 'hooks/useNotification';
@@ -29,14 +35,15 @@ const ProfilePage = () => {
   );
 
   const initialValues: InitialValuesType = {
-    email: userPermission?.email ?? '',
-    phone: userPermission?.phone ?? '',
-    lastName: userPermission?.lastName ?? '',
-    position: userPermission?.position ?? '',
-    linkedIn: userPermission?.linkedIn ?? '',
-    firstName: userPermission?.firstName ?? '',
-    salaryInfo: userPermission?.salaryInfo ?? '',
-    dateEmployment: userPermission?.dateEmployment ?? '',
+    email: userPermission?.email ?? '-',
+    phone: userPermission?.phone ?? '-',
+    lastName: userPermission?.lastName ?? '-',
+    position: userPermission?.position ?? 'developer',
+    linkedIn: userPermission?.linkedIn ?? '-',
+    // upWork: userPermission?.upWork ?? '-',
+    firstName: userPermission?.firstName ?? '-',
+    salaryInfo: userPermission?.salaryInfo ?? '-',
+    dateEmployment: userPermission?.dateEmployment ?? '-',
     avatar: userPermission?.avatar.data?.attributes?.url,
   };
 
@@ -67,9 +74,20 @@ const ProfilePage = () => {
 
   const { values, resetForm, submitForm, setFieldValue, errors, touched } =
     formik;
+  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
   return (
-    <MainWrapper>
+    <MainWrapper
+      sidebar={
+        <>
+          <TimeInspector />
+          <TrackerCalendar
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+          />
+        </>
+      }
+    >
       {loading ? (
         <Loader />
       ) : (
@@ -107,13 +125,17 @@ const ProfilePage = () => {
                 ) {
                   return null;
                 }
-                if (!edit && fieldName === 'linkedIn') {
+                if (
+                  !edit &&
+                  (fieldName === 'upWork' || fieldName === 'linkedIn')
+                ) {
                   return (
                     <Box
                       key={fieldName}
                       display="flex"
                       alignItems="center"
-                      height={48}
+                      minHeight={'48px'}
+                      maxHeight={'48px'}
                     >
                       <Icon icon={icon} />
 
@@ -122,11 +144,19 @@ const ProfilePage = () => {
                           style={{
                             color: 'black',
                           }}
-                          href={values.linkedIn}
+                          href={
+                            fieldName === 'upWork'
+                              ? values.linkedIn
+                              : values.linkedIn
+                          }
                           target="blank"
                           rel="noreferrer"
                         >
-                          <Typography color="black">LinkedIn</Typography>
+                          {fieldName === 'upWork' ? (
+                            <Typography color="black">upWork</Typography>
+                          ) : (
+                            <Typography color="black">linkedIn</Typography>
+                          )}
                         </a>
                       </Box>
                     </Box>
@@ -148,13 +178,15 @@ const ProfilePage = () => {
                             value={(values as valuesType)[fieldName]}
                             disabled={!edit}
                             items={items}
+                            name={fieldName}
                             label={label}
                             disableUnderline={!edit}
                             IconComponent={() => null}
                             readOnly={!edit}
-                            onChange={(value) =>
-                              setFieldValue(fieldName, value)
-                            }
+                            // onChange={(value) =>
+                            //   setFieldValue(fieldName, value)
+                            // }
+                            onChange={formik.handleChange}
                           />
                         )}
                       </Box>
@@ -172,6 +204,7 @@ const ProfilePage = () => {
                       <Icon icon={icon} />
                       <Box ml={1} width="100%">
                         <Input
+                          placeholder={label}
                           disableUnderline={!edit}
                           variant="standard"
                           fullWidth
