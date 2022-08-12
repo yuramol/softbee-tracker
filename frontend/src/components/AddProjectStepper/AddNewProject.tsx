@@ -22,13 +22,6 @@ export const FIELD_NEW_PROJECT_ENTRY = {
   employees: 'employees',
 } as const;
 
-type EmployeeValues = {
-  id: string | number;
-  firstName: string;
-  lastName: string;
-  rate?: number;
-};
-
 export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.paymentMethod]?: string;
   [FIELD_NEW_PROJECT_ENTRY.name]?: string;
@@ -37,7 +30,7 @@ export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.endDate]?: Date;
   [FIELD_NEW_PROJECT_ENTRY.manager]?: string;
   [FIELD_NEW_PROJECT_ENTRY.hourlyRate]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.employees]?: EmployeeValues[];
+  [FIELD_NEW_PROJECT_ENTRY.employees]?: string[];
 }
 
 const steps = ['New project', 'Team', 'Summary'];

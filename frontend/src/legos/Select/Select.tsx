@@ -23,26 +23,29 @@ export const Select = ({
   readOnly,
   IconComponent = () => <Icon icon="arrowDropDown" />,
   ...props
-}: SelectPropsType) => (
-  <FormControl variant={variant} fullWidth error={error}>
-    <InputLabel id="select-label">{label}</InputLabel>
-    <StyledSelect
-      IconComponent={IconComponent}
-      label={label}
-      value={value}
-      name={name}
-      disabled={disabled}
-      readOnly={readOnly}
-      onChange={onChange}
-      sx={{ maxWidth: '100%', paddingRight: 1 }}
-      {...props}
-    >
-      {items?.map(({ id, attributes }) => (
-        <MenuItem key={id} value={id as string}>
-          {attributes?.name}
-        </MenuItem>
-      ))}
-    </StyledSelect>
-    {error && <FormHelperText>{errorText}</FormHelperText>}
-  </FormControl>
-);
+}: SelectPropsType) => {
+  console.log('===', value, items);
+  return (
+    <FormControl variant={variant} fullWidth error={error}>
+      <InputLabel id="select-label">{label}</InputLabel>
+      <StyledSelect
+        IconComponent={IconComponent}
+        label={label}
+        value={value}
+        name={name}
+        disabled={disabled}
+        readOnly={readOnly}
+        onChange={onChange}
+        sx={{ maxWidth: '100%', paddingRight: 1 }}
+        {...props}
+      >
+        {items?.map(({ value, label }) => (
+          <MenuItem key={value} value={value}>
+            {label}
+          </MenuItem>
+        ))}
+      </StyledSelect>
+      {error && <FormHelperText>{errorText}</FormHelperText>}
+    </FormControl>
+  );
+};

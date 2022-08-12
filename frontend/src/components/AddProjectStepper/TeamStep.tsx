@@ -2,22 +2,27 @@ import React from 'react';
 import { Typography, TextField, Grid, Stack, Button } from '@mui/material';
 import { FieldArray, FormikValues, useFormikContext } from 'formik';
 
-import { SelectField } from 'legos';
+import { Select } from 'legos';
 import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
 
 export const TeamStep = () => {
   const { values, handleChange } = useFormikContext<FormikValues>();
 
   // TODO Add manager from backend
-  const itemSelectManager = [{ label: 'Andriy' }, { label: 'Stas' }];
+  const itemSelectManager = [
+    { label: 'Andriy', value: 1 },
+    { label: 'Stas', value: 2 },
+  ];
 
   // TODO Add employee from backend
   const itemSelectEmployee = [
-    { label: 'Serhii' },
-    { label: 'Stas' },
-    { label: 'Oleg' },
-    { label: 'Michael' },
+    { label: 'Serhii', value: 1 },
+    { label: 'Stas', value: 2 },
+    { label: 'Oleg', value: 3 },
+    { label: 'Michael', value: 4 },
   ];
+
+  console.log('===', values.manager);
 
   return (
     <Stack>
@@ -26,11 +31,13 @@ export const TeamStep = () => {
       </Stack>
 
       <Stack mt={3} mb={1} gap={3}>
-        <SelectField
-          id={FIELD_NEW_PROJECT_ENTRY.manager}
+        <Select
           name={FIELD_NEW_PROJECT_ENTRY.manager}
           label="Project manager"
           items={itemSelectManager}
+          value={values.manager}
+          variant="outlined"
+          onChange={handleChange}
         />
         <TextField
           id={FIELD_NEW_PROJECT_ENTRY.hourlyRate}
@@ -46,17 +53,15 @@ export const TeamStep = () => {
             <>
               {values.employees.length > 0 &&
                 values.employees.map((employee: any, index: number) => (
-                  <Grid
-                    key={`${employee.firstName} ${employee.lastName}`}
-                    container
-                    columnSpacing={2}
-                  >
+                  <Grid key={`${employee}`} container columnSpacing={2}>
                     <Grid item xs={6}>
-                      <SelectField
-                        id={employee.id ?? 1}
-                        name={`${employee.firstName} ${employee.lastName}`}
+                      <Select
+                        name={`${FIELD_NEW_PROJECT_ENTRY.employees}.${index}`}
                         label="Employee"
+                        variant="outlined"
+                        value={employee}
                         items={itemSelectEmployee}
+                        onChange={handleChange}
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -80,14 +85,7 @@ export const TeamStep = () => {
                 ))}
               <Button
                 variant="contained"
-                onClick={() =>
-                  arrayHelpers.push({
-                    id: null,
-                    firstName: '',
-                    lastName: '',
-                    rate: null,
-                  })
-                }
+                onClick={() => arrayHelpers.push('----')}
                 sx={{ width: 200 }}
               >
                 + Add Employee
