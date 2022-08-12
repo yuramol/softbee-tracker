@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Avatar as MuiAvatar, Typography } from '@mui/material';
-import { getInitials } from 'utils';
+import { getInitials } from 'helpers';
 
 type AvatarProps = {
   avatar?: string;
