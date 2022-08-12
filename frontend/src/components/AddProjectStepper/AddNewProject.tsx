@@ -73,11 +73,8 @@ export const AddNewProject = () => {
   };
   return (
     <>
-      <Stack mb={6}>
+      <Stack gap={4} height="100%">
         <Typography variant="h1">Add new project</Typography>
-      </Stack>
-
-      <Stack gap={4}>
         <Stepper activeStep={activeStep}>
           {steps.map((label) => (
             <Step key={label}>
@@ -97,8 +94,8 @@ export const AddNewProject = () => {
             }}
           >
             {({ handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
-                <Stack justifyContent="space-between">
+              <form onSubmit={handleSubmit} style={{ height: '100%' }}>
+                <Stack justifyContent="space-between" height="100%">
                   {getStepContent(activeStep)}
                   <Stack direction="row" justifyContent="flex-end">
                     {activeStep !== 0 && (
