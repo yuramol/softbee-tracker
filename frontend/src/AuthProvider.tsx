@@ -11,10 +11,11 @@ import { useLazyQuery } from '@apollo/client';
 import { useLocalStorage } from 'hooks';
 import { ME_QUERY } from 'api';
 import { Role } from './constants';
+import { Maybe, Scalars } from 'types/GraphqlTypes';
 
 type Props = { children: React.ReactNode };
 
-type AuthUser = {
+export type AuthUser = {
   id: string;
   username: string;
   role: {
@@ -26,7 +27,10 @@ type AppAuthContext = {
   jwt: string | null;
   user: AuthUser;
   isAuth: boolean;
-  login: (jwt: string, authUser: AuthUser) => void;
+  login: (
+    jwt: Maybe<Scalars['String']> | undefined,
+    authUser: AuthUser
+  ) => void;
   logout: () => void;
 };
 
@@ -35,9 +39,7 @@ export const AuthContext = createContext<AppAuthContext>({} as AppAuthContext);
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [jwt, setJwt] = useLocalStorage('jwt', null);
   const [user, setUser] = useState<AuthUser>({} as AuthUser);
-  const [meQuery] = useLazyQuery<{ me: AuthUser }>(ME_QUERY, {
-    fetchPolicy: 'cache-and-network',
-  });
+  const [meQuery] = useLazyQuery<{ me: AuthUser }>(ME_QUERY);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,7 +56,10 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   const isAuth = Object.keys(user).length !== 0;
 
-  const login = (jwt: string, authUser: AuthUser) => {
+  const login = (
+    jwt: Maybe<Scalars['String']> | undefined,
+    authUser: AuthUser
+  ) => {
     setJwt(jwt);
     setUser(authUser);
     navigate('/', { replace: true });
