@@ -39,7 +39,9 @@ export const AuthContext = createContext<AppAuthContext>({} as AppAuthContext);
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [jwt, setJwt] = useLocalStorage('jwt', null);
   const [user, setUser] = useState<AuthUser>({} as AuthUser);
-  const [meQuery] = useLazyQuery<{ me: AuthUser }>(ME_QUERY);
+  const [meQuery] = useLazyQuery<{ me: AuthUser }>(ME_QUERY, {
+    fetchPolicy: 'cache-and-network',
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
