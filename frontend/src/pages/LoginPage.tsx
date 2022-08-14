@@ -6,6 +6,7 @@ import * as yup from 'yup';
 
 import { LOGIN_MUTATION } from 'api';
 import { AuthUser, useAuth } from 'AuthProvider';
+import { useNotification } from 'hooks';
 import { MainWrapper } from 'components';
 import { UsersPermissionsLoginPayload } from 'types/GraphqlTypes';
 
@@ -16,6 +17,7 @@ enum LoginFields {
 
 const LoginPage = () => {
   const { login } = useAuth();
+  const notification = useNotification();
   const [loginMutation, { loading }] = useMutation<{
     login: UsersPermissionsLoginPayload;
   }>(LOGIN_MUTATION);
@@ -51,6 +53,10 @@ const LoginPage = () => {
     onSubmit: (values) => {
       loginMutation({ variables: { input: values } })
         .then(({ data }) => {
+          notification({
+            message: 'Congratulations, you have logged in to SoftBee Tracker',
+            variant: 'success',
+          });
           login(data?.login.jwt, data?.login.user as AuthUser);
         })
         .catch((error) => {

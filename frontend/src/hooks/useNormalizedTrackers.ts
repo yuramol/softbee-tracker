@@ -22,12 +22,13 @@ type TrackerByDay = {
 
 export const useNormalizedTrackers = (
   userId: Scalars['ID'],
-  period: Array<Scalars['Date']>
+  startDate: Scalars['Date'],
+  endDate: Scalars['Date']
 ) => {
   const { data, loading, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
   }>(TRECKERS_BY_USER_ID_QUERY, {
-    variables: { userId, period },
+    variables: { userId, startDate, endDate },
   });
 
   const trackers: TrackerByDay[] = [];
