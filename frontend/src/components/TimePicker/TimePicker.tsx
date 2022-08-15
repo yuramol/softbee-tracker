@@ -6,28 +6,41 @@ import { Input } from 'legos';
 
 import TimePickerDialog, { TimePickerBlock } from './TimePickerDialog';
 import { addOrSubtractMinutes, parseTime } from './utils';
+import { useScrollBlock } from 'helpers/useScrollBlock';
 
 interface TimePickerProps {
-  from?: number;
   minutesPerStep?: number;
-  onChange: (value: unknown) => void;
-  to?: number;
   value: string;
+  from?: number;
+  to?: number;
+  width?: string;
+  onChange: (value: string) => void;
+  onClick?: () => void;
+  onBlur?: () => void;
 }
 
 const TimePicker = ({
   minutesPerStep = 5,
-  onChange,
+  value = '00:00',
   from,
   to,
-  value = '00:00',
+  width,
+  onChange,
+  onClick,
+  onBlur,
 }: TimePickerProps) => {
   const [durationValue, setDurationValue] = useState(value);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [blockScroll, allowScroll] = useScrollBlock();
 
   const { hours, minutes } = parseTime(durationValue);
 
   const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    blockScroll();
+    return () => allowScroll();
+  }, []);
 
   useEffect(() => {
     if (dialogOpen) {
@@ -36,7 +49,12 @@ const TimePicker = ({
   }, [dialogOpen]);
 
   const closeDialog = () => {
-    if (!dialogOpen) return;
+    if (onBlur) {
+      onBlur();
+    }
+    if (!dialogOpen) {
+      return;
+    }
     setDialogOpen(false);
     onChange(durationValue);
   };
@@ -47,6 +65,9 @@ const TimePicker = ({
   };
 
   const handleFocus = () => {
+    if (onClick) {
+      onClick();
+    }
     openDialog();
   };
 
@@ -75,14 +96,14 @@ const TimePicker = ({
   };
 
   return (
-    <div style={{ width: '100%', position: 'relative' }}>
+    <div style={{ width: width ?? '100%', position: 'relative' }}>
       <Input
         onChange={onChange}
         onFocus={handleFocus}
         value={durationValue}
         InputProps={{
           endAdornment: (
-            <InputAdornment position="end">
+            <InputAdornment position="end" onClick={openDialog}>
               <HourglassBottomIcon />
             </InputAdornment>
           ),

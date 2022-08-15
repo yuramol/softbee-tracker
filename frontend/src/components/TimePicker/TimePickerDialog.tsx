@@ -18,7 +18,7 @@ const TimePickerDialog = styled.div`
   position: absolute;
   top: 66px;
   user-select: none;
-  width: 190px;
+  width: 200px;
   z-index: 999;
 `;
 
@@ -31,8 +31,8 @@ const TimePickerPart = styled.div`
 
 type TimePickerBlockProps = {
   number: string;
-  onDownClick: (value: number) => void;
-  onUpClick: (value: number) => void;
+  onDownClick: () => void;
+  onUpClick: () => void;
 };
 
 export const TimePickerBlock = ({
