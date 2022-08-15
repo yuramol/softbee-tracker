@@ -16,21 +16,24 @@ const projects = [
     id: 1,
     projectName: 'UpWork',
     timeLine: '20.11.21-12.12.23',
-    projectManager: 'Oleksandr Zastavnyi',
+    firstName: 'df',
+    lastName: 'df',
     type: 'paid',
   },
   {
     id: 3,
     projectName: 'Plumbid',
     timeLine: '20.11.21-12.12.23',
-    projectManager: 'Yura Moldavchuk',
+    firstName: 'df',
+    lastName: 'df',
     type: 'paid',
   },
   {
     id: 4,
     projectName: 'PalPal',
     timeLine: '20.11.21-12.12.23',
-    projectManager: 'Andrev Antonuch',
+    firstName: 'Stas',
+    lastName: 'Babuch',
     type: 'unpaid',
     projectManagerAvatar: 'https://i.pravatar.cc/300',
   },
@@ -51,15 +54,6 @@ export const ProjectList = () => (
       {projects.map((project) => (
         <Fragment key={project.id}>
           <Grid item xs={4} container alignItems="center">
-            <MuiAvatar
-              sx={{ backgroundColor: 'common.lightBackground', mr: 3 }}
-            >
-              {project.type == 'paid' ? (
-                <Icon icon="paidOutlined" color="primary" />
-              ) : (
-                <Icon icon="moneyOff" color="secondary" />
-              )}
-            </MuiAvatar>
             <Box>
               <Link href="*">{project.projectName}</Link>
               <Typography fontSize="10px">{project.timeLine}</Typography>
@@ -68,10 +62,11 @@ export const ProjectList = () => (
           <Grid container gap={2} item xs={4} alignItems="center">
             <Avatar
               avatar={project.projectManagerAvatar}
-              name={project.projectManager}
+              firstName={project.firstName}
+              lastName={project.lastName}
             />
             <Link href="*" underline="none">
-              {project.projectManager}
+              {`${project.firstName} ${project.lastName}`}
             </Link>
           </Grid>
           <Grid item container xs={2}>

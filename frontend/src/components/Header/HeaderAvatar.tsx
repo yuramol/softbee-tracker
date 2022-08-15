@@ -38,7 +38,8 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
           <Avatar
             width={40}
             height={40}
-            name={`${userPermission?.firstName} ${userPermission?.lastName}`}
+            firstName={userPermission?.firstName}
+            lastName={userPermission?.lastName}
             avatar={pathAvatar}
           />
         </IconButton>

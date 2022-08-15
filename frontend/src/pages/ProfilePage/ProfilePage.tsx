@@ -104,7 +104,8 @@ const ProfilePage = () => {
           </Grid>
           <Grid container item xs={3} justifyContent="center">
             <AvatarUpload
-              name={`${values.firstName} ${values.lastName}`}
+              firstName={values.firstName}
+              lastName={values.lastName}
               avatar={userPermission?.avatar.data?.attributes?.url}
               onChange={(event) =>
                 handleChangeAvatar({
