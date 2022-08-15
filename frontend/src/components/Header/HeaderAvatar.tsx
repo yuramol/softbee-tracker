@@ -1,5 +1,12 @@
 import React from 'react';
-import { Box, IconButton, Menu, Tooltip, MenuItem } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Menu,
+  Tooltip,
+  MenuItem,
+  Typography,
+} from '@mui/material';
 
 import { HeaderButton, NavButton } from './NavButton';
 import { HeaderProps } from './types';
@@ -28,8 +35,9 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip
         title={
-          <Box display="block" width={'100px'} textAlign="center">
-            {`${userPermission?.firstName} ${userPermission?.lastName} ${userPermission?.email} `}
+          <Box display="flex" flexDirection="column" textAlign="center">
+            <Typography variant="body2">{`${userPermission?.firstName} ${userPermission?.lastName}`}</Typography>
+            <Typography variant="body2">{userPermission?.email}</Typography>
           </Box>
         }
       >

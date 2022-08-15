@@ -1,36 +1,20 @@
-import React, { Fragment, ReactElement } from 'react';
+import React, { Fragment } from 'react';
 
 import { IconButton, Link, Stack, Typography } from '@mui/material';
 import { Avatar, Icon } from 'legos';
 
-//TODO add projects info and info about PR
-const projects = [
-  {
-    id: 1,
-    projectName: 'UpWork',
-    timeLine: '20.11.21-12.12.23',
-    firstName: 'df',
-    lastName: 'df',
-    type: 'paid',
-  },
-  {
-    id: 3,
-    projectName: 'Plumbid',
-    timeLine: '20.11.21-12.12.23',
-    firstName: 'df',
-    lastName: 'df',
-    type: 'paid',
-  },
-  {
-    id: 4,
-    projectName: 'PalPal',
-    timeLine: '20.11.21-12.12.23',
-    firstName: 'Stas',
-    lastName: 'Babuch',
-    type: 'unpaid',
-    projectManagerAvatar: 'https://i.pravatar.cc/300',
-  },
-];
+type ProjectListType = {
+  id: string | number;
+  projectName: string;
+  timeLine: string;
+  projectManager: string;
+  type: string;
+  projectManagerAvatar?: string;
+};
+
+type ProjectListProps = {
+  projectList: ProjectListType[];
+};
 
 const getProjectIcon: (type: string) => JSX.Element | null = (type) => {
   switch (type) {
@@ -65,11 +49,10 @@ export const ProjectList = ({ projectList }: ProjectListProps) => (
           <Stack direction="row" alignItems="center" spacing={1} width="300px">
             <Avatar
               avatar={project.projectManagerAvatar}
-              firstName={project.firstName}
-              lastName={project.lastName}
+              name={project.projectManager}
             />
             <Link href="*" underline="none">
-              {`${project.firstName} ${project.lastName}`}
+              {project.projectManager}
             </Link>
           </Stack>
 

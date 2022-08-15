@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getInitials } from 'utils';
+import { getInitials } from 'helpers';
 
 import {
   Box,
