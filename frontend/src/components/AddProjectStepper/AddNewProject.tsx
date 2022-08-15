@@ -22,6 +22,11 @@ export const FIELD_NEW_PROJECT_ENTRY = {
   employees: 'employees',
 } as const;
 
+interface EmployeeValues {
+  id: string;
+  name: string;
+  rate: string;
+}
 export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.paymentMethod]?: string;
   [FIELD_NEW_PROJECT_ENTRY.name]?: string;
@@ -30,7 +35,7 @@ export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.endDate]?: Date;
   [FIELD_NEW_PROJECT_ENTRY.manager]?: string;
   [FIELD_NEW_PROJECT_ENTRY.hourlyRate]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.employees]?: string[];
+  [FIELD_NEW_PROJECT_ENTRY.employees]?: EmployeeValues[];
 }
 
 const steps = ['New project', 'Team', 'Summary'];
@@ -48,7 +53,13 @@ export const AddNewProject = () => {
     ),
     [FIELD_NEW_PROJECT_ENTRY.hourlyRate]: '',
     [FIELD_NEW_PROJECT_ENTRY.manager]: '',
-    [FIELD_NEW_PROJECT_ENTRY.employees]: [],
+    [FIELD_NEW_PROJECT_ENTRY.employees]: [
+      {
+        id: '',
+        rate: '',
+        name: '',
+      },
+    ],
   };
   const [activeStep, setActiveStep] = useState(0);
 

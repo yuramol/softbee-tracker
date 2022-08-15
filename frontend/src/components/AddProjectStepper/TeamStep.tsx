@@ -6,7 +6,8 @@ import { Select } from 'legos';
 import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
 
 export const TeamStep = () => {
-  const { values, handleChange } = useFormikContext<FormikValues>();
+  const { values, handleChange, setFieldValue } =
+    useFormikContext<FormikValues>();
 
   // TODO Add manager from backend
   const itemSelectManager = [
@@ -22,7 +23,7 @@ export const TeamStep = () => {
     { label: 'Michael', value: '4' },
   ];
 
-  console.log('===', values.manager);
+  console.log('====', values.employees);
 
   return (
     <Stack>
@@ -56,20 +57,34 @@ export const TeamStep = () => {
                   <Grid key={`${employee}`} container columnSpacing={2}>
                     <Grid item xs={6}>
                       <Select
-                        name={`${FIELD_NEW_PROJECT_ENTRY.employees}.${index}`}
                         label="Employee"
                         variant="outlined"
-                        value={employee}
+                        value={employee.id}
                         items={itemSelectEmployee}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          setFieldValue(
+                            `${FIELD_NEW_PROJECT_ENTRY.employees}.${index}.id`,
+                            e.target.value
+                          );
+                          setFieldValue(
+                            `${FIELD_NEW_PROJECT_ENTRY.employees}.${index}.name`,
+                            itemSelectEmployee.find(
+                              (item) => item.value === e.target.value
+                            )?.label
+                          );
+                        }}
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <TextField
-                        name={employee.rate}
                         label="Rate"
                         fullWidth
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          setFieldValue(
+                            `${FIELD_NEW_PROJECT_ENTRY.employees}.${index}.rate`,
+                            e.target.value
+                          );
+                        }}
                       />
                     </Grid>
                     <Grid item xs={2}>
