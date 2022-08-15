@@ -4,6 +4,8 @@ import React, {
   useRef,
   cloneElement,
   Children,
+  ChangeEvent,
+  KeyboardEvent,
 } from 'react';
 
 import TimePickerDialog, { TimePickerBlock } from './TimePickerDialog';
@@ -11,12 +13,12 @@ import { addOrSubtractMinutes, parseTime } from './utils';
 
 interface TimePickerProps {
   children: JSX.Element;
-  from?: string;
+  from?: number;
   minutesPerStep?: number;
-  onBlur?: () => void;
-  onChange?: () => void;
-  onFocus?: () => void;
-  to?: string;
+  onBlur: (nextValue: string) => void;
+  onChange: (value: string) => void;
+  onFocus: (event: ChangeEvent) => void;
+  to?: number;
   value: string;
 }
 
@@ -30,12 +32,12 @@ const TimePicker = ({
   to,
   value = '00:00',
 }: TimePickerProps) => {
-  const { dialogOpen, setDialogOpen } = useState();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const { hours, minutes } = parseTime(value);
 
-  const inputRef = useRef(null);
-  const dialogRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     addDOMEvents();
@@ -46,14 +48,15 @@ const TimePicker = ({
   const addDOMEvents = () => {
     document.addEventListener('click', handleDocumentClick);
     document.addEventListener('keydown', handleDocumentKeyPress);
-    if (inputRef) inputRef.addEventListener('keydown', handleDocumentKeyPress);
+    if (inputRef && inputRef.current)
+      inputRef.current.addEventListener('keydown', handleDocumentKeyPress);
   };
 
   const removeDOMEvents = () => {
     document.removeEventListener('click', handleDocumentClick);
     document.removeEventListener('keydown', handleDocumentKeyPress);
-    if (inputRef)
-      inputRef.removeEventListener('keydown', handleDocumentKeyPress);
+    if (inputRef && inputRef.current)
+      inputRef.current.removeEventListener('keydown', handleDocumentKeyPress);
   };
 
   const ensureValueInRange = () => handleMinutesChange(0);
@@ -73,39 +76,45 @@ const TimePicker = ({
     setDialogOpen(true);
   };
 
-  const handleDocumentKeyPress = (event) => {
+  const handleDocumentKeyPress = (event: any) => {
     if (event.key !== 'Tab') return;
 
     closeDialog();
   };
 
-  const handleDocumentClick = (event) => {
+  const handleDocumentClick = (event: any) => {
     const element = event.target;
 
     if (!dialogRef || !inputRef || !(element instanceof Node)) return;
-    if (dialogRef.contains(element) || inputRef.contains(element)) return;
+    if (
+      (dialogRef && dialogRef.current && dialogRef.current.contains(element)) ||
+      (inputRef && inputRef.current && inputRef.current.contains(element))
+    )
+      return;
 
     closeDialog();
   };
 
-  const handleChange = (event) => onChange(event.target.value || '');
+  const handleChange = (event: ChangeEvent) =>
+    onChange((event.target as HTMLInputElement).value || '');
 
-  const handleFocus = (event) => {
+  const handleFocus = (event: ChangeEvent) => {
     onFocus(event);
     openDialog();
   };
 
-  const handleHoursChange = (delta) => handleMinutesChange(60 * delta);
+  const handleHoursChange: (delta: number) => string = (delta) =>
+    handleMinutesChange(60 * delta);
 
-  const handleMinutesChange = (delta) => {
-    const nextValue = addOrSubtractMinutes(value, delta, { from, to });
+  const handleMinutesChange: (delta: number) => string = (delta) => {
+    const nextValue = addOrSubtractMinutes(value, delta, from, to);
 
     if (nextValue !== value) onChange(nextValue);
 
     return nextValue;
   };
 
-  const handleWheel = (event) => {
+  const handleWheel = (event: any) => {
     const delta = event.deltaY > 0 ? +minutesPerStep : -minutesPerStep;
 
     event.preventDefault();
@@ -131,13 +140,13 @@ const TimePicker = ({
           onWheel={handleWheel}
         >
           <TimePickerBlock
-            number={hours}
+            number={`${hours}`}
             onDownClick={() => handleHoursChange(-1)}
             onUpClick={() => handleHoursChange(1)}
           />
           :
           <TimePickerBlock
-            number={minutes}
+            number={`${minutes}`}
             onDownClick={() => handleMinutesChange(-minutesPerStep)}
             onUpClick={() => handleMinutesChange(+minutesPerStep)}
           />
