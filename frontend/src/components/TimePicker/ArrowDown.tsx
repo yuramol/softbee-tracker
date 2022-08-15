@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import theme from './defaultTheme';
-
 const ArrowDown = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -18,9 +16,7 @@ const ArrowDown = (props) => (
 
 const StyledArrowDown = styled(ArrowDown)`
   cursor: pointer;
-  fill: ${(props) => props.theme.primaryColor};
+  fill: #104065;
 `;
-
-StyledArrowDown.defaultProps = { theme };
 
 export default StyledArrowDown;

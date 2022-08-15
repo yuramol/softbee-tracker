@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import theme from './defaultTheme';
-
 const ArrowUp = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -18,9 +16,7 @@ const ArrowUp = (props) => (
 
 const StyledArrowUp = styled(ArrowUp)`
   cursor: pointer;
-  fill: ${(props) => props.theme.primaryColor};
+  fill: #104065;
 `;
-
-StyledArrowUp.defaultProps = { theme };
 
 export default StyledArrowUp;
