@@ -31,8 +31,8 @@ const TimePickerPart = styled.div`
 
 type TimePickerBlockProps = {
   number: string;
-  onDownClick: () => void;
-  onUpClick: () => void;
+  onDownClick: (value: number) => void;
+  onUpClick: (value: number) => void;
 };
 
 export const TimePickerBlock = ({

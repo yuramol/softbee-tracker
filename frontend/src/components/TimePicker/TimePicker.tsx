@@ -1,5 +1,5 @@
 import { Input } from 'legos';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, WheelEvent } from 'react';
 
 import TimePickerDialog, { TimePickerBlock } from './TimePickerDialog';
 import { addOrSubtractMinutes, parseTime } from './utils';
@@ -13,7 +13,7 @@ interface TimePickerProps {
 }
 
 const TimePicker = ({
-  minutesPerStep = 15,
+  minutesPerStep = 5,
   onChange,
   from,
   to,
@@ -24,7 +24,6 @@ const TimePicker = ({
 
   const { hours, minutes } = parseTime(durationValue);
 
-  const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,23 +47,33 @@ const TimePicker = ({
     openDialog();
   };
 
-  const handleHoursChange: (delta: number) => string = (delta) =>
+  const handleHoursChange: (delta: number) => void = (delta) =>
     handleMinutesChange(60 * delta);
 
-  const handleMinutesChange: (delta: number) => string = (delta) => {
+  const handleMinutesChange: (delta: number) => void = (delta) => {
     const nextValue = addOrSubtractMinutes(durationValue, delta, from, to);
+    setDurationValue(nextValue);
+  };
 
-    if (nextValue !== durationValue) {
-      setDurationValue(nextValue);
+  const handleHoursScroll = (e: WheelEvent) => {
+    if (e.deltaY < 0) {
+      handleHoursChange(1);
+    } else if (e.deltaY > 0) {
+      handleHoursChange(-1);
     }
+  };
 
-    return nextValue;
+  const handleMinutesScroll = (e: WheelEvent) => {
+    if (e.deltaY < 0) {
+      handleMinutesChange(minutesPerStep);
+    } else if (e.deltaY > 0) {
+      handleMinutesChange(-minutesPerStep);
+    }
   };
 
   return (
     <div style={{ width: '100%', position: 'relative' }}>
       <Input
-        ref={inputRef}
         onChange={onChange}
         onFocus={handleFocus}
         disableUnderline
@@ -72,17 +81,21 @@ const TimePicker = ({
       />
       {dialogOpen && (
         <TimePickerDialog ref={dialogRef} tabIndex={1} onBlur={closeDialog}>
-          <TimePickerBlock
-            number={`${hours}`}
-            onDownClick={() => handleHoursChange(-1)}
-            onUpClick={() => handleHoursChange(1)}
-          />
+          <div onWheel={handleHoursScroll}>
+            <TimePickerBlock
+              number={`${hours}`}
+              onDownClick={() => handleHoursChange(-1)}
+              onUpClick={() => handleHoursChange(1)}
+            />
+          </div>
           :
-          <TimePickerBlock
-            number={`${minutes}`}
-            onDownClick={() => handleMinutesChange(-minutesPerStep)}
-            onUpClick={() => handleMinutesChange(+minutesPerStep)}
-          />
+          <div onWheel={handleMinutesScroll}>
+            <TimePickerBlock
+              number={`${minutes}`}
+              onDownClick={() => handleMinutesChange(-minutesPerStep)}
+              onUpClick={() => handleMinutesChange(+minutesPerStep)}
+            />
+          </div>
         </TimePickerDialog>
       )}
     </div>
