@@ -1,33 +1,20 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  cloneElement,
-  Children,
-  ChangeEvent,
-  KeyboardEvent,
-} from 'react';
+import { Input } from 'legos';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 
 import TimePickerDialog, { TimePickerBlock } from './TimePickerDialog';
 import { addOrSubtractMinutes, parseTime } from './utils';
 
 interface TimePickerProps {
-  children: JSX.Element;
   from?: number;
   minutesPerStep?: number;
-  onBlur: (nextValue: string) => void;
-  onChange: (value: string) => void;
-  onFocus: (event: ChangeEvent) => void;
+  onChange: (value: unknown) => void;
   to?: number;
   value: string;
 }
 
 const TimePicker = ({
-  children,
   minutesPerStep = 15,
-  onBlur,
   onChange,
-  onFocus,
   from,
   to,
   value = '00:00',
@@ -67,7 +54,7 @@ const TimePicker = ({
     const nextValue = ensureValueInRange();
 
     setDialogOpen(false);
-    onBlur(nextValue);
+    onChange(nextValue);
   };
 
   const openDialog = () => {
@@ -95,11 +82,7 @@ const TimePicker = ({
     closeDialog();
   };
 
-  const handleChange = (event: ChangeEvent) =>
-    onChange((event.target as HTMLInputElement).value || '');
-
   const handleFocus = (event: ChangeEvent) => {
-    onFocus(event);
     openDialog();
   };
 
@@ -109,7 +92,7 @@ const TimePicker = ({
   const handleMinutesChange: (delta: number) => string = (delta) => {
     const nextValue = addOrSubtractMinutes(value, delta, from, to);
 
-    if (nextValue !== value) onChange(nextValue);
+    // if (nextValue !== value) onChange(nextValue);
 
     return nextValue;
   };
@@ -124,15 +107,15 @@ const TimePicker = ({
 
   return (
     <div>
-      {cloneElement(Children.only(children), {
-        ref: inputRef,
-        onBlur,
-        onChange: handleChange,
-        onFocus: handleFocus,
-        onTouchMove: handleWheel,
-        onWheel: handleWheel,
-        value,
-      })}
+      <Input
+        ref={inputRef}
+        onChange={onChange}
+        onFocus={handleFocus}
+        disableUnderline
+        onTouchMove={handleWheel}
+        onWheel={handleWheel}
+        value={value}
+      />
       {dialogOpen && (
         <TimePickerDialog
           ref={dialogRef}

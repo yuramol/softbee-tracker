@@ -13,11 +13,11 @@ import { format, startOfDay, startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
 
 import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
-import { Select, Icon, CalendarPickerFormik, Input } from 'legos';
+import { Select, Icon, CalendarPickerFormik } from 'legos';
 import { PROJECTS_BY_USER_ID_QUERY } from 'api';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 import { useAuth } from 'AuthProvider';
-import Timepicker from 'components/TimePicker';
+import TimePicker from 'components/TimePicker';
 
 const modalStyle = {
   position: 'absolute',
@@ -84,7 +84,7 @@ export const TrackerAddNewEntry = () => {
     },
   });
 
-  const { handleChange, handleSubmit, errors, touched } = formik;
+  const { setFieldValue, handleChange, handleSubmit, errors, touched } = formik;
 
   return (
     <>
@@ -117,7 +117,16 @@ export const TrackerAddNewEntry = () => {
                     value={formik.values[FIELD_TIME_ENTRY.duration]}
                     onChange={handleChange}
                   />
-                  <Input onChange={handleChange}></Input>
+                  <TimePicker
+                    value={formik.values[FIELD_TIME_ENTRY.duration]}
+                    onChange={(e) => {
+                      console.log('====', e);
+                      setFieldValue(
+                        `${FIELD_TIME_ENTRY.duration}`,
+                        e.target.value
+                      );
+                    }}
+                  />
                 </Stack>
                 <Select
                   label="Project"
