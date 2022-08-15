@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
@@ -135,6 +136,7 @@ class Timepicker extends React.Component {
   render() {
     const { dialogOpen } = this.state;
     const {
+      // eslint-disable-next-line react/prop-types
       children,
       className,
       dialogClassName,

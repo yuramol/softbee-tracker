@@ -117,7 +117,6 @@ export const TrackerAddNewEntry = () => {
                     value={formik.values[FIELD_TIME_ENTRY.duration]}
                     onChange={handleChange}
                   />
-                  <Timepicker></Timepicker>
                   <Input onChange={handleChange}></Input>
                 </Stack>
                 <Select

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -31,17 +32,7 @@ const TimepickerPart = styled.div`
   margin: auto 12px;
 `;
 
-type TimepickerBlockProps = {
-  number: number;
-  onDownClick: number;
-  onUpClick: number;
-};
-
-export const TimepickerBlock = ({
-  number,
-  onDownClick,
-  onUpClick,
-}: TimepickerBlockProps) => (
+export const TimepickerBlock = ({ number, onDownClick, onUpClick }) => (
   <TimepickerPart>
     <ArrowUp onClick={onUpClick} size={36} />
     {formatNumber(number)}
