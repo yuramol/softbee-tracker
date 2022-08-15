@@ -7,4 +7,5 @@ export { TrackerCalendar } from './TrackerCalendar';
 export { TrackerAddNewEntry } from './TrackerAddNewEntry';
 export { TrackerDayView } from './TrackerDayView';
 export { AvatarUpload } from './AvatarUpload';
-export { SnackBar } from './SnackBar';
+export { SideBars } from './SideBars';
+
