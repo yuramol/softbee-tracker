@@ -5,15 +5,23 @@ import { getInitials } from 'helpers';
 
 type AvatarProps = {
   avatar?: string;
-  name: string;
+  firstName?: string;
+  lastName?: string;
+  name?: string;
   width?: number;
   height?: number;
 };
 
-export const Avatar = ({ avatar, name, width, height }: AvatarProps) => (
+export const Avatar = ({
+  avatar,
+  firstName,
+  lastName,
+  width,
+  height,
+}: AvatarProps) => (
   <MuiAvatar sx={{ width: { width }, height: { height } }} src={avatar}>
     <Typography fontSize={width ? width / 3 : 14}>
-      {getInitials(name)}
+      {getInitials(firstName, lastName)}
     </Typography>
   </MuiAvatar>
 );

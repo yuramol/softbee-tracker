@@ -8,6 +8,7 @@ export const Input = ({
   label,
   size,
   onChange,
+  helperText = false,
   ...props
 }: InputProps) => {
   const { InputProps, variant } = props;
@@ -18,6 +19,7 @@ export const Input = ({
       {...props}
       InputProps={TextFieldInputProps}
       onChange={({ target: { value } }) => onChange(value)}
+      error={helperText ? true : false}
       label={label}
       size={size}
       fullWidth

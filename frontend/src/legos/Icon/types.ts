@@ -19,7 +19,7 @@ export type IconsNames =
   | 'navigateBefore'
   | 'navigateNext'
   | 'arrowDropDown'
-  | 'filter';
+  | 'upWork';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;

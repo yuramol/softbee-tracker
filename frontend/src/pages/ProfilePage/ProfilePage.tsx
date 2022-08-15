@@ -9,7 +9,13 @@ import { Select, Input, Icon } from 'legos';
 import { useUsersPermissionsUser } from 'hooks';
 import { InitialValuesType, valuesType } from './types';
 import { profileInfo, validationSchema } from './helpers';
-import { MainWrapper, AvatarUpload, Loader } from 'components';
+import {
+  MainWrapper,
+  AvatarUpload,
+  Loader,
+  TrackerCalendar,
+  TimeInspector,
+} from 'components';
 import { ProfileHeader } from './ProfileHeader';
 import { useChangeAvatar } from './useChangeAvatar';
 import { useNotification } from 'hooks/useNotification';
@@ -29,14 +35,15 @@ const ProfilePage = () => {
   );
 
   const initialValues: InitialValuesType = {
-    email: userPermission?.email ?? '',
-    phone: userPermission?.phone ?? '',
-    lastName: userPermission?.lastName ?? '',
-    position: userPermission?.position ?? '',
-    linkedIn: userPermission?.linkedIn ?? '',
-    firstName: userPermission?.firstName ?? '',
-    salaryInfo: userPermission?.salaryInfo ?? '',
-    dateEmployment: userPermission?.dateEmployment ?? '',
+    email: userPermission?.email ?? '-',
+    phone: userPermission?.phone ?? '-',
+    lastName: userPermission?.lastName ?? '-',
+    position: userPermission?.position ?? 'developer',
+    linkedIn: userPermission?.linkedIn ?? '-',
+    // upWork: userPermission?.upWork ?? '-',
+    firstName: userPermission?.firstName ?? '-',
+    salaryInfo: userPermission?.salaryInfo ?? '-',
+    dateEmployment: userPermission?.dateEmployment ?? '-',
     avatar: userPermission?.avatar.data?.attributes?.url,
   };
 
@@ -67,9 +74,20 @@ const ProfilePage = () => {
 
   const { values, resetForm, submitForm, setFieldValue, errors, touched } =
     formik;
+  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
   return (
-    <MainWrapper>
+    <MainWrapper
+      sidebar={
+        <>
+          <TimeInspector />
+          <TrackerCalendar
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+          />
+        </>
+      }
+    >
       {loading ? (
         <Loader />
       ) : (
@@ -86,7 +104,8 @@ const ProfilePage = () => {
           </Grid>
           <Grid container item xs={3} justifyContent="center">
             <AvatarUpload
-              name={`${values.firstName} ${values.lastName}`}
+              firstName={values.firstName}
+              lastName={values.lastName}
               avatar={userPermission?.avatar.data?.attributes?.url}
               onChange={(event) =>
                 handleChangeAvatar({
@@ -107,93 +126,91 @@ const ProfilePage = () => {
                 ) {
                   return null;
                 }
-                if (!edit && fieldName === 'linkedIn') {
-                  return (
-                    <Box
-                      key={fieldName}
-                      display="flex"
-                      alignItems="center"
-                      height={48}
-                    >
-                      <Icon icon={icon} />
 
-                      <Box ml={1}>
-                        <a
-                          style={{
-                            color: 'black',
-                          }}
-                          href={values.linkedIn}
-                          target="blank"
-                          rel="noreferrer"
-                        >
-                          <Typography color="black">LinkedIn</Typography>
-                        </a>
-                      </Box>
-                    </Box>
-                  );
-                }
-                if (component === 'select') {
-                  return (
+                return (
+                  <>
                     <Box
                       key={fieldName}
                       display="flex"
-                      alignItems="center"
-                      my={1}
-                    >
-                      <Icon icon={icon} />
-
-                      <Box width="100%" ml={1}>
-                        {items?.length && (
-                          <Select
-                            value={(values as valuesType)[fieldName]}
-                            disabled={!edit}
-                            items={items}
-                            label={label}
-                            disableUnderline={!edit}
-                            IconComponent={() => null}
-                            readOnly={!edit}
-                            onChange={(value) =>
-                              setFieldValue(fieldName, value)
-                            }
-                          />
-                        )}
-                      </Box>
-                    </Box>
-                  );
-                }
-                if (component === 'input') {
-                  return (
-                    <Box
-                      key={fieldName}
-                      display="flex"
-                      alignItems="center"
+                      alignItems="flex-end"
                       my={2}
                     >
-                      <Icon icon={icon} />
-                      <Box ml={1} width="100%">
-                        <Input
-                          disableUnderline={!edit}
-                          variant="standard"
-                          fullWidth
-                          value={(values as valuesType)[fieldName]}
-                          label={label}
-                          type={type}
-                          onChange={(value) => setFieldValue(fieldName, value)}
-                          InputProps={{
-                            readOnly: !edit,
-                          }}
-                          helperText={(errors as valuesType)[fieldName]}
-                          error={
-                            !!(
-                              (touched as valuesType)[fieldName] &&
-                              (errors as valuesType)[fieldName]
-                            )
-                          }
-                        />
+                      <Box p={'5px'} display="flex" alignItems="center">
+                        <Icon icon={icon} />
                       </Box>
+                      {(!edit &&
+                        (fieldName === 'upWork' ||
+                          fieldName === 'linkedIn') && (
+                          <Box ml={1}>
+                            <a
+                              style={{
+                                color: 'black',
+                              }}
+                              href={
+                                fieldName === 'upWork'
+                                  ? values.linkedIn
+                                  : values.linkedIn
+                              }
+                              target="blank"
+                              rel="noreferrer"
+                            >
+                              {fieldName === 'upWork' ? (
+                                <Typography color="black">upWork</Typography>
+                              ) : (
+                                <Typography color="black">linkedIn</Typography>
+                              )}
+                            </a>
+                          </Box>
+                        )) ||
+                        (component === 'input' && (
+                          <Box ml={1} width="100%">
+                            <Input
+                              placeholder={label}
+                              disableUnderline={!edit}
+                              variant="standard"
+                              fullWidth
+                              value={(values as valuesType)[fieldName]}
+                              label={label}
+                              type={type}
+                              onChange={(value) =>
+                                setFieldValue(fieldName, value)
+                              }
+                              InputProps={{
+                                readOnly: !edit,
+                              }}
+                              helperText={(errors as valuesType)[fieldName]}
+                              error={
+                                !!(
+                                  (touched as valuesType)[fieldName] &&
+                                  (errors as valuesType)[fieldName]
+                                )
+                              }
+                            />
+                          </Box>
+                        )) ||
+                        (component === 'select' && (
+                          <Box width="100%" ml={1}>
+                            {items?.length && (
+                              <Select
+                                value={(values as valuesType)[fieldName]}
+                                disabled={!edit}
+                                items={items}
+                                name={fieldName}
+                                label={label}
+                                disableUnderline={!edit}
+                                IconComponent={() => null}
+                                readOnly={!edit}
+                                // onChange={(value) =>
+                                //   setFieldValue(fieldName, value)
+                                // }
+                                onChange={formik.handleChange}
+                              />
+                            )}
+                          </Box>
+                        ))}
                     </Box>
-                  );
-                }
+                  </>
+                );
               }
             )}
           </Grid>
