@@ -5,8 +5,9 @@ import { getInitials } from 'helpers';
 
 type AvatarProps = {
   avatar?: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
+  name?: string;
   width?: number;
   height?: number;
 };
