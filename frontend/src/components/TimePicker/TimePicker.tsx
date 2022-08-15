@@ -6,7 +6,7 @@ import React, {
   Children,
 } from 'react';
 
-import TimepickerDialog, { TimepickerBlock } from './TimepickerDialog';
+import TimePickerDialog, { TimePickerBlock } from './TimePickerDialog';
 import { addOrSubtractMinutes, parseTime } from './utils';
 
 interface TimePickerProps {
@@ -125,23 +125,23 @@ const TimePicker = ({
         value,
       })}
       {dialogOpen && (
-        <TimepickerDialog
-          innerRef={dialogRef}
+        <TimePickerDialog
+          ref={dialogRef}
           onTouchMove={handleWheel}
           onWheel={handleWheel}
         >
-          <TimepickerBlock
+          <TimePickerBlock
             number={hours}
             onDownClick={() => handleHoursChange(-1)}
             onUpClick={() => handleHoursChange(1)}
           />
           :
-          <TimepickerBlock
+          <TimePickerBlock
             number={minutes}
             onDownClick={() => handleMinutesChange(-minutesPerStep)}
             onUpClick={() => handleMinutesChange(+minutesPerStep)}
           />
-        </TimepickerDialog>
+        </TimePickerDialog>
       )}
     </div>
   );

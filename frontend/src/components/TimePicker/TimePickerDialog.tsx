@@ -34,7 +34,7 @@ type TimePickerBlockProps = {
   onUpClick: () => void;
 };
 
-export const TimepickerBlock = ({
+export const TimePickerBlock = ({
   number,
   onDownClick,
   onUpClick,
