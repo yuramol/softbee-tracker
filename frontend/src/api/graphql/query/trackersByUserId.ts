@@ -8,6 +8,7 @@ export const TRECKERS_BY_USER_ID_QUERY = gql`
         date: { between: [$startDate, $endDate] }
       }
       sort: "date"
+      pagination: { limit: -1 }
     ) {
       data {
         id
