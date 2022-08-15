@@ -5,6 +5,7 @@ import {
   Person,
   Phone,
   Work,
+  Money,
   Edit,
   PlayArrow,
   Pause,

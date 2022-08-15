@@ -1,13 +1,6 @@
-import React, { Fragment } from 'react';
-import {
-  Avatar as MuiAvatar,
-  Grid,
-  IconButton,
-  Link,
-  Typography,
-} from '@mui/material';
+import React, { Fragment, ReactElement } from 'react';
 
-import { Box } from '@mui/system';
+import { IconButton, Link, Stack, Typography } from '@mui/material';
 import { Avatar, Icon } from 'legos';
 
 //TODO add projects info and info about PR
@@ -39,27 +32,37 @@ const projects = [
   },
 ];
 
-export const ProjectList = () => (
+const getProjectIcon: (type: string) => JSX.Element | null = (type) => {
+  switch (type) {
+    case 'timeMaterial':
+      return <Icon icon="paidOutlined" color="warning" />;
+    case 'fixedPrice':
+      return <Icon icon="paidOutlined" color="success" />;
+    case 'nonProfit':
+      return <Icon icon="paidOutlined" color="error" />;
+    default:
+      return null;
+  }
+};
+export const ProjectList = ({ projectList }: ProjectListProps) => (
   <>
-    <Typography sx={{ mt: 3 }} variant="h5">
-      Projects
-    </Typography>
-    <Grid
-      sx={{ mt: 2 }}
-      container
-      spacing={2}
-      justifyContent="space-between"
-      alignItems="flex-start"
-    >
-      {projects.map((project) => (
-        <Fragment key={project.id}>
-          <Grid item xs={4} container alignItems="center">
-            <Box>
+    {projectList.map((project) => (
+      <Fragment key={project.id}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack>{getProjectIcon(project.type)}</Stack>
+
+            <Stack>
               <Link href="*">{project.projectName}</Link>
               <Typography fontSize="10px">{project.timeLine}</Typography>
-            </Box>
-          </Grid>
-          <Grid container gap={2} item xs={4} alignItems="center">
+            </Stack>
+          </Stack>
+
+          <Stack direction="row" alignItems="center" spacing={1} width="300px">
             <Avatar
               avatar={project.projectManagerAvatar}
               firstName={project.firstName}
@@ -68,17 +71,18 @@ export const ProjectList = () => (
             <Link href="*" underline="none">
               {`${project.firstName} ${project.lastName}`}
             </Link>
-          </Grid>
-          <Grid item container xs={2}>
+          </Stack>
+
+          <Stack direction="row">
             <IconButton aria-label="edit">
               <Icon icon="editOutlined" />
             </IconButton>
             <IconButton aria-label="archive">
               <Icon icon="archiveOutlined" />
             </IconButton>
-          </Grid>
-        </Fragment>
-      ))}
-    </Grid>
+          </Stack>
+        </Stack>
+      </Fragment>
+    ))}
   </>
 );

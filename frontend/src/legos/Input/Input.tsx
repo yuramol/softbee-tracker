@@ -5,6 +5,8 @@ import { StyledInput } from './styled';
 
 export const Input = ({
   disableUnderline = false,
+  label,
+  size,
   onChange,
   helperText = false,
   ...props
@@ -18,6 +20,9 @@ export const Input = ({
       InputProps={TextFieldInputProps}
       onChange={({ target: { value } }) => onChange(value)}
       error={helperText ? true : false}
+      label={label}
+      size={size}
+      fullWidth
     />
   );
 };
