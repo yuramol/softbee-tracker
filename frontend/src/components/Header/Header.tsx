@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Container } from '@mui/material';
+import { AppBar, Toolbar, Container, Stack } from '@mui/material';
 
 import { useAuth } from '../../AuthProvider';
 
@@ -41,16 +41,18 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
             handleOpenNavMenu={handleOpenNavMenu}
             handleCloseNavMenu={handleCloseNavMenu}
           />
-          <Logo />
-          <NavBar pages={mainMenuPages} />
-          {isAuth && (
-            <HeaderAvatar
-              pages={avatarMenuPages}
-              anchorElUser={anchorElUser}
-              handleOpenUserMenu={handleOpenUserMenu}
-              handleCloseUserMenu={handleCloseUserMenu}
-            />
-          )}
+          <Stack width="100%" direction="row" spacing={3} alignItems="center">
+            <Logo />
+            <NavBar pages={mainMenuPages} />
+            {isAuth && (
+              <HeaderAvatar
+                pages={avatarMenuPages}
+                anchorElUser={anchorElUser}
+                handleOpenUserMenu={handleOpenUserMenu}
+                handleCloseUserMenu={handleCloseUserMenu}
+              />
+            )}
+          </Stack>
         </Toolbar>
       </Container>
     </AppBar>

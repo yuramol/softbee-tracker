@@ -41,14 +41,7 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
           </Box>
         }
       >
-        <IconButton
-          onClick={handleOpenUserMenu}
-          sx={{
-            ml: '30px',
-            maxWidth: '40px',
-            maxHeight: '40px',
-          }}
-        >
+        <IconButton onClick={handleOpenUserMenu}>
           <Avatar
             width={40}
             height={40}

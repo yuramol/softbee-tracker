@@ -8,9 +8,10 @@ export const NavBar: React.FC<HeaderProps> = ({ pages }) => {
   return (
     <Box
       component="nav"
+      width="100%"
+      justifyContent="right"
       sx={{
-        flexGrow: 1,
-        display: { xs: 'none', md: 'flex', justifyContent: 'right' },
+        display: { xs: 'none', md: 'flex' },
       }}
     >
       {pages.map((page) => (
