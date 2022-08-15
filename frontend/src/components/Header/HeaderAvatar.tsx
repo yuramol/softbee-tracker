@@ -26,7 +26,13 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
     : '';
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title="Open settings">
+      <Tooltip
+        title={
+          <Box display="block" width={'100px'} textAlign="center">
+            {`${userPermission?.firstName} ${userPermission?.lastName} ${userPermission?.email} `}
+          </Box>
+        }
+      >
         <IconButton
           onClick={handleOpenUserMenu}
           sx={{
