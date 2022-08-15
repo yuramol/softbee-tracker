@@ -17,6 +17,7 @@ import { Select, Icon, CalendarPickerFormik, Input } from 'legos';
 import { PROJECTS_BY_USER_ID_QUERY } from 'api';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 import { useAuth } from 'AuthProvider';
+import Timepicker from 'components/TimePicker';
 
 const modalStyle = {
   position: 'absolute',
@@ -116,6 +117,7 @@ export const TrackerAddNewEntry = () => {
                     value={formik.values[FIELD_TIME_ENTRY.duration]}
                     onChange={handleChange}
                   />
+                  <Timepicker></Timepicker>
                   <Input onChange={handleChange}></Input>
                 </Stack>
                 <Select
