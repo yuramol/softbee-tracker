@@ -40,7 +40,7 @@ export const pages = [
     href: '/projects',
     mainMenu: true,
     role: [Role.Manager],
-    Component: lazy(() => import('pages/ProjectPage')),
+    Component: lazy(() => import('pages/ProjectPage/ProjectPage')),
   },
   {
     index: false,

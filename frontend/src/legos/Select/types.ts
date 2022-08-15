@@ -13,4 +13,7 @@ export type SelectPropsType = SelectProps & {
   errorText?: string;
   onChange: (value: unknown) => void;
   IconComponent?: () => ReactElement | null;
+  colorDisabledValue?: string;
+  renderValue?: () => ReactElement | null;
+  multiple?: boolean;
 };
