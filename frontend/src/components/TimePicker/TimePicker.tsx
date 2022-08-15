@@ -1,5 +1,8 @@
-import { Input } from 'legos';
 import React, { useState, useEffect, useRef, WheelEvent } from 'react';
+import { InputAdornment } from '@mui/material';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+
+import { Input } from 'legos';
 
 import TimePickerDialog, { TimePickerBlock } from './TimePickerDialog';
 import { addOrSubtractMinutes, parseTime } from './utils';
@@ -76,8 +79,14 @@ const TimePicker = ({
       <Input
         onChange={onChange}
         onFocus={handleFocus}
-        disableUnderline
         value={durationValue}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <HourglassBottomIcon />
+            </InputAdornment>
+          ),
+        }}
       />
       {dialogOpen && (
         <TimePickerDialog ref={dialogRef} tabIndex={1} onBlur={closeDialog}>
