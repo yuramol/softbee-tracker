@@ -10,16 +10,16 @@ export const TeamStep = () => {
 
   // TODO Add manager from backend
   const itemSelectManager = [
-    { label: 'Andriy', value: 1 },
-    { label: 'Stas', value: 2 },
+    { label: 'Andriy', value: '1' },
+    { label: 'Stas', value: '2' },
   ];
 
   // TODO Add employee from backend
   const itemSelectEmployee = [
-    { label: 'Serhii', value: 1 },
-    { label: 'Stas', value: 2 },
-    { label: 'Oleg', value: 3 },
-    { label: 'Michael', value: 4 },
+    { label: 'Serhii', value: '1' },
+    { label: 'Stas', value: '2' },
+    { label: 'Oleg', value: '3' },
+    { label: 'Michael', value: '4' },
   ];
 
   console.log('===', values.manager);

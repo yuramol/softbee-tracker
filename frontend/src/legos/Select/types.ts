@@ -1,21 +1,13 @@
-import { ReactElement } from 'react';
-
 import { SelectProps } from '@mui/material';
-import { ProjectEntity } from 'types/GraphqlTypes';
+import { Maybe, Scalars } from 'types/GraphqlTypes';
 
 export type ItemType = {
-  label: string;
-  value: string;
-  id?: string;
-  attributes?: any;
+  label?: string;
+  value?: Maybe<Scalars['String']>;
 };
 
 export type SelectPropsType = SelectProps & {
-  items: ProjectEntity[] | ItemType[] | undefined;
   label: string;
-  // disabled?: boolean;
-  // value?: string;
+  items?: ItemType[];
   errorText?: string;
-  onChange: (value: unknown) => void;
-  IconComponent?: () => ReactElement | null;
 };
