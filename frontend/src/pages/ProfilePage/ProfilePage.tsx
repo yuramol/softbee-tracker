@@ -4,22 +4,21 @@ import { useMutation } from '@apollo/client';
 import { Box, Grid, Typography } from '@mui/material';
 
 import { useAuth } from 'AuthProvider';
-import {
-  UPDATE_USERS_PERMISSIONS_USER_MUTATION,
-  UPLOAD_MUTATION,
-  REMOVE_FILE_MUTATION,
-} from 'api';
+import { UPDATE_USERS_PERMISSIONS_USER_MUTATION } from 'api';
 import { Select, Input, Icon } from 'legos';
 import { useUsersPermissionsUser } from 'hooks';
 import { InitialValuesType, valuesType } from './types';
 import { profileInfo, validationSchema } from './helpers';
 import { MainWrapper, AvatarUpload, Loader } from 'components';
 import { ProfileHeader } from './ProfileHeader';
-import { changeAvatar } from './changeAvatar';
+import { useChangeAvatar } from './useChangeAvatar';
+import { useNotification } from 'hooks/useNotification';
 
 const ProfilePage = () => {
   const { user } = useAuth();
   const { userPermission, loading } = useUsersPermissionsUser(user.id);
+  const showNotification = useNotification();
+  const handleChangeAvatar = useChangeAvatar();
 
   const isManager = user.role.type === 'manager';
 
@@ -28,8 +27,6 @@ const ProfilePage = () => {
   const [updateUserMutation] = useMutation(
     UPDATE_USERS_PERMISSIONS_USER_MUTATION
   );
-  const [uploadMutation] = useMutation(UPLOAD_MUTATION);
-  const [removeFileMutation] = useMutation(REMOVE_FILE_MUTATION);
 
   const initialValues: InitialValuesType = {
     email: userPermission?.email ?? '',
@@ -47,13 +44,21 @@ const ProfilePage = () => {
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       try {
-        updateUserMutation({
+        const {
+          data: { updateUsersPermissionsUser },
+        } = await updateUserMutation({
           variables: { id: user.id, data: { ...values } },
         });
+        if (updateUsersPermissionsUser?.data?.id) {
+          showNotification({
+            message: 'Changes are saved!',
+            variant: 'success',
+          });
+        }
       } catch (error) {
-        console.log('updateUserMutation request', error);
+        showNotification({ error });
       } finally {
         setEdit(false);
       }
@@ -84,12 +89,10 @@ const ProfilePage = () => {
               name={`${values.firstName} ${values.lastName}`}
               avatar={userPermission?.avatar.data?.attributes?.url}
               onChange={(event) =>
-                changeAvatar({
+                handleChangeAvatar({
                   event,
                   userId: user.id,
                   avatarId: userPermission?.avatar.data?.id,
-                  uploadMutation,
-                  removeFileMutation,
                   updateUserMutation,
                 })
               }
