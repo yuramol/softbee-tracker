@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import { Button } from 'legos';
 import { ProfileHeaderProps } from './types';
+import { formatUserFullName } from 'helpers';
 
 export const ProfileHeader = ({
   firstName,
@@ -13,14 +14,14 @@ export const ProfileHeader = ({
 }: ProfileHeaderProps) => (
   <>
     <Box ml={3}>
-      <Typography
-        fontWeight={700}
-        fontSize={32}
-      >{`${firstName} ${lastName}`}</Typography>
+      <Typography fontWeight={700} fontSize={32}>
+        {formatUserFullName(firstName, lastName)}
+      </Typography>
     </Box>
     {edit ? (
       <Stack direction="row" gap={1}>
         <Button
+          sx={{ width: '40px' }}
           title="cancel"
           variant="outlined"
           onClick={() => {
@@ -29,7 +30,12 @@ export const ProfileHeader = ({
           }}
         />
 
-        <Button title="Save" variant="contained" onClick={submitForm} />
+        <Button
+          sx={{ width: '40px' }}
+          title="Save"
+          variant="contained"
+          onClick={submitForm}
+        />
       </Stack>
     ) : (
       <Button

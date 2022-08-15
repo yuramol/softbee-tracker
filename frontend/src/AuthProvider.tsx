@@ -11,10 +11,11 @@ import { useLazyQuery } from '@apollo/client';
 import { useLocalStorage } from 'hooks';
 import { ME_QUERY } from 'api';
 import { Role } from './constants';
+import { Maybe, Scalars } from 'types/GraphqlTypes';
 
 type Props = { children: React.ReactNode };
 
-type AuthUser = {
+export type AuthUser = {
   id: string;
   username: string;
   role: {
@@ -25,7 +26,11 @@ type AuthUser = {
 type AppAuthContext = {
   jwt: string | null;
   user: AuthUser;
-  login: (jwt: string, authUser: AuthUser) => void;
+  isAuth: boolean;
+  login: (
+    jwt: Maybe<Scalars['String']> | undefined,
+    authUser: AuthUser
+  ) => void;
   logout: () => void;
 };
 
@@ -51,7 +56,12 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   }, [jwt]);
 
-  const login = (jwt: string, authUser: AuthUser) => {
+  const isAuth = Object.keys(user).length !== 0;
+
+  const login = (
+    jwt: Maybe<Scalars['String']> | undefined,
+    authUser: AuthUser
+  ) => {
     setJwt(jwt);
     setUser(authUser);
     navigate('/', { replace: true });
@@ -67,6 +77,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     () => ({
       jwt,
       user,
+      isAuth,
       login,
       logout,
     }),

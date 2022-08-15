@@ -47,26 +47,7 @@ export interface ChangeAvatarProps {
   event: any;
   avatarId: string | number;
   userId: string | number;
-  uploadMutation: (
-    options?:
-      | MutationFunctionOptions<
-          any,
-          OperationVariables,
-          DefaultContext,
-          ApolloCache<any>
-        >
-      | undefined
-  ) => Promise<any>;
-  removeFileMutation: (
-    options?:
-      | MutationFunctionOptions<
-          any,
-          OperationVariables,
-          DefaultContext,
-          ApolloCache<any>
-        >
-      | undefined
-  ) => Promise<any>;
+
   updateUserMutation: (
     options?:
       | MutationFunctionOptions<

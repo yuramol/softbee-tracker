@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Container } from '@mui/material';
+import { AppBar, Toolbar, Container, Stack } from '@mui/material';
 
 import { useAuth } from '../../AuthProvider';
 
@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
     setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
-  const { user } = useAuth();
+  const { isAuth } = useAuth();
   const mainMenuPages = pages.filter(({ mainMenu }) => mainMenu);
   const avatarMenuPages = pages.filter(({ mainMenu }) => !mainMenu);
 
@@ -41,16 +41,18 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
             handleOpenNavMenu={handleOpenNavMenu}
             handleCloseNavMenu={handleCloseNavMenu}
           />
-          <Logo />
-          <NavBar pages={mainMenuPages} />
-          {user && (
-            <HeaderAvatar
-              pages={avatarMenuPages}
-              anchorElUser={anchorElUser}
-              handleOpenUserMenu={handleOpenUserMenu}
-              handleCloseUserMenu={handleCloseUserMenu}
-            />
-          )}
+          <Stack width="100%" direction="row" spacing={3} alignItems="center">
+            <Logo />
+            <NavBar pages={mainMenuPages} />
+            {isAuth && (
+              <HeaderAvatar
+                pages={avatarMenuPages}
+                anchorElUser={anchorElUser}
+                handleOpenUserMenu={handleOpenUserMenu}
+                handleCloseUserMenu={handleCloseUserMenu}
+              />
+            )}
+          </Stack>
         </Toolbar>
       </Container>
     </AppBar>
