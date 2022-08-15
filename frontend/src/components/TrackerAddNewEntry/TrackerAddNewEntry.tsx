@@ -109,22 +109,10 @@ export const TrackerAddNewEntry = () => {
                     disableFuture
                     views={['day']}
                   />
-                  <TextField
-                    name={FIELD_TIME_ENTRY.duration}
-                    type="time"
-                    variant="outlined"
-                    fullWidth
-                    value={formik.values[FIELD_TIME_ENTRY.duration]}
-                    onChange={handleChange}
-                  />
                   <TimePicker
                     value={formik.values[FIELD_TIME_ENTRY.duration]}
-                    onChange={(e) => {
-                      console.log('====', e);
-                      setFieldValue(
-                        `${FIELD_TIME_ENTRY.duration}`,
-                        e.target.value
-                      );
+                    onChange={(value) => {
+                      setFieldValue(`${FIELD_TIME_ENTRY.duration}`, value);
                     }}
                   />
                 </Stack>

@@ -1,5 +1,5 @@
 import { Input } from 'legos';
-import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import TimePickerDialog, { TimePickerBlock } from './TimePickerDialog';
 import { addOrSubtractMinutes, parseTime } from './utils';
@@ -19,70 +19,32 @@ const TimePicker = ({
   to,
   value = '00:00',
 }: TimePickerProps) => {
+  const [durationValue, setDurationValue] = useState(value);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const { hours, minutes } = parseTime(value);
+  const { hours, minutes } = parseTime(durationValue);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    addDOMEvents();
-    ensureValueInRange();
-    return removeDOMEvents;
-  }, []);
-
-  const addDOMEvents = () => {
-    document.addEventListener('click', handleDocumentClick);
-    document.addEventListener('keydown', handleDocumentKeyPress);
-    if (inputRef && inputRef.current)
-      inputRef.current.addEventListener('keydown', handleDocumentKeyPress);
-  };
-
-  const removeDOMEvents = () => {
-    document.removeEventListener('click', handleDocumentClick);
-    document.removeEventListener('keydown', handleDocumentKeyPress);
-    if (inputRef && inputRef.current)
-      inputRef.current.removeEventListener('keydown', handleDocumentKeyPress);
-  };
-
-  const ensureValueInRange = () => handleMinutesChange(0);
+    if (dialogOpen) {
+      dialogRef.current?.focus();
+    }
+  }, [dialogOpen]);
 
   const closeDialog = () => {
     if (!dialogOpen) return;
-
-    const nextValue = ensureValueInRange();
-
     setDialogOpen(false);
-    onChange(nextValue);
+    onChange(durationValue);
   };
 
   const openDialog = () => {
     if (dialogOpen) return;
-
     setDialogOpen(true);
   };
 
-  const handleDocumentKeyPress = (event: any) => {
-    if (event.key !== 'Tab') return;
-
-    closeDialog();
-  };
-
-  const handleDocumentClick = (event: any) => {
-    const element = event.target;
-
-    if (!dialogRef || !inputRef || !(element instanceof Node)) return;
-    if (
-      (dialogRef && dialogRef.current && dialogRef.current.contains(element)) ||
-      (inputRef && inputRef.current && inputRef.current.contains(element))
-    )
-      return;
-
-    closeDialog();
-  };
-
-  const handleFocus = (event: ChangeEvent) => {
+  const handleFocus = () => {
     openDialog();
   };
 
@@ -90,38 +52,26 @@ const TimePicker = ({
     handleMinutesChange(60 * delta);
 
   const handleMinutesChange: (delta: number) => string = (delta) => {
-    const nextValue = addOrSubtractMinutes(value, delta, from, to);
+    const nextValue = addOrSubtractMinutes(durationValue, delta, from, to);
 
-    // if (nextValue !== value) onChange(nextValue);
+    if (nextValue !== durationValue) {
+      setDurationValue(nextValue);
+    }
 
     return nextValue;
   };
 
-  const handleWheel = (event: any) => {
-    const delta = event.deltaY > 0 ? +minutesPerStep : -minutesPerStep;
-
-    event.preventDefault();
-
-    handleMinutesChange(delta);
-  };
-
   return (
-    <div>
+    <div style={{ width: '100%', position: 'relative' }}>
       <Input
         ref={inputRef}
         onChange={onChange}
         onFocus={handleFocus}
         disableUnderline
-        onTouchMove={handleWheel}
-        onWheel={handleWheel}
-        value={value}
+        value={durationValue}
       />
       {dialogOpen && (
-        <TimePickerDialog
-          ref={dialogRef}
-          onTouchMove={handleWheel}
-          onWheel={handleWheel}
-        >
+        <TimePickerDialog ref={dialogRef} tabIndex={1} onBlur={closeDialog}>
           <TimePickerBlock
             number={`${hours}`}
             onDownClick={() => handleHoursChange(-1)}

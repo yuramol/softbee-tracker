@@ -16,6 +16,7 @@ const TimePickerDialog = styled.div`
   font-size: 22px;
   justify-content: center;
   position: absolute;
+  top: 66px;
   user-select: none;
   width: 190px;
   z-index: 999;
