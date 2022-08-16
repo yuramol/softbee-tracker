@@ -53,7 +53,12 @@ export const TeamStep = () => {
             <>
               {values.employees.length > 0 &&
                 values.employees.map((employee: any, index: number) => (
-                  <Grid key={`${employee}`} container columnSpacing={2}>
+                  <Grid
+                    key={`${employee}`}
+                    container
+                    columnSpacing={2}
+                    justifyContent="space-between"
+                  >
                     <Grid item xs={7}>
                       <Select
                         label="Employee"
@@ -86,17 +91,11 @@ export const TeamStep = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item xs>
                       <IconButton
                         sx={{
-                          height: '100%',
-                          width: '100%',
-                          borderRadius: '4px',
-                          border: '1px solid rgba(0, 0, 0, 0.23)',
-                          '&:hover': {
-                            border: '1px solid rgba(0, 0, 0)',
-                            backgroundColor: 'transparent',
-                          },
+                          height: 56,
+                          width: 56,
                         }}
                         onClick={() => arrayHelpers.remove(index)}
                       >
