@@ -1,12 +1,14 @@
 import { gql } from '@apollo/client';
 
 export const TRECKERS_BY_USER_ID_QUERY = gql`
-  query TrackersByUserId($userId: ID!, $weekStart: Date, $weekEnd: Date) {
+  query TrackersByUserId($userId: ID!, $startDate: Date, $endDate: Date) {
     trackers(
       filters: {
         user: { id: { eq: $userId } }
-        date: { between: [$weekStart, $weekEnd] }
+        date: { between: [$startDate, $endDate] }
       }
+      sort: "date"
+      pagination: { limit: -1 }
     ) {
       data {
         id

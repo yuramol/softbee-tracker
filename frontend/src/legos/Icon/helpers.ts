@@ -19,6 +19,8 @@ import {
   NavigateBefore,
   NavigateNext,
   ArrowDropDown,
+  WorkHistory,
+  RequestQuote,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -30,7 +32,7 @@ export const IconsMap: IconsNamesMapType = {
   person: Person,
   phone: Phone,
   work: Work,
-  money: Money,
+  money: RequestQuote,
   edit: Edit,
   playArrow: PlayArrow,
   pause: Pause,
@@ -44,4 +46,5 @@ export const IconsMap: IconsNamesMapType = {
   navigateBefore: NavigateBefore,
   navigateNext: NavigateNext,
   arrowDropDown: ArrowDropDown,
+  upWork: WorkHistory,
 };
