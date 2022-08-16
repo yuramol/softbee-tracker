@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef, WheelEvent } from 'react';
-import { InputAdornment } from '@mui/material';
+import { Box, InputAdornment } from '@mui/material';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 import { Input } from 'legos';
 
-import TimePickerDialog, { TimePickerBlock } from './TimePickerDialog';
 import { addOrSubtractMinutes, parseTime } from './utils';
 import { useScrollBlock } from 'helpers/useScrollBlock';
+import TimePickerDialog from './TimePickerDialog';
+import { TimePickerBlock } from './TimePickerBlock';
 
 interface TimePickerProps {
   minutesPerStep?: number;
@@ -96,7 +97,7 @@ const TimePicker = ({
   };
 
   return (
-    <div style={{ width: width ?? '100%', position: 'relative' }}>
+    <Box width={width ?? '100%'} position="relative">
       <Input
         onChange={onChange}
         onFocus={handleFocus}
@@ -110,25 +111,23 @@ const TimePicker = ({
         }}
       />
       {dialogOpen && (
-        <TimePickerDialog ref={dialogRef} tabIndex={1} onBlur={closeDialog}>
-          <div onWheel={handleHoursScroll}>
-            <TimePickerBlock
-              number={`${hours}`}
-              onDownClick={() => handleHoursChange(-1)}
-              onUpClick={() => handleHoursChange(1)}
-            />
-          </div>
+        <TimePickerDialog ref={dialogRef} onBlur={closeDialog}>
+          <TimePickerBlock
+            number={`${hours}`}
+            onWheel={handleHoursScroll}
+            onDownClick={() => handleHoursChange(-1)}
+            onUpClick={() => handleHoursChange(1)}
+          />
           :
-          <div onWheel={handleMinutesScroll}>
-            <TimePickerBlock
-              number={`${minutes}`}
-              onDownClick={() => handleMinutesChange(-minutesPerStep)}
-              onUpClick={() => handleMinutesChange(+minutesPerStep)}
-            />
-          </div>
+          <TimePickerBlock
+            number={`${minutes}`}
+            onWheel={handleMinutesScroll}
+            onDownClick={() => handleMinutesChange(-minutesPerStep)}
+            onUpClick={() => handleMinutesChange(+minutesPerStep)}
+          />
         </TimePickerDialog>
       )}
-    </div>
+    </Box>
   );
 };
 

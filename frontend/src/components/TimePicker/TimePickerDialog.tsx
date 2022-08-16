@@ -1,50 +1,44 @@
-import React from 'react';
-import styled from 'styled-components';
+import { Box } from '@mui/material';
+import React, { ReactNode, RefObject } from 'react';
 
-import ArrowDown from './ArrowDown';
-import ArrowUp from './ArrowUp';
-import { formatNumber } from './utils';
+import { theme } from 'theme';
 
-const TimePickerDialog = styled.div`
-  align-items: center;
-  background: white;
-  border-radius: 5px;
-  border: 1px solid #104065;
-  box-shadow: 0 1px 3px #d3d3d380, 0 1px 3px #d3d3d380;
-  color: #104065;
-  display: flex;
-  font-size: 22px;
-  justify-content: center;
-  position: absolute;
-  top: 66px;
-  user-select: none;
-  width: 200px;
-  z-index: 999;
-`;
-
-const TimePickerPart = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  margin: auto 12px;
-`;
+// const TimePickerDialog = styled.div`
+//   background: white;
+//   box-shadow: 0 1px 3px #d3d3d380, 0 1px 3px #d3d3d380;
+// `;
 
 type TimePickerBlockProps = {
-  number: string;
-  onDownClick: () => void;
-  onUpClick: () => void;
+  ref: RefObject<HTMLDivElement>;
+  onBlur: () => void;
+  children: ReactNode;
 };
 
-export const TimePickerBlock = ({
-  number,
-  onDownClick,
-  onUpClick,
+export const TimePickerDialog = ({
+  ref,
+  onBlur,
+  children,
 }: TimePickerBlockProps) => (
-  <TimePickerPart>
-    <ArrowUp onClick={onUpClick} size={36} />
-    {formatNumber(number)}
-    <ArrowDown onClick={onDownClick} size={36} />
-  </TimePickerPart>
+  <Box
+    ref={ref}
+    tabIndex={1}
+    onBlur={onBlur}
+    display="flex"
+    position="absolute"
+    top="66px"
+    width={200}
+    alignItems="center"
+    fontSize={22}
+    justifyContent="center"
+    zIndex={999}
+    color={theme.palette.primary.main}
+    borderRadius="5px"
+    bgcolor={theme.palette.common.white}
+    border={`1px solid ${theme.palette.primary.main}`}
+    sx={{ userSelect: 'none' }}
+  >
+    {children}
+  </Box>
 );
 
 export default TimePickerDialog;
