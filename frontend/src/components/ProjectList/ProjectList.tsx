@@ -2,19 +2,20 @@ import React, { Fragment } from 'react';
 
 import { IconButton, Link, Stack, Typography } from '@mui/material';
 import { Avatar, Icon } from 'legos';
+import { ProjectEntity } from 'types/GraphqlTypes';
 
-type ProjectListType = {
-  id: string | number;
-  projectName: string;
-  timeLine: string;
-  projectManager: string;
-  type: string;
-  projectManagerAvatar?: string;
-};
+// type ProjectListType = {
+//   id: string | number;
+//   projectName: string;
+//   timeLine: string;
+//   projectManager: string;
+//   type: string;
+//   projectManagerAvatar?: string;
+// };
 
-type ProjectListProps = {
-  projectList: ProjectListType[];
-};
+// type ProjectListProps = {
+//   projectList: ProjectListType[] | ProjectEntity[];
+// };
 
 const getProjectIcon: (type: string) => JSX.Element | null = (type) => {
   switch (type) {
@@ -28,9 +29,14 @@ const getProjectIcon: (type: string) => JSX.Element | null = (type) => {
       return null;
   }
 };
-export const ProjectList = ({ projectList }: ProjectListProps) => (
+
+export const ProjectList = ({
+  projectList,
+}: {
+  projectList: ProjectEntity[] | undefined;
+}) => (
   <>
-    {projectList.map((project) => (
+    {projectList?.map((project) => (
       <Fragment key={project.id}>
         <Stack
           direction="row"
@@ -38,7 +44,7 @@ export const ProjectList = ({ projectList }: ProjectListProps) => (
           alignItems="center"
         >
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Stack>{getProjectIcon(project.type)}</Stack>
+            <Stack>{getProjectIcon(project.attributes?.type)}</Stack>
 
             <Stack>
               <Link href="*">{project.projectName}</Link>

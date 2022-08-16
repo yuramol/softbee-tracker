@@ -18,30 +18,7 @@ const ProjectPage = () => {
 
   console.log('Projects:', data?.projects.data);
 
-  const projects = [
-    {
-      id: 1,
-      projectName: 'UpWork',
-      timeLine: '20.11.21-12.12.23',
-      projectManager: 'Oleksandr Zastavnyi',
-      type: 'fixedPrice',
-    },
-    {
-      id: 3,
-      projectName: 'Plumbid',
-      timeLine: '20.11.21-12.12.23',
-      projectManager: 'Yura Moldavchuk',
-      type: 'fixedPrice',
-    },
-    {
-      id: 4,
-      projectName: 'PalPal',
-      timeLine: '20.11.21-12.12.23',
-      projectManager: 'Andrev Antonuch',
-      type: 'timeMaterial',
-      projectManagerAvatar: 'https://i.pravatar.cc/300',
-    },
-  ];
+  const projects = data?.projects.data;
 
   return (
     <MainWrapper

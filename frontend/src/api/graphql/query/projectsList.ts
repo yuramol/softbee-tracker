@@ -18,6 +18,13 @@ export const PROJECTS_LIST_QUERY = gql`
                 username
                 firstName
                 lastName
+                avatar {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                }
               }
             }
           }
