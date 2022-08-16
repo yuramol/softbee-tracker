@@ -1,24 +1,17 @@
 import { Box } from '@mui/material';
-import React, { ReactNode, RefObject } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 
 import { theme } from 'theme';
 
-// const TimePickerDialog = styled.div`
-//   background: white;
-//   box-shadow: 0 1px 3px #d3d3d380, 0 1px 3px #d3d3d380;
-// `;
-
 type TimePickerBlockProps = {
-  ref: RefObject<HTMLDivElement>;
   onBlur: () => void;
   children: ReactNode;
 };
 
-export const TimePickerDialog = ({
-  ref,
-  onBlur,
-  children,
-}: TimePickerBlockProps) => (
+export const TimePickerDialog = forwardRef<
+  HTMLDivElement,
+  TimePickerBlockProps
+>(({ onBlur, children }, ref) => (
   <Box
     ref={ref}
     tabIndex={1}
@@ -39,6 +32,8 @@ export const TimePickerDialog = ({
   >
     {children}
   </Box>
-);
+));
+
+TimePickerDialog.displayName = 'TimePickerDialog';
 
 export default TimePickerDialog;

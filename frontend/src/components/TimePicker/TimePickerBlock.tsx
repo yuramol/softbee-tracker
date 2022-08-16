@@ -7,6 +7,7 @@ import { formatNumber } from './utils';
 
 type TimePickerBlockProps = {
   number: string;
+  type?: string;
   onWheel: (e: WheelEvent) => void;
   onDownClick: () => void;
   onUpClick: () => void;
@@ -14,13 +15,15 @@ type TimePickerBlockProps = {
 
 export const TimePickerBlock = ({
   number,
+  type,
   onWheel,
   onDownClick,
   onUpClick,
 }: TimePickerBlockProps) => (
   <Box
     display="flex"
-    alignItems="center"
+    width="50%"
+    alignItems={type === 'hours' ? 'flex-end' : 'flex-start'}
     flexDirection="column"
     margin="auto 12px"
     onWheel={onWheel}

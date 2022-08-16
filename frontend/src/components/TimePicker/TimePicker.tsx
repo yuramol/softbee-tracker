@@ -103,6 +103,7 @@ const TimePicker = ({
         onFocus={handleFocus}
         value={durationValue}
         InputProps={{
+          readOnly: true,
           endAdornment: (
             <InputAdornment position="end" onClick={openDialog}>
               <HourglassBottomIcon />
@@ -114,6 +115,7 @@ const TimePicker = ({
         <TimePickerDialog ref={dialogRef} onBlur={closeDialog}>
           <TimePickerBlock
             number={`${hours}`}
+            type="hours"
             onWheel={handleHoursScroll}
             onDownClick={() => handleHoursChange(-1)}
             onUpClick={() => handleHoursChange(1)}
