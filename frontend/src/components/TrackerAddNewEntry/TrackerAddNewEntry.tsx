@@ -17,6 +17,7 @@ import { Select, Icon, CalendarPickerFormik } from 'legos';
 import { PROJECTS_BY_USER_ID_QUERY } from 'api';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 import { useAuth } from 'AuthProvider';
+import TimePicker from 'components/TimePicker';
 
 const modalStyle = {
   position: 'absolute',
@@ -83,7 +84,11 @@ export const TrackerAddNewEntry = () => {
     },
   });
 
-  const { handleChange, handleSubmit, errors, touched } = formik;
+  const { setFieldValue, handleChange, handleSubmit, errors, touched } = formik;
+  const projectItems = data?.projects.data.map((project) => ({
+    label: project.attributes?.name,
+    value: project.id,
+  }));
 
   return (
     <>
@@ -108,19 +113,17 @@ export const TrackerAddNewEntry = () => {
                     disableFuture
                     views={['day']}
                   />
-                  <TextField
-                    name={FIELD_TIME_ENTRY.duration}
-                    type="time"
-                    variant="outlined"
-                    fullWidth
+                  <TimePicker
                     value={formik.values[FIELD_TIME_ENTRY.duration]}
-                    onChange={handleChange}
+                    onChange={(value) => {
+                      setFieldValue(`${FIELD_TIME_ENTRY.duration}`, value);
+                    }}
                   />
                 </Stack>
                 <Select
                   label="Project"
                   name={FIELD_TIME_ENTRY.project}
-                  items={data?.projects.data}
+                  items={projectItems}
                   value={formik.values[FIELD_TIME_ENTRY.project]}
                   error={
                     touched[FIELD_TIME_ENTRY.project] &&

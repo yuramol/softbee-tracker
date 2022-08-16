@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { ProjectList } from 'components/ProjectList/ProjectList';
 import { Stack, Typography } from '@mui/material';
+import { AddNewProject, MainWrapper } from '../../components';
 
 import { ProjectFilters } from './ProjectFilters';
 import { MainWrapper, SideBars } from 'components';
@@ -64,6 +65,7 @@ const ProjectPage = () => {
           <ProjectFilters />
         </Stack>
         <ProjectList projectList={projects} />
+        <AddNewProject />
       </Stack>
     </MainWrapper>
   );
