@@ -40,7 +40,7 @@ export interface ProfileInfoType {
   component: string;
   type: string;
   icon: IconsNames;
-  items?: { id: string; attributes: { name: string } }[];
+  items?: { label: string; value: string }[];
 }
 
 export interface ChangeAvatarProps {
