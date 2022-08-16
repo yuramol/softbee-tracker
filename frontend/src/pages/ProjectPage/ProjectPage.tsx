@@ -16,7 +16,7 @@ const ProjectPage = () => {
     PROJECTS_LIST_QUERY
   );
 
-  console.log('Projects:', data?.projects.data);
+  // console.log('Projects:', data?.projects.data);
 
   const projects = data?.projects.data;
 
