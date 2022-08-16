@@ -3,15 +3,14 @@ import { useQuery } from '@apollo/client';
 import { ProjectList } from 'components/ProjectList/ProjectList';
 import { Stack, Typography } from '@mui/material';
 
-import { ProjectFilters } from './ProjectFilters';
+import { filterItem, ProjectFilters } from './ProjectFilters';
 import { MainWrapper, SideBars } from 'components';
 import { Button } from 'legos';
 import { PROJECTS_LIST_QUERY } from 'api';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 
 const ProjectPage = () => {
-  const [status, setStatus] = useState('all');
-  console.log(status);
+  const [status, setStatus] = useState(filterItem.map(({ value }) => value));
 
   //TODO add projects info and info about PR
 
@@ -19,9 +18,9 @@ const ProjectPage = () => {
     PROJECTS_LIST_QUERY
   );
 
-  // console.log('Projects:', data?.projects.data);
-
-  const projects = data?.projects.data;
+  const projects = data?.projects.data.filter((project) =>
+    status.includes(project.attributes?.status as string)
+  );
 
   return (
     <MainWrapper

@@ -4,7 +4,7 @@ import { Button, MultipleSelect } from 'legos';
 import { SearchInput } from 'legos/SearchInput';
 
 type ProjectFiltersProps = {
-  setStatus: (status: string) => void;
+  setStatus: (status: string[]) => void;
 };
 
 //TODO add PM info
@@ -18,7 +18,7 @@ const pm = [
   'Olsdfsdfeg Books ',
   'Oleg Bosdfsdfoks ',
 ];
-const filterItem = [
+export const filterItem = [
   { label: 'All', value: 'all' },
   { label: 'Active', value: 'active' },
   { label: 'Archived', value: 'archived' },
@@ -31,11 +31,9 @@ export const ProjectFilters = ({ setStatus }: ProjectFiltersProps) => {
   const handleClickButton = (index: number) => {
     setActive(filterItem[index]);
 
-    filterItem[index].value === 'all'
-      ? setStatus('all')
-      : filterItem[index].value === 'active'
-      ? setStatus('active')
-      : setStatus('archived');
+    index === 0
+      ? setStatus(filterItem.map(({ value }) => value))
+      : setStatus([filterItem[index].value]);
   };
   return (
     <>
