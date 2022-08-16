@@ -2,7 +2,6 @@ import React, { FC, useContext, useState } from 'react';
 import {
   Button,
   IconButton,
-  Input,
   Popper,
   Typography,
   ClickAwayListener,
@@ -14,6 +13,7 @@ import { TimeContext } from './TrackerDayView';
 import { parseTrackerTime } from 'helpers';
 import { Maybe, Tracker } from 'types/GraphqlTypes';
 import { Icon } from 'legos';
+import TimePicker from 'components/TimePicker';
 
 type Props = {
   id: Maybe<string> | undefined;
@@ -77,12 +77,11 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
         {isEdit ? (
-          <Input
-            type="time"
-            value={format(time, 'HH:mm:ss.SSS')}
+          <TimePicker
+            width="200px"
+            value={format(time, 'HH:mm')}
+            onChange={handleChange}
             onBlur={handleBlur}
-            onChange={(e) => handleChange(e.target.value)}
-            onClick={(e) => onHaldlerTime(e.detail)}
           />
         ) : (
           <Typography
