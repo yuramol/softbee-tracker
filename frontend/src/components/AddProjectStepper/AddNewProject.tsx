@@ -13,12 +13,11 @@ import { NewProjectStep, SummaryStep, TeamStep } from 'components';
 
 export const FIELD_NEW_PROJECT_ENTRY = {
   paymentMethod: 'paymentMethod',
-  name: 'name',
+  projectTitle: 'projectTitle',
   client: 'client',
   startDate: 'startDate',
   endDate: 'endDate',
   manager: 'manager',
-  hourlyRate: 'hourlyRate',
   employees: 'employees',
 } as const;
 
@@ -29,12 +28,11 @@ interface EmployeeValues {
 }
 export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.paymentMethod]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.name]?: string;
+  [FIELD_NEW_PROJECT_ENTRY.projectTitle]?: string;
   [FIELD_NEW_PROJECT_ENTRY.client]?: string;
   [FIELD_NEW_PROJECT_ENTRY.startDate]?: Date;
   [FIELD_NEW_PROJECT_ENTRY.endDate]?: Date;
   [FIELD_NEW_PROJECT_ENTRY.manager]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.hourlyRate]?: string;
   [FIELD_NEW_PROJECT_ENTRY.employees]?: EmployeeValues[];
 }
 
@@ -43,7 +41,7 @@ const steps = ['New project', 'Team', 'Summary'];
 export const AddNewProject = () => {
   const initialValues: AddNewProjectValues = {
     [FIELD_NEW_PROJECT_ENTRY.paymentMethod]: 'Time & Material',
-    [FIELD_NEW_PROJECT_ENTRY.name]: '',
+    [FIELD_NEW_PROJECT_ENTRY.projectTitle]: '',
     [FIELD_NEW_PROJECT_ENTRY.client]: '',
     [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
     [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(
@@ -51,7 +49,6 @@ export const AddNewProject = () => {
       new Date().getMonth(),
       new Date().getDate()
     ),
-    [FIELD_NEW_PROJECT_ENTRY.hourlyRate]: '',
     [FIELD_NEW_PROJECT_ENTRY.manager]: '',
     [FIELD_NEW_PROJECT_ENTRY.employees]: [
       {

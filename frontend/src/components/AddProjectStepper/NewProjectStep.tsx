@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { FormikValues, useFormikContext } from 'formik';
 
-import { CalendarPickerFormik } from 'legos';
+import { CalendarPickerFormik, Select } from 'legos';
 import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
 
 const paymentTypes = [
@@ -26,6 +26,13 @@ const paymentTypes = [
     label: 'Non profit',
     value: 'nonProfit',
   },
+];
+
+// TODO Add manager from backend
+const itemSelectClient = [
+  { label: 'John', value: '1' },
+  { label: 'Tom', value: '2' },
+  { label: 'Bob', value: '3' },
 ];
 
 export const NewProjectStep = () => {
@@ -56,20 +63,20 @@ export const NewProjectStep = () => {
           ))}
         </ButtonGroup>
         <TextField
-          id={FIELD_NEW_PROJECT_ENTRY.name}
-          name={FIELD_NEW_PROJECT_ENTRY.name}
-          label="Name"
+          id={FIELD_NEW_PROJECT_ENTRY.projectTitle}
+          name={FIELD_NEW_PROJECT_ENTRY.projectTitle}
+          label="Project title"
           multiline
           onChange={handleChange}
         />
-        <TextField
-          id={FIELD_NEW_PROJECT_ENTRY.client}
+        <Select
           name={FIELD_NEW_PROJECT_ENTRY.client}
           label="Client"
-          multiline
+          items={itemSelectClient}
+          value={values.client}
+          variant="outlined"
           onChange={handleChange}
         />
-
         <Grid container justifyContent="space-between" columnSpacing={2}>
           <Grid item xs={6}>
             <InputLabel>

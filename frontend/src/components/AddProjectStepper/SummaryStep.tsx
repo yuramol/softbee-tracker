@@ -17,7 +17,8 @@ import { format } from 'date-fns';
 
 export const SummaryStep = () => {
   const { values } = useFormikContext<FormikValues>();
-  const { name, client, paymentMethod, startDate, endDate, manager } = values;
+  const { projectTitle, client, paymentMethod, startDate, endDate, manager } =
+    values;
   return (
     <Stack>
       <Stack direction="row" justifyContent="space-between">
@@ -32,7 +33,7 @@ export const SummaryStep = () => {
           <ListItem sx={{ paddingLeft: 0 }}>
             <ListItemText
               primary={
-                <Typography variant="subtitle1">{`Project name: ${name}`}</Typography>
+                <Typography variant="subtitle1">{`Project name: ${projectTitle}`}</Typography>
               }
             />
           </ListItem>

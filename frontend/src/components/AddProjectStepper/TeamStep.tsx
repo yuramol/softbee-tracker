@@ -1,8 +1,15 @@
 import React from 'react';
-import { Typography, TextField, Grid, Stack, Button } from '@mui/material';
+import {
+  Typography,
+  TextField,
+  Grid,
+  Stack,
+  Button,
+  IconButton,
+} from '@mui/material';
 import { FieldArray, FormikValues, useFormikContext } from 'formik';
 
-import { Select } from 'legos';
+import { Icon, Select } from 'legos';
 import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
 
 export const TeamStep = () => {
@@ -40,14 +47,6 @@ export const TeamStep = () => {
           variant="outlined"
           onChange={handleChange}
         />
-        <TextField
-          id={FIELD_NEW_PROJECT_ENTRY.hourlyRate}
-          name={FIELD_NEW_PROJECT_ENTRY.hourlyRate}
-          label="Hourly rate agreements"
-          fullWidth
-          multiline
-          onChange={handleChange}
-        />
         <FieldArray
           name={FIELD_NEW_PROJECT_ENTRY.employees}
           render={(arrayHelpers: any) => (
@@ -55,7 +54,7 @@ export const TeamStep = () => {
               {values.employees.length > 0 &&
                 values.employees.map((employee: any, index: number) => (
                   <Grid key={`${employee}`} container columnSpacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={7}>
                       <Select
                         label="Employee"
                         variant="outlined"
@@ -87,14 +86,22 @@ export const TeamStep = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={2}>
-                      <Button
-                        size="large"
-                        variant="outlined"
+                    <Grid item xs={1}>
+                      <IconButton
+                        sx={{
+                          height: '100%',
+                          width: '100%',
+                          borderRadius: '4px',
+                          border: '1px solid rgba(0, 0, 0, 0.23)',
+                          '&:hover': {
+                            border: '1px solid rgba(0, 0, 0)',
+                            backgroundColor: 'transparent',
+                          },
+                        }}
                         onClick={() => arrayHelpers.remove(index)}
                       >
-                        -
-                      </Button>
+                        <Icon icon="deleteOutline" />
+                      </IconButton>
                     </Grid>
                   </Grid>
                 ))}
