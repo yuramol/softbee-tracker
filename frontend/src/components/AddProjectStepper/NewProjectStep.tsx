@@ -66,6 +66,7 @@ export const NewProjectStep = () => {
           id={FIELD_NEW_PROJECT_ENTRY.projectTitle}
           name={FIELD_NEW_PROJECT_ENTRY.projectTitle}
           label="Project title"
+          value={values.projectTitle}
           multiline
           onChange={handleChange}
         />

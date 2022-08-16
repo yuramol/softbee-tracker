@@ -83,6 +83,8 @@ export const TeamStep = () => {
                       <TextField
                         label="Rate"
                         fullWidth
+                        autoComplete="off"
+                        value={values.employees[index].rate}
                         onChange={(e) => {
                           setFieldValue(
                             `${FIELD_NEW_PROJECT_ENTRY.employees}.${index}.rate`,

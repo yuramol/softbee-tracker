@@ -17,8 +17,17 @@ import { format } from 'date-fns';
 
 export const SummaryStep = () => {
   const { values } = useFormikContext<FormikValues>();
-  const { projectTitle, client, paymentMethod, startDate, endDate, manager } =
-    values;
+  const {
+    projectTitle,
+    client,
+    paymentMethod,
+    startDate,
+    endDate,
+    manager,
+    employees,
+  } = values;
+  console.log(values);
+
   return (
     <Stack>
       <Stack direction="row" justifyContent="space-between">
@@ -69,7 +78,7 @@ export const SummaryStep = () => {
             />
           </ListItem>
         </List>
-        {values.employees.length > 0 && (
+        {employees.length > 0 && (
           <>
             <Typography variant="h6" fontWeight={300}>
               Rate agreements
@@ -94,13 +103,13 @@ export const SummaryStep = () => {
                 <TableBody>
                   {values.employees.map((employee: any) => (
                     <TableRow
-                      key={`${employee.firstName} ${employee.lastName}`}
+                      key={`${employee.name}`}
                       sx={{
                         '&:last-child td, &:last-child th': { border: 0 },
                       }}
                     >
                       <TableCell component="th" scope="row">
-                        {`${employee.firstName} ${employee.lastName}`}
+                        {employee.name && `${employee.name}`}
                       </TableCell>
                       <TableCell>{employee.rate}</TableCell>
                     </TableRow>

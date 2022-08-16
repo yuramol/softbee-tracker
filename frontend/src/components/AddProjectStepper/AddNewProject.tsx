@@ -108,13 +108,13 @@ export const AddNewProject = () => {
               <Button
                 variant="outlined"
                 onClick={handleBack}
-                sx={{ mt: 1, ml: 1 }}
+                sx={{ width: 150, mt: 1, ml: 1 }}
               >
                 Back
               </Button>
             )}
             {activeStep === 0 && (
-              <Button variant="outlined" sx={{ mt: 1, ml: 1 }}>
+              <Button variant="outlined" sx={{ width: 150, mt: 1, ml: 1 }}>
                 Cancel
               </Button>
             )}
@@ -123,7 +123,7 @@ export const AddNewProject = () => {
               variant="contained"
               type={activeStep === steps.length - 1 ? 'submit' : 'button'}
               onClick={handleNext}
-              sx={{ mt: 1, ml: 1 }}
+              sx={{ width: 150, mt: 1, ml: 1 }}
             >
               {activeStep === steps.length - 1 ? 'Create' : 'Next'}
             </Button>
