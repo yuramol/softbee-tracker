@@ -1,28 +1,21 @@
 import React from 'react';
 
-import { InputProps } from './types';
 import { StyledInput } from './styled';
+import { InputProps } from './types';
 
 export const Input = ({
-  disableUnderline = false,
   label,
   size,
   onChange,
   helperText = false,
   ...props
-}: InputProps) => {
-  const { InputProps, variant } = props;
-  const TextFieldInputProps =
-    variant === 'outlined' ? InputProps : { disableUnderline, ...InputProps };
-  return (
-    <StyledInput
-      {...props}
-      InputProps={TextFieldInputProps}
-      onChange={({ target: { value } }) => onChange(value)}
-      error={helperText ? true : false}
-      label={label}
-      size={size}
-      fullWidth
-    />
-  );
-};
+}: InputProps) => (
+  <StyledInput
+    onChange={({ target: { value } }) => onChange(value)}
+    error={helperText ? true : false}
+    label={label}
+    size={size}
+    fullWidth
+    {...props}
+  />
+);
