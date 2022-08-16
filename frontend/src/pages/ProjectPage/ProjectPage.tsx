@@ -1,7 +1,7 @@
 import { ProjectList } from 'components/ProjectList/ProjectList';
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
-import { MainWrapper } from '../../components';
+import { AddNewProject, MainWrapper } from '../../components';
 
 import { ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
@@ -55,6 +55,7 @@ const ProjectPage = () => {
           <ProjectFilters />
         </Stack>
         <ProjectList projectList={projects} />
+        <AddNewProject />
       </Stack>
     </MainWrapper>
   );

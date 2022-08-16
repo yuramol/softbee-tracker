@@ -6,3 +6,4 @@ export { CalendarPickerFormik, CalendarPicker } from './CalendarPicker';
 export { Icon } from './Icon';
 export { Button } from './Button';
 export { Input } from './Input';
+export { MultipleSelect } from './MultipleSelect';
