@@ -99,7 +99,7 @@ const TimePicker = ({
   return (
     <Box width={width ?? '100%'} position="relative">
       <Input
-        onChange={onChange}
+        onChange={(value) => onChange(`${value}`)}
         onFocus={handleFocus}
         value={durationValue}
         InputProps={{
