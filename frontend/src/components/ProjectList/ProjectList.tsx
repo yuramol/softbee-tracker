@@ -4,18 +4,10 @@ import { IconButton, Link, Stack, Typography } from '@mui/material';
 import { Avatar, Icon } from 'legos';
 import { ProjectEntity } from 'types/GraphqlTypes';
 
-// type ProjectListType = {
-//   id: string | number;
-//   projectName: string;
-//   timeLine: string;
-//   projectManager: string;
-//   type: string;
-//   projectManagerAvatar?: string;
-// };
-
-// type ProjectListProps = {
-//   projectList: ProjectListType[] | ProjectEntity[];
-// };
+type ProjectListProps = {
+  projectList: ProjectEntity[] | undefined;
+  status: string;
+};
 
 const getProjectIcon: (type: string | undefined) => JSX.Element | null = (
   type
@@ -32,62 +24,62 @@ const getProjectIcon: (type: string | undefined) => JSX.Element | null = (
   }
 };
 
-export const ProjectList = ({
-  projectList,
-}: {
-  projectList: ProjectEntity[] | undefined;
-}) => {
-  console.log(projectList);
-
+export const ProjectList = ({ projectList, status }: ProjectListProps) => {
   return (
     <>
-      {projectList?.map((project) => (
-        <Fragment key={project.id}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <Stack>{getProjectIcon(project.attributes?.type)}</Stack>
-
-              <Stack>
-                <Link href="*">{project.attributes?.name}</Link>
-                <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.start}`}</Typography>
-              </Stack>
-            </Stack>
-
+      {projectList
+        ?.filter((project) =>
+          status === 'all'
+            ? !project.attributes?.status.includes(status)
+            : project.attributes?.status.includes(status)
+        )
+        .map((project) => (
+          <Fragment key={project.id}>
             <Stack
               direction="row"
+              justifyContent="space-between"
               alignItems="center"
-              spacing={1}
-              width="300px"
             >
-              <Avatar
-                avatar={
-                  project.attributes?.managers?.data[0].attributes?.avatar.data
-                    ?.attributes?.url
-                }
-                name={
-                  project.attributes?.managers?.data[0].attributes?.username
-                }
-              />
-              <Link href="*" underline="none">
-                {project.attributes?.managers?.data[0].attributes?.username}
-              </Link>
-            </Stack>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack>{getProjectIcon(project.attributes?.type)}</Stack>
 
-            <Stack direction="row">
-              <IconButton aria-label="edit">
-                <Icon icon="editOutlined" />
-              </IconButton>
-              <IconButton aria-label="archive">
-                <Icon icon="archiveOutlined" />
-              </IconButton>
+                <Stack>
+                  <Link href="*">{project.attributes?.name}</Link>
+                  <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.start}`}</Typography>
+                </Stack>
+              </Stack>
+
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                width="300px"
+              >
+                <Avatar
+                  avatar={
+                    project.attributes?.managers?.data[0].attributes?.avatar
+                      .data?.attributes?.url
+                  }
+                  name={
+                    project.attributes?.managers?.data[0].attributes?.username
+                  }
+                />
+                <Link href="*" underline="none">
+                  {project.attributes?.managers?.data[0].attributes?.username}
+                </Link>
+              </Stack>
+
+              <Stack direction="row">
+                <IconButton aria-label="edit">
+                  <Icon icon="editOutlined" />
+                </IconButton>
+                <IconButton aria-label="archive">
+                  <Icon icon="archiveOutlined" />
+                </IconButton>
+              </Stack>
             </Stack>
-          </Stack>
-        </Fragment>
-      ))}
+          </Fragment>
+        ))}
     </>
   );
 };

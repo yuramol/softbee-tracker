@@ -11,6 +11,7 @@ export const PROJECTS_LIST_QUERY = gql`
           client
           start
           end
+          status
           managers {
             data {
               id

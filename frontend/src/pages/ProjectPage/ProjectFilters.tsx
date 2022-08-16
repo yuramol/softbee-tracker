@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { ButtonGroup } from '@mui/material';
 import { Button, MultipleSelect } from 'legos';
 import { SearchInput } from 'legos/SearchInput';
+
+type ProjectFiltersProps = {
+  setStatus: (status: string) => void;
+};
+
 //TODO add PM info
 const pm = [
   'Alex Rooox ',
@@ -14,17 +19,25 @@ const pm = [
   'Oleg Bosdfsdfoks ',
 ];
 const filterItem = [
-  { label: 'All', value: 'All' },
-  { label: 'Active', value: 'Active' },
-  { label: 'Archived', value: 'Archived' },
+  { label: 'All', value: 'all' },
+  { label: 'Active', value: 'active' },
+  { label: 'Archived', value: 'archived' },
 ];
-export const ProjectFilters = () => {
+export const ProjectFilters = ({ setStatus }: ProjectFiltersProps) => {
   const [active, setActive] = useState(filterItem[0]);
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
   //Searchproject use for seach mutation
   const [searchProjects, setSearchProjects] = useState('');
-  const handleClickButton = (e: number) => {
-    setActive(filterItem[e]);
+  const handleClickButton = (index: number) => {
+    setActive(filterItem[index]);
+
+    if (filterItem[index].value === 'all') {
+      setStatus('all');
+    } else if (filterItem[index].value === 'active') {
+      setStatus('active');
+    } else if (filterItem[index].value === 'archived') {
+      setStatus('archived');
+    }
   };
   return (
     <>
@@ -42,12 +55,12 @@ export const ProjectFilters = () => {
         value={selectedItem}
       />
       <ButtonGroup size="small" variant="outlined" sx={{ height: '40px' }}>
-        {filterItem.map(({ label, value }, e) => (
+        {filterItem.map(({ label, value }, index) => (
           <Button
             sx={{ width: '90px' }}
             title={label}
             key={value}
-            onClick={() => handleClickButton(e)}
+            onClick={() => handleClickButton(index)}
             variant={active.value === value ? 'contained' : 'outlined'}
           />
         ))}
