@@ -31,13 +31,12 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
 
   const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
 
-  const handleBlur = () => {
-    onUpdateTracker(time, id);
-    setIsEdit(!isEdit);
-  };
-
-  const handleChange = (value: string) => {
+  const handleChange = (value: string, submit?: boolean) => {
     setTime(parseTrackerTime(value, 'HH:mm'));
+    if (submit) {
+      onUpdateTracker(parseTrackerTime(value, 'HH:mm'), id);
+      setIsEdit(!isEdit);
+    }
   };
 
   const onHaldlerTime = (detail: number) => {
@@ -81,7 +80,6 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
             width="200px"
             value={format(time, 'HH:mm')}
             onChange={handleChange}
-            onBlur={handleBlur}
           />
         ) : (
           <Typography

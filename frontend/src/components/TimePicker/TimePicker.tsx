@@ -15,9 +15,8 @@ interface TimePickerProps {
   from?: number;
   to?: number;
   width?: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, submit?: boolean) => void;
   onClick?: () => void;
-  onBlur?: () => void;
 }
 
 const TimePicker = ({
@@ -28,7 +27,6 @@ const TimePicker = ({
   width,
   onChange,
   onClick,
-  onBlur,
 }: TimePickerProps) => {
   const [durationValue, setDurationValue] = useState(value);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -50,14 +48,11 @@ const TimePicker = ({
   }, [dialogOpen]);
 
   const closeDialog = () => {
-    if (onBlur) {
-      onBlur();
-    }
+    onChange(durationValue, true);
     if (!dialogOpen) {
       return;
     }
     setDialogOpen(false);
-    onChange(durationValue);
   };
 
   const openDialog = () => {
