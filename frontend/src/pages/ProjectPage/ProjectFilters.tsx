@@ -31,13 +31,11 @@ export const ProjectFilters = ({ setStatus }: ProjectFiltersProps) => {
   const handleClickButton = (index: number) => {
     setActive(filterItem[index]);
 
-    if (filterItem[index].value === 'all') {
-      setStatus('all');
-    } else if (filterItem[index].value === 'active') {
-      setStatus('active');
-    } else if (filterItem[index].value === 'archived') {
-      setStatus('archived');
-    }
+    filterItem[index].value === 'all'
+      ? setStatus('all')
+      : filterItem[index].value === 'active'
+      ? setStatus('active')
+      : setStatus('archived');
   };
   return (
     <>
