@@ -42,7 +42,7 @@ const ProjectPage = () => {
         <Stack direction="row" spacing={2} mb={4}>
           <ProjectFilters setStatus={setStatus} />
         </Stack>
-        <ProjectList projectList={projects} status={status} />
+        <ProjectList projectList={projects} />
       </Stack>
     </MainWrapper>
   );
