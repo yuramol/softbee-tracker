@@ -60,7 +60,7 @@ const ProjectPage = () => {
         </>
       }
     >
-      {!addNewProject && (
+      {!addNewProject ? (
         <>
           <Typography variant="h1">Project</Typography>
 
@@ -71,8 +71,9 @@ const ProjectPage = () => {
             <ProjectList projectList={projects} />
           </Stack>
         </>
+      ) : (
+        <AddNewProject setAddNewProject={setAddNewProject} />
       )}
-      {addNewProject && <AddNewProject setAddNewProject={setAddNewProject} />}
     </MainWrapper>
   );
 };
