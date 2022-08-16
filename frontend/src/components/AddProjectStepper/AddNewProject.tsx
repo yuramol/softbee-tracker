@@ -36,9 +36,13 @@ export interface AddNewProjectValues {
   [FIELD_NEW_PROJECT_ENTRY.employees]?: EmployeeValues[];
 }
 
+type AddNewProjectProps = {
+  setAddNewProject: (isOpen: boolean) => void;
+};
+
 const steps = ['New project', 'Team', 'Summary'];
 
-export const AddNewProject = () => {
+export const AddNewProject = ({ setAddNewProject }: AddNewProjectProps) => {
   const initialValues: AddNewProjectValues = {
     [FIELD_NEW_PROJECT_ENTRY.paymentMethod]: 'Time & Material',
     [FIELD_NEW_PROJECT_ENTRY.projectTitle]: '',
@@ -114,7 +118,11 @@ export const AddNewProject = () => {
               </Button>
             )}
             {activeStep === 0 && (
-              <Button variant="outlined" sx={{ width: 150, mt: 1, ml: 1 }}>
+              <Button
+                variant="outlined"
+                sx={{ width: 150, mt: 1, ml: 1 }}
+                onClick={() => setAddNewProject(false)}
+              >
                 Cancel
               </Button>
             )}
