@@ -26,7 +26,6 @@ export const SummaryStep = () => {
     manager,
     employees,
   } = values;
-  console.log(values);
 
   return (
     <Stack>

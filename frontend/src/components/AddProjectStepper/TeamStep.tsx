@@ -30,8 +30,6 @@ export const TeamStep = () => {
     { label: 'Michael', value: '4' },
   ];
 
-  console.log('====', values.employees);
-
   return (
     <Stack>
       <Stack direction="row" justifyContent="space-between">
