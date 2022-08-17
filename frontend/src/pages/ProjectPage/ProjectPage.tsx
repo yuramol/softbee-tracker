@@ -1,14 +1,24 @@
+import React, { useState } from 'react';
+import { useQuery } from '@apollo/client';
 import { ProjectList } from 'components/ProjectList/ProjectList';
-import React from 'react';
 import { Stack, Typography } from '@mui/material';
-import { AddNewProject, MainWrapper } from '../../components';
+import { MainWrapper, SideBars, AddNewProject } from 'components';
 
 import { ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
-import { SideBars } from 'components/SideBars';
+import { PROJECTS_LIST_QUERY } from 'api';
+import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 
 const ProjectPage = () => {
+  const [addNewProject, setAddNewProject] = useState(false);
   //TODO add projects info and info about PR
+
+  const { data } = useQuery<{ projects: ProjectEntityResponseCollection }>(
+    PROJECTS_LIST_QUERY
+  );
+
+  console.log('Projects:', data?.projects.data);
+
   const projects = [
     {
       id: 1,
@@ -44,19 +54,26 @@ const ProjectPage = () => {
             variant="contained"
             title="Add new project"
             size="large"
+            onClick={() => setAddNewProject(true)}
           />
           <SideBars />
         </>
       }
     >
-      <Typography variant="h1">Project</Typography>
-      <Stack mt={4} spacing={2}>
-        <Stack direction="row" spacing={2} mb={4}>
-          <ProjectFilters />
-        </Stack>
-        <ProjectList projectList={projects} />
-        <AddNewProject />
-      </Stack>
+      {addNewProject ? (
+        <AddNewProject setAddNewProject={setAddNewProject} />
+      ) : (
+        <>
+          <Typography variant="h1">Project</Typography>
+
+          <Stack mt={4} spacing={2}>
+            <Stack direction="row" spacing={2} mb={4}>
+              <ProjectFilters />
+            </Stack>
+            <ProjectList projectList={projects} />
+          </Stack>
+        </>
+      )}
     </MainWrapper>
   );
 };

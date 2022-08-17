@@ -57,7 +57,7 @@ export const TeamStep = () => {
                     columnSpacing={2}
                     justifyContent="space-between"
                   >
-                    <Grid item xs={7}>
+                    <Grid item xs={6}>
                       <Select
                         label="Employee"
                         variant="outlined"
