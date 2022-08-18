@@ -56,6 +56,7 @@ export const TrackerCalendar = ({
         <CalendarPicker
           date={curDay}
           views={['day']}
+          disableFuture
           onChange={(newDate) => {
             if (newDate) {
               setSelectedDay(newDate);
@@ -77,7 +78,7 @@ export const TrackerCalendar = ({
               }
             });
 
-            return day.getMonth() === curMonth ? (
+            return day.getMonth() === curMonth && new Date() >= day ? (
               <Badge
                 key={day.toString()}
                 overlap="circular"
