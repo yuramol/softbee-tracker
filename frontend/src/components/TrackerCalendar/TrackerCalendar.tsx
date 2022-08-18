@@ -9,12 +9,14 @@ import { Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
 import { LegendCalendar } from './LegendCalendar';
 import { endOfMonth, format, startOfMonth, subMonths } from 'date-fns';
-import { useNormalizedTrackers } from 'hooks';
-import { useAuth } from 'AuthProvider';
+import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 type TrackerCalendarProps = {
   selectedDay: Date | null;
   setSelectedDay: (date: Date) => void;
+  trackers?: TrackerByDay[];
+  setStartMonth?: (date: string) => void;
+  setEndMonth?: (date: string) => void;
 };
 
 const weekendStyles = {
@@ -37,17 +39,12 @@ const lessHourStyles = {
 export const TrackerCalendar = ({
   selectedDay,
   setSelectedDay,
+  trackers,
+  setStartMonth,
+  setEndMonth,
 }: TrackerCalendarProps) => {
   const [curDay, setCurDay] = useState<Date | null>(selectedDay);
   const [curMonth, setCurMonth] = useState(selectedDay?.getMonth());
-  const [startMonth, setStartMonth] = useState(
-    format(startOfMonth(new Date()), 'YYY-MM-dd')
-  );
-  const [endMonth, setEndMonth] = useState(
-    format(endOfMonth(new Date()), 'YYY-MM-dd')
-  );
-  const { user } = useAuth();
-  const { trackers } = useNormalizedTrackers(user.id, startMonth, endMonth);
 
   return (
     <>
@@ -64,8 +61,8 @@ export const TrackerCalendar = ({
             setCurDay(newDate);
           }}
           onMonthChange={(newMonth) => {
-            setStartMonth(format(startOfMonth(newMonth), 'YYY-MM-dd'));
-            setEndMonth(format(endOfMonth(newMonth), 'YYY-MM-dd'));
+            setStartMonth?.(format(startOfMonth(newMonth), 'YYY-MM-dd'));
+            setEndMonth?.(format(endOfMonth(newMonth), 'YYY-MM-dd'));
             setCurMonth(newMonth.getMonth());
           }}
           renderDay={(day, _value, DayComponentProps) => {
@@ -73,7 +70,7 @@ export const TrackerCalendar = ({
             let isWorkDay;
             let isEnoughHours;
 
-            trackers.find(({ date, total }) => {
+            trackers?.find(({ date, total }) => {
               if (
                 day.getTime() === new Date(new Date(date).setHours(0)).getTime()
               ) {
