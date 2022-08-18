@@ -14,7 +14,7 @@ type TrackerByProject = {
   total: string;
 };
 
-type TrackerByDay = {
+export type TrackerByDay = {
   date: string;
   trackersByProject: TrackerByProject[];
   total: string;
