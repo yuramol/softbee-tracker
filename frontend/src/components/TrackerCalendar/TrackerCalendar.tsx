@@ -8,6 +8,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
 import { LegendCalendar } from './LegendCalendar';
+import { startOfMonth, subMonths } from 'date-fns';
 
 type TrackerCalendarProps = {
   selectedDay: Date | null;
@@ -57,6 +58,7 @@ export const TrackerCalendar = ({
           date={curDay}
           views={['day']}
           disableFuture
+          minDate={startOfMonth(subMonths(new Date(), 1))}
           onChange={(newDate) => {
             if (newDate) {
               setSelectedDay(newDate);
