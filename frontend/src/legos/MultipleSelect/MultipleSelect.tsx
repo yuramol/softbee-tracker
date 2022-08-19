@@ -33,7 +33,7 @@ export const MultipleSelect = ({
             <Chip
               sx={{ height: '20px' }}
               key={value}
-              label={items.find((i) => i.value === value)?.label}
+              label={items?.find((i) => i.value === value)?.label}
             />
           ))}
         </Box>
@@ -42,7 +42,7 @@ export const MultipleSelect = ({
       IconComponent={IconComponent}
       {...props}
     >
-      {items.map(({ label, value }) => (
+      {items?.map(({ label, value }) => (
         <MenuItem key={value} value={value as string}>
           {label}
         </MenuItem>
