@@ -1,12 +1,19 @@
-import { FormikValues, useFormikContext } from 'formik';
+import {
+  FormikErrors,
+  FormikTouched,
+  FormikValues,
+  useFormikContext,
+} from 'formik';
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-export const formikPropsErrors = (filed: string, formik?: any) => {
+type Formik = {
+  errors: FormikErrors<FormikValues>;
+  touched: FormikTouched<FormikValues>;
+};
+export const formikPropsErrors = (filed: string, formik?: Formik) => {
   const context = formik ?? useFormikContext<FormikValues>();
   const { touched, errors } = context;
 
   return {
-    name: filed,
     error: touched[filed] && !!errors[filed],
     helperText:
       touched[filed] && errors[filed] ? errors[filed]?.toString() : '',

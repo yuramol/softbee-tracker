@@ -67,9 +67,9 @@ export const TrackerEntryForm = ({
   buttonCloseTitle = 'Cancel',
   buttonSubmitTitle = 'Save Time',
 }: TrackerEntryFormProps) => {
-  const { executeProjects, projectItems } = useProjectsByUserList();
+  const { getProjects, projectsItems } = useProjectsByUserList();
   useEffect(() => {
-    executeProjects({ userId });
+    getProjects({ variables: { userId } });
   }, [userId]);
 
   const initialValues: TimeEntryValues = {
@@ -108,13 +108,15 @@ export const TrackerEntryForm = ({
                 onChange={(value) => {
                   setFieldValue(`${FIELD_TIME_ENTRY.DURATION}`, value);
                 }}
+                name={FIELD_TIME_ENTRY.DURATION}
                 {...formikPropsErrors(FIELD_TIME_ENTRY.DURATION, formik)}
               />
             </Stack>
             <Select
               label="Project"
-              items={projectItems}
+              items={projectsItems}
               value={values[FIELD_TIME_ENTRY.PROJECT]}
+              name={FIELD_TIME_ENTRY.PROJECT}
               {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
               variant="outlined"
               onChange={handleChange}
@@ -124,6 +126,7 @@ export const TrackerEntryForm = ({
               fullWidth
               multiline
               rows={4}
+              name={FIELD_TIME_ENTRY.DESCRIPTION}
               {...formikPropsErrors(FIELD_TIME_ENTRY.DESCRIPTION, formik)}
               onChange={handleChange}
             />
