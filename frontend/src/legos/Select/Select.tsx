@@ -15,7 +15,7 @@ export const Select = ({
   items,
   label,
   error,
-  errorText,
+  helperText,
   variant = 'standard',
   IconComponent = () => <Icon icon="arrowDropDown" />,
   ...props
@@ -35,6 +35,6 @@ export const Select = ({
         </MenuItem>
       ))}
     </StyledSelect>
-    {error && <FormHelperText>{errorText}</FormHelperText>}
+    {error && <FormHelperText>{helperText}</FormHelperText>}
   </FormControl>
 );
