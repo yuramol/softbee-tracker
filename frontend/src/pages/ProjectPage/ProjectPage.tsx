@@ -17,11 +17,9 @@ const ProjectPage = () => {
   const { data } = useQuery<{ projects: ProjectEntityResponseCollection }>(
     PROJECTS_LIST_QUERY
   );
-
   const projects = data?.projects.data.filter((project) =>
     status.includes(project.attributes?.status as string)
   );
-
   return (
     <MainWrapper
       sidebar={

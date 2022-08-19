@@ -48,10 +48,15 @@ export const ProjectList = ({ projectList }: ProjectListProps) => {
                 project.attributes?.managers?.data[0].attributes?.avatar.data
                   ?.attributes?.url
               }
-              name={project.attributes?.managers?.data[0].attributes?.username}
+              firstName={
+                project.attributes?.managers?.data[0].attributes?.firstName
+              }
+              lastName={
+                project.attributes?.managers?.data[0].attributes?.lastName
+              }
             />
             <Link href="*" underline="none">
-              {project.attributes?.managers?.data[0].attributes?.username}
+              {`${project.attributes?.managers?.data[0].attributes?.firstName} ${project.attributes?.managers?.data[0].attributes?.lastName}`}
             </Link>
           </Stack>
 
