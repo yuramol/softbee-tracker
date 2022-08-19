@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import {
   Button,
   Stack,
@@ -7,13 +8,21 @@ import {
   Stepper,
   Typography,
 } from '@mui/material';
-
 import { FormikContext, useFormik } from 'formik';
-import { NewProjectStep, SummaryStep, TeamStep } from 'components';
+import * as yup from 'yup';
+
+import { Loader, NewProjectStep, SummaryStep, TeamStep } from 'components';
+import { CREATE_PROJECT_MUTATION } from 'api';
+import { addYears } from 'date-fns';
+import { CreateProjectFields } from './types';
+
+type Props = {
+  setIsCreateProject: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 export const FIELD_NEW_PROJECT_ENTRY = {
   paymentMethod: 'paymentMethod',
-  projectTitle: 'projectTitle',
+  projectTitle: 'name',
   client: 'client',
   startDate: 'startDate',
   endDate: 'endDate',
@@ -21,48 +30,44 @@ export const FIELD_NEW_PROJECT_ENTRY = {
   employees: 'employees',
 } as const;
 
-interface EmployeeValues {
-  id: string;
-  name: string;
-  rate: string;
-}
-export interface AddNewProjectValues {
-  [FIELD_NEW_PROJECT_ENTRY.paymentMethod]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.projectTitle]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.client]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.startDate]?: Date;
-  [FIELD_NEW_PROJECT_ENTRY.endDate]?: Date;
-  [FIELD_NEW_PROJECT_ENTRY.manager]?: string;
-  [FIELD_NEW_PROJECT_ENTRY.employees]?: EmployeeValues[];
-}
-
-type AddNewProjectProps = {
-  setAddNewProject: (isOpen: boolean) => void;
-};
-
-const steps = ['New project', 'Team', 'Summary'];
-
-export const AddNewProject = ({ setAddNewProject }: AddNewProjectProps) => {
-  const initialValues: AddNewProjectValues = {
-    [FIELD_NEW_PROJECT_ENTRY.paymentMethod]: 'Time & Material',
-    [FIELD_NEW_PROJECT_ENTRY.projectTitle]: '',
-    [FIELD_NEW_PROJECT_ENTRY.client]: '',
-    [FIELD_NEW_PROJECT_ENTRY.startDate]: new Date(),
-    [FIELD_NEW_PROJECT_ENTRY.endDate]: new Date(
-      new Date().getFullYear() + 1,
-      new Date().getMonth(),
-      new Date().getDate()
-    ),
-    [FIELD_NEW_PROJECT_ENTRY.manager]: '',
-    [FIELD_NEW_PROJECT_ENTRY.employees]: [
-      {
-        id: '',
-        rate: '',
-        name: '',
-      },
+const steps = [
+  {
+    name: 'New project',
+    fields: [
+      CreateProjectFields.Type,
+      CreateProjectFields.Name,
+      CreateProjectFields.Client,
+      CreateProjectFields.Start,
+      CreateProjectFields.End,
     ],
+  },
+  {
+    name: 'Team',
+    fields: [
+      CreateProjectFields.Status,
+      CreateProjectFields.Salary,
+      CreateProjectFields.Managers,
+    ],
+  },
+  {
+    name: 'Summary',
+    fields: [],
+  },
+];
+
+export const AddNewProject: React.FC<Props> = ({ setIsCreateProject }) => {
+  const initialValues = {
+    [CreateProjectFields.Type]: 'time_material',
+    [CreateProjectFields.Name]: '',
+    [CreateProjectFields.Client]: '',
+    [CreateProjectFields.Start]: new Date(),
+    [CreateProjectFields.End]: addYears(new Date(), 1),
+    [CreateProjectFields.Managers]: '',
+    [CreateProjectFields.Salary]: [],
+    [CreateProjectFields.Users]: [],
   };
   const [activeStep, setActiveStep] = useState(0);
+  const [createProject] = useMutation(CREATE_PROJECT_MUTATION);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -81,63 +86,83 @@ export const AddNewProject = ({ setAddNewProject }: AddNewProjectProps) => {
       case 2:
         return <SummaryStep />;
       default:
-        throw new Error('Unknown step');
+        return <Loader />;
     }
   };
 
+  const validationSchema = yup.object({
+    [CreateProjectFields.Name]: yup.string().required('Should not be empty'),
+    [CreateProjectFields.Client]: yup.string().required('Should not be empty'),
+  });
+
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
+    validationSchema,
     onSubmit: (values) => {
-      console.log('===', values);
+      console.log('Submit:', values);
+
+      // createProject({ variables: { data: values } })
+      //   .then(() => {
+      //     setIsCreateProject(false);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     },
   });
 
   return (
     <FormikContext.Provider value={formik}>
-      <form onSubmit={formik.handleSubmit} style={{ height: '100%' }}>
-        <Stack height="100%" justifyContent="space-between">
-          <Stack gap={4}>
-            <Typography variant="h4">Add new project</Typography>
+      <Stack height="100%">
+        <Typography variant="h1">Add new project</Typography>
+        <Stack
+          component="form"
+          onSubmit={formik.handleSubmit}
+          justifyContent="space-between"
+          flexGrow="1"
+          gap={4}
+          mt={6}
+        >
+          <Stack gap={8}>
             <Stepper activeStep={activeStep}>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
+              {steps.map(({ name }) => (
+                <Step key={name}>
+                  <StepLabel>{name}</StepLabel>
                 </Step>
               ))}
             </Stepper>
             {getStepContent(activeStep)}
           </Stack>
           <Stack direction="row" justifyContent="flex-end">
-            {activeStep !== 0 && (
-              <Button
-                variant="outlined"
-                onClick={handleBack}
-                sx={{ width: 150, mt: 1, ml: 1 }}
-              >
-                Back
-              </Button>
-            )}
-            {activeStep === 0 && (
-              <Button
-                variant="outlined"
-                sx={{ width: 150, mt: 1, ml: 1 }}
-                onClick={() => setAddNewProject(false)}
-              >
-                Cancel
-              </Button>
-            )}
+            {
+              //activeStep !== steps.length &&
+              activeStep !== 0 ? (
+                <Button
+                  variant="outlined"
+                  onClick={handleBack}
+                  sx={{ width: 150, mt: 1, ml: 1 }}
+                >
+                  Back
+                </Button>
+              ) : (
+                <Button variant="outlined" sx={{ width: 150, mt: 1, ml: 1 }}>
+                  Cancel
+                </Button>
+              )
+            }
 
             <Button
               variant="contained"
-              type={activeStep === steps.length - 1 ? 'submit' : 'button'}
+              disabled={formik.isSubmitting}
+              type={activeStep === steps.length ? 'submit' : 'button'}
               onClick={handleNext}
               sx={{ width: 150, mt: 1, ml: 1 }}
             >
-              {activeStep === steps.length - 1 ? 'Create' : 'Next'}
+              {activeStep >= steps.length - 1 ? 'Create' : 'Next'}
             </Button>
           </Stack>
         </Stack>
-      </form>
+      </Stack>
     </FormikContext.Provider>
   );
 };
