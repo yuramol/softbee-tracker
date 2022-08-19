@@ -76,7 +76,7 @@ export const TrackerCalendar = ({
               ) {
                 isWorkDay = true;
                 const time = total.split(':');
-                +time[0] + +time[1] >= 5
+                +time[0] >= 5
                   ? (isEnoughHours = true)
                   : (isEnoughHours = false);
               }
