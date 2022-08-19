@@ -164,7 +164,6 @@ const ProfilePage = () => {
                         <Box ml={1} width="100%">
                           <Input
                             placeholder={label}
-                            // disableUnderline={!edit}
                             variant="standard"
                             fullWidth
                             value={(values as valuesType)[fieldName]}

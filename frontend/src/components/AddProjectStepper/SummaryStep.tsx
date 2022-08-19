@@ -26,15 +26,11 @@ export const SummaryStep = () => {
     manager,
     employees,
   } = values;
-  console.log(values);
 
   return (
-    <Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6">Summary</Typography>
-      </Stack>
-
-      <Stack mt={3} mb={1} gap={2}>
+    <>
+      <Typography variant="h5">Summary</Typography>
+      <Stack gap={4}>
         <Typography variant="subtitle1" component="div">
           Please review the information before creation
         </Typography>
@@ -120,6 +116,6 @@ export const SummaryStep = () => {
           </>
         )}
       </Stack>
-    </Stack>
+    </>
   );
 };

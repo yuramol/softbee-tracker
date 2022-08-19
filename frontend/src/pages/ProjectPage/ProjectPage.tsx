@@ -1,5 +1,5 @@
 import { ProjectList } from 'components/ProjectList/ProjectList';
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { AddNewProject, MainWrapper } from '../../components';
 
@@ -8,6 +8,8 @@ import { Button } from 'legos';
 import { SideBars } from 'components/SideBars';
 
 const ProjectPage = () => {
+  const [isCreateProject, setIsCreateProject] = useState(false);
+
   //TODO add projects info and info about PR
   const projects = [
     {
@@ -44,19 +46,25 @@ const ProjectPage = () => {
             variant="contained"
             title="Add new project"
             size="large"
+            onClick={() => setIsCreateProject(!isCreateProject)}
           />
           <SideBars />
         </>
       }
     >
-      <Typography variant="h1">Project</Typography>
-      <Stack mt={4} spacing={2}>
-        <Stack direction="row" spacing={2} mb={4}>
-          <ProjectFilters />
-        </Stack>
-        <ProjectList projectList={projects} />
-        <AddNewProject />
-      </Stack>
+      {isCreateProject ? (
+        <AddNewProject setIsCreateProject={setIsCreateProject} />
+      ) : (
+        <>
+          <Typography variant="h1">Project</Typography>
+          <Stack mt={4} spacing={2}>
+            <Stack direction="row" spacing={2} mb={4}>
+              <ProjectFilters />
+            </Stack>
+            <ProjectList projectList={projects} />
+          </Stack>
+        </>
+      )}
     </MainWrapper>
   );
 };

@@ -1,13 +1,12 @@
-import { ReactElement } from 'react';
-
 import { SelectProps } from '@mui/material';
+import { Maybe, Scalars } from 'types/GraphqlTypes';
 
-export type ItemType = { label: string; value: string };
+export type ItemType = {
+  label?: string;
+  value?: Maybe<Scalars['String']>;
+};
 
-export type SelectPropsType = SelectProps & {
-  items: ItemType[];
+export type MultipleSelectProps = SelectProps & {
   label: string;
-  value?: string[];
-  onChange: (value: unknown) => void;
-  variant?: 'standard' | 'outlined' | 'filled' | undefined;
+  items: ItemType[];
 };

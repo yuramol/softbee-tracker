@@ -104,7 +104,6 @@ export const TrackerAddNewEntry = () => {
               <Stack>
                 <Typography variant="h6">New time entry</Typography>
               </Stack>
-
               <Stack my={3} gap={3}>
                 <Stack direction="row" gap={3}>
                   <CalendarPickerFormik
@@ -122,6 +121,7 @@ export const TrackerAddNewEntry = () => {
                 </Stack>
                 <Select
                   label="Project"
+                  variant="outlined"
                   name={FIELD_TIME_ENTRY.project}
                   items={projectItems}
                   value={formik.values[FIELD_TIME_ENTRY.project]}
@@ -130,7 +130,6 @@ export const TrackerAddNewEntry = () => {
                     !!errors[FIELD_TIME_ENTRY.project]
                   }
                   errorText={errors[FIELD_TIME_ENTRY.project]}
-                  variant="outlined"
                   onChange={handleChange}
                 />
                 <TextField
@@ -150,7 +149,6 @@ export const TrackerAddNewEntry = () => {
                   onChange={handleChange}
                 />
               </Stack>
-
               <Stack direction="row" gap={2}>
                 <Button variant="contained" type="submit">
                   Save Time
