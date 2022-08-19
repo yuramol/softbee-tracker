@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useMemo } from 'react';
 import { useLazyQuery } from '@apollo/client';
 
 import { PROJECTS_BY_USER_ID_QUERY } from 'api';
@@ -10,31 +10,26 @@ type useProjectsByUserListProps = {
 };
 
 export const useProjectsByUserList = () => {
-  const [runProjects] = useLazyQuery<
+  const [getProjects, { data, error }] = useLazyQuery<
     {
       projects: ProjectEntityResponseCollection;
     },
     useProjectsByUserListProps
   >(PROJECTS_BY_USER_ID_QUERY);
-  const [projectItems, setProjectItems] = useState<ItemType[]>();
 
-  const executeProjects = useCallback(
-    ({ userId }: useProjectsByUserListProps) => {
-      runProjects({ variables: { userId } }).then(({ data }) => {
-        if (data) {
-          setProjectItems(
-            data.projects.data.map((project) => ({
-              label: project.attributes?.name,
-              value: project.id,
-            }))
-          );
-        }
-      });
-    },
-    [runProjects]
-  );
+  const projectsItems: ItemType[] = useMemo(() => {
+    if (data) {
+      return data?.projects.data.map((project) => ({
+        label: project.attributes?.name,
+        value: project.id,
+      }));
+    }
+    return [];
+  }, [data]);
+
   return {
-    executeProjects,
-    projectItems,
+    getProjects,
+    projectsItems,
+    projectsError: error,
   };
 };
