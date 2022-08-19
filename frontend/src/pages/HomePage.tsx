@@ -21,7 +21,11 @@ const HomePage = () => {
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
   const { user } = useAuth();
-  const { trackers } = useNormalizedTrackers(user.id, startMonth, endMonth);
+  const { trackers, refetch } = useNormalizedTrackers(
+    user.id,
+    startMonth,
+    endMonth
+  );
 
   return (
     <MainWrapper
@@ -39,7 +43,11 @@ const HomePage = () => {
       }
     >
       <Typography variant="h1">Tracker</Typography>
-      <TrackerDayView selectedDay={selectedDay} />
+      <TrackerDayView
+        selectedDay={selectedDay}
+        trackers={trackers}
+        refetchTrackers={refetch}
+      />
     </MainWrapper>
   );
 };
