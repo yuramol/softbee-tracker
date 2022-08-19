@@ -7,27 +7,19 @@ import {
   useFormikContext,
 } from 'formik';
 
+import { useNormalizedUsers } from 'hooks';
 import { Icon, MultipleSelect, Select } from 'legos';
-import { Scalars, ComponentProjectSalaryInput } from 'types/GraphqlTypes';
+import {
+  Scalars,
+  ComponentProjectSalaryInput,
+  Enum_Project_Type,
+} from 'types/GraphqlTypes';
 import { CreateProjectFields } from './types';
 
 export const TeamStep = () => {
   const { values, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
-
-  // TODO Add manager from backend
-  const itemSelectManager = [
-    { label: 'Andriy', value: '1' },
-    { label: 'Stas', value: '2' },
-  ];
-
-  // TODO Add employee from backend
-  const itemSelectEmployee = [
-    { label: 'Serhii', value: '1' },
-    { label: 'Stas', value: '2' },
-    { label: 'Oleg', value: '3' },
-    { label: 'Michael', value: '4' },
-  ];
+  const { managersForSelect, employeesForSelect } = useNormalizedUsers();
 
   const handleChangeEmployees = (
     e: SelectChangeEvent<unknown>,
@@ -67,7 +59,7 @@ export const TeamStep = () => {
           label="Project manager"
           variant="outlined"
           name={CreateProjectFields.Managers}
-          items={itemSelectManager}
+          items={managersForSelect}
           value={values[CreateProjectFields.Managers]}
           onChange={handleChange}
         />
@@ -81,7 +73,7 @@ export const TeamStep = () => {
                 variant="outlined"
                 IconComponent={() => <Icon icon="add" />}
                 name={CreateProjectFields.Users}
-                items={itemSelectEmployee}
+                items={employeesForSelect}
                 value={values[CreateProjectFields.Users]}
                 onChange={(e) => handleChangeEmployees(e, salaryHelpers)}
               />
@@ -98,22 +90,25 @@ export const TeamStep = () => {
                       >
                         <Typography>
                           {
-                            itemSelectEmployee.find(
+                            employeesForSelect?.find(
                               ({ value }) => employee.users === value
                             )?.label
                           }
                         </Typography>
-                        <TextField
-                          label="Rate"
-                          autoComplete="off"
-                          value={values[CreateProjectFields.Salary][i].rate}
-                          onChange={(e) => {
-                            setFieldValue(
-                              `${CreateProjectFields.Salary}.${i}.rate`,
-                              e.target.value
-                            );
-                          }}
-                        />
+                        {values[CreateProjectFields.Type] !==
+                          Enum_Project_Type.NonProfit && (
+                          <TextField
+                            label="Rate"
+                            autoComplete="off"
+                            value={values[CreateProjectFields.Salary][i].rate}
+                            onChange={(e) => {
+                              setFieldValue(
+                                `${CreateProjectFields.Salary}.${i}.rate`,
+                                e.target.value
+                              );
+                            }}
+                          />
+                        )}
                       </Stack>
                     )
                   )

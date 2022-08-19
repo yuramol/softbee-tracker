@@ -5,3 +5,4 @@ export { useNormalizedTrackers } from './useNormalizedTrackers';
 export { useNotification } from './useNotification';
 export { useDebounce } from './useDebounce';
 export { useProjectsByUserList } from './useProjectsByUserList';
+export { useNormalizedUsers } from './useNormalizedUsers';
