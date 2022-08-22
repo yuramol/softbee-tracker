@@ -3,26 +3,26 @@ import { useQuery } from '@apollo/client';
 import { USERS_QUERY } from 'api';
 import { Role } from 'constants/types';
 import {
+  Maybe,
   Scalars,
   UsersPermissionsUser,
   UsersPermissionsUserEntity,
   UsersPermissionsUserEntityResponseCollection,
 } from 'types/GraphqlTypes';
-import { Maybe } from 'yup/lib/types';
 
 type Choices = {
   label: string;
-  value: Maybe<Scalars['ID']>;
+  value: Maybe<Scalars['ID']> | undefined;
 };
 
 const getUserData = (
-  id: Maybe<Scalars['ID']>,
+  id: Maybe<Scalars['ID']> | undefined,
   attributes: Maybe<UsersPermissionsUser>
 ) => ({ id, attributes });
 
 const getUserChoicesData = (
-  id: Maybe<Scalars['ID']>,
-  attributes: Maybe<UsersPermissionsUser>
+  id: Maybe<Scalars['ID']> | undefined,
+  attributes: Maybe<UsersPermissionsUser> | undefined
 ) => ({
   label: `${attributes?.firstName} ${attributes?.lastName}`,
   value: id,
