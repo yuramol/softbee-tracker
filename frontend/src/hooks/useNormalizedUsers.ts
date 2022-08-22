@@ -3,23 +3,30 @@ import { useQuery } from '@apollo/client';
 import { USERS_QUERY } from 'api';
 import { Role } from 'constants/types';
 import {
+  Maybe,
+  Scalars,
+  UsersPermissionsUser,
   UsersPermissionsUserEntity,
   UsersPermissionsUserEntityResponseCollection,
 } from 'types/GraphqlTypes';
 
-const getUsersByRoleType = (
-  users: UsersPermissionsUserEntity[] | undefined,
-  roleType: Role
-) =>
-  users?.filter(
-    ({ attributes }) => attributes?.role?.data?.attributes?.type === roleType
-  );
+type Choices = {
+  label: string;
+  value: Maybe<Scalars['ID']> | undefined;
+};
 
-const getUsersForSelect = (users: UsersPermissionsUserEntity[] | undefined) =>
-  users?.map(({ id, attributes }) => ({
-    label: `${attributes?.firstName} ${attributes?.lastName}`,
-    value: id,
-  }));
+const getUserData = (
+  id: Maybe<Scalars['ID']> | undefined,
+  attributes: Maybe<UsersPermissionsUser>
+) => ({ id, attributes });
+
+const getUserChoicesData = (
+  id: Maybe<Scalars['ID']> | undefined,
+  attributes: Maybe<UsersPermissionsUser> | undefined
+) => ({
+  label: `${attributes?.firstName} ${attributes?.lastName}`,
+  value: id,
+});
 
 export const useNormalizedUsers = () => {
   const { data, loading, refetch } = useQuery<{
@@ -27,11 +34,25 @@ export const useNormalizedUsers = () => {
   }>(USERS_QUERY);
 
   const users = data?.usersPermissionsUsers.data;
-  const managers = getUsersByRoleType(users, Role.Manager);
-  const employees = getUsersByRoleType(users, Role.Employee);
-  const usersChoices = getUsersForSelect(users);
-  const managersChoices = getUsersForSelect(managers);
-  const employeesChoices = getUsersForSelect(employees);
+  const managers: UsersPermissionsUserEntity[] = [];
+  const employees: UsersPermissionsUserEntity[] = [];
+  const usersChoices: Choices[] = [];
+  const managersChoices: Choices[] = [];
+  const employeesChoices: Choices[] = [];
+
+  users?.forEach(({ id, attributes }) => {
+    usersChoices.push(getUserChoicesData(id, attributes));
+
+    if (attributes?.role?.data?.attributes?.type === Role.Manager) {
+      managers.push(getUserData(id, attributes));
+      managersChoices.push(getUserChoicesData(id, attributes));
+    }
+
+    if (attributes?.role?.data?.attributes?.type === Role.Employee) {
+      employees.push({ id, attributes });
+      employeesChoices.push(getUserChoicesData(id, attributes));
+    }
+  });
 
   return {
     users,

@@ -106,7 +106,7 @@ export const TeamStep = () => {
                       >
                         <Typography>
                           {
-                            employeesChoices?.find(
+                            employeesChoices.find(
                               ({ value }) => employee.users === value
                             )?.label
                           }

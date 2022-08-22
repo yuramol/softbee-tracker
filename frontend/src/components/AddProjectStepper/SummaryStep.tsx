@@ -87,7 +87,7 @@ export const SummaryStep = () => {
             </ListItemText>
             <ListItemText sx={{ ml: 2 }}>
               {
-                managersChoices?.find(
+                managersChoices.find(
                   ({ value }) =>
                     values[CreateProjectFields.Managers][0] === value
                 )?.label
@@ -112,7 +112,7 @@ export const SummaryStep = () => {
                       <TableRow key={users}>
                         <TableCell component="th" scope="row">
                           {
-                            employeesChoices?.find(
+                            employeesChoices.find(
                               ({ value }) => users === value
                             )?.label
                           }
