@@ -29,17 +29,17 @@ export const useNormalizedUsers = () => {
   const users = data?.usersPermissionsUsers.data;
   const managers = getUsersByRoleType(users, Role.Manager);
   const employees = getUsersByRoleType(users, Role.Employee);
-  const usersForSelect = getUsersForSelect(users);
-  const managersForSelect = getUsersForSelect(managers);
-  const employeesForSelect = getUsersForSelect(employees);
+  const usersChoices = getUsersForSelect(users);
+  const managersChoices = getUsersForSelect(managers);
+  const employeesChoices = getUsersForSelect(employees);
 
   return {
     users,
     managers,
     employees,
-    usersForSelect,
-    managersForSelect,
-    employeesForSelect,
+    usersChoices,
+    managersChoices,
+    employeesChoices,
     loading,
     refetch,
   };

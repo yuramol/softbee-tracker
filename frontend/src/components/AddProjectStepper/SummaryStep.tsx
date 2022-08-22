@@ -21,7 +21,7 @@ import { CreateProjectFields, Salary } from './types';
 
 export const SummaryStep = () => {
   const { values } = useFormikContext<FormikValues>();
-  const { managersForSelect, employeesForSelect } = useNormalizedUsers();
+  const { managersChoices, employeesChoices } = useNormalizedUsers();
 
   return (
     <>
@@ -87,7 +87,7 @@ export const SummaryStep = () => {
             </ListItemText>
             <ListItemText sx={{ ml: 2 }}>
               {
-                managersForSelect?.find(
+                managersChoices?.find(
                   ({ value }) =>
                     values[CreateProjectFields.Managers][0] === value
                 )?.label
@@ -112,7 +112,7 @@ export const SummaryStep = () => {
                       <TableRow key={users}>
                         <TableCell component="th" scope="row">
                           {
-                            employeesForSelect?.find(
+                            employeesChoices?.find(
                               ({ value }) => users === value
                             )?.label
                           }

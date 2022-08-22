@@ -19,7 +19,7 @@ import { CreateProjectFields, Salary } from './types';
 export const TeamStep = () => {
   const { values, errors, touched, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
-  const { managersForSelect, employeesForSelect } = useNormalizedUsers();
+  const { managersChoices, employeesChoices } = useNormalizedUsers();
 
   const handleChangeEmployees = (
     e: SelectChangeEvent<unknown>,
@@ -32,13 +32,13 @@ export const TeamStep = () => {
       values[CreateProjectFields.Salary];
     const salaryUsers = salarys.map(({ users }) => users);
 
-    const addSalery = addedUsers.filter((x) => !salaryUsers.includes(x));
+    const addSalary = addedUsers.filter((x) => !salaryUsers.includes(x));
     const removeSalery = salaryUsers.filter(
       (x) => !addedUsers.includes(x as string)
     );
 
-    if (addSalery.length > 0) {
-      salaryHelpers.push({ users: addSalery[0], rate: 0 } as Salary);
+    if (addSalary.length > 0) {
+      salaryHelpers.push({ users: addSalary[0], rate: 0 } as Salary);
     }
 
     if (removeSalery.length > 0) {
@@ -59,7 +59,7 @@ export const TeamStep = () => {
           label="Project manager"
           variant="outlined"
           name={CreateProjectFields.Managers}
-          items={managersForSelect}
+          items={managersChoices}
           value={values[CreateProjectFields.Managers]}
           error={
             touched[CreateProjectFields.Managers] &&
@@ -81,7 +81,7 @@ export const TeamStep = () => {
                 variant="outlined"
                 IconComponent={() => <Icon icon="add" />}
                 name={CreateProjectFields.Users}
-                items={employeesForSelect}
+                items={employeesChoices}
                 value={values[CreateProjectFields.Users]}
                 error={
                   touched[CreateProjectFields.Users] &&
@@ -106,7 +106,7 @@ export const TeamStep = () => {
                       >
                         <Typography>
                           {
-                            employeesForSelect?.find(
+                            employeesChoices?.find(
                               ({ value }) => employee.users === value
                             )?.label
                           }
