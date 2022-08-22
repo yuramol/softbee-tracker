@@ -9,5 +9,5 @@ export type ItemType = {
 export type SelectPropsType = SelectProps & {
   label: string;
   items?: ItemType[];
-  helperText?: string;
+  helperText?: boolean | string;
 };

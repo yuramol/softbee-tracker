@@ -9,5 +9,5 @@ export type ItemType = {
 export type MultipleSelectProps = SelectProps & {
   label: string;
   items?: ItemType[];
-  errorText?: string;
+  helperText?: boolean | string;
 };

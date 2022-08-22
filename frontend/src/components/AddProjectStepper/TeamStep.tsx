@@ -65,7 +65,10 @@ export const TeamStep = () => {
             touched[CreateProjectFields.Managers] &&
             !!errors[CreateProjectFields.Managers]
           }
-          errorText={errors[CreateProjectFields.Managers] as string}
+          helperText={
+            touched[CreateProjectFields.Managers] &&
+            (errors[CreateProjectFields.Managers] as string)
+          }
           onChange={handleChange}
         />
 
@@ -84,7 +87,10 @@ export const TeamStep = () => {
                   touched[CreateProjectFields.Users] &&
                   !!errors[CreateProjectFields.Users]
                 }
-                errorText={errors[CreateProjectFields.Users] as string}
+                helperText={
+                  touched[CreateProjectFields.Users] &&
+                  (errors[CreateProjectFields.Users] as string)
+                }
                 onChange={(e) => handleChangeEmployees(e, salaryHelpers)}
               />
               <Stack gap={3}>

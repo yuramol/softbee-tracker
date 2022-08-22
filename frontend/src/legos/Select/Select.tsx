@@ -33,6 +33,6 @@ export const Select = ({
         </MenuItem>
       ))}
     </StyledSelect>
-    {error && <FormHelperText>{helperText}</FormHelperText>}
+    <FormHelperText>{helperText}</FormHelperText>
   </FormControl>
 );

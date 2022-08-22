@@ -19,7 +19,7 @@ export const MultipleSelect = ({
   size,
   sx,
   error,
-  errorText,
+  helperText,
   variant = 'standard',
   IconComponent = () => <Icon icon="arrowDropDown" />,
   ...props
@@ -51,6 +51,6 @@ export const MultipleSelect = ({
         </MenuItem>
       ))}
     </Select>
-    {error && <FormHelperText>{errorText}</FormHelperText>}
+    <FormHelperText>{helperText}</FormHelperText>
   </FormControl>
 );
