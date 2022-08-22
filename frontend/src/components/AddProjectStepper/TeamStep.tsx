@@ -1,120 +1,144 @@
 import React from 'react';
+import { Typography, TextField, Stack, SelectChangeEvent } from '@mui/material';
 import {
-  Typography,
-  TextField,
-  Grid,
-  Stack,
-  Button,
-  IconButton,
-} from '@mui/material';
-import { FieldArray, FormikValues, useFormikContext } from 'formik';
+  FieldArray,
+  FieldArrayRenderProps,
+  FormikValues,
+  useFormikContext,
+} from 'formik';
 
-import { Icon, Select } from 'legos';
-import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
+import { useNormalizedUsers } from 'hooks';
+import { Icon, MultipleSelect, Select } from 'legos';
+import {
+  Scalars,
+  ComponentProjectSalaryInput,
+  Enum_Project_Type,
+} from 'types/GraphqlTypes';
+import { CreateProjectFields, Salary } from './types';
 
 export const TeamStep = () => {
-  const { values, handleChange, setFieldValue } =
+  const { values, errors, touched, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
+  const { managersChoices, employeesChoices } = useNormalizedUsers();
 
-  // TODO Add manager from backend
-  const itemSelectManager = [
-    { label: 'Andriy', value: '1' },
-    { label: 'Stas', value: '2' },
-  ];
+  const handleChangeEmployees = (
+    e: SelectChangeEvent<unknown>,
+    salaryHelpers: FieldArrayRenderProps
+  ) => {
+    handleChange(e);
 
-  // TODO Add employee from backend
-  const itemSelectEmployee = [
-    { label: 'Serhii', value: '1' },
-    { label: 'Stas', value: '2' },
-    { label: 'Oleg', value: '3' },
-    { label: 'Michael', value: '4' },
-  ];
+    const addedUsers = (e.target as { value: Scalars['ID'][] }).value;
+    const salarys: ComponentProjectSalaryInput[] =
+      values[CreateProjectFields.Salary];
+    const salaryUsers = salarys.map(({ users }) => users);
+
+    const addSalary = addedUsers.filter((x) => !salaryUsers.includes(x));
+    const removeSalery = salaryUsers.filter(
+      (x) => !addedUsers.includes(x as string)
+    );
+
+    if (addSalary.length > 0) {
+      salaryHelpers.push({ users: addSalary[0], rate: 0 } as Salary);
+    }
+
+    if (removeSalery.length > 0) {
+      const indexRemoveSalery = values[CreateProjectFields.Salary].indexOf(
+        values[CreateProjectFields.Salary].find(
+          ({ users }: ComponentProjectSalaryInput) => users === removeSalery[0]
+        )
+      );
+      salaryHelpers.remove(indexRemoveSalery);
+    }
+  };
 
   return (
-    <Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6">Team</Typography>
-      </Stack>
-
-      <Stack mt={3} mb={1} gap={3}>
+    <>
+      <Typography variant="h5">Team</Typography>
+      <Stack gap={4}>
         <Select
-          name={FIELD_NEW_PROJECT_ENTRY.manager}
           label="Project manager"
-          items={itemSelectManager}
-          value={values.manager}
           variant="outlined"
+          name={CreateProjectFields.Managers}
+          items={managersChoices}
+          value={values[CreateProjectFields.Managers]}
+          error={
+            touched[CreateProjectFields.Managers] &&
+            !!errors[CreateProjectFields.Managers]
+          }
+          helperText={
+            touched[CreateProjectFields.Managers] &&
+            (errors[CreateProjectFields.Managers] as string)
+          }
           onChange={handleChange}
         />
+
         <FieldArray
-          name={FIELD_NEW_PROJECT_ENTRY.employees}
-          render={(arrayHelpers: any) => (
+          name={CreateProjectFields.Salary}
+          render={(salaryHelpers) => (
             <>
-              {values.employees.length > 0 &&
-                values.employees.map((employee: any, index: number) => (
-                  <Grid
-                    key={`${employee}`}
-                    container
-                    columnSpacing={2}
-                    justifyContent="space-between"
-                  >
-                    <Grid item xs={6}>
-                      <Select
-                        label="Employee"
-                        variant="outlined"
-                        value={employee.id}
-                        items={itemSelectEmployee}
-                        onChange={(e) => {
-                          setFieldValue(
-                            `${FIELD_NEW_PROJECT_ENTRY.employees}.${index}.id`,
-                            e.target.value
-                          );
-                          setFieldValue(
-                            `${FIELD_NEW_PROJECT_ENTRY.employees}.${index}.name`,
-                            itemSelectEmployee.find(
-                              (item) => item.value === e.target.value
-                            )?.label
-                          );
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <TextField
-                        label="Rate"
-                        fullWidth
-                        autoComplete="off"
-                        value={values.employees[index].rate}
-                        onChange={(e) => {
-                          setFieldValue(
-                            `${FIELD_NEW_PROJECT_ENTRY.employees}.${index}.rate`,
-                            e.target.value
-                          );
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs>
-                      <IconButton
-                        sx={{
-                          height: 56,
-                          width: 56,
-                        }}
-                        onClick={() => arrayHelpers.remove(index)}
+              <MultipleSelect
+                label="Employees"
+                variant="outlined"
+                IconComponent={() => <Icon icon="add" />}
+                name={CreateProjectFields.Users}
+                items={employeesChoices}
+                value={values[CreateProjectFields.Users]}
+                error={
+                  touched[CreateProjectFields.Users] &&
+                  !!errors[CreateProjectFields.Users]
+                }
+                helperText={
+                  touched[CreateProjectFields.Users] &&
+                  (errors[CreateProjectFields.Users] as string)
+                }
+                onChange={(e) => handleChangeEmployees(e, salaryHelpers)}
+              />
+              <Stack gap={3}>
+                {values[CreateProjectFields.Salary].length > 0 ? (
+                  values[CreateProjectFields.Salary].map(
+                    (employee: ComponentProjectSalaryInput, i: number) => (
+                      <Stack
+                        key={i}
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        gap={4}
                       >
-                        <Icon icon="deleteOutline" />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                ))}
-              <Button
-                variant="contained"
-                onClick={() => arrayHelpers.push('----')}
-                sx={{ width: 200 }}
-              >
-                + Add Employee
-              </Button>
+                        <Typography>
+                          {
+                            employeesChoices?.find(
+                              ({ value }) => employee.users === value
+                            )?.label
+                          }
+                        </Typography>
+                        {values[CreateProjectFields.Type] !==
+                          Enum_Project_Type.NonProfit && (
+                          <TextField
+                            label="Rate"
+                            autoComplete="off"
+                            type="number"
+                            value={values[CreateProjectFields.Salary][i].rate}
+                            onChange={(e) => {
+                              setFieldValue(
+                                `${CreateProjectFields.Salary}.${i}.rate`,
+                                +e.target.value
+                              );
+                            }}
+                          />
+                        )}
+                      </Stack>
+                    )
+                  )
+                ) : (
+                  <Typography>
+                    You have not selected any employees yet
+                  </Typography>
+                )}
+              </Stack>
             </>
           )}
         />
       </Stack>
-    </Stack>
+    </>
   );
 };

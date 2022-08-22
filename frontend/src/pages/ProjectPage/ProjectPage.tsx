@@ -1,24 +1,15 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
 import { ProjectList } from 'components/ProjectList/ProjectList';
 import { Stack, Typography } from '@mui/material';
 import { MainWrapper, SideBars, AddNewProject } from 'components';
 
 import { ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
-import { PROJECTS_LIST_QUERY } from 'api';
-import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 
 const ProjectPage = () => {
-  const [addNewProject, setAddNewProject] = useState(false);
+  const [isCreateProject, setIsCreateProject] = useState(false);
+
   //TODO add projects info and info about PR
-
-  const { data } = useQuery<{ projects: ProjectEntityResponseCollection }>(
-    PROJECTS_LIST_QUERY
-  );
-
-  console.log('Projects:', data?.projects.data);
-
   const projects = [
     {
       id: 1,
@@ -54,18 +45,17 @@ const ProjectPage = () => {
             variant="contained"
             title="Add new project"
             size="large"
-            onClick={() => setAddNewProject(true)}
+            onClick={() => setIsCreateProject(!isCreateProject)}
           />
           <SideBars />
         </>
       }
     >
-      {addNewProject ? (
-        <AddNewProject setAddNewProject={setAddNewProject} />
+      {isCreateProject ? (
+        <AddNewProject setIsCreateProject={setIsCreateProject} />
       ) : (
         <>
           <Typography variant="h1">Project</Typography>
-
           <Stack mt={4} spacing={2}>
             <Stack direction="row" spacing={2} mb={4}>
               <ProjectFilters />

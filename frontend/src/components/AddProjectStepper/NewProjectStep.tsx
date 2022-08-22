@@ -4,58 +4,49 @@ import {
   ButtonGroup,
   Typography,
   TextField,
-  InputLabel,
   Stack,
-  Grid,
 } from '@mui/material';
 import { FormikValues, useFormikContext } from 'formik';
 
-import { CalendarPickerFormik, Select } from 'legos';
-import { FIELD_NEW_PROJECT_ENTRY } from './AddNewProject';
+import { CalendarPickerFormik } from 'legos';
+import { CreateProjectFields, ProjectType } from './types';
+import { Enum_Project_Type } from 'types/GraphqlTypes';
 
-const paymentTypes = [
+export const projectTypes: ProjectType[] = [
   {
     label: 'Time & Material',
-    value: 'timeMaterial',
+    value: Enum_Project_Type.TimeMaterial,
   },
   {
     label: 'Fixed Price',
-    value: 'fixedPrice',
+    value: Enum_Project_Type.FixedPrice,
   },
   {
     label: 'Non profit',
-    value: 'nonProfit',
+    value: Enum_Project_Type.NonProfit,
   },
 ];
 
-// TODO Add manager from backend
-const itemSelectClient = [
-  { label: 'John', value: '1' },
-  { label: 'Tom', value: '2' },
-  { label: 'Bob', value: '3' },
-];
-
 export const NewProjectStep = () => {
-  const { values, handleChange, setFieldValue } =
+  const { values, touched, errors, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
 
   return (
-    <Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6">New project</Typography>
-      </Stack>
-
-      <Stack mt={3} mb={1} gap={3}>
+    <>
+      <Typography variant="h5">New project</Typography>
+      <Stack gap={4}>
         <ButtonGroup size="small" fullWidth>
-          {paymentTypes.map(({ label, value }) => (
+          {projectTypes.map(({ label, value }) => (
             <Button
               key={value}
               size="large"
               variant={
-                label === values.paymentMethod ? 'contained' : 'outlined'
+                value === values[CreateProjectFields.Type]
+                  ? 'contained'
+                  : 'outlined'
               }
               onClick={() => {
-                setFieldValue('paymentMethod', label);
+                setFieldValue(CreateProjectFields.Type, value);
               }}
             >
               {label}
@@ -63,36 +54,45 @@ export const NewProjectStep = () => {
           ))}
         </ButtonGroup>
         <TextField
-          id={FIELD_NEW_PROJECT_ENTRY.projectTitle}
-          name={FIELD_NEW_PROJECT_ENTRY.projectTitle}
           label="Project title"
-          value={values.projectTitle}
+          name={CreateProjectFields.Name}
+          value={values[CreateProjectFields.Name]}
           multiline
+          error={
+            touched[CreateProjectFields.Name] &&
+            !!errors[CreateProjectFields.Name]
+          }
+          helperText={
+            touched[CreateProjectFields.Name] &&
+            (errors[CreateProjectFields.Name] as string)
+          }
           onChange={handleChange}
         />
-        <Select
-          name={FIELD_NEW_PROJECT_ENTRY.client}
+        <TextField
           label="Client"
-          items={itemSelectClient}
-          value={values.client}
-          variant="outlined"
+          name={CreateProjectFields.Client}
+          value={values[CreateProjectFields.Client]}
+          error={
+            touched[CreateProjectFields.Client] &&
+            !!errors[CreateProjectFields.Client]
+          }
+          helperText={
+            touched[CreateProjectFields.Client] &&
+            (errors[CreateProjectFields.Client] as string)
+          }
           onChange={handleChange}
         />
-        <Grid container justifyContent="space-between" columnSpacing={2}>
-          <Grid item xs={6}>
-            <InputLabel>
-              Start Date<span style={{ color: 'red' }}>*</span>
-            </InputLabel>
-            <CalendarPickerFormik field={FIELD_NEW_PROJECT_ENTRY.startDate} />
-          </Grid>
-          <Grid item xs={6}>
-            <InputLabel>
-              End Date<span style={{ color: 'red' }}>*</span>
-            </InputLabel>
-            <CalendarPickerFormik field={FIELD_NEW_PROJECT_ENTRY.endDate} />
-          </Grid>
-        </Grid>
+        <Stack direction="row" spacing={2}>
+          <CalendarPickerFormik
+            label="Start Date"
+            field={CreateProjectFields.Start}
+          />
+          <CalendarPickerFormik
+            label="End Date"
+            field={CreateProjectFields.End}
+          />
+        </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 };

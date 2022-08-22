@@ -15,110 +15,118 @@ import {
 import { FormikValues, useFormikContext } from 'formik';
 import { format } from 'date-fns';
 
+import { useNormalizedUsers } from 'hooks';
+import { projectTypes } from './NewProjectStep';
+import { CreateProjectFields, Salary } from './types';
+
 export const SummaryStep = () => {
   const { values } = useFormikContext<FormikValues>();
-  const {
-    projectTitle,
-    client,
-    paymentMethod,
-    startDate,
-    endDate,
-    manager,
-    employees,
-  } = values;
+  const { managersChoices, employeesChoices } = useNormalizedUsers();
 
   return (
-    <Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6">Summary</Typography>
-      </Stack>
-
-      <Stack mt={3} mb={1} gap={2}>
-        <Typography variant="subtitle1" component="div">
+    <>
+      <Typography variant="h5">Summary</Typography>
+      <Stack gap={4}>
+        <Typography fontSize={18}>
           Please review the information before creation
         </Typography>
         <List>
-          <ListItem sx={{ paddingLeft: 0 }}>
-            <ListItemText
-              primary={
-                <Typography variant="subtitle1">{`Project name: ${projectTitle}`}</Typography>
-              }
-            />
+          <ListItem disablePadding>
+            <ListItemText sx={{ display: 'contents' }}>
+              <Typography component="span" variant="subtitle2">
+                Project name:
+              </Typography>
+            </ListItemText>
+            <ListItemText sx={{ ml: 2 }}>
+              {values[CreateProjectFields.Name]}
+            </ListItemText>
           </ListItem>
-          <ListItem sx={{ paddingLeft: 0 }}>
-            <ListItemText
-              primary={
-                <Typography variant="subtitle1">{`Client: ${client}`}</Typography>
-              }
-            />
+          <ListItem disablePadding>
+            <ListItemText sx={{ display: 'contents' }}>
+              <Typography component="span" variant="subtitle2">
+                Client:
+              </Typography>
+            </ListItemText>
+            <ListItemText sx={{ ml: 2 }}>
+              {values[CreateProjectFields.Client]}
+            </ListItemText>
           </ListItem>
-          <ListItem sx={{ paddingLeft: 0 }}>
-            <ListItemText
-              primary={
-                <Typography variant="subtitle1">{`Project type: ${paymentMethod}`}</Typography>
+          <ListItem disablePadding>
+            <ListItemText sx={{ display: 'contents' }}>
+              <Typography component="span" variant="subtitle2">
+                Project type:
+              </Typography>
+            </ListItemText>
+            <ListItemText sx={{ ml: 2 }}>
+              {
+                projectTypes.find(
+                  ({ value }) => values[CreateProjectFields.Type] === value
+                )?.label
               }
-            />
+            </ListItemText>
           </ListItem>
-          <ListItem sx={{ paddingLeft: 0 }}>
-            <ListItemText
-              primary={
-                <Typography variant="subtitle1">{`Project duration: ${format(
-                  startDate,
-                  'dd MMM YYY'
-                )} - ${format(endDate, 'dd MMM YYY')}`}</Typography>
-              }
-            />
+          <ListItem disablePadding>
+            <ListItemText sx={{ display: 'contents' }}>
+              <Typography component="span" variant="subtitle2">
+                Project duration:
+              </Typography>
+            </ListItemText>
+            <ListItemText sx={{ ml: 2 }}>{`${format(
+              values[CreateProjectFields.Start],
+              'dd MMM YYY'
+            )} - ${format(
+              values[CreateProjectFields.End],
+              'dd MMM YYY'
+            )}`}</ListItemText>
           </ListItem>
-          <ListItem sx={{ paddingLeft: 0 }}>
-            <ListItemText
-              primary={
-                <Typography variant="subtitle1">{`Project manager: ${manager}`}</Typography>
+          <ListItem disablePadding>
+            <ListItemText sx={{ display: 'contents' }}>
+              <Typography component="span" variant="subtitle2">
+                Project manager:
+              </Typography>
+            </ListItemText>
+            <ListItemText sx={{ ml: 2 }}>
+              {
+                managersChoices?.find(
+                  ({ value }) =>
+                    values[CreateProjectFields.Managers][0] === value
+                )?.label
               }
-            />
+            </ListItemText>
           </ListItem>
         </List>
-        {employees.length > 0 && (
+        {values[CreateProjectFields.Salary].length > 0 && (
           <>
-            <Typography variant="h6" fontWeight={300}>
-              Rate agreements
-            </Typography>
-
+            <Typography fontSize={18}>Rate agreements</Typography>
             <TableContainer>
               <Table>
                 <TableHead>
-                  <TableRow
-                    sx={{
-                      '& .MuiTableCell-root': {
-                        borderBottom: '1.5px solid rgba(0, 0, 0)',
-                      },
-                    }}
-                  >
-                    <TableCell sx={{ fontWeight: 900, paddingRight: '100px' }}>
-                      Employee
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 900 }}>Rate, $</TableCell>
+                  <TableRow>
+                    <TableCell>Employee</TableCell>
+                    <TableCell>Rate, $</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {values.employees.map((employee: any) => (
-                    <TableRow
-                      key={`${employee.name}`}
-                      sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
-                      }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {employee.name && `${employee.name}`}
-                      </TableCell>
-                      <TableCell>{employee.rate}</TableCell>
-                    </TableRow>
-                  ))}
+                  {values[CreateProjectFields.Salary].map(
+                    ({ users, rate }: Salary) => (
+                      <TableRow key={users}>
+                        <TableCell component="th" scope="row">
+                          {
+                            employeesChoices?.find(
+                              ({ value }) => users === value
+                            )?.label
+                          }
+                        </TableCell>
+                        <TableCell>{rate}</TableCell>
+                      </TableRow>
+                    )
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
           </>
         )}
       </Stack>
-    </Stack>
+    </>
   );
 };
