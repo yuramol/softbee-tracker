@@ -4,6 +4,7 @@ import { USERS_QUERY } from 'api';
 import { Role } from 'constants/types';
 import {
   Scalars,
+  UsersPermissionsUser,
   UsersPermissionsUserEntity,
   UsersPermissionsUserEntityResponseCollection,
 } from 'types/GraphqlTypes';
@@ -13,6 +14,19 @@ type Choices = {
   label: string;
   value: Maybe<Scalars['ID']>;
 };
+
+const getUserData = (
+  id: Maybe<Scalars['ID']>,
+  attributes: Maybe<UsersPermissionsUser>
+) => ({ id, attributes });
+
+const getUserChoicesData = (
+  id: Maybe<Scalars['ID']>,
+  attributes: Maybe<UsersPermissionsUser>
+) => ({
+  label: `${attributes?.firstName} ${attributes?.lastName}`,
+  value: id,
+});
 
 export const useNormalizedUsers = () => {
   const { data, loading, refetch } = useQuery<{
@@ -27,25 +41,16 @@ export const useNormalizedUsers = () => {
   const employeesChoices: Choices[] = [];
 
   users?.forEach(({ id, attributes }) => {
-    usersChoices.push({
-      label: `${attributes?.firstName} ${attributes?.lastName}`,
-      value: id,
-    });
+    usersChoices.push(getUserChoicesData(id, attributes));
 
     if (attributes?.role?.data?.attributes?.type === Role.Manager) {
-      managers.push({ id, attributes });
-      managersChoices.push({
-        label: `${attributes?.firstName} ${attributes?.lastName}`,
-        value: id,
-      });
+      managers.push(getUserData(id, attributes));
+      managersChoices.push(getUserChoicesData(id, attributes));
     }
 
     if (attributes?.role?.data?.attributes?.type === Role.Employee) {
       employees.push({ id, attributes });
-      employeesChoices.push({
-        label: `${attributes?.firstName} ${attributes?.lastName}`,
-        value: id,
-      });
+      employeesChoices.push(getUserChoicesData(id, attributes));
     }
   });
 
