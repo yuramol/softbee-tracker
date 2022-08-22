@@ -12,7 +12,7 @@ import { CalendarPickerFormik } from 'legos';
 import { CreateProjectFields, ProjectType } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
 
-const projectType: ProjectType[] = [
+export const projectTypes: ProjectType[] = [
   {
     label: 'Time & Material',
     value: Enum_Project_Type.TimeMaterial,
@@ -28,7 +28,7 @@ const projectType: ProjectType[] = [
 ];
 
 export const NewProjectStep = () => {
-  const { values, handleChange, setFieldValue } =
+  const { values, touched, errors, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
 
   return (
@@ -36,7 +36,7 @@ export const NewProjectStep = () => {
       <Typography variant="h5">New project</Typography>
       <Stack gap={4}>
         <ButtonGroup size="small" fullWidth>
-          {projectType.map(({ label, value }) => (
+          {projectTypes.map(({ label, value }) => (
             <Button
               key={value}
               size="large"
@@ -58,28 +58,28 @@ export const NewProjectStep = () => {
           name={CreateProjectFields.Name}
           value={values[CreateProjectFields.Name]}
           multiline
-          // error={
-          //   touched[FIELD_NEW_PROJECT_ENTRY.projectTitle] &&
-          //   !!errors[FIELD_NEW_PROJECT_ENTRY.projectTitle]
-          // }
-          // helperText={
-          //   !!errors[FIELD_NEW_PROJECT_ENTRY.projectTitle] &&
-          //   errors[FIELD_NEW_PROJECT_ENTRY.projectTitle]
-          // }
+          error={
+            touched[CreateProjectFields.Name] &&
+            !!errors[CreateProjectFields.Name]
+          }
+          helperText={
+            touched[CreateProjectFields.Name] &&
+            (errors[CreateProjectFields.Name] as string)
+          }
           onChange={handleChange}
         />
         <TextField
           label="Client"
           name={CreateProjectFields.Client}
           value={values[CreateProjectFields.Client]}
-          // error={
-          //   touched[FIELD_NEW_PROJECT_ENTRY.projectTitle] &&
-          //   !!errors[FIELD_NEW_PROJECT_ENTRY.projectTitle]
-          // }
-          // helperText={
-          //   !!errors[FIELD_NEW_PROJECT_ENTRY.projectTitle] &&
-          //   errors[FIELD_NEW_PROJECT_ENTRY.projectTitle]
-          // }
+          error={
+            touched[CreateProjectFields.Client] &&
+            !!errors[CreateProjectFields.Client]
+          }
+          helperText={
+            touched[CreateProjectFields.Client] &&
+            (errors[CreateProjectFields.Client] as string)
+          }
           onChange={handleChange}
         />
         <Stack direction="row" spacing={2}>

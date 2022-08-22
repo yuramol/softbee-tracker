@@ -9,45 +9,22 @@ import {
   Typography,
 } from '@mui/material';
 import { FormikContext, useFormik } from 'formik';
+import { addYears, format } from 'date-fns';
 import * as yup from 'yup';
 
-import { Loader, NewProjectStep, SummaryStep, TeamStep } from 'components';
+import { useNotification } from 'hooks';
 import { CREATE_PROJECT_MUTATION } from 'api';
-import { addYears } from 'date-fns';
-import { CreateProjectFields } from './types';
+import { Loader, NewProjectStep, SummaryStep, TeamStep } from 'components';
+import { CreateProjectFields, CreateProjectStep, ProjectProps } from './types';
 
-type Props = {
-  setIsCreateProject: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export const FIELD_NEW_PROJECT_ENTRY = {
-  paymentMethod: 'paymentMethod',
-  projectTitle: 'name',
-  client: 'client',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  manager: 'manager',
-  employees: 'employees',
-} as const;
-
-const steps = [
+const steps: CreateProjectStep[] = [
   {
     name: 'New project',
-    fields: [
-      CreateProjectFields.Type,
-      CreateProjectFields.Name,
-      CreateProjectFields.Client,
-      CreateProjectFields.Start,
-      CreateProjectFields.End,
-    ],
+    fields: [CreateProjectFields.Name, CreateProjectFields.Client],
   },
   {
     name: 'Team',
-    fields: [
-      CreateProjectFields.Status,
-      CreateProjectFields.Salary,
-      CreateProjectFields.Managers,
-    ],
+    fields: [CreateProjectFields.Managers, CreateProjectFields.Users],
   },
   {
     name: 'Summary',
@@ -55,27 +32,12 @@ const steps = [
   },
 ];
 
-export const AddNewProject: React.FC<Props> = ({ setIsCreateProject }) => {
-  const initialValues = {
-    [CreateProjectFields.Type]: 'time_material',
-    [CreateProjectFields.Name]: '',
-    [CreateProjectFields.Client]: '',
-    [CreateProjectFields.Start]: new Date(),
-    [CreateProjectFields.End]: addYears(new Date(), 1),
-    [CreateProjectFields.Managers]: '',
-    [CreateProjectFields.Salary]: [],
-    [CreateProjectFields.Users]: [],
-  };
+export const AddNewProject: React.FC<ProjectProps> = ({
+  setIsCreateProject,
+}) => {
   const [activeStep, setActiveStep] = useState(0);
   const [createProject] = useMutation(CREATE_PROJECT_MUTATION);
-
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
-  };
+  const notification = useNotification();
 
   const getStepContent = (step: number) => {
     switch (step) {
@@ -90,26 +52,96 @@ export const AddNewProject: React.FC<Props> = ({ setIsCreateProject }) => {
     }
   };
 
+  const initialValues = {
+    [CreateProjectFields.Type]: 'time_material',
+    [CreateProjectFields.Name]: '',
+    [CreateProjectFields.Client]: '',
+    [CreateProjectFields.Start]: new Date(),
+    [CreateProjectFields.End]: addYears(new Date(), 1),
+    [CreateProjectFields.Managers]: '',
+    [CreateProjectFields.Salary]: [],
+    [CreateProjectFields.Users]: [],
+  };
+
   const validationSchema = yup.object({
-    [CreateProjectFields.Name]: yup.string().required('Should not be empty'),
-    [CreateProjectFields.Client]: yup.string().required('Should not be empty'),
+    [CreateProjectFields.Name]: yup
+      .string()
+      .min(5, 'Project title must be at least 5 characters')
+      .required('Should not be empty'),
+    [CreateProjectFields.Client]: yup
+      .string()
+      .min(5, 'Client name must be at least 5 characters')
+      .required('Should not be empty'),
+    [CreateProjectFields.Managers]: yup
+      .string()
+      .required('Should not be empty'),
+    [CreateProjectFields.Users]: yup.array().min(1, 'Minimum of 1 employee'),
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log('Submit:', values);
+      const data = {
+        ...values,
+        [CreateProjectFields.Start]: format(
+          values[CreateProjectFields.Start],
+          'yyyy-MM-dd'
+        ),
+        [CreateProjectFields.End]: format(
+          values[CreateProjectFields.End],
+          'yyyy-MM-dd'
+        ),
+      };
 
-      // createProject({ variables: { data: values } })
-      //   .then(() => {
-      //     setIsCreateProject(false);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
+      createProject({ variables: { data } })
+        .then(() => {
+          notification({
+            message: `A new project named: ${
+              values[CreateProjectFields.Name]
+            }, was successfully created`,
+            variant: 'success',
+          });
+          setIsCreateProject(false);
+        })
+        .catch(() => {
+          notification({
+            message: 'A problem occurred when creating a new project',
+            variant: 'error',
+          });
+        });
     },
   });
+
+  const handleNext = () => {
+    setActiveStep(activeStep + 1);
+
+    if (activeStep === steps.length - 2) {
+      formik.validateForm().then((errors) => {
+        const errorsKeys = Object.keys(errors);
+
+        if (errorsKeys.length === 0) return;
+
+        const touched: { [key: string]: boolean } = {};
+        const errorOnStep = steps.indexOf(
+          steps.find(({ fields }) =>
+            fields.find((i) => errorsKeys.includes(i))
+          ) ?? ({} as CreateProjectStep)
+        );
+
+        errorsKeys.forEach((e) => {
+          touched[e] = true;
+        });
+
+        formik.setTouched(touched);
+        setActiveStep(errorOnStep);
+      });
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
 
   return (
     <FormikContext.Provider value={formik}>
@@ -133,30 +165,32 @@ export const AddNewProject: React.FC<Props> = ({ setIsCreateProject }) => {
             </Stepper>
             {getStepContent(activeStep)}
           </Stack>
-          <Stack direction="row" justifyContent="flex-end">
-            {
-              //activeStep !== steps.length &&
-              activeStep !== 0 ? (
+          <Stack direction="row" justifyContent="flex-end" gap={2}>
+            {activeStep !== steps.length &&
+              (activeStep !== 0 ? (
                 <Button
                   variant="outlined"
                   onClick={handleBack}
-                  sx={{ width: 150, mt: 1, ml: 1 }}
+                  sx={{ width: 150 }}
                 >
                   Back
                 </Button>
               ) : (
-                <Button variant="outlined" sx={{ width: 150, mt: 1, ml: 1 }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsCreateProject(false)}
+                  sx={{ width: 150 }}
+                >
                   Cancel
                 </Button>
-              )
-            }
+              ))}
 
             <Button
               variant="contained"
               disabled={formik.isSubmitting}
-              type={activeStep === steps.length ? 'submit' : 'button'}
+              type={activeStep >= steps.length ? 'submit' : 'button'}
               onClick={handleNext}
-              sx={{ width: 150, mt: 1, ml: 1 }}
+              sx={{ width: 150 }}
             >
               {activeStep >= steps.length - 1 ? 'Create' : 'Next'}
             </Button>

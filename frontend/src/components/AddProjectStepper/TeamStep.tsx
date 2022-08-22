@@ -14,10 +14,10 @@ import {
   ComponentProjectSalaryInput,
   Enum_Project_Type,
 } from 'types/GraphqlTypes';
-import { CreateProjectFields } from './types';
+import { CreateProjectFields, Salary } from './types';
 
 export const TeamStep = () => {
-  const { values, handleChange, setFieldValue } =
+  const { values, errors, touched, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
   const { managersForSelect, employeesForSelect } = useNormalizedUsers();
 
@@ -38,7 +38,7 @@ export const TeamStep = () => {
     );
 
     if (addSalery.length > 0) {
-      salaryHelpers.push({ users: addSalery[0], rate: 0 });
+      salaryHelpers.push({ users: addSalery[0], rate: 0 } as Salary);
     }
 
     if (removeSalery.length > 0) {
@@ -61,6 +61,11 @@ export const TeamStep = () => {
           name={CreateProjectFields.Managers}
           items={managersForSelect}
           value={values[CreateProjectFields.Managers]}
+          error={
+            touched[CreateProjectFields.Managers] &&
+            !!errors[CreateProjectFields.Managers]
+          }
+          errorText={errors[CreateProjectFields.Managers] as string}
           onChange={handleChange}
         />
 
@@ -75,6 +80,11 @@ export const TeamStep = () => {
                 name={CreateProjectFields.Users}
                 items={employeesForSelect}
                 value={values[CreateProjectFields.Users]}
+                error={
+                  touched[CreateProjectFields.Users] &&
+                  !!errors[CreateProjectFields.Users]
+                }
+                errorText={errors[CreateProjectFields.Users] as string}
                 onChange={(e) => handleChangeEmployees(e, salaryHelpers)}
               />
               <Stack gap={3}>
@@ -100,11 +110,12 @@ export const TeamStep = () => {
                           <TextField
                             label="Rate"
                             autoComplete="off"
+                            type="number"
                             value={values[CreateProjectFields.Salary][i].rate}
                             onChange={(e) => {
                               setFieldValue(
                                 `${CreateProjectFields.Salary}.${i}.rate`,
-                                e.target.value
+                                +e.target.value
                               );
                             }}
                           />

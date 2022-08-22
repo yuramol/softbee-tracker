@@ -7,6 +7,7 @@ import {
   Chip,
   OutlinedInput,
   FormControl,
+  FormHelperText,
 } from '@mui/material';
 
 import { Icon } from '../Icon';
@@ -17,11 +18,13 @@ export const MultipleSelect = ({
   items,
   size,
   sx,
+  error,
+  errorText,
   variant = 'standard',
   IconComponent = () => <Icon icon="arrowDropDown" />,
   ...props
 }: MultipleSelectProps) => (
-  <FormControl variant={variant} size={size} sx={sx} fullWidth>
+  <FormControl variant={variant} size={size} sx={sx} fullWidth error={error}>
     <InputLabel>{label}</InputLabel>
     <Select
       label={label}
@@ -48,5 +51,6 @@ export const MultipleSelect = ({
         </MenuItem>
       ))}
     </Select>
+    {error && <FormHelperText>{errorText}</FormHelperText>}
   </FormControl>
 );
