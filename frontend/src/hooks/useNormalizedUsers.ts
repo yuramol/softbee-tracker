@@ -3,23 +3,16 @@ import { useQuery } from '@apollo/client';
 import { USERS_QUERY } from 'api';
 import { Role } from 'constants/types';
 import {
+  Scalars,
   UsersPermissionsUserEntity,
   UsersPermissionsUserEntityResponseCollection,
 } from 'types/GraphqlTypes';
+import { Maybe } from 'yup/lib/types';
 
-const getUsersByRoleType = (
-  users: UsersPermissionsUserEntity[] | undefined,
-  roleType: Role
-) =>
-  users?.filter(
-    ({ attributes }) => attributes?.role?.data?.attributes?.type === roleType
-  );
-
-const getUsersForSelect = (users: UsersPermissionsUserEntity[] | undefined) =>
-  users?.map(({ id, attributes }) => ({
-    label: `${attributes?.firstName} ${attributes?.lastName}`,
-    value: id,
-  }));
+type Choices = {
+  label: string;
+  value: Maybe<Scalars['ID']>;
+};
 
 export const useNormalizedUsers = () => {
   const { data, loading, refetch } = useQuery<{
@@ -27,11 +20,34 @@ export const useNormalizedUsers = () => {
   }>(USERS_QUERY);
 
   const users = data?.usersPermissionsUsers.data;
-  const managers = getUsersByRoleType(users, Role.Manager);
-  const employees = getUsersByRoleType(users, Role.Employee);
-  const usersChoices = getUsersForSelect(users);
-  const managersChoices = getUsersForSelect(managers);
-  const employeesChoices = getUsersForSelect(employees);
+  const managers: UsersPermissionsUserEntity[] = [];
+  const employees: UsersPermissionsUserEntity[] = [];
+  const usersChoices: Choices[] = [];
+  const managersChoices: Choices[] = [];
+  const employeesChoices: Choices[] = [];
+
+  users?.forEach(({ id, attributes }) => {
+    usersChoices.push({
+      label: `${attributes?.firstName} ${attributes?.lastName}`,
+      value: id,
+    });
+
+    if (attributes?.role?.data?.attributes?.type === Role.Manager) {
+      managers.push({ id, attributes });
+      managersChoices.push({
+        label: `${attributes?.firstName} ${attributes?.lastName}`,
+        value: id,
+      });
+    }
+
+    if (attributes?.role?.data?.attributes?.type === Role.Employee) {
+      employees.push({ id, attributes });
+      employeesChoices.push({
+        label: `${attributes?.firstName} ${attributes?.lastName}`,
+        value: id,
+      });
+    }
+  });
 
   return {
     users,
