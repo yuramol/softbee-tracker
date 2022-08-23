@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Container, Stack } from '@mui/material';
 
-import { useAuth } from '../../AuthProvider';
+import { useAuth } from 'AuthProvider';
 
 import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
 import { HeaderProps } from './types';
+import { MenuType } from 'constants/types';
 
 export const Header: React.FC<HeaderProps> = ({ pages }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -22,8 +23,12 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
   const { isAuth } = useAuth();
-  const mainMenuPages = pages.filter(({ mainMenu }) => mainMenu);
-  const avatarMenuPages = pages.filter(({ mainMenu }) => !mainMenu);
+  const mainMenu = pages.filter(({ menuType }) =>
+    menuType.includes(MenuType.Main)
+  );
+  const secondaryMenu = pages.filter(({ menuType }) =>
+    menuType.includes(MenuType.Secondary)
+  );
 
   return (
     <AppBar
@@ -36,17 +41,17 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <MenuAppBar
-            pages={mainMenuPages}
+            pages={mainMenu}
             anchorElNav={anchorElNav}
             handleOpenNavMenu={handleOpenNavMenu}
             handleCloseNavMenu={handleCloseNavMenu}
           />
           <Stack width="100%" direction="row" spacing={3} alignItems="center">
             <Logo />
-            <NavBar pages={mainMenuPages} />
+            <NavBar pages={mainMenu} />
             {isAuth && (
               <HeaderAvatar
-                pages={avatarMenuPages}
+                pages={secondaryMenu}
                 anchorElUser={anchorElUser}
                 handleOpenUserMenu={handleOpenUserMenu}
                 handleCloseUserMenu={handleCloseUserMenu}
