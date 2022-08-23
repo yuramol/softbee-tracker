@@ -9,6 +9,8 @@ export { TrackerDayView } from './TrackerDayView';
 export { AvatarUpload } from './AvatarUpload';
 export { SideBars } from './SideBars';
 export { SnackBar } from './SnackBar';
+export { ApproveDialog } from './ApproveDialog';
+
 export {
   AddNewProject,
   NewProjectStep,

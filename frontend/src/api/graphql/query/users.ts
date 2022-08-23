@@ -9,6 +9,21 @@ export const USERS_QUERY = gql`
           username
           firstName
           lastName
+          position
+          username
+          avatar {
+            data {
+              id
+              attributes {
+                name
+                url
+                provider
+                hash
+                size
+                mime
+              }
+            }
+          }
           role {
             data {
               attributes {
