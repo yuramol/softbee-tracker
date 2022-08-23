@@ -27,6 +27,7 @@ type AppAuthContext = {
   jwt: string | null;
   user: AuthUser;
   isAuth: boolean;
+  isManager: boolean;
   login: (
     jwt: Maybe<Scalars['String']> | undefined,
     authUser: AuthUser
@@ -39,6 +40,7 @@ export const AuthContext = createContext<AppAuthContext>({} as AppAuthContext);
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [jwt, setJwt] = useLocalStorage('jwt', null);
   const [user, setUser] = useState<AuthUser>({} as AuthUser);
+  const [isManager, setIsManager] = useState(false);
   const [meQuery] = useLazyQuery<{ me: AuthUser }>(ME_QUERY, {
     fetchPolicy: 'cache-and-network',
   });
@@ -48,10 +50,14 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     if (jwt !== null) {
       meQuery()
         .then(({ data }) => {
-          if (data) setUser(data.me);
+          if (data) {
+            setUser(data.me);
+            setIsManager(data.me.role.type === Role.Manager);
+          }
         })
         .catch(() => {
           setUser({} as AuthUser);
+          setIsManager(false);
         });
     }
   }, [jwt]);
@@ -70,6 +76,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   const logout = () => {
     setJwt(null);
     setUser({} as AuthUser);
+    setIsManager(false);
     navigate('/login', { replace: true });
   };
 
@@ -78,6 +85,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
       jwt,
       user,
       isAuth,
+      isManager,
       login,
       logout,
     }),
