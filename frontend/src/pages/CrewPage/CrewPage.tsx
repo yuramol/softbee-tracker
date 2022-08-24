@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'legos';
 import { useAuth } from 'AuthProvider';
 import { useUsersPermissionsUsers } from 'hooks';
@@ -9,8 +9,10 @@ import { UsersList } from './UsersList';
 
 const CrewPage = () => {
   const { users } = useUsersPermissionsUsers();
+
   const { user } = useAuth();
   const isManager = user.role.type === Role.Manager;
+
   return (
     <MainWrapper
       sidebar={

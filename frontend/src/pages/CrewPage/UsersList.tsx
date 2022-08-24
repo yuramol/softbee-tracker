@@ -4,13 +4,13 @@ import { Link, Stack, Typography } from '@mui/material';
 import { Avatar } from 'legos';
 import { Loader } from 'components/Loader';
 import { UsersListAction } from './UsersListAction';
+import { Maybe, Scalars } from 'types/GraphqlTypes';
 
 type UsersListType = {
-  id: string | number;
+  id: Maybe<Scalars['ID']>;
   firstName: string;
   attributes: any;
 };
-
 type UsersListProps = {
   usersList: UsersListType[];
 };
@@ -40,7 +40,7 @@ export const UsersList = ({ usersList }: UsersListProps) => {
                 />
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Stack>
-                    <Link href={`/profile/view/:/${id}`} underline="none">
+                    <Link href={`/profile/view/${id}`} underline="none">
                       {`${attributes.firstName} ${attributes.lastName?.charAt(
                         0
                       )}.`}
