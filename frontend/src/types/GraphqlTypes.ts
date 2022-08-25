@@ -123,6 +123,12 @@ export enum Enum_Project_Type {
   TimeMaterial = 'time_material'
 }
 
+export enum Enum_Tracker_Livestatus {
+  Finish = 'finish',
+  Pause = 'pause',
+  Start = 'start'
+}
+
 export enum Enum_Userspermissionsuser_Position {
   Cdo = 'cdo',
   Cto = 'cto',
@@ -801,7 +807,11 @@ export type Tracker = {
   date: Scalars['Date'];
   description: Scalars['String'];
   duration: Scalars['Time'];
+  live?: Maybe<Scalars['Boolean']>;
+  liveDuration?: Maybe<Scalars['Time']>;
+  liveStatus?: Maybe<Enum_Tracker_Livestatus>;
   project?: Maybe<ProjectEntityResponse>;
+  startLiveDate?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   user?: Maybe<UsersPermissionsUserEntityResponse>;
 };
@@ -830,9 +840,13 @@ export type TrackerFiltersInput = {
   description?: InputMaybe<StringFilterInput>;
   duration?: InputMaybe<TimeFilterInput>;
   id?: InputMaybe<IdFilterInput>;
+  live?: InputMaybe<BooleanFilterInput>;
+  liveDuration?: InputMaybe<TimeFilterInput>;
+  liveStatus?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<TrackerFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<TrackerFiltersInput>>>;
   project?: InputMaybe<ProjectFiltersInput>;
+  startLiveDate?: InputMaybe<DateTimeFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   user?: InputMaybe<UsersPermissionsUserFiltersInput>;
 };
@@ -841,7 +855,11 @@ export type TrackerInput = {
   date?: InputMaybe<Scalars['Date']>;
   description?: InputMaybe<Scalars['String']>;
   duration?: InputMaybe<Scalars['Time']>;
+  live?: InputMaybe<Scalars['Boolean']>;
+  liveDuration?: InputMaybe<Scalars['Time']>;
+  liveStatus?: InputMaybe<Enum_Tracker_Livestatus>;
   project?: InputMaybe<Scalars['ID']>;
+  startLiveDate?: InputMaybe<Scalars['DateTime']>;
   user?: InputMaybe<Scalars['ID']>;
 };
 

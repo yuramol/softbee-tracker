@@ -5,3 +5,4 @@ export { PROJECTS_BY_USER_ID_QUERY } from './projectsByUserId';
 export { PROJECTS_TRECKERS_BY_USER_ID_QUERY } from './projectsTrackersByUserId';
 export { PROJECTS_LIST_QUERY } from './projectsList';
 export { USERS_QUERY } from './users';
+export { TRACKERS_LIVE_QUERY } from './trackersLive';
