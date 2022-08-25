@@ -8,23 +8,16 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Badge } from '@mui/material';
 import enGb from 'date-fns/locale/en-GB';
 import { LegendCalendar } from './LegendCalendar';
+import { endOfMonth, format, startOfMonth, subMonths } from 'date-fns';
+import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 type TrackerCalendarProps = {
   selectedDay: Date | null;
   setSelectedDay: (date: Date) => void;
+  trackers?: TrackerByDay[];
+  setStartMonth?: (date: string) => void;
+  setEndMonth?: (date: string) => void;
 };
-
-// TODO - change these working days data to real data from the server
-const testTrackerTime = [
-  { time: 8, date: new Date(2022, 6, 25) },
-  { time: 2, date: new Date(2022, 6, 26) },
-  { time: 6, date: new Date(2022, 6, 27) },
-  { time: 5, date: new Date(2022, 6, 28) },
-  { time: 3, date: new Date(2022, 6, 29) },
-  { time: 9, date: new Date(2022, 7, 30) },
-  { time: 3, date: new Date(2022, 7, 31) },
-  { time: 5, date: new Date(2022, 8, 1) },
-];
 
 const weekendStyles = {
   backgroundColor: '#ffa500',
@@ -46,6 +39,9 @@ const lessHourStyles = {
 export const TrackerCalendar = ({
   selectedDay,
   setSelectedDay,
+  trackers,
+  setStartMonth,
+  setEndMonth,
 }: TrackerCalendarProps) => {
   const [curDay, setCurDay] = useState<Date | null>(selectedDay);
   const [curMonth, setCurMonth] = useState(selectedDay?.getMonth());
@@ -56,6 +52,8 @@ export const TrackerCalendar = ({
         <CalendarPicker
           date={curDay}
           views={['day']}
+          disableFuture
+          minDate={startOfMonth(subMonths(new Date(), 1))}
           onChange={(newDate) => {
             if (newDate) {
               setSelectedDay(newDate);
@@ -63,6 +61,8 @@ export const TrackerCalendar = ({
             setCurDay(newDate);
           }}
           onMonthChange={(newMonth) => {
+            setStartMonth?.(format(startOfMonth(newMonth), 'YYY-MM-dd'));
+            setEndMonth?.(format(endOfMonth(newMonth), 'YYY-MM-dd'));
             setCurMonth(newMonth.getMonth());
           }}
           renderDay={(day, _value, DayComponentProps) => {
@@ -70,14 +70,19 @@ export const TrackerCalendar = ({
             let isWorkDay;
             let isEnoughHours;
 
-            testTrackerTime.find(({ time, date }) => {
-              if (day.getTime() === date.getTime()) {
+            trackers?.find(({ date, total }) => {
+              if (
+                day.getTime() === new Date(new Date(date).setHours(0)).getTime()
+              ) {
                 isWorkDay = true;
-                time >= 5 ? (isEnoughHours = true) : (isEnoughHours = false);
+                const time = total.split(':');
+                +time[0] >= 5
+                  ? (isEnoughHours = true)
+                  : (isEnoughHours = false);
               }
             });
 
-            return day.getMonth() === curMonth ? (
+            return day.getMonth() === curMonth && new Date() >= day ? (
               <Badge
                 key={day.toString()}
                 overlap="circular"

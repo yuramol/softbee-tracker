@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { ProjectList } from 'components/ProjectList/ProjectList';
 import { Stack, Typography } from '@mui/material';
+import { MainWrapper, SideBars, AddNewProject } from 'components';
 
 import { filterItem, ProjectFilters } from './ProjectFilters';
-import { MainWrapper, SideBars } from 'components';
 import { Button } from 'legos';
-import { PROJECTS_LIST_QUERY } from 'api';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
+import { PROJECTS_LIST_QUERY } from 'api';
 
 const ProjectPage = () => {
+  const [isCreateProject, setIsCreateProject] = useState(false);
+
   const [status, setStatus] = useState(filterItem.map(({ value }) => value));
 
   //TODO add projects info and info about PR
@@ -30,6 +32,7 @@ const ProjectPage = () => {
             variant="contained"
             title="Add new project"
             size="large"
+            onClick={() => setIsCreateProject(!isCreateProject)}
           />
           <SideBars />
         </>
