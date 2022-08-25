@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Container, Stack } from '@mui/material';
 
-import { useAuth } from 'AuthProvider';
-
+import { useAuthUser } from 'hooks';
 import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
@@ -11,6 +10,7 @@ import { HeaderProps } from './types';
 import { MenuType } from 'constants/types';
 
 export const Header: React.FC<HeaderProps> = ({ pages }) => {
+  const { isAuth } = useAuthUser();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -22,7 +22,6 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
     setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
-  const { isAuth } = useAuth();
   const mainMenu = pages.filter(({ menuType }) =>
     menuType.includes(MenuType.Main)
   );
