@@ -44,10 +44,7 @@ export const ProjectList = ({ projectList }: ProjectListProps) => {
 
           <Stack direction="row" alignItems="center" spacing={1} width="300px">
             <Avatar
-              avatar={
-                project.attributes?.managers?.data[0].attributes?.avatar.data
-                  ?.attributes?.url
-              }
+              avatar={` https://dev.strapi.track.softbee.io${project.attributes?.managers?.data[0].attributes?.avatar.data?.attributes?.url}`}
               firstName={
                 project.attributes?.managers?.data[0].attributes?.firstName
               }
