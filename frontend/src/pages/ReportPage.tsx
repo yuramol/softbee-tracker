@@ -1,10 +1,13 @@
 import React from 'react';
-import { MainWrapper } from '../components';
+import { Typography } from '@mui/material';
 
-const ReportPage = () => {
+import { MainWrapper } from '../components';
+import { PageProps } from './types';
+
+const ReportPage: React.FC<PageProps> = ({ title }) => {
   return (
     <MainWrapper>
-      <h1>Report</h1>
+      <Typography variant="h1">{title}</Typography>
       <p>Full width container</p>
     </MainWrapper>
   );

@@ -5,8 +5,7 @@ import { Stack, Typography, TextField, Button } from '@mui/material';
 import * as yup from 'yup';
 
 import { LOGIN_MUTATION } from 'api';
-import { AuthUser, useAuth } from 'AuthProvider';
-import { useNotification } from 'hooks';
+import { useAuthUser, useNotification } from 'hooks';
 import { MainWrapper } from 'components';
 import { UsersPermissionsLoginPayload } from 'types/GraphqlTypes';
 
@@ -16,7 +15,7 @@ enum LoginFields {
 }
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login } = useAuthUser();
   const notification = useNotification();
   const [loginMutation, { loading }] = useMutation<{
     login: UsersPermissionsLoginPayload;
@@ -53,11 +52,13 @@ const LoginPage = () => {
     onSubmit: (values) => {
       loginMutation({ variables: { input: values } })
         .then(({ data }) => {
-          notification({
-            message: 'Congratulations, you have logged in to SoftBee Tracker',
-            variant: 'success',
-          });
-          login(data?.login.jwt, data?.login.user as AuthUser);
+          if (data?.login.jwt) {
+            login(data.login.jwt);
+            notification({
+              message: 'Congratulations, you have logged in to SoftBee Tracker',
+              variant: 'success',
+            });
+          }
         })
         .catch((error) => {
           setErrors({
