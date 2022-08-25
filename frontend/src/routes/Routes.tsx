@@ -10,10 +10,10 @@ import { Role } from 'constants/types';
 export const AppRouter = () => {
   const { jwt, user, isAuth } = useAuthUser();
 
-  // if (jwt !== null && !isAuth) return <Loader />;
+  if (jwt !== '' && !isAuth) return <Loader />;
 
   const currentPages = pages.filter(({ role }) =>
-    role.includes(user.role.type ?? Role.Public)
+    role.includes(user.role.type)
   );
 
   return (
