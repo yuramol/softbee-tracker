@@ -1,33 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ButtonGroup } from '@mui/material';
 import { Button, MultipleSelect } from 'legos';
 import { SearchInput } from 'legos/SearchInput';
+import { useNormalizedUsers } from 'hooks';
+import { Maybe } from 'types/GraphqlTypes';
 
 type ProjectFiltersProps = {
   setStatus: (status: string[]) => void;
+  setSearchProjects: React.Dispatch<React.SetStateAction<string>>;
+  searchProjects: string;
+  setSelectedManager: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-//TODO add PM info
-const pm = [
-  { label: 'Alex Rooox', value: '1' },
-  { label: 'Oleg Books', value: '2' },
-  { label: 'Stas sss', value: '3' },
-  { label: 'Oleg Bookssdfsdfsdf', value: '4' },
-  { label: 'Olesdfsg Bossdfsdfoks', value: '5' },
-  { label: 'Olsdfsdfeg Books', value: '6' },
-  { label: 'Olsdfsdfeg Books', value: '7' },
-  { label: 'Oleg Bosdfsdfoks', value: '8' },
-];
 export const filterItem = [
   { label: 'All', value: 'all' },
   { label: 'Active', value: 'active' },
   { label: 'Archived', value: 'archived' },
 ];
-export const ProjectFilters = ({ setStatus }: ProjectFiltersProps) => {
+
+export const ProjectFilters = ({
+  setStatus,
+  setSearchProjects,
+  searchProjects,
+  setSelectedManager,
+}: ProjectFiltersProps) => {
   const [active, setActive] = useState(filterItem[0]);
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
-  //Searchproject use for seach mutation
-  const [searchProjects, setSearchProjects] = useState('');
+  const { managersChoices } = useNormalizedUsers();
   const handleClickButton = (index: number) => {
     setActive(filterItem[index]);
 
@@ -35,6 +34,8 @@ export const ProjectFilters = ({ setStatus }: ProjectFiltersProps) => {
       ? setStatus(filterItem.map(({ value }) => value))
       : setStatus([filterItem[index].value]);
   };
+  setSelectedManager(selectedItem);
+
   return (
     <>
       <SearchInput
@@ -49,7 +50,7 @@ export const ProjectFilters = ({ setStatus }: ProjectFiltersProps) => {
         variant="outlined"
         size="small"
         sx={{ width: 200 }}
-        items={pm}
+        items={managersChoices}
         value={selectedItem}
         onChange={(e) => setSelectedItem(e.target.value as string[])}
       />
