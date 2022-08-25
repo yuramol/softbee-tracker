@@ -128,13 +128,7 @@ export enum Enum_Project_Status {
 export enum Enum_Project_Type {
   FixedPrice = 'fixed_price',
   NonProfit = 'non_profit',
-  TimeMaterial = 'time_material',
-}
-
-export enum Enum_Tracker_Live_Status {
-  Finish = 'finish',
-  Pause = 'pause',
-  Start = 'start',
+  TimeMaterial = 'time_material'
 }
 
 export enum Enum_Userspermissionsuser_Position {
@@ -834,9 +828,6 @@ export type TrackerFiltersInput = {
   description?: InputMaybe<StringFilterInput>;
   duration?: InputMaybe<TimeFilterInput>;
   id?: InputMaybe<IdFilterInput>;
-  live?: InputMaybe<BooleanFilterInput>;
-  liveDurationMinutes?: InputMaybe<LongFilterInput>;
-  live_status?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<TrackerFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<TrackerFiltersInput>>>;
   project?: InputMaybe<ProjectFiltersInput>;
@@ -849,9 +840,6 @@ export type TrackerInput = {
   date?: InputMaybe<Scalars['Date']>;
   description?: InputMaybe<Scalars['String']>;
   duration?: InputMaybe<Scalars['Time']>;
-  live?: InputMaybe<Scalars['Boolean']>;
-  liveDurationMinutes?: InputMaybe<Scalars['Long']>;
-  live_status?: InputMaybe<Enum_Tracker_Live_Status>;
   project?: InputMaybe<Scalars['ID']>;
   startLiveDate?: InputMaybe<Scalars['DateTime']>;
   user?: InputMaybe<Scalars['ID']>;
