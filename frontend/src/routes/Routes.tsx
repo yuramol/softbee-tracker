@@ -29,7 +29,7 @@ export const AppRouter = () => {
             path={href}
             element={
               <Suspense fallback={<div />}>
-                <Component title={name} />
+                <Component />
               </Suspense>
             }
           />
