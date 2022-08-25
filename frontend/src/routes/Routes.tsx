@@ -5,7 +5,6 @@ import { useAuthUser } from 'hooks';
 import { Loader, Layout } from '../components';
 import { NotFoundPage } from '../pages';
 import { pages } from '../constants';
-import { Role } from 'constants/types';
 
 export const AppRouter = () => {
   const { jwt, user, isAuth } = useAuthUser();

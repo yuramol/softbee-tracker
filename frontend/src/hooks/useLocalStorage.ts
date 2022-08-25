@@ -1,6 +1,9 @@
 import { Maybe, Scalars } from 'types/GraphqlTypes';
 
-export const useLocalStorage = (key: string, value: string | null = '') => {
+export const useLocalStorage = (
+  key: Scalars['String'],
+  value: Maybe<Scalars['String']> = ''
+) => {
   const storedValue = JSON.parse(`${window.localStorage.getItem(key)}`);
 
   if (storedValue === null) {
