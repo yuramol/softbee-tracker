@@ -35,21 +35,9 @@ export type TimeEntryValues = {
   [FIELD_TIME_ENTRY.PROJECT]: string;
 };
 
-const validationSchema = yup.object({
-  [FIELD_TIME_ENTRY.DATE]: yup.date().required('Should not be empty'),
-  [FIELD_TIME_ENTRY.DURATION]: yup
-    .string()
-    .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
-    .required('Should not be empty'),
-  [FIELD_TIME_ENTRY.PROJECT]: yup.string().required('Should not be empty'),
-  [FIELD_TIME_ENTRY.DESCRIPTION]: yup
-    .string()
-    .min(5, 'Description must be at least 5 characters')
-    .required('Should not be empty'),
-});
-
 export type TrackerEntryFormProps = {
   titleForm: string;
+  isLive?: boolean;
   userId: string;
   onSubmit: (values: TimeEntryValues) => void;
   onClose: () => void;
@@ -60,6 +48,7 @@ export type TrackerEntryFormProps = {
 
 export const TrackerEntryForm = ({
   titleForm,
+  isLive = false,
   userId,
   onSubmit,
   onClose,
@@ -71,6 +60,23 @@ export const TrackerEntryForm = ({
   useEffect(() => {
     getProjects({ variables: { userId } });
   }, [userId]);
+
+  const validationSchema = yup.object({
+    ...(!isLive
+      ? {
+          [FIELD_TIME_ENTRY.DATE]: yup.date().required('Should not be empty'),
+          [FIELD_TIME_ENTRY.DURATION]: yup
+            .string()
+            .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
+            .required('Should not be empty'),
+        }
+      : {}),
+    [FIELD_TIME_ENTRY.PROJECT]: yup.string().required('Should not be empty'),
+    [FIELD_TIME_ENTRY.DESCRIPTION]: yup
+      .string()
+      .min(5, 'Description must be at least 5 characters')
+      .required('Should not be empty'),
+  });
 
   const initialValues: TimeEntryValues = {
     [FIELD_TIME_ENTRY.DATE]: initialValuesForm?.DATE ?? new Date(),
@@ -96,22 +102,24 @@ export const TrackerEntryForm = ({
           </Stack>
 
           <Stack my={3} gap={3}>
-            <Stack direction="row" gap={3}>
-              <CalendarPickerFormik
-                field={FIELD_TIME_ENTRY.DATE}
-                minDate={startOfMonth(subMonths(new Date(), 1))}
-                disableFuture
-                views={['day']}
-              />
-              <TimePicker
-                value={values[FIELD_TIME_ENTRY.DURATION]}
-                onChange={(value) => {
-                  setFieldValue(`${FIELD_TIME_ENTRY.DURATION}`, value);
-                }}
-                name={FIELD_TIME_ENTRY.DURATION}
-                {...formikPropsErrors(FIELD_TIME_ENTRY.DURATION, formik)}
-              />
-            </Stack>
+            {!isLive && (
+              <Stack direction="row" gap={3}>
+                <CalendarPickerFormik
+                  field={FIELD_TIME_ENTRY.DATE}
+                  minDate={startOfMonth(subMonths(new Date(), 1))}
+                  disableFuture
+                  views={['day']}
+                />
+                <TimePicker
+                  value={values[FIELD_TIME_ENTRY.DURATION]}
+                  onChange={(value) => {
+                    setFieldValue(`${FIELD_TIME_ENTRY.DURATION}`, value);
+                  }}
+                  name={FIELD_TIME_ENTRY.DURATION}
+                  {...formikPropsErrors(FIELD_TIME_ENTRY.DURATION, formik)}
+                />
+              </Stack>
+            )}
             <Select
               label="Project"
               items={projectsItems}
