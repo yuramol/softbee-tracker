@@ -76,6 +76,23 @@ export const TrackerEntryForm = ({
       .required('Should not be empty'),
   });
 
+  const validationSchema = yup.object({
+    ...(!isLive
+      ? {
+          [FIELD_TIME_ENTRY.DATE]: yup.date().required('Should not be empty'),
+          [FIELD_TIME_ENTRY.DURATION]: yup
+            .string()
+            .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
+            .required('Should not be empty'),
+        }
+      : {}),
+    [FIELD_TIME_ENTRY.PROJECT]: yup.string().required('Should not be empty'),
+    [FIELD_TIME_ENTRY.DESCRIPTION]: yup
+      .string()
+      .min(5, 'Description must be at least 5 characters')
+      .required('Should not be empty'),
+  });
+
   const initialValues: TimeEntryValues = {
     [FIELD_TIME_ENTRY.DATE]: initialValuesForm?.DATE ?? new Date(),
     [FIELD_TIME_ENTRY.DURATION]: initialValuesForm?.DURATION ?? '00:00',
