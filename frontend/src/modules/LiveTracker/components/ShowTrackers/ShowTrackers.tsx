@@ -2,13 +2,13 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 
 import {
-  Enum_Tracker_Livestatus,
+  Enum_Tracker_Live_Status,
   TrackerEntityResponseCollection,
   TrackerFiltersInput,
 } from 'types/GraphqlTypes';
 import { TRACKERS_LIVE_QUERY } from 'api';
 
-import { ShowTracker } from './ShowTracker';
+import { ShowTracker } from '../ShowTracker/ShowTracker';
 
 type ShowTrackersProps = {
   userId: string;
@@ -26,15 +26,16 @@ export const ShowTrackers = ({ userId }: ShowTrackersProps) => {
       filters: {
         user: { id: { eq: userId } },
         live: { eq: true },
-        liveStatus: { not: { eq: Enum_Tracker_Livestatus.Finish } },
+        live_status: { not: { eq: Enum_Tracker_Live_Status.Finish } },
       },
     },
   });
   const trackers = data?.trackers.data;
+
   return (
     <>
       {trackers?.map((tracker) => (
-        <ShowTracker tracker={tracker} key={tracker.id} />
+        <ShowTracker tracker={tracker} userId={userId} key={tracker.id} />
       ))}
     </>
   );

@@ -22,7 +22,7 @@ const modalStyle = {
   p: 4,
 };
 
-const FIELD_TIME_ENTRY = {
+export const FIELD_TIME_ENTRY = {
   DATE: 'DATE',
   DURATION: 'DURATION',
   DESCRIPTION: 'DESCRIPTION',
