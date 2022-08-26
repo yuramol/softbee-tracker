@@ -11,8 +11,8 @@ export const TRACKERS_LIVE_QUERY = gql`
           description
           live
           startLiveDate
-          liveDuration
-          liveStatus
+          liveDurationMinutes
+          live_status
           project {
             data {
               id
