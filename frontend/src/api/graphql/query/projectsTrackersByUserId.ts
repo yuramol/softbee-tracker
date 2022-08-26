@@ -15,6 +15,7 @@ export const PROJECTS_TRECKERS_BY_USER_ID_QUERY = gql`
             filters: {
               user: { id: { eq: $userId } }
               date: { between: [$startDate, $endDate] }
+              live: { eq: false }
             }
             sort: "date"
           ) {
