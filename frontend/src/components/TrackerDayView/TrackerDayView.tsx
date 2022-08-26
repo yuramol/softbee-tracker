@@ -17,8 +17,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
-import { useAuth } from 'AuthProvider';
-import { useCurrentWeek } from 'hooks';
+import { useAuthUser, useCurrentWeek } from 'hooks';
 import {
   TRECKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
@@ -46,7 +45,7 @@ type TrackerDayViewProps = {
 export const TimeContext = createContext<TrackerContext>({} as TrackerContext);
 
 export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
-  const { user } = useAuth();
+  const { user } = useAuthUser();
   const [currentWeekDay, setCurrentWeekDay] = useState(selectedDay);
   const { weekStart, weekEnd, days, currentDay } =
     useCurrentWeek(currentWeekDay);

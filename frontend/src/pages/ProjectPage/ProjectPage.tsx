@@ -9,8 +9,9 @@ import { Button } from 'legos';
 import { PROJECTS_LIST_QUERY } from 'api';
 import { useNormalizedUsers } from 'hooks';
 import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
+import { PageProps } from 'pages/types';
 
-const ProjectPage = () => {
+const ProjectPage: React.FC<PageProps> = ({ title }) => {
   const { managersChoices } = useNormalizedUsers();
 
   const [isCreateProject, setIsCreateProject] = useState(false);
@@ -73,8 +74,8 @@ const ProjectPage = () => {
         <AddNewProject setIsCreateProject={setIsCreateProject} />
       ) : (
         <>
-          <Typography variant="h1">Project</Typography>
-          <Stack mt={4} gap={6}>
+          <Typography variant="h1">{title}</Typography>
+          <Stack mt={4} spacing={2}>
             <Stack direction="row" spacing={2} mb={4}>
               <ProjectFilters {...projectFilters} />
             </Stack>

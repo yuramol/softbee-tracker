@@ -1,16 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { Button, Tooltip } from '@mui/material';
 
+import { useAuthUser } from 'hooks';
 import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
 import { Icon } from 'legos';
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
-import { useAuth } from 'AuthProvider';
 
 export const TrackerAddNewEntry = () => {
-  const { user } = useAuth();
+  const { user } = useAuthUser();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { onCreateTracker } = useContext(TimeContext);
 
