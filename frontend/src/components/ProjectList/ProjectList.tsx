@@ -3,21 +3,19 @@ import { Link as RouterLink } from 'react-router-dom';
 import { IconButton, Link, Stack, Typography } from '@mui/material';
 
 import { Avatar, Icon } from 'legos';
-import { ProjectEntity } from 'types/GraphqlTypes';
+import { ProjectEntity, Enum_Project_Type } from 'types/GraphqlTypes';
 
 type ProjectListProps = {
-  projectList: ProjectEntity[] | undefined;
+  projectList?: ProjectEntity[];
 };
 
-const getProjectIcon: (type: string | undefined) => JSX.Element | null = (
-  type
-) => {
+const getProjectIcon: (type?: string) => JSX.Element | null = (type) => {
   switch (type) {
-    case 'time_material':
+    case Enum_Project_Type.TimeMaterial:
       return <Icon icon="paidOutlined" color="warning" />;
-    case 'fixed_price':
+    case Enum_Project_Type.FixedPrice:
       return <Icon icon="paidOutlined" color="success" />;
-    case 'non_profit':
+    case Enum_Project_Type.NonProfit:
       return <Icon icon="paidOutlined" color="error" />;
     default:
       return null;
