@@ -7,3 +7,4 @@ export { UPLOAD_MUTATION } from './upload';
 export { REMOVE_FILE_MUTATION } from './removeFile';
 export { CREATE_PROJECT_MUTATION } from './createProject';
 export { DELETE_USERS_PERMISSIONS_USER } from './deleteUser';
+export { CREATE_USER_MUTATION } from './createUser';

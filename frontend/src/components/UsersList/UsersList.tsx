@@ -27,7 +27,7 @@ export const UsersList = ({ usersList }: UsersListProps) => {
               alignItems="center"
             >
               <Stack
-                m={2}
+                mb={2}
                 direction="row"
                 alignItems="center"
                 spacing={1}
