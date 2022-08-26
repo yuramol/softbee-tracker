@@ -5,6 +5,7 @@ import { useAuthUser } from 'hooks';
 import { Loader, Layout } from '../components';
 import { NotFoundPage } from '../pages';
 import { pages } from '../constants';
+import { LiveTracker } from '../modules';
 
 export const AppRouter = () => {
   const { jwt, user, isAuth } = useAuthUser();
@@ -30,6 +31,7 @@ export const AppRouter = () => {
             element={
               <Suspense fallback={<div />}>
                 <Component />
+                {isAuth && <LiveTracker />}
               </Suspense>
             }
           />

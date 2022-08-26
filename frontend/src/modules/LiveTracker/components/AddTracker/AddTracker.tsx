@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { format, formatISO } from 'date-fns';
 import { useSnackbar } from 'notistack';
+import AddIcon from '@mui/icons-material/Add';
+import { GraphQLError } from 'graphql';
 
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
-import { Enum_Tracker_Livestatus } from 'types/GraphqlTypes';
 
-import { ButtonAdd } from './ButtonAdd';
-import { GraphQLError } from 'graphql';
-import { useCreateTracker } from '../hooks';
+import { useCreateTracker } from '../../hooks';
+import { IconButton, Paper } from '@mui/material';
 
 type AddTrackerProps = {
   userId: string;
@@ -25,16 +24,7 @@ export const AddTracker = ({ userId }: AddTrackerProps) => {
     setIsOpenModal(!isOpenModal);
   };
   const handelSubmit = (values: TimeEntryValues) => {
-    createTracker({
-      user: userId,
-      date: format(new Date(), 'yyyy-MM-dd'),
-      project: values.PROJECT,
-      description: values.DESCRIPTION,
-      live: true,
-      liveStatus: Enum_Tracker_Livestatus.Start,
-      startLiveDate: formatISO(new Date()),
-      duration: '00:00:00',
-    })
+    createTracker(userId, values)
       .then(() => {
         enqueueSnackbar(`the countdown has started`, { variant: 'success' });
         toggleOpenModal();
@@ -52,8 +42,16 @@ export const AddTracker = ({ userId }: AddTrackerProps) => {
         onSubmit={(values) => handelSubmit(values)}
         titleForm="New live time entry"
         userId={userId}
+        buttonSubmitTitle="Start"
       />
-      <ButtonAdd onClick={toggleOpenModal} />
+      <Paper>
+        <IconButton
+          sx={{ borderRadius: 0, height: '2rem', width: '2rem' }}
+          onClick={toggleOpenModal}
+        >
+          <AddIcon color="primary" />
+        </IconButton>
+      </Paper>
     </>
   );
 };

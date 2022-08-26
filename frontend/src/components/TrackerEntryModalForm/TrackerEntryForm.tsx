@@ -21,7 +21,7 @@ const modalStyle = {
   p: 4,
 };
 
-const FIELD_TIME_ENTRY = {
+export const FIELD_TIME_ENTRY = {
   DATE: 'DATE',
   DURATION: 'DURATION',
   DESCRIPTION: 'DESCRIPTION',
@@ -134,6 +134,7 @@ export const TrackerEntryForm = ({
               fullWidth
               multiline
               rows={4}
+              value={values[FIELD_TIME_ENTRY.DESCRIPTION]}
               name={FIELD_TIME_ENTRY.DESCRIPTION}
               {...formikPropsErrors(FIELD_TIME_ENTRY.DESCRIPTION, formik)}
               onChange={handleChange}

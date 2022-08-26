@@ -1,10 +1,9 @@
 import { useMutation } from '@apollo/client';
-import { formatISO } from 'date-fns';
+import { subMinutes } from 'date-fns';
 
 import { TRACKERS_LIVE_QUERY, UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
-
 import {
-  Enum_Tracker_Livestatus,
+  Enum_Tracker_Live_Status,
   MutationUpdateTrackerArgs,
   TrackerEntity,
   TrackerEntityResponse,
@@ -21,8 +20,12 @@ const useStartTracker = () => {
         id: tracker.id as string,
         data: {
           live: true,
-          liveStatus: Enum_Tracker_Livestatus.Start,
-          startLiveDate: formatISO(new Date()),
+          live_status: Enum_Tracker_Live_Status.Start,
+          startLiveDate: subMinutes(
+            new Date(),
+            tracker.attributes?.liveDurationMinutes
+          ),
+          liveDurationMinutes: null,
         },
       },
       refetchQueries: [TRACKERS_LIVE_QUERY],

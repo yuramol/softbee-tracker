@@ -1,8 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -13,6 +20,7 @@ export type Scalars = {
   Date: any;
   DateTime: any;
   JSON: any;
+  Long: any;
   Time: any;
   Upload: any;
 };
@@ -109,31 +117,31 @@ export type DateTimeFilterInput = {
 
 export enum Enum_Note_Type {
   Project = 'project',
-  User = 'user'
+  User = 'user',
 }
 
 export enum Enum_Project_Status {
   Active = 'active',
-  Archived = 'archived'
+  Archived = 'archived',
 }
 
 export enum Enum_Project_Type {
   FixedPrice = 'fixed_price',
   NonProfit = 'non_profit',
-  TimeMaterial = 'time_material'
+  TimeMaterial = 'time_material',
 }
 
-export enum Enum_Tracker_Livestatus {
+export enum Enum_Tracker_Live_Status {
   Finish = 'finish',
   Pause = 'pause',
-  Start = 'start'
+  Start = 'start',
 }
 
 export enum Enum_Userspermissionsuser_Position {
   Cdo = 'cdo',
   Cto = 'cto',
   Designer = 'designer',
-  Developer = 'developer'
+  Developer = 'developer',
 }
 
 export type FileInfoInput = {
@@ -165,7 +173,16 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = ComponentProjectSalary | I18NLocale | Note | Project | Tracker | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph =
+  | ComponentProjectSalary
+  | I18NLocale
+  | Note
+  | Project
+  | Tracker
+  | UploadFile
+  | UsersPermissionsPermission
+  | UsersPermissionsRole
+  | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -272,6 +289,29 @@ export type JsonFilterInput = {
   startsWith?: InputMaybe<Scalars['JSON']>;
 };
 
+export type LongFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  between?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  contains?: InputMaybe<Scalars['Long']>;
+  containsi?: InputMaybe<Scalars['Long']>;
+  endsWith?: InputMaybe<Scalars['Long']>;
+  eq?: InputMaybe<Scalars['Long']>;
+  gt?: InputMaybe<Scalars['Long']>;
+  gte?: InputMaybe<Scalars['Long']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  lt?: InputMaybe<Scalars['Long']>;
+  lte?: InputMaybe<Scalars['Long']>;
+  ne?: InputMaybe<Scalars['Long']>;
+  not?: InputMaybe<LongFilterInput>;
+  notContains?: InputMaybe<Scalars['Long']>;
+  notContainsi?: InputMaybe<Scalars['Long']>;
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  notNull?: InputMaybe<Scalars['Boolean']>;
+  null?: InputMaybe<Scalars['Boolean']>;
+  or?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  startsWith?: InputMaybe<Scalars['Long']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createNote?: Maybe<NoteEntityResponse>;
@@ -313,81 +353,65 @@ export type Mutation = {
   upload: UploadFileEntityResponse;
 };
 
-
 export type MutationCreateNoteArgs = {
   data: NoteInput;
 };
-
 
 export type MutationCreateProjectArgs = {
   data: ProjectInput;
 };
 
-
 export type MutationCreateTrackerArgs = {
   data: TrackerInput;
 };
-
 
 export type MutationCreateUploadFileArgs = {
   data: UploadFileInput;
 };
 
-
 export type MutationCreateUsersPermissionsRoleArgs = {
   data: UsersPermissionsRoleInput;
 };
-
 
 export type MutationCreateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
 };
 
-
 export type MutationDeleteNoteArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationDeleteProjectArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationDeleteTrackerArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationDeleteUploadFileArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationDeleteUsersPermissionsRoleArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationDeleteUsersPermissionsUserArgs = {
   id: Scalars['ID'];
 };
 
-
 export type MutationEmailConfirmationArgs = {
   confirmation: Scalars['String'];
 };
-
 
 export type MutationForgotPasswordArgs = {
   email: Scalars['String'];
 };
 
-
 export type MutationLoginArgs = {
   input: UsersPermissionsLoginInput;
 };
-
 
 export type MutationMultipleUploadArgs = {
   field?: InputMaybe<Scalars['String']>;
@@ -396,16 +420,13 @@ export type MutationMultipleUploadArgs = {
   refId?: InputMaybe<Scalars['ID']>;
 };
 
-
 export type MutationRegisterArgs = {
   input: UsersPermissionsRegisterInput;
 };
 
-
 export type MutationRemoveFileArgs = {
   id: Scalars['ID'];
 };
-
 
 export type MutationResetPasswordArgs = {
   code: Scalars['String'];
@@ -413,48 +434,40 @@ export type MutationResetPasswordArgs = {
   passwordConfirmation: Scalars['String'];
 };
 
-
 export type MutationUpdateFileInfoArgs = {
   id: Scalars['ID'];
   info?: InputMaybe<FileInfoInput>;
 };
-
 
 export type MutationUpdateNoteArgs = {
   data: NoteInput;
   id: Scalars['ID'];
 };
 
-
 export type MutationUpdateProjectArgs = {
   data: ProjectInput;
   id: Scalars['ID'];
 };
-
 
 export type MutationUpdateTrackerArgs = {
   data: TrackerInput;
   id: Scalars['ID'];
 };
 
-
 export type MutationUpdateUploadFileArgs = {
   data: UploadFileInput;
   id: Scalars['ID'];
 };
-
 
 export type MutationUpdateUsersPermissionsRoleArgs = {
   data: UsersPermissionsRoleInput;
   id: Scalars['ID'];
 };
 
-
 export type MutationUpdateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
   id: Scalars['ID'];
 };
-
 
 export type MutationUploadArgs = {
   field?: InputMaybe<Scalars['String']>;
@@ -553,13 +566,11 @@ export type Project = {
   users?: Maybe<UsersPermissionsUserRelationResponseCollection>;
 };
 
-
 export type ProjectManagersArgs = {
   filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
-
 
 export type ProjectNotesArgs = {
   filters?: InputMaybe<NoteFiltersInput>;
@@ -567,20 +578,17 @@ export type ProjectNotesArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type ProjectSalaryArgs = {
   filters?: InputMaybe<ComponentProjectSalaryFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type ProjectTrackersArgs = {
   filters?: InputMaybe<TrackerFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
-
 
 export type ProjectUsersArgs = {
   filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
@@ -666,11 +674,9 @@ export type Query = {
   usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
 };
 
-
 export type QueryI18NLocaleArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
-
 
 export type QueryI18NLocalesArgs = {
   filters?: InputMaybe<I18NLocaleFiltersInput>;
@@ -678,11 +684,9 @@ export type QueryI18NLocalesArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type QueryNoteArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
-
 
 export type QueryNotesArgs = {
   filters?: InputMaybe<NoteFiltersInput>;
@@ -690,11 +694,9 @@ export type QueryNotesArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type QueryProjectArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
-
 
 export type QueryProjectsArgs = {
   filters?: InputMaybe<ProjectFiltersInput>;
@@ -702,11 +704,9 @@ export type QueryProjectsArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type QueryTrackerArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
-
 
 export type QueryTrackersArgs = {
   filters?: InputMaybe<TrackerFiltersInput>;
@@ -714,11 +714,9 @@ export type QueryTrackersArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type QueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
-
 
 export type QueryUploadFilesArgs = {
   filters?: InputMaybe<UploadFileFiltersInput>;
@@ -726,11 +724,9 @@ export type QueryUploadFilesArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type QueryUsersPermissionsRoleArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
-
 
 export type QueryUsersPermissionsRolesArgs = {
   filters?: InputMaybe<UsersPermissionsRoleFiltersInput>;
@@ -738,11 +734,9 @@ export type QueryUsersPermissionsRolesArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type QueryUsersPermissionsUserArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
-
 
 export type QueryUsersPermissionsUsersArgs = {
   filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
@@ -806,10 +800,10 @@ export type Tracker = {
   createdAt?: Maybe<Scalars['DateTime']>;
   date: Scalars['Date'];
   description: Scalars['String'];
-  duration: Scalars['Time'];
+  duration?: Maybe<Scalars['Time']>;
   live?: Maybe<Scalars['Boolean']>;
-  liveDuration?: Maybe<Scalars['Time']>;
-  liveStatus?: Maybe<Enum_Tracker_Livestatus>;
+  liveDurationMinutes?: Maybe<Scalars['Long']>;
+  live_status?: Maybe<Enum_Tracker_Live_Status>;
   project?: Maybe<ProjectEntityResponse>;
   startLiveDate?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -841,8 +835,8 @@ export type TrackerFiltersInput = {
   duration?: InputMaybe<TimeFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   live?: InputMaybe<BooleanFilterInput>;
-  liveDuration?: InputMaybe<TimeFilterInput>;
-  liveStatus?: InputMaybe<StringFilterInput>;
+  liveDurationMinutes?: InputMaybe<LongFilterInput>;
+  live_status?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<TrackerFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<TrackerFiltersInput>>>;
   project?: InputMaybe<ProjectFiltersInput>;
@@ -856,8 +850,8 @@ export type TrackerInput = {
   description?: InputMaybe<Scalars['String']>;
   duration?: InputMaybe<Scalars['Time']>;
   live?: InputMaybe<Scalars['Boolean']>;
-  liveDuration?: InputMaybe<Scalars['Time']>;
-  liveStatus?: InputMaybe<Enum_Tracker_Livestatus>;
+  liveDurationMinutes?: InputMaybe<Scalars['Long']>;
+  live_status?: InputMaybe<Enum_Tracker_Live_Status>;
   project?: InputMaybe<Scalars['ID']>;
   startLiveDate?: InputMaybe<Scalars['DateTime']>;
   user?: InputMaybe<Scalars['ID']>;
@@ -1038,13 +1032,11 @@ export type UsersPermissionsRole = {
   users?: Maybe<UsersPermissionsUserRelationResponseCollection>;
 };
 
-
 export type UsersPermissionsRolePermissionsArgs = {
   filters?: InputMaybe<UsersPermissionsPermissionFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
-
 
 export type UsersPermissionsRoleUsersArgs = {
   filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
@@ -1121,13 +1113,11 @@ export type UsersPermissionsUser = {
   username: Scalars['String'];
 };
 
-
 export type UsersPermissionsUserCreate_NotesArgs = {
   filters?: InputMaybe<NoteFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
-
 
 export type UsersPermissionsUserManager_ProjectsArgs = {
   filters?: InputMaybe<ProjectFiltersInput>;
@@ -1135,20 +1125,17 @@ export type UsersPermissionsUserManager_ProjectsArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type UsersPermissionsUserNotesArgs = {
   filters?: InputMaybe<NoteFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
 export type UsersPermissionsUserProjectsArgs = {
   filters?: InputMaybe<ProjectFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
-
 
 export type UsersPermissionsUserTrackersArgs = {
   filters?: InputMaybe<TrackerFiltersInput>;
