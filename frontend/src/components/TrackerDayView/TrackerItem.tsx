@@ -45,9 +45,9 @@ export const TrackerItem: FC<Props> = ({
     }
   };
 
-  const onHaldlerTime = (detail: number) => {
-    if (detail === 2) setIsEdit(!isEdit);
-  };
+  // const onHaldlerTime = (detail: number) => {
+  //   if (detail === 2) setIsEdit(!isEdit);
+  // };
 
   const handleClickDeleteButton = (el: HTMLElement) => {
     setAnchorEl(anchorEl ? null : el);
@@ -79,20 +79,20 @@ export const TrackerItem: FC<Props> = ({
         <Typography>{description}</Typography>
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
-        {isEdit ? (
-          <TimePicker
-            width="200px"
-            value={format(time, 'HH:mm')}
-            onChange={handleChange}
-          />
-        ) : (
+        {/* {isEdit ? ( */}
+        <TimePicker
+          width="110px"
+          value={format(time, 'HH:mm')}
+          onChange={handleChange}
+        />
+        {/* ) : (
           <Typography
             sx={{ userSelect: 'none' }}
             onClick={(e) => onHaldlerTime(e.detail)}
           >
             {format(time, 'HH:mm')}
           </Typography>
-        )}
+        )} */}
         <IconButton color="primary" onClick={() => setIsEdit(!isEdit)}>
           <Icon icon="edit" size="small" />
         </IconButton>
