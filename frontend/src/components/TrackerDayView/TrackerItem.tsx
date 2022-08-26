@@ -16,8 +16,8 @@ import { Icon } from 'legos';
 import TimePicker from 'components/TimePicker';
 
 type Props = {
-  id: Maybe<string> | undefined;
-  attributes: Maybe<Tracker> | undefined;
+  id?: Maybe<string>;
+  attributes?: Maybe<Tracker>;
   trackerTime: Date;
 };
 

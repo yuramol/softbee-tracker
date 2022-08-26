@@ -68,6 +68,7 @@ export const TrackerEntryForm = ({
   buttonSubmitTitle = 'Save Time',
 }: TrackerEntryFormProps) => {
   const { getProjects, projectsItems } = useProjectsByUserList();
+
   useEffect(() => {
     getProjects({ variables: { userId } });
   }, [userId]);

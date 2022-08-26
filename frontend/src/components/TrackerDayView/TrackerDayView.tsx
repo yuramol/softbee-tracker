@@ -74,7 +74,6 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
         parseTrackerTime(values.duration, 'HH:mm'),
         'HH:mm:ss.SSS'
       ),
-      user: user.id,
     };
 
     createTracker({ variables: { data } }).then(() => {

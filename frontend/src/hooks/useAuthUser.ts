@@ -16,7 +16,7 @@ export type AuthUser = {
 
 export const useAuthUser = () => {
   const navigate = useNavigate();
-  const { storedValue: jwt, setStorageValue: setJwt } = useLocalStorage('jwt');
+  const [jwt, setJwt] = useLocalStorage('jwt', null);
   const [meQuery, { data, client }] = useLazyQuery<{ me: AuthUser }>(ME_QUERY, {
     fetchPolicy: 'cache-and-network',
   });
@@ -30,7 +30,7 @@ export const useAuthUser = () => {
   const isManager = user.role.type === Role.Manager;
 
   useEffect(() => {
-    if (jwt !== '') {
+    if (jwt !== null) {
       meQuery();
     }
   }, [jwt]);
@@ -41,7 +41,7 @@ export const useAuthUser = () => {
   };
 
   const logout = () => {
-    setJwt('');
+    setJwt(null);
     client.resetStore();
   };
 
