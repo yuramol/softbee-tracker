@@ -3,10 +3,9 @@ import { useFormik } from 'formik';
 import { useMutation } from '@apollo/client';
 import { Box, Grid, Typography } from '@mui/material';
 
-import { useAuth } from 'AuthProvider';
 import { UPDATE_USERS_PERMISSIONS_USER_MUTATION } from 'api';
 import { Select, Input, Icon } from 'legos';
-import { useUsersPermissionsUser } from 'hooks';
+import { useAuthUser, useUsersPermissionsUser } from 'hooks';
 import { InitialValuesType, valuesType } from './types';
 import { profileInfo, validationSchema } from './helpers';
 import {
@@ -21,7 +20,7 @@ import { useChangeAvatar } from './useChangeAvatar';
 import { useNotification } from 'hooks/useNotification';
 
 const ProfilePage = () => {
-  const { user } = useAuth();
+  const { user } = useAuthUser();
   const { userPermission, loading } = useUsersPermissionsUser(user.id);
   const showNotification = useNotification();
   const handleChangeAvatar = useChangeAvatar();

@@ -1,8 +1,10 @@
+import { MenuType } from 'constants/types';
+
 export type Page = {
   index: boolean;
   name: string;
   href: string;
-  mainMenu: boolean;
+  menuType: MenuType[];
 };
 
 export type HeaderProps = {

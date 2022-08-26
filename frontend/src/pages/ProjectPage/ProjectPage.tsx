@@ -5,8 +5,9 @@ import { MainWrapper, SideBars, AddNewProject } from 'components';
 
 import { ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
+import { PageProps } from 'pages/types';
 
-const ProjectPage = () => {
+const ProjectPage: React.FC<PageProps> = ({ title }) => {
   const [isCreateProject, setIsCreateProject] = useState(false);
 
   //TODO add projects info and info about PR
@@ -55,7 +56,7 @@ const ProjectPage = () => {
         <AddNewProject setIsCreateProject={setIsCreateProject} />
       ) : (
         <>
-          <Typography variant="h1">Project</Typography>
+          <Typography variant="h1">{title}</Typography>
           <Stack mt={4} spacing={2}>
             <Stack direction="row" spacing={2} mb={4}>
               <ProjectFilters />

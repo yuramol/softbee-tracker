@@ -1,19 +1,19 @@
 import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { useAuth } from '../AuthProvider';
+import { useAuthUser } from 'hooks';
 import { Loader, Layout } from '../components';
 import { NotFoundPage } from '../pages';
-import { Role, pages } from '../constants';
+import { pages } from '../constants';
 
 export const AppRouter = () => {
-  const { jwt, user, isAuth } = useAuth();
+  const { jwt, user, isAuth } = useAuthUser();
 
-  if (jwt !== null && !isAuth) return <Loader />;
-  if (user.role === null) return <Loader />;
+  if (jwt !== '' && !isAuth) return <Loader />;
 
-  const userRole = user && user.role ? user.role.type : Role.Public;
-  const currentPages = pages.filter(({ role }) => role.includes(userRole));
+  const currentPages = pages.filter(({ role }) =>
+    role.includes(user.role.type)
+  );
 
   return (
     <Routes>
@@ -29,7 +29,7 @@ export const AppRouter = () => {
             path={href}
             element={
               <Suspense fallback={<div />}>
-                <Component />
+                <Component title={name} />
               </Suspense>
             }
           />

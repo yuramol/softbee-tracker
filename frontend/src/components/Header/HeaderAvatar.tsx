@@ -10,8 +10,7 @@ import {
 
 import { HeaderButton, NavButton } from './NavButton';
 import { HeaderProps } from './types';
-import { useAuth } from '../../AuthProvider';
-import { useUsersPermissionsUser } from 'hooks';
+import { useAuthUser, useUsersPermissionsUser } from 'hooks';
 import { Avatar } from 'legos';
 
 interface HeaderAvatarProps extends HeaderProps {
@@ -26,7 +25,7 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
   handleOpenUserMenu,
   handleCloseUserMenu,
 }) => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthUser();
   const { userPermission } = useUsersPermissionsUser(user.id);
   const pathAvatar = userPermission?.avatar?.data?.attributes?.url
     ? `https://dev.strapi.track.softbee.io${userPermission?.avatar?.data?.attributes?.url}`
