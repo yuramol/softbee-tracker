@@ -8,6 +8,10 @@ export const UPDATE_TRACKER_BY_ID_MUTATION = gql`
         attributes {
           date
           duration
+          live
+          startLiveDate
+          liveDuration
+          liveStatus
           description
           project {
             data {
