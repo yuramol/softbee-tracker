@@ -4,15 +4,14 @@ export const useLocalStorage = (
   key: Scalars['String'],
   value: Maybe<Scalars['String']> = ''
 ) => {
-  const storedValue = JSON.parse(`${window.localStorage.getItem(key)}`);
-
-  if (storedValue === null) {
+  if (!Object.prototype.hasOwnProperty.call(window.localStorage, key)) {
     window.localStorage.setItem(key, JSON.stringify(value));
   }
 
+  const storedValue = JSON.parse(`${window.localStorage.getItem(key)}`);
   const setStorageValue = (newValue: Maybe<Scalars['String']>) => {
     window.localStorage.setItem(key, JSON.stringify(newValue));
   };
 
-  return { storedValue, setStorageValue };
+  return [storedValue, setStorageValue];
 };
