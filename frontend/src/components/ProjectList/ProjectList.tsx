@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
-
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { IconButton, Link, Stack, Typography } from '@mui/material';
+
 import { Avatar, Icon } from 'legos';
 import { ProjectEntity } from 'types/GraphqlTypes';
 
@@ -31,30 +32,46 @@ export const ProjectList = ({ projectList }: ProjectListProps) => {
           key={project.id}
           direction="row"
           justifyContent="space-between"
-          alignItems="center"
+          alignItems="flex-start"
         >
           <Stack direction="row" alignItems="center" spacing={1}>
             <Stack>{getProjectIcon(project.attributes?.type)}</Stack>
 
             <Stack>
-              <Link href="*">{project.attributes?.name}</Link>
+              <Link component={RouterLink} to="*" underline="none">
+                {project.attributes?.name}
+              </Link>
               <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.start}`}</Typography>
             </Stack>
           </Stack>
 
-          <Stack direction="row" alignItems="center" spacing={1} width="300px">
-            <Avatar
-              avatar={` https://dev.strapi.track.softbee.io${project.attributes?.managers?.data[0].attributes?.avatar.data?.attributes?.url}`}
-              firstName={
-                project.attributes?.managers?.data[0].attributes?.firstName
-              }
-              lastName={
-                project.attributes?.managers?.data[0].attributes?.lastName
-              }
-            />
-            <Link href="*" underline="none">
-              {`${project.attributes?.managers?.data[0].attributes?.firstName} ${project.attributes?.managers?.data[0].attributes?.lastName}`}
-            </Link>
+          <Stack gap={2}>
+            {project.attributes?.managers?.data.map(({ id, attributes }) => (
+              <Stack
+                key={id}
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                width="300px"
+              >
+                <Avatar
+                  avatar={
+                    attributes?.avatar.data?.attributes?.url
+                      ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
+                      : undefined
+                  }
+                  firstName={attributes?.firstName}
+                  lastName={attributes?.lastName}
+                />
+                <Link
+                  component={RouterLink}
+                  to={`/profile/view/${id}`}
+                  underline="none"
+                >
+                  {`${attributes?.firstName} ${attributes?.lastName}`}
+                </Link>
+              </Stack>
+            ))}
           </Stack>
 
           <Stack direction="row">

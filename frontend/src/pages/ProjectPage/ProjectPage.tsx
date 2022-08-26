@@ -1,45 +1,58 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { ProjectList } from 'components/ProjectList/ProjectList';
 import { Stack, Typography } from '@mui/material';
-import { MainWrapper, SideBars, AddNewProject } from 'components';
 
-import { filterItem, ProjectFilters } from './ProjectFilters';
+import { ProjectList } from 'components/ProjectList/ProjectList';
+import { MainWrapper, SideBars, AddNewProject } from 'components';
+import { statusItem, ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
-import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 import { PROJECTS_LIST_QUERY } from 'api';
 import { useNormalizedUsers } from 'hooks';
+import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 
 const ProjectPage = () => {
   const { managersChoices } = useNormalizedUsers();
-  const [isCreateProject, setIsCreateProject] = useState(false);
 
-  const [status, setStatus] = useState(filterItem.map(({ value }) => value));
-  const [searchProjects, setSearchProjects] = useState('');
-  const [selectedManager, setSelectedManager] = useState(['']);
+  const [isCreateProject, setIsCreateProject] = useState(false);
+  const [searchProject, setSearchProject] = useState('');
+  const [searchManagers, setSearchManagers] = useState<string[]>([]);
+  const [searchStatus, setSearchStatus] = useState(
+    statusItem.map(({ value }) => value)
+  );
+
+  const projectFilters = {
+    searchProject,
+    searchManagers,
+    setSearchProject,
+    setSearchManagers,
+    setSearchStatus,
+  };
 
   const { data } = useQuery<{ projects: ProjectEntityResponseCollection }>(
     PROJECTS_LIST_QUERY
   );
 
-
-  console.log(selectedManager, 'manag');
-
   const projects = data?.projects.data
-    .filter((project) => status.includes(project.attributes?.status as string))
-    .filter((project) =>
-      project.attributes?.name
-        .toLowerCase()
-        .includes(searchProjects.toLowerCase())
+    .filter(({ attributes }) =>
+      searchStatus.includes(attributes?.status as string)
+    )
+    .filter(({ attributes }) => {
+      const managersInProject = attributes?.managers?.data.filter(({ id }) =>
+        searchManagers.length > 0
+          ? searchManagers.includes(id as string)
+          : managersChoices.map(({ value }) => value).includes(id as string)
+      );
+
+      const isManagerInProject = managersInProject
+        ? managersInProject.length > 0
+        : false;
+
+      return isManagerInProject;
+    })
+    .filter(({ attributes }) =>
+      attributes?.name.toLowerCase().includes(searchProject.toLowerCase())
     );
-  // .filter((project) =>
-  //   project.attributes?.managers?.data
-  //     .map(({ id }) => id)
-  //     .map((item) => {
-  //       selectedManager.some(item);
-  //       console.log(selectedManager.some(item), 'some');
-  //     })
-  // );
+
   return (
     <MainWrapper
       sidebar={
@@ -61,14 +74,9 @@ const ProjectPage = () => {
       ) : (
         <>
           <Typography variant="h1">Project</Typography>
-          <Stack mt={4} spacing={2}>
+          <Stack mt={4} gap={6}>
             <Stack direction="row" spacing={2} mb={4}>
-              <ProjectFilters
-                setSelectedManager={setSelectedManager}
-                searchProjects={searchProjects}
-                setSearchProjects={setSearchProjects}
-                setStatus={setStatus}
-              />
+              <ProjectFilters {...projectFilters} />
             </Stack>
             <ProjectList projectList={projects} />
           </Stack>

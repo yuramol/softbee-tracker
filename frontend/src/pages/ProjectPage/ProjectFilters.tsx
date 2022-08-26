@@ -1,49 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ButtonGroup } from '@mui/material';
 import { Button, MultipleSelect } from 'legos';
 import { SearchInput } from 'legos/SearchInput';
 import { useNormalizedUsers } from 'hooks';
-import { Maybe } from 'types/GraphqlTypes';
 
 type ProjectFiltersProps = {
-  setStatus: (status: string[]) => void;
-  setSearchProjects: React.Dispatch<React.SetStateAction<string>>;
-  searchProjects: string;
-  setSelectedManager: React.Dispatch<React.SetStateAction<string[]>>;
+  searchProject: string;
+  searchManagers: string[];
+  setSearchProject: React.Dispatch<React.SetStateAction<string>>;
+  setSearchManagers: React.Dispatch<React.SetStateAction<string[]>>;
+  setSearchStatus: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-export const filterItem = [
+export const statusItem = [
   { label: 'All', value: 'all' },
   { label: 'Active', value: 'active' },
   { label: 'Archived', value: 'archived' },
 ];
 
 export const ProjectFilters = ({
-  setStatus,
-  setSearchProjects,
-  searchProjects,
-  setSelectedManager,
+  searchProject,
+  searchManagers,
+  setSearchProject,
+  setSearchManagers,
+  setSearchStatus,
 }: ProjectFiltersProps) => {
-  const [active, setActive] = useState(filterItem[0]);
-  const [selectedItem, setSelectedItem] = useState<string[]>([]);
   const { managersChoices } = useNormalizedUsers();
-  const handleClickButton = (index: number) => {
-    setActive(filterItem[index]);
+  const [activeStatus, setActiveStatus] = useState(statusItem[0]);
 
+  const handleClickStatusButton = (index: number) => {
+    setActiveStatus(statusItem[index]);
     index === 0
-      ? setStatus(filterItem.map(({ value }) => value))
-      : setStatus([filterItem[index].value]);
+      ? setSearchStatus(statusItem.map(({ value }) => value))
+      : setSearchStatus([statusItem[index].value]);
   };
-  setSelectedManager(selectedItem);
 
   return (
     <>
       <SearchInput
         sx={{ flexGrow: '1' }}
-        value={searchProjects}
+        value={searchProject}
         size="small"
-        label={'Search...'}
-        onChange={(value) => setSearchProjects(value as string)}
+        label="Search..."
+        onChange={(value) => setSearchProject(value as string)}
       />
       <MultipleSelect
         label="Project manager"
@@ -51,17 +50,17 @@ export const ProjectFilters = ({
         size="small"
         sx={{ width: 200 }}
         items={managersChoices}
-        value={selectedItem}
-        onChange={(e) => setSelectedItem(e.target.value as string[])}
+        value={searchManagers}
+        onChange={(e) => setSearchManagers(e.target.value as string[])}
       />
       <ButtonGroup size="small" variant="outlined" sx={{ height: '40px' }}>
-        {filterItem.map(({ label, value }, index) => (
+        {statusItem.map(({ label, value }, index) => (
           <Button
             sx={{ width: '90px' }}
             title={label}
             key={value}
-            onClick={() => handleClickButton(index)}
-            variant={active.value === value ? 'contained' : 'outlined'}
+            onClick={() => handleClickStatusButton(index)}
+            variant={activeStatus.value === value ? 'contained' : 'outlined'}
           />
         ))}
       </ButtonGroup>
