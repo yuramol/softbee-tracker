@@ -2,12 +2,10 @@ import React, { Fragment, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import { Icon } from 'legos';
-import { useAuth } from 'AuthProvider';
-import { Role } from 'constants/types';
 import { useMutation } from '@apollo/client';
 import { DELETE_USERS_PERMISSIONS_USER } from 'api';
 import { Maybe, Scalars } from 'types/GraphqlTypes';
-import { useNotification } from 'hooks';
+import { useAuthUser, useNotification } from 'hooks';
 import {
   IconButton,
   Stack,
@@ -29,8 +27,8 @@ export const UsersListAction = ({
   firstName,
   lastName,
 }: UsersListActionProps) => {
-  const { user } = useAuth();
-  const isManager = user.role.type === Role.Manager;
+  const { user } = useAuthUser();
+  const isManager = user.role.type === 'manager';
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const notification = useNotification();
