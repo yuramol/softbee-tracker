@@ -47,7 +47,7 @@ export const TrackerItem: FC<Props> = ({ id, attributes }) => {
   };
 
   const handleClickDeleteButton = (el: HTMLElement) => {
-    setAnchorEl(anchorEl ? null : el);
+    setAnchorEl(el);
     setIsPopperOpen(true);
   };
 
