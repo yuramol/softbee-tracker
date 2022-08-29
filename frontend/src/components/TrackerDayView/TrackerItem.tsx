@@ -34,19 +34,18 @@ export const TrackerItem: FC<Props> = ({
   name,
 }) => {
   const { user } = useAuthUser();
+  const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
+
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isTrackerStart, setIsTrackerStart] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
-
-  const [time, setTime] = useState(trackerTime);
+  const [time, setTime] = useState(parseTrackerTime(attributes?.duration));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
 
   const handleChange = (value: string, submit?: boolean) => {
     setTime(parseTrackerTime(value, 'HH:mm'));
     if (submit) {
-      onUpdateTracker(parseTrackerTime(value, 'HH:mm'), id);
+      onUpdateTracker(id, { duration: parseTrackerTime(value, 'HH:mm') });
     }
   };
 
@@ -71,13 +70,22 @@ export const TrackerItem: FC<Props> = ({
 
   const initialValuesForm: TimeEntryValues = {
     DATE: new Date(attributes?.date),
-    DURATION: format(trackerTime, 'HH:mm'),
+    DURATION: format(parseTrackerTime(attributes?.duration), 'HH:mm'),
     DESCRIPTION: attributes?.description,
     PROJECT: attributes?.project?.data?.id,
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
-    console.log(values);
+    setTime(parseTrackerTime(values.DURATION, 'HH:mm'));
+
+    onUpdateTracker(id, {
+      date: format(values.DATE, 'yyyy-MM-dd'),
+      description: values.DESCRIPTION,
+      project: values.PROJECT,
+      duration: parseTrackerTime(values.DURATION, 'HH:mm'),
+    });
+
+    toggleOpenModal();
   };
 
   return (

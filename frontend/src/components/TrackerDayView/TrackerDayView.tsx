@@ -22,7 +22,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
-import { useAuthUser, useCurrentWeek } from 'hooks';
+import { useAuthUser, useCurrentWeek, useNotification } from 'hooks';
 import {
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
@@ -39,7 +39,10 @@ import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 export type TrackerContext = {
   onCreateTracker: (values: TrackerInput) => void;
-  onUpdateTracker: (time: Date, id: Maybe<string> | undefined) => void;
+  onUpdateTracker: (
+    id: Maybe<string> | undefined,
+    values: TrackerInput
+  ) => void;
   onDeleteTracker: (id: Maybe<string> | undefined) => void;
 };
 
@@ -62,6 +65,7 @@ export const TrackerDayView = ({
   trackers,
   refetchTrackers,
 }: TrackerDayViewProps) => {
+  const notification = useNotification();
   const { user } = useAuthUser();
   const [currentWeekDay, setCurrentWeekDay] = useState(selectedDay);
   const { weekStart, weekEnd, days, currentDay } =
@@ -90,19 +94,35 @@ export const TrackerDayView = ({
 
     createTracker({ variables: { data } }).then(() => {
       refetchTrackers();
+      notification({
+        message: 'The tracker was successfully created',
+        variant: 'success',
+      });
     });
   };
 
-  const onUpdateTracker = (time: Date, id: Maybe<Scalars['ID']>) => {
-    const formatedTime = format(time, 'HH:mm:ss.SSS');
-    updateTracker({ variables: { id, time: formatedTime } }).then(() => {
+  const onUpdateTracker = (id: Maybe<Scalars['ID']>, values: TrackerInput) => {
+    const data = {
+      ...values,
+      duration: format(values.duration, 'HH:mm:ss.SSS'),
+    };
+
+    updateTracker({ variables: { id, data } }).then(() => {
       refetchTrackers();
+      notification({
+        message: 'The tracker was successfully updated',
+        variant: 'info',
+      });
     });
   };
 
   const onDeleteTracker = (id: Maybe<Scalars['ID']>) => {
     deleteTracker({ variables: { id } }).then(() => {
       refetchTrackers();
+      notification({
+        message: 'The tracker was successfully deleted',
+        variant: 'warning',
+      });
     });
   };
 
