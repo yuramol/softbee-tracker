@@ -7,6 +7,9 @@ import { formikPropsErrors } from 'helpers';
 import { useMutation } from '@apollo/client';
 import { CREATE_USER_MUTATION } from 'api';
 import { CreateUserFields, UserProps } from './types';
+import { useNotification } from 'hooks';
+import { format } from 'date-fns';
+
 const positions = [
   { value: 'developer', label: 'developer' },
   { value: 'designer', label: 'designer' },
@@ -16,7 +19,7 @@ const positions = [
 
 export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
   const [createUsersPermissionsUser] = useMutation(CREATE_USER_MUTATION);
-
+  const showNotification = useNotification();
   const initialValues = {
     [CreateUserFields.FirstName]: '',
     [CreateUserFields.LastName]: '',
@@ -27,6 +30,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
     [CreateUserFields.SalaryInfo]: '1',
     [CreateUserFields.Password]: '',
     [CreateUserFields.UserName]: '',
+    [CreateUserFields.Сonfirmed]: true,
   };
   const validationSchema = yup.object({
     [CreateUserFields.FirstName]: yup.string().required('Should not be empty'),
@@ -47,10 +51,27 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      createUsersPermissionsUser({
-        variables: { data: { ...values } },
-      });
+    onSubmit: async (values) => {
+      try {
+        await createUsersPermissionsUser({
+          variables: {
+            data: {
+              ...values,
+              [CreateUserFields.DateEmployment]: format(
+                values[CreateUserFields.DateEmployment],
+                'yyyy-MM-dd'
+              ),
+            },
+          },
+        });
+        showNotification({
+          message: 'User created!',
+          variant: 'success',
+        });
+        setIsCreateUser(false);
+      } catch (error) {
+        showNotification({ error });
+      }
     },
   });
 

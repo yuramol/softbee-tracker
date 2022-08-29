@@ -43,13 +43,18 @@ export const UsersListAction = ({
     setAnchorEl(null);
     setIsPopperOpen(false);
   };
+
   const deleteUser = () => {
-    deleteUsersPermissionsUser({ variables: { id } });
-    handleClickAway();
-    notification({
-      message: `${firstName} ${lastName} deleted`,
-      variant: 'warning',
-    });
+    try {
+      deleteUsersPermissionsUser({ variables: { id } });
+      handleClickAway();
+      notification({
+        message: `${firstName} ${lastName} deleted`,
+        variant: 'success',
+      });
+    } catch (error) {
+      notification({ error });
+    }
   };
 
   return (

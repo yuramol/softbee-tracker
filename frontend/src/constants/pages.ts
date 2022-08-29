@@ -30,7 +30,7 @@ export const pages = [
     index: false,
     name: 'Crew',
     href: '/crew',
-    mainMenu: true,
+    menuType: [MenuType.Main],
     role: [Role.Employee, Role.Manager],
     Component: lazy(() => import('pages/CrewPage/CrewPage')),
   },
