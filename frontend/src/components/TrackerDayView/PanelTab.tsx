@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { TrackerItem } from './TrackerItem';
-import { getTotalTime, parseTrackerTime } from 'helpers';
+import { getTotalTime } from 'helpers';
 import { TrackerEntity } from 'types/GraphqlTypes';
 
 type Props = {
@@ -18,19 +18,9 @@ export const PanelTab: React.FC<Props> = ({ dataTabs, index, value }) => {
     if (dataTabs && dataTabs?.length > 0) {
       return (
         <Stack>
-          {dataTabs.map(({ attributes, id }) => {
-            const trackerTime = parseTrackerTime(attributes?.duration);
-            if (trackerTime) {
-              return (
-                <TrackerItem
-                  key={id}
-                  id={id}
-                  attributes={attributes}
-                  trackerTime={trackerTime}
-                />
-              );
-            }
-          })}
+          {dataTabs.map(({ attributes, id }) => (
+            <TrackerItem key={id} id={id} attributes={attributes} />
+          ))}
           <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
             Total: {totalTime}
           </Typography>
