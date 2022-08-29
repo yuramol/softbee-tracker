@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Typography, TextField, Stack } from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
 import { startOfMonth, subMonths } from 'date-fns';
@@ -6,8 +6,9 @@ import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
 import TimePicker from 'components/TimePicker';
-import { useProjectsByUserList } from 'hooks';
+import { useProjectsByUserId } from 'hooks';
 import { formikPropsErrors } from 'helpers';
+import { Maybe, Scalars } from 'types/GraphqlTypes';
 
 const modalStyle = {
   position: 'absolute',
@@ -31,8 +32,8 @@ const FIELD_TIME_ENTRY = {
 export type TimeEntryValues = {
   [FIELD_TIME_ENTRY.DATE]: Date;
   [FIELD_TIME_ENTRY.DURATION]: string;
-  [FIELD_TIME_ENTRY.DESCRIPTION]: string;
-  [FIELD_TIME_ENTRY.PROJECT]: string;
+  [FIELD_TIME_ENTRY.DESCRIPTION]?: string;
+  [FIELD_TIME_ENTRY.PROJECT]?: Maybe<Scalars['ID']>;
 };
 
 const validationSchema = yup.object({
@@ -67,11 +68,7 @@ export const TrackerEntryForm = ({
   buttonCloseTitle = 'Cancel',
   buttonSubmitTitle = 'Save Time',
 }: TrackerEntryFormProps) => {
-  const { getProjects, projectsItems } = useProjectsByUserList();
-
-  useEffect(() => {
-    getProjects({ variables: { userId } });
-  }, [userId]);
+  const { projectsChoices } = useProjectsByUserId(userId);
 
   const initialValues: TimeEntryValues = {
     [FIELD_TIME_ENTRY.DATE]: initialValuesForm?.DATE ?? new Date(),
@@ -95,7 +92,6 @@ export const TrackerEntryForm = ({
           <Stack>
             <Typography variant="h6">{titleForm}</Typography>
           </Stack>
-
           <Stack my={3} gap={3}>
             <Stack direction="row" gap={3}>
               <CalendarPickerFormik
@@ -115,7 +111,7 @@ export const TrackerEntryForm = ({
             </Stack>
             <Select
               label="Project"
-              items={projectsItems}
+              items={projectsChoices}
               value={values[FIELD_TIME_ENTRY.PROJECT]}
               name={FIELD_TIME_ENTRY.PROJECT}
               {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
@@ -127,6 +123,7 @@ export const TrackerEntryForm = ({
               fullWidth
               multiline
               rows={4}
+              value={values[FIELD_TIME_ENTRY.DESCRIPTION]}
               name={FIELD_TIME_ENTRY.DESCRIPTION}
               {...formikPropsErrors(FIELD_TIME_ENTRY.DESCRIPTION, formik)}
               onChange={handleChange}
