@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Stack, Tab, Tabs, Typography } from '@mui/material';
 import { isAfter, isFuture, startOfDay, startOfMonth } from 'date-fns';
 
@@ -21,18 +21,22 @@ export const DayTabs: React.FC<Props> = ({
   setTabsValue,
 }) => {
   const { days } = useCurrentWeek(currentWeekDay);
-  let totalByWeek = '00:00';
 
-  days.forEach(({ fullDate }) => {
-    const totalByDay =
-      typeof trackers.find(({ date }) => date === fullDate) === 'object'
-        ? trackers.find(({ date }) => date === fullDate)?.total
-        : '00:00';
-    totalByWeek = getHours(
-      getMinutes(totalByWeek, 'HH:mm') +
-        getMinutes(totalByDay as string, 'HH:mm')
-    );
-  });
+  const totalByWeek = useMemo(() => {
+    let totalTime = '00:00';
+    days.forEach(({ fullDate }) => {
+      const totalByDay =
+        typeof trackers.find(({ date }) => date === fullDate) === 'object'
+          ? trackers.find(({ date }) => date === fullDate)?.total
+          : '00:00';
+      totalTime = getHours(
+        getMinutes(totalTime, 'HH:mm') +
+          getMinutes(totalByDay as string, 'HH:mm')
+      );
+    });
+
+    return totalTime;
+  }, [days]);
 
   return (
     <>
@@ -54,7 +58,7 @@ export const DayTabs: React.FC<Props> = ({
             const trackersByDay = trackers.find(
               ({ date }) => date === fullDate
             );
-            const totalByDay = trackersByDay ? trackersByDay?.total : '00:00';
+            const totalByDay = trackersByDay?.total ?? '00:00';
             return (
               <Tab
                 key={fullDate}

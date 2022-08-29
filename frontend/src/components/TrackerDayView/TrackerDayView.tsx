@@ -76,12 +76,6 @@ export const TrackerDayView = ({
     setTabsValue(currentDay);
   }, [selectedDay]);
 
-  // const { data, refetch } = useQuery<{
-  //   trackers: TrackerEntityResponseCollection;
-  // }>(TRECKERS_BY_USER_ID_QUERY, {
-  //   variables: { userId: user.id, startDate: weekStart, endDate: weekEnd },
-  // });
-
   const [createTracker] = useMutation(CREATE_TRACKER_BY_USER_ID_MUTATION);
   const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
   const [deleteTracker] = useMutation(DELETE_TRACKER_BY_ID_MUTATION);
