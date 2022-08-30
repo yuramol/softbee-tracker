@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 
 import {
   MainWrapper,
+  RangeCalendar,
   TimeInspector,
   TrackerCalendar,
   TrackerDayView,
@@ -41,6 +42,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     >
       <Typography variant="h1">{title}</Typography>
       <TrackerDayView selectedDay={selectedDay} />
+      <RangeCalendar />
     </MainWrapper>
   );
 };

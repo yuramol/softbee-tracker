@@ -15,3 +15,4 @@ export {
   SummaryStep,
   TeamStep,
 } from './AddProjectStepper';
+export { RangeCalendar } from './RangeCalendar';
