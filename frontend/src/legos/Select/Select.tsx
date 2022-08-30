@@ -11,22 +11,20 @@ import { Icon } from '../Icon';
 import { StyledSelect } from './styled';
 
 export const Select = ({
-  name,
   items,
   label,
   error,
-  errorText,
+  helperText,
   variant = 'standard',
   IconComponent = () => <Icon icon="arrowDropDown" />,
   ...props
 }: SelectPropsType) => (
   <FormControl variant={variant} fullWidth error={error}>
-    <InputLabel id="select-label">{label}</InputLabel>
+    <InputLabel>{label}</InputLabel>
     <StyledSelect
       label={label}
       IconComponent={IconComponent}
-      name={name}
-      sx={{ maxWidth: '100%', paddingRight: 1 }}
+      sx={{ paddingRight: 1 }}
       {...props}
     >
       {items?.map(({ label, value }) => (
@@ -35,6 +33,6 @@ export const Select = ({
         </MenuItem>
       ))}
     </StyledSelect>
-    {error && <FormHelperText>{errorText}</FormHelperText>}
+    <FormHelperText>{helperText}</FormHelperText>
   </FormControl>
 );
