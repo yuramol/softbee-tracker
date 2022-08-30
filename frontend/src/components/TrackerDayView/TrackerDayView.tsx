@@ -1,7 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-
 import {
-  useQuery,
   useMutation,
   OperationVariables,
   ApolloQueryResult,
@@ -22,7 +20,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
-import { useAuthUser, useCurrentWeek, useNotification } from 'hooks';
+import { useCurrentWeek, useNotification } from 'hooks';
 import {
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
@@ -39,19 +37,14 @@ import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 export type TrackerContext = {
   onCreateTracker: (values: TrackerInput) => void;
-  onUpdateTracker: (
-    id: Maybe<string> | undefined,
-    values: TrackerInput
-  ) => void;
-  onDeleteTracker: (id: Maybe<string> | undefined) => void;
+  onUpdateTracker: (id?: Maybe<string>, values?: TrackerInput) => void;
+  onDeleteTracker: (id?: Maybe<string>) => void;
 };
 
 type TrackerDayViewProps = {
   selectedDay: Date;
   trackers: TrackerByDay[];
-  refetchTrackers: (
-    variables?: Partial<OperationVariables> | undefined
-  ) => Promise<
+  refetchTrackers: (variables?: Partial<OperationVariables>) => Promise<
     ApolloQueryResult<{
       trackers: TrackerEntityResponseCollection;
     }>
@@ -66,7 +59,6 @@ export const TrackerDayView = ({
   refetchTrackers,
 }: TrackerDayViewProps) => {
   const notification = useNotification();
-  const { user } = useAuthUser();
   const [currentWeekDay, setCurrentWeekDay] = useState(selectedDay);
   const { weekStart, weekEnd, days, currentDay } =
     useCurrentWeek(currentWeekDay);
@@ -98,10 +90,6 @@ export const TrackerDayView = ({
         message: 'The tracker was successfully created',
         variant: 'success',
       });
-      notification({
-        message: 'The tracker was successfully created',
-        variant: 'success',
-      });
     });
   };
 
@@ -117,20 +105,12 @@ export const TrackerDayView = ({
         message: 'The tracker was successfully updated',
         variant: 'info',
       });
-      notification({
-        message: 'The tracker was successfully updated',
-        variant: 'info',
-      });
     });
   };
 
   const onDeleteTracker = (id: Maybe<Scalars['ID']>) => {
     deleteTracker({ variables: { id } }).then(() => {
       refetchTrackers();
-      notification({
-        message: 'The tracker was successfully deleted',
-        variant: 'warning',
-      });
       notification({
         message: 'The tracker was successfully deleted',
         variant: 'warning',

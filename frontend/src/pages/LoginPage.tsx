@@ -8,13 +8,14 @@ import { LOGIN_MUTATION } from 'api';
 import { useAuthUser, useNotification } from 'hooks';
 import { MainWrapper } from 'components';
 import { UsersPermissionsLoginPayload } from 'types/GraphqlTypes';
+import { PageProps } from './types';
 
 enum LoginFields {
   Identifier = 'identifier',
   Password = 'password',
 }
 
-const LoginPage = () => {
+const LoginPage: React.FC<PageProps> = ({ title }) => {
   const { login } = useAuthUser();
   const notification = useNotification();
   const [loginMutation, { loading }] = useMutation<{
@@ -93,7 +94,7 @@ const LoginPage = () => {
           onSubmit={handleSubmit}
         >
           <Typography variant="h4" component="h1" align="center">
-            Login
+            {title}
           </Typography>
           <TextField
             variant="outlined"

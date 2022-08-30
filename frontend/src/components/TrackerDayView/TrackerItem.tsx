@@ -21,17 +21,21 @@ import { useAuthUser } from 'hooks';
 import { Maybe } from 'types/GraphqlTypes';
 
 type Props = {
-  id: Maybe<string> | undefined;
-  trackerTime: Date;
-  name: string | undefined;
-  description: string | undefined;
+  id?: Maybe<string>;
+  name?: string;
+  date: string;
+  description?: string;
+  duration: string;
+  projectId?: Maybe<string>;
 };
 
 export const TrackerItem: FC<Props> = ({
   id,
-  description,
-  trackerTime,
   name,
+  date,
+  description,
+  duration,
+  projectId,
 }) => {
   const { user } = useAuthUser();
   const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
@@ -39,7 +43,7 @@ export const TrackerItem: FC<Props> = ({
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isTrackerStart, setIsTrackerStart] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
-  const [time, setTime] = useState(parseTrackerTime(attributes?.duration));
+  const [time, setTime] = useState(parseTrackerTime(duration));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleChange = (value: string, submit?: boolean) => {
@@ -69,10 +73,10 @@ export const TrackerItem: FC<Props> = ({
   };
 
   const initialValuesForm: TimeEntryValues = {
-    DATE: new Date(attributes?.date),
-    DURATION: format(parseTrackerTime(attributes?.duration), 'HH:mm'),
-    DESCRIPTION: attributes?.description,
-    PROJECT: attributes?.project?.data?.id,
+    DATE: new Date(date),
+    DURATION: format(parseTrackerTime(duration), 'HH:mm'),
+    DESCRIPTION: description,
+    PROJECT: projectId,
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
