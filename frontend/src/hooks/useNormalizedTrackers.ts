@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client';
 
-import { TRECKERS_BY_USER_ID_QUERY } from 'api';
+import { TRACKERS_QUERY } from 'api';
 import { getHours, getMinutes } from 'helpers';
 import {
-  Scalars,
   TrackerEntity,
   TrackerEntityResponseCollection,
+  TrackerFiltersInput,
 } from 'types/GraphqlTypes';
 
 type TrackerByProject = {
@@ -20,15 +20,11 @@ export type TrackerByDay = {
   total: string;
 };
 
-export const useNormalizedTrackers = (
-  userId: Scalars['ID'],
-  startDate: Scalars['Date'],
-  endDate: Scalars['Date']
-) => {
+export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
   const { data, loading, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
-  }>(TRECKERS_BY_USER_ID_QUERY, {
-    variables: { userId, startDate, endDate },
+  }>(TRACKERS_QUERY, {
+    variables: { filters },
   });
 
   const trackers: TrackerByDay[] = [];

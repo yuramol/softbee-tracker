@@ -1,7 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-
 import {
-  useQuery,
   useMutation,
   OperationVariables,
   ApolloQueryResult,
