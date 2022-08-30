@@ -1,19 +1,16 @@
 import * as React from 'react';
 import { Dayjs } from 'dayjs';
-import TextField from '@mui/material/TextField';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { ButtonGroup, Button } from '@mui/material';
-import { useCurrentWeek } from 'hooks';
+import { ButtonGroup, Button, Input, OutlinedInput } from '@mui/material';
 import {
-  endOfDecade,
   endOfMonth,
   endOfQuarter,
   endOfWeek,
   endOfYear,
   format,
-  startOfDecade,
   startOfMonth,
   startOfQuarter,
   startOfWeek,
@@ -26,118 +23,100 @@ import {
 
 export const RangeCalendar = () => {
   const [value, setValue] = React.useState<Dayjs | null>(null);
-  const [dateValue, setDateValue] = React.useState<string[] | null[]>([
-    null,
-    null,
+  const [dateValue, setDateValue] = React.useState<Date[]>([
+    new Date(),
+    new Date(),
   ]);
+  const [open, setOpen] = React.useState(false);
 
   console.log(dateValue);
 
-  const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(new Date());
-
-  console.log(weekStart, weekEnd, days, currentDay);
-
-  const inspectionTypes = [
-    {
-      label: 'Сurrent week',
-      value: 'currentWeek',
-    },
-    {
-      label: 'Last week',
-      value: 'lastWeek',
-    },
-    {
-      label: 'Current month',
-      value: 'currentMonth',
-    },
-    {
-      label: 'Last month',
-      value: 'lastMonth',
-    },
-    {
-      label: 'Current quarter',
-      value: 'currentQuarter',
-    },
-    {
-      label: 'Past quarter',
-      value: 'pastQuarter',
-    },
-    {
-      label: 'Current year',
-      value: 'currentYear',
-    },
-    {
-      label: 'Past year',
-      value: 'pastYear',
-    },
-  ];
-  const [inspectBy, setInspectBy] = React.useState(inspectionTypes[0]);
-
-  const handleClickButton = (index: number) => {
-    setInspectBy(inspectionTypes[index]);
-
-    // setDateValue([
-    //   format(startOfMonth(new Date()), 'yyyy-MM-dd'),
-    //   format(endOfMonth(new Date()), 'yyyy-MM-dd'),
-    // ]);
-    // setDateValue([
-    //   format(startOfMonth(subMonths(new Date(), 1)), 'yyyy-MM-dd'),
-    //   format(endOfMonth(subMonths(new Date(), 1)), 'yyyy-MM-dd'),
-    // ]);
+  const getCurrentWeekDates = () => {
+    setDateValue([
+      startOfWeek(new Date(), { weekStartsOn: 1 }),
+      endOfWeek(new Date(), { weekStartsOn: 1 }),
+    ]);
+  };
+  const getLastWeekDates = () => {
+    setDateValue([
+      startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }),
+      endOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }),
+    ]);
+  };
+  const getCurrentMonthDates = () => {
+    setDateValue([startOfMonth(new Date()), endOfMonth(new Date())]);
+  };
+  const getPastMonthDates = () => {
+    setDateValue([
+      startOfMonth(subMonths(new Date(), 1)),
+      endOfMonth(subMonths(new Date(), 1)),
+    ]);
+  };
+  const getCurrentQuarterDates = () => {
+    setDateValue([startOfQuarter(new Date()), endOfQuarter(new Date())]);
+  };
+  const getPastQuarterDates = () => {
+    setDateValue([
+      startOfQuarter(subQuarters(new Date(), 1)),
+      endOfQuarter(subQuarters(new Date(), 1)),
+    ]);
+  };
+  const getCurrentYearDates = () => {
+    setDateValue([startOfYear(new Date()), endOfYear(new Date())]);
+  };
+  const getPastYearDates = () => {
+    setDateValue([
+      startOfYear(subYears(new Date(), 1)),
+      endOfYear(subYears(new Date(), 1)),
+    ]);
   };
 
-  // curr week
-  // console.log(
-  //   startOfWeek(new Date(), { weekStartsOn: 1 }),
-  //   endOfWeek(new Date(), { weekStartsOn: 1 })
-  // );
-  // past week
-  // console.log(
-  //   startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }),
-  //   endOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 })
-  // );
+  const inputValue = `${format(dateValue[0], 'dd/MM/yyyy')} ${
+    dateValue[0].getDate() !== dateValue[1].getDate()
+      ? `- ${format(dateValue[1], 'dd/MM/yyyy')}`
+      : ''
+  }`;
 
-  // curr year
-  // console.log(startOfYear(new Date()), endOfYear(new Date()));
-
-  // past year
-  // console.log(
-  //   startOfYear(subYears(new Date(), 1)),
-  //   endOfYear(subYears(new Date(), 1))
-  // );
-  // curr Quater
-  // console.log(startOfQuarter(new Date()), endOfQuarter(new Date()));
-
-  // past Quater
-  // console.log(
-  //   startOfQuarter(subQuarters(new Date(), 1)),
-  //   endOfQuarter(subQuarters(new Date(), 1))
-  // );
+  const renderInput = (props: TextFieldProps) => (
+    /* eslint-disable react/prop-types */
+    <OutlinedInput
+      type="text"
+      inputRef={props.inputRef}
+      value={inputValue}
+      onClick={() => setOpen(true)}
+      onChange={props.onChange}
+      endAdornment={props.InputProps?.endAdornment}
+    />
+  );
 
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          label="Basic example"
+          label={inputValue}
           value={value}
           views={['day']}
-          closeOnSelect={false}
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
           onChange={(newValue) => {
+            console.log(newValue);
+
             setValue(newValue);
+            setDateValue([new Date(newValue), new Date(newValue)]);
           }}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={renderInput}
         />
       </LocalizationProvider>
       <ButtonGroup size="small" orientation="vertical">
-        {inspectionTypes.map(({ label, value }, i) => (
-          <Button
-            key={value}
-            variant={inspectBy.value === value ? 'contained' : 'outlined'}
-            onClick={() => handleClickButton(i)}
-          >
-            {label}
-          </Button>
-        ))}
+        <Button onClick={getCurrentWeekDates}>Current week</Button>
+        <Button onClick={getLastWeekDates}>Last week</Button>
+        <Button onClick={getCurrentMonthDates}>Current month</Button>
+        <Button onClick={getPastMonthDates}>Past month</Button>
+        <Button onClick={getCurrentQuarterDates}>Current quarter</Button>
+        <Button onClick={getPastQuarterDates}>Past quarter</Button>
+        <Button onClick={getCurrentYearDates}>Current year</Button>
+        <Button onClick={getPastYearDates}>Past year</Button>
       </ButtonGroup>
     </>
   );
