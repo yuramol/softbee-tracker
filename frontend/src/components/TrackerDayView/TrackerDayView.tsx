@@ -19,7 +19,7 @@ import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
 import { useAuthUser, useCurrentWeek, useNotification } from 'hooks';
 import {
-  TRECKERS_BY_USER_ID_QUERY,
+  TRACKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
   CREATE_TRACKER_BY_USER_ID_MUTATION,
@@ -63,7 +63,7 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
 
   const { data, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
-  }>(TRECKERS_BY_USER_ID_QUERY, {
+  }>(TRACKERS_BY_USER_ID_QUERY, {
     variables: { userId: user.id, startDate: weekStart, endDate: weekEnd },
   });
   const [createTracker] = useMutation(CREATE_TRACKER_BY_USER_ID_MUTATION);

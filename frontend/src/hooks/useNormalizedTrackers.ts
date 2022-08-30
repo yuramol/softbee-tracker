@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 
-import { TRECKERS_BY_USER_ID_QUERY } from 'api';
+import { TRACKERS_BY_USER_ID_QUERY } from 'api';
 import { getHours, getMinutes } from 'helpers';
 import {
   Scalars,
@@ -27,7 +27,7 @@ export const useNormalizedTrackers = (
 ) => {
   const { data, loading, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
-  }>(TRECKERS_BY_USER_ID_QUERY, {
+  }>(TRACKERS_BY_USER_ID_QUERY, {
     variables: { userId, startDate, endDate },
   });
 

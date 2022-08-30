@@ -14,7 +14,7 @@ import {
 
 import { useAuthUser, useCurrentWeek } from 'hooks';
 import { getTotalTime } from 'helpers';
-import { PROJECTS_TRECKERS_BY_USER_ID_QUERY } from 'api';
+import { PROJECTS_TRACKERS_BY_USER_ID_QUERY } from 'api';
 import {
   ProjectEntityResponseCollection,
   TrackerEntity,
@@ -50,7 +50,7 @@ export const TimeInspector = () => {
 
   const { data } = useQuery<{
     projects: ProjectEntityResponseCollection;
-  }>(PROJECTS_TRECKERS_BY_USER_ID_QUERY, {
+  }>(PROJECTS_TRACKERS_BY_USER_ID_QUERY, {
     variables: {
       userId: user.id,
       startDate: inspectBy.filter[0],
