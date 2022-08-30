@@ -12,7 +12,7 @@ import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { PageProps } from './types';
 
 const HomePage: React.FC<PageProps> = ({ title }) => {
-  const { user } = useAuthUser();
+  // const { user } = useAuthUser();
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
   const [startMonth, setStartMonth] = useState(
@@ -21,8 +21,12 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const [endMonth, setEndMonth] = useState(
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
-
-  const { trackers } = useNormalizedTrackers(user.id, startMonth, endMonth);
+  const { user } = useAuthUser();
+  const { trackers, refetch } = useNormalizedTrackers(
+    user.id,
+    startMonth,
+    endMonth
+  );
 
   return (
     <MainWrapper
@@ -39,8 +43,12 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
         </>
       }
     >
-      <Typography variant="h1">{title}</Typography>
-      <TrackerDayView selectedDay={selectedDay} />
+      <Typography variant="h1">Tracker</Typography>
+      <TrackerDayView
+        selectedDay={selectedDay}
+        trackers={trackers}
+        refetchTrackers={refetch}
+      />
     </MainWrapper>
   );
 };

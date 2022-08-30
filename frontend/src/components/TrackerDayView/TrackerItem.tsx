@@ -11,17 +11,23 @@ import { format } from 'date-fns';
 
 import { TimeContext } from './TrackerDayView';
 import { parseTrackerTime } from 'helpers';
-import { Maybe, Tracker } from 'types/GraphqlTypes';
+import { Maybe } from 'types/GraphqlTypes';
 import { Icon } from 'legos';
 import TimePicker from 'components/TimePicker';
 
 type Props = {
   id: Maybe<string> | undefined;
-  attributes: Maybe<Tracker> | undefined;
   trackerTime: Date;
+  name: string | undefined;
+  description: string | undefined;
 };
 
-export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
+export const TrackerItem: FC<Props> = ({
+  id,
+  description,
+  trackerTime,
+  name,
+}) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isTrackerStart, setIsTrackerStart] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
@@ -69,10 +75,8 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
       py={4}
     >
       <Stack>
-        <Typography variant="h6">
-          {attributes?.project?.data?.attributes?.name}
-        </Typography>
-        <Typography>{attributes?.description}</Typography>
+        <Typography variant="h6">{name}</Typography>
+        <Typography>{description}</Typography>
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
         {isEdit ? (

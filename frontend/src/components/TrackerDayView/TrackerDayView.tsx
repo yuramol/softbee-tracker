@@ -1,6 +1,11 @@
 import React, { createContext, useEffect, useState } from 'react';
 
-import { useQuery, useMutation } from '@apollo/client';
+import {
+  useQuery,
+  useMutation,
+  OperationVariables,
+  ApolloQueryResult,
+} from '@apollo/client';
 import {
   addDays,
   format,
@@ -19,7 +24,6 @@ import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
 import { useAuthUser, useCurrentWeek } from 'hooks';
 import {
-  TRECKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
   CREATE_TRACKER_BY_USER_ID_MUTATION,
@@ -31,6 +35,7 @@ import {
   TrackerInput,
 } from 'types/GraphqlTypes';
 import { parseTrackerTime } from 'helpers';
+import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 export type TrackerContext = {
   onCreateTracker: (values: TrackerInput) => void;
@@ -40,11 +45,23 @@ export type TrackerContext = {
 
 type TrackerDayViewProps = {
   selectedDay: Date;
+  trackers: TrackerByDay[];
+  refetchTrackers: (
+    variables?: Partial<OperationVariables> | undefined
+  ) => Promise<
+    ApolloQueryResult<{
+      trackers: TrackerEntityResponseCollection;
+    }>
+  >;
 };
 
 export const TimeContext = createContext<TrackerContext>({} as TrackerContext);
 
-export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
+export const TrackerDayView = ({
+  selectedDay,
+  trackers,
+  refetchTrackers,
+}: TrackerDayViewProps) => {
   const { user } = useAuthUser();
   const [currentWeekDay, setCurrentWeekDay] = useState(selectedDay);
   const { weekStart, weekEnd, days, currentDay } =
@@ -57,11 +74,6 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
     setTabsValue(currentDay);
   }, [selectedDay]);
 
-  const { data, refetch } = useQuery<{
-    trackers: TrackerEntityResponseCollection;
-  }>(TRECKERS_BY_USER_ID_QUERY, {
-    variables: { userId: user.id, startDate: weekStart, endDate: weekEnd },
-  });
   const [createTracker] = useMutation(CREATE_TRACKER_BY_USER_ID_MUTATION);
   const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
   const [deleteTracker] = useMutation(DELETE_TRACKER_BY_ID_MUTATION);
@@ -78,20 +90,20 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
     };
 
     createTracker({ variables: { data } }).then(() => {
-      refetch();
+      refetchTrackers();
     });
   };
 
   const onUpdateTracker = (time: Date, id: Maybe<Scalars['ID']>) => {
     const formatedTime = format(time, 'HH:mm:ss.SSS');
     updateTracker({ variables: { id, time: formatedTime } }).then(() => {
-      refetch();
+      refetchTrackers();
     });
   };
 
   const onDeleteTracker = (id: Maybe<Scalars['ID']>) => {
     deleteTracker({ variables: { id } }).then(() => {
-      refetch();
+      refetchTrackers();
     });
   };
 
@@ -171,7 +183,7 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
       </Stack>
       <DayTabs
         currentWeekDay={currentWeekDay}
-        dataTabs={data?.trackers.data}
+        trackers={trackers}
         tabsValue={tabsValue}
         setTabsValue={setTabsValue}
       />
