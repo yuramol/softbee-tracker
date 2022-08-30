@@ -98,6 +98,10 @@ export const TrackerDayView = ({
         message: 'The tracker was successfully created',
         variant: 'success',
       });
+      notification({
+        message: 'The tracker was successfully created',
+        variant: 'success',
+      });
     });
   };
 
@@ -113,12 +117,20 @@ export const TrackerDayView = ({
         message: 'The tracker was successfully updated',
         variant: 'info',
       });
+      notification({
+        message: 'The tracker was successfully updated',
+        variant: 'info',
+      });
     });
   };
 
   const onDeleteTracker = (id: Maybe<Scalars['ID']>) => {
     deleteTracker({ variables: { id } }).then(() => {
       refetchTrackers();
+      notification({
+        message: 'The tracker was successfully deleted',
+        variant: 'warning',
+      });
       notification({
         message: 'The tracker was successfully deleted',
         variant: 'warning',
