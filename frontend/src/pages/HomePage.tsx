@@ -22,11 +22,10 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
 
-  const { trackers, refetch } = useNormalizedTrackers(
-    user.id,
-    startMonth,
-    endMonth
-  );
+  const { trackers, refetch } = useNormalizedTrackers({
+    user: { id: { in: [user.id] } },
+    date: { between: [startMonth, endMonth] },
+  });
 
   return (
     <MainWrapper
