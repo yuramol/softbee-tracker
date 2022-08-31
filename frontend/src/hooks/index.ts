@@ -7,3 +7,4 @@ export { useNotification } from './useNotification';
 export { useDebounce } from './useDebounce';
 export { useProjectsByUserId } from './useProjectsByUserId';
 export { useNormalizedUsers } from './useNormalizedUsers';
+export { useUsersPermissionsUsers } from './useUsersPermissionsUsers';

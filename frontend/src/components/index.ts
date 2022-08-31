@@ -15,3 +15,5 @@ export {
   SummaryStep,
   TeamStep,
 } from './AddProjectStepper';
+export { UsersList, UsersListAction } from './UsersList';
+export { NewUser } from './AddNewUser';
