@@ -82,34 +82,8 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
       <form onSubmit={handleSubmit}>
         <Stack>
           <Typography variant="h3" mb={3}>
-            Add new employee
+            Add new user
           </Typography>
-          <Stack direction="row" gap={3} mb={2}>
-            <TextField
-              fullWidth
-              label="First name"
-              name={CreateUserFields.FirstName}
-              value={values[CreateUserFields.FirstName]}
-              {...formikPropsErrors(CreateUserFields.FirstName, formik)}
-              onChange={handleChange}
-            />
-            <TextField
-              fullWidth
-              label="Last name"
-              name={CreateUserFields.LastName}
-              value={values[CreateUserFields.LastName]}
-              {...formikPropsErrors(CreateUserFields.LastName, formik)}
-              onChange={handleChange}
-            />
-            <TextField
-              fullWidth
-              label="Phone"
-              name={CreateUserFields.Phone}
-              value={values[CreateUserFields.Phone]}
-              {...formikPropsErrors(CreateUserFields.Phone, formik)}
-              onChange={handleChange}
-            />
-          </Stack>
           <Stack direction="row" gap={3} mb={2}>
             <TextField
               fullWidth
@@ -131,12 +105,41 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
           <Stack direction="row" gap={3} mb={2}>
             <TextField
               fullWidth
+              label="First name"
+              name={CreateUserFields.FirstName}
+              value={values[CreateUserFields.FirstName]}
+              {...formikPropsErrors(CreateUserFields.FirstName, formik)}
+              onChange={handleChange}
+            />
+            <TextField
+              fullWidth
+              label="Last name"
+              name={CreateUserFields.LastName}
+              value={values[CreateUserFields.LastName]}
+              {...formikPropsErrors(CreateUserFields.LastName, formik)}
+              onChange={handleChange}
+            />
+          </Stack>
+
+          <Stack direction="row" gap={3} mb={2}>
+            <TextField
+              fullWidth
               label="Email"
               name={CreateUserFields.Email}
               value={values[CreateUserFields.Email]}
               {...formikPropsErrors(CreateUserFields.Email, formik)}
               onChange={handleChange}
             />
+            <TextField
+              fullWidth
+              label="Phone"
+              name={CreateUserFields.Phone}
+              value={values[CreateUserFields.Phone]}
+              {...formikPropsErrors(CreateUserFields.Phone, formik)}
+              onChange={handleChange}
+            />
+          </Stack>
+          <Stack direction="row" gap={3} mb={2}>
             <Select
               label="Position"
               items={positions}
@@ -147,18 +150,18 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
               onChange={handleChange}
             />
             <CalendarPickerFormik
+              label="Position"
               field={CreateUserFields.DateEmployment}
               disableFuture
               views={['day']}
             />
           </Stack>
-
-          <Stack direction="row" gap={2} mt={1}>
+          <Stack direction="row-reverse" gap={2} mt={1}>
             <Button variant="contained" type="submit">
               Save
             </Button>
             <Button variant="outlined" onClick={() => setIsCreateUser(false)}>
-              Close
+              Cancel
             </Button>
           </Stack>
         </Stack>

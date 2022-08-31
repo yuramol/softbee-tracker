@@ -7,15 +7,14 @@ import { MainWrapper, SideBars, UsersList, NewUser } from 'components';
 const CrewPage = () => {
   const { users } = useUsersPermissionsUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
-  const { user } = useAuthUser();
+  const {  isManager } = useAuthUser();
 
-  const isManager = user.role.type === 'manager';
-
+  console.log(isCreateUser);
   return (
     <MainWrapper
       sidebar={
         <>
-          {isManager && (
+          {isManager && !isCreateUser && (
             <Button
               sx={{ mb: 2 }}
               fullWidth
