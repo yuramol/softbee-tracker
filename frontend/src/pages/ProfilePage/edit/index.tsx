@@ -6,20 +6,18 @@ import { useFormik } from 'formik';
 import { MainWrapper, Loader } from 'components';
 import { PageProps } from 'pages/types';
 import { useAuthUser, useNotification, useUsersPermissionsUser } from 'hooks';
-import { Avatar, CalendarPickerFormik, Icon, Input, Select } from 'legos';
+import { CalendarPickerFormik, Icon, Input, Select } from 'legos';
 import { profileInfo, validationSchema } from '../helpers';
 import { InitialValuesType, valuesType } from '../types';
 import { UPDATE_USERS_PERMISSIONS_USER_MUTATION } from 'api';
 import { useMutation } from '@apollo/client';
-import { useChangeAvatar } from '../useChangeAvatar';
 import { ProfileHeader } from '../ProfileHeader';
 
-const ProfileEditPage: React.FC<PageProps> = ({ title }) => {
+const ProfileEditPage: React.FC<PageProps> = () => {
   const { userId } = useParams();
   const { userPermission } = useUsersPermissionsUser(`${userId}`);
   const { user } = useAuthUser();
   const showNotification = useNotification();
-  const handleChangeAvatar = useChangeAvatar();
   const [updateUserMutation] = useMutation(
     UPDATE_USERS_PERMISSIONS_USER_MUTATION
   );
@@ -64,7 +62,6 @@ const ProfileEditPage: React.FC<PageProps> = ({ title }) => {
   });
   const { values, resetForm, submitForm, setFieldValue, errors, touched } =
     formik;
-  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   return (
     <MainWrapper>
       {userPermission ? (

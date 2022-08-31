@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import { useFormik } from 'formik';
+import { FormikContext, useFormik } from 'formik';
 
 import { MainWrapper, Loader, AvatarUpload } from 'components';
-import { PageProps } from 'pages/types';
 import { useAuthUser, useNotification, useUsersPermissionsUser } from 'hooks';
 import { CalendarPickerFormik, Icon, Input, Select } from 'legos';
 import { UPDATE_USERS_PERMISSIONS_USER_MUTATION } from 'api';
@@ -39,10 +37,9 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
     // upWork: userPermission?.upWork ?? '-',
     firstName: userPermission?.firstName ?? '-',
     salaryInfo: userPermission?.salaryInfo ?? '-',
-    dateEmployment: userPermission?.dateEmployment ?? '22.02.2022',
+    dateEmployment: userPermission?.dateEmployment,
     avatar: userPermission?.avatar.data?.attributes?.url,
   };
-  console.log(userPermission?.avatar.data?.attributes?.url, 'avatars');
   const formik = useFormik<InitialValuesType>({
     initialValues,
     enableReinitialize: true,
@@ -69,11 +66,10 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
   });
   const { values, resetForm, submitForm, setFieldValue, errors, touched } =
     formik;
-  console.log(values.dateEmployment, 'values');
   return (
     <MainWrapper>
       {userPermission ? (
-        <>
+        <FormikContext.Provider value={formik}>
           <Grid container spacing={3}>
             <Grid container item xs={12} justifyContent="space-between">
               <ProfileHeader
@@ -111,7 +107,6 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
                   ) {
                     return null;
                   }
-
                   return (
                     <Box
                       key={fieldName}
@@ -189,9 +184,18 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
                             )}
                           </Box>
                         )) ||
-                        (component === 'timepicker' && edit && (
+                        (component === 'timepicker' && (
                           <Box ml={1} width="100%">
-                            <CalendarPickerFormik field="dateEmployment" />
+                            {edit ? (
+                              <CalendarPickerFormik
+                                field={fieldName}
+                                variant="standard"
+                              />
+                            ) : (
+                              <Typography>
+                                {(values as valuesType)[fieldName]}
+                              </Typography>
+                            )}
                           </Box>
                         ))}
                     </Box>
@@ -200,7 +204,7 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
               )}
             </Grid>
           </Grid>
-        </>
+        </FormikContext.Provider>
       ) : (
         <Loader />
       )}
