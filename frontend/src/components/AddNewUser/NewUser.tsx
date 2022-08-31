@@ -84,7 +84,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
           <Typography variant="h3" mb={3}>
             Add new user
           </Typography>
-          <Stack direction="row" gap={3} mb={2}>
+          <Stack direction="row" gap={3} mb={4}>
             <TextField
               fullWidth
               label="User name"
@@ -102,7 +102,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
               onChange={handleChange}
             />
           </Stack>
-          <Stack direction="row" gap={3} mb={2}>
+          <Stack direction="row" gap={3} mb={4}>
             <TextField
               fullWidth
               label="First name"
@@ -121,7 +121,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
             />
           </Stack>
 
-          <Stack direction="row" gap={3} mb={2}>
+          <Stack direction="row" gap={3} mb={4}>
             <TextField
               fullWidth
               label="Email"
@@ -139,7 +139,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
               onChange={handleChange}
             />
           </Stack>
-          <Stack direction="row" gap={3} mb={2}>
+          <Stack direction="row" gap={3} mb={4}>
             <Select
               label="Position"
               items={positions}
@@ -150,7 +150,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
               onChange={handleChange}
             />
             <CalendarPickerFormik
-              label="Position"
+              label="Date employment"
               field={CreateUserFields.DateEmployment}
               disableFuture
               views={['day']}
