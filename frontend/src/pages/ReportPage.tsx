@@ -89,6 +89,19 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
       }
     >
       <Typography variant="h1">{title}</Typography>
+      <Stack mt={6} flexDirection="row" justifyContent="space-between">
+        <Stack flexDirection="row" gap={2}>
+          <Typography fontWeight="600">Period:</Typography>
+          <Typography>
+            {format(new Date(startDate), 'd MMM y')} -{' '}
+            {format(new Date(endDate), 'd MMM y')}
+          </Typography>
+        </Stack>
+        <Stack flexDirection="row" gap={2}>
+          <Typography fontWeight="600">Total:</Typography>
+          <Typography>{reportTotalTime}</Typography>
+        </Stack>
+      </Stack>
       <Stack mt={6}>
         {trackers.length > 0 ? (
           <TableContainer>
