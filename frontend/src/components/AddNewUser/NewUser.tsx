@@ -150,7 +150,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
               onChange={handleChange}
             />
             <CalendarPickerFormik
-              label="Date employment"
+              label="Date Employment"
               field={CreateUserFields.DateEmployment}
               disableFuture
               views={['day']}
