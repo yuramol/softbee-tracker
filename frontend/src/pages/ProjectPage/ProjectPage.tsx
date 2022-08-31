@@ -1,40 +1,58 @@
 import React, { useState } from 'react';
-import { ProjectList } from 'components/ProjectList/ProjectList';
+import { useQuery } from '@apollo/client';
 import { Stack, Typography } from '@mui/material';
-import { MainWrapper, SideBars, AddNewProject } from 'components';
 
-import { ProjectFilters } from './ProjectFilters';
+import { ProjectsList } from 'components/ProjectsList/ProjectsList';
+import { MainWrapper, SideBars, AddNewProject } from 'components';
+import { statusItem, ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
+import { PROJECTS_LIST_QUERY } from 'api';
+import { useNormalizedUsers } from 'hooks';
+import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
 import { PageProps } from 'pages/types';
 
 const ProjectPage: React.FC<PageProps> = ({ title }) => {
-  const [isCreateProject, setIsCreateProject] = useState(false);
+  const { managersChoices } = useNormalizedUsers();
 
-  //TODO add projects info and info about PR
-  const projects = [
-    {
-      id: 1,
-      projectName: 'UpWork',
-      timeLine: '20.11.21-12.12.23',
-      projectManager: 'Oleksandr Zastavnyi',
-      type: 'fixedPrice',
-    },
-    {
-      id: 3,
-      projectName: 'Plumbid',
-      timeLine: '20.11.21-12.12.23',
-      projectManager: 'Yura Moldavchuk',
-      type: 'fixedPrice',
-    },
-    {
-      id: 4,
-      projectName: 'PalPal',
-      timeLine: '20.11.21-12.12.23',
-      projectManager: 'Andrev Antonuch',
-      type: 'timeMaterial',
-      projectManagerAvatar: 'https://i.pravatar.cc/300',
-    },
-  ];
+  const [isCreateProject, setIsCreateProject] = useState(false);
+  const [searchProject, setSearchProject] = useState('');
+  const [searchManagers, setSearchManagers] = useState<string[]>([]);
+  const [searchStatus, setSearchStatus] = useState(
+    statusItem.map(({ value }) => value)
+  );
+
+  const projectFilters = {
+    searchProject,
+    searchManagers,
+    setSearchProject,
+    setSearchManagers,
+    setSearchStatus,
+  };
+
+  const { data } = useQuery<{ projects: ProjectEntityResponseCollection }>(
+    PROJECTS_LIST_QUERY
+  );
+
+  const projects = data?.projects.data
+    .filter(({ attributes }) =>
+      searchStatus.includes(attributes?.status as string)
+    )
+    .filter(({ attributes }) => {
+      const managersInProject = attributes?.managers?.data.filter(({ id }) =>
+        searchManagers.length > 0
+          ? searchManagers.includes(id as string)
+          : managersChoices.map(({ value }) => value).includes(id as string)
+      );
+
+      const isManagerInProject = managersInProject
+        ? managersInProject.length > 0
+        : false;
+
+      return isManagerInProject;
+    })
+    .filter(({ attributes }) =>
+      attributes?.name.toLowerCase().includes(searchProject.toLowerCase())
+    );
 
   return (
     <MainWrapper
@@ -59,9 +77,9 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
           <Typography variant="h1">{title}</Typography>
           <Stack mt={4} spacing={2}>
             <Stack direction="row" spacing={2} mb={4}>
-              <ProjectFilters />
+              <ProjectFilters {...projectFilters} />
             </Stack>
-            <ProjectList projectList={projects} />
+            <ProjectsList projectsList={projects} />
           </Stack>
         </>
       )}
