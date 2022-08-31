@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const TRECKERS_BY_USER_ID_QUERY = gql`
+export const TRACKERS_BY_USER_ID_QUERY = gql`
   query TrackersByUserId($userId: ID!, $startDate: Date, $endDate: Date) {
     trackers(
       filters: {

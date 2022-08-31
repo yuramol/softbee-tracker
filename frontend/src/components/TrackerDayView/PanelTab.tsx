@@ -2,11 +2,10 @@ import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { TrackerItem } from './TrackerItem';
-import { parseTrackerTime } from 'helpers';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 type PanelTabProps = {
-  trackersByDay: TrackerByDay | undefined;
+  trackersByDay?: TrackerByDay;
   value: number;
   index: number;
 };
@@ -21,20 +20,17 @@ export const PanelTab: React.FC<PanelTabProps> = ({
       return (
         <Stack>
           {trackersByDay.trackersByProject.map(({ trackers, name }) =>
-            trackers.map(({ attributes, id }) => {
-              const trackerTime = parseTrackerTime(attributes?.duration);
-              if (trackerTime) {
-                return (
-                  <TrackerItem
-                    key={id}
-                    id={id}
-                    description={attributes?.description}
-                    name={name}
-                    trackerTime={trackerTime}
-                  />
-                );
-              }
-            })
+            trackers.map(({ attributes, id }) => (
+              <TrackerItem
+                key={id}
+                id={id}
+                name={name}
+                date={attributes?.date}
+                description={attributes?.description}
+                duration={attributes?.duration}
+                projectId={attributes?.project?.data?.id}
+              />
+            ))
           )}
           <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
             Total: {trackersByDay.total}

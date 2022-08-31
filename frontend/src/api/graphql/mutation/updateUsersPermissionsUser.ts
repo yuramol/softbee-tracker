@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const UPDATE_USERS_PERMISSIONS_USER_MUTATION = gql`
-  mutation updateUsersPermissionsUser(
+  mutation UpdateUsersPermissionsUser(
     $id: ID!
     $data: UsersPermissionsUserInput!
   ) {

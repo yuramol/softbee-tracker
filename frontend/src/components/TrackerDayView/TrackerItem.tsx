@@ -10,47 +10,55 @@ import {
 import { format } from 'date-fns';
 
 import { TimeContext } from './TrackerDayView';
-import { parseTrackerTime } from 'helpers';
-import { Maybe } from 'types/GraphqlTypes';
 import { Icon } from 'legos';
 import TimePicker from 'components/TimePicker';
+import {
+  TimeEntryValues,
+  TrackerEntryModalForm,
+} from 'components/TrackerEntryModalForm';
+import { parseTrackerTime } from 'helpers';
+import { useAuthUser } from 'hooks';
+import { Maybe } from 'types/GraphqlTypes';
 
 type Props = {
-  id: Maybe<string> | undefined;
-  trackerTime: Date;
-  name: string | undefined;
-  description: string | undefined;
+  id?: Maybe<string>;
+  name?: string;
+  date: string;
+  description?: string;
+  duration: string;
+  projectId?: Maybe<string>;
 };
 
 export const TrackerItem: FC<Props> = ({
   id,
-  description,
-  trackerTime,
   name,
+  date,
+  description,
+  duration,
+  projectId,
 }) => {
-  const [isEdit, setIsEdit] = useState(false);
+  const { user } = useAuthUser();
+  const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [isTrackerStart, setIsTrackerStart] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
-
-  const [time, setTime] = useState(trackerTime);
+  const [time, setTime] = useState(parseTrackerTime(duration));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
 
   const handleChange = (value: string, submit?: boolean) => {
     setTime(parseTrackerTime(value, 'HH:mm'));
     if (submit) {
-      onUpdateTracker(parseTrackerTime(value, 'HH:mm'), id);
-      setIsEdit(!isEdit);
+      onUpdateTracker(id, { duration: parseTrackerTime(value, 'HH:mm') });
     }
   };
 
-  const onHaldlerTime = (detail: number) => {
-    if (detail === 2) setIsEdit(!isEdit);
+  const toggleOpenModal = () => {
+    setIsOpenModal(!isOpenModal);
   };
 
   const handleClickDeleteButton = (el: HTMLElement) => {
-    setAnchorEl(anchorEl ? null : el);
+    setAnchorEl(el);
     setIsPopperOpen(true);
   };
 
@@ -62,6 +70,26 @@ export const TrackerItem: FC<Props> = ({
   const handleDelete = () => {
     handleClickAway();
     onDeleteTracker(id);
+  };
+
+  const initialValuesForm: TimeEntryValues = {
+    DATE: new Date(date),
+    DURATION: format(parseTrackerTime(duration), 'HH:mm'),
+    DESCRIPTION: description,
+    PROJECT: projectId,
+  };
+
+  const handelSubmit = (values: TimeEntryValues) => {
+    setTime(parseTrackerTime(values.DURATION, 'HH:mm'));
+
+    onUpdateTracker(id, {
+      date: format(values.DATE, 'yyyy-MM-dd'),
+      description: values.DESCRIPTION,
+      project: values.PROJECT,
+      duration: parseTrackerTime(values.DURATION, 'HH:mm'),
+    });
+
+    toggleOpenModal();
   };
 
   return (
@@ -79,21 +107,12 @@ export const TrackerItem: FC<Props> = ({
         <Typography>{description}</Typography>
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
-        {isEdit ? (
-          <TimePicker
-            width="200px"
-            value={format(time, 'HH:mm')}
-            onChange={handleChange}
-          />
-        ) : (
-          <Typography
-            sx={{ userSelect: 'none' }}
-            onClick={(e) => onHaldlerTime(e.detail)}
-          >
-            {format(time, 'HH:mm')}
-          </Typography>
-        )}
-        <IconButton color="primary" onClick={() => setIsEdit(!isEdit)}>
+        <TimePicker
+          width="110px"
+          value={format(time, 'HH:mm')}
+          onChange={handleChange}
+        />
+        <IconButton color="primary" onClick={toggleOpenModal}>
           <Icon icon="edit" size="small" />
         </IconButton>
         <IconButton
@@ -148,6 +167,15 @@ export const TrackerItem: FC<Props> = ({
           </ClickAwayListener>
         )}
       </Stack>
+      <TrackerEntryModalForm
+        open={isOpenModal}
+        onClose={toggleOpenModal}
+        onSubmit={(values) => handelSubmit(values)}
+        initialValuesForm={initialValuesForm}
+        titleForm="Edit time entry"
+        buttonSubmitTitle="Update"
+        userId={user.id}
+      />
     </Stack>
   );
 };

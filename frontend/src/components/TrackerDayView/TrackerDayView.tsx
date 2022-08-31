@@ -1,7 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-
 import {
-  useQuery,
   useMutation,
   OperationVariables,
   ApolloQueryResult,
@@ -22,7 +20,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
-import { useAuthUser, useCurrentWeek } from 'hooks';
+import { useCurrentWeek, useNotification } from 'hooks';
 import {
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
@@ -39,16 +37,14 @@ import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 export type TrackerContext = {
   onCreateTracker: (values: TrackerInput) => void;
-  onUpdateTracker: (time: Date, id: Maybe<string> | undefined) => void;
-  onDeleteTracker: (id: Maybe<string> | undefined) => void;
+  onUpdateTracker: (id?: Maybe<string>, values?: TrackerInput) => void;
+  onDeleteTracker: (id?: Maybe<string>) => void;
 };
 
 type TrackerDayViewProps = {
   selectedDay: Date;
   trackers: TrackerByDay[];
-  refetchTrackers: (
-    variables?: Partial<OperationVariables> | undefined
-  ) => Promise<
+  refetchTrackers: (variables?: Partial<OperationVariables>) => Promise<
     ApolloQueryResult<{
       trackers: TrackerEntityResponseCollection;
     }>
@@ -62,7 +58,7 @@ export const TrackerDayView = ({
   trackers,
   refetchTrackers,
 }: TrackerDayViewProps) => {
-  const { user } = useAuthUser();
+  const notification = useNotification();
   const [currentWeekDay, setCurrentWeekDay] = useState(selectedDay);
   const { weekStart, weekEnd, days, currentDay } =
     useCurrentWeek(currentWeekDay);
@@ -86,24 +82,39 @@ export const TrackerDayView = ({
         parseTrackerTime(values.duration, 'HH:mm'),
         'HH:mm:ss.SSS'
       ),
-      user: user.id,
     };
 
     createTracker({ variables: { data } }).then(() => {
       refetchTrackers();
+      notification({
+        message: 'The tracker was successfully created',
+        variant: 'success',
+      });
     });
   };
 
-  const onUpdateTracker = (time: Date, id: Maybe<Scalars['ID']>) => {
-    const formatedTime = format(time, 'HH:mm:ss.SSS');
-    updateTracker({ variables: { id, time: formatedTime } }).then(() => {
+  const onUpdateTracker = (id: Maybe<Scalars['ID']>, values: TrackerInput) => {
+    const data = {
+      ...values,
+      duration: format(values.duration, 'HH:mm:ss.SSS'),
+    };
+
+    updateTracker({ variables: { id, data } }).then(() => {
       refetchTrackers();
+      notification({
+        message: 'The tracker was successfully updated',
+        variant: 'info',
+      });
     });
   };
 
   const onDeleteTracker = (id: Maybe<Scalars['ID']>) => {
     deleteTracker({ variables: { id } }).then(() => {
       refetchTrackers();
+      notification({
+        message: 'The tracker was successfully deleted',
+        variant: 'warning',
+      });
     });
   };
 

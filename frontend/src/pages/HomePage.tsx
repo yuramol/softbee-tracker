@@ -11,7 +11,8 @@ import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { PageProps } from './types';
 
-const HomePage = () => {
+const HomePage: React.FC<PageProps> = ({ title }) => {
+  const { user } = useAuthUser();
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
   const [startMonth, setStartMonth] = useState(
@@ -20,7 +21,7 @@ const HomePage = () => {
   const [endMonth, setEndMonth] = useState(
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
-  const { user } = useAuthUser();
+
   const { trackers, refetch } = useNormalizedTrackers(
     user.id,
     startMonth,
@@ -42,7 +43,7 @@ const HomePage = () => {
         </>
       }
     >
-      <Typography variant="h1">Tracker</Typography>
+      <Typography variant="h1">{title}</Typography>
       <TrackerDayView
         selectedDay={selectedDay}
         trackers={trackers}
