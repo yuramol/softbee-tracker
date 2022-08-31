@@ -1,34 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import { useFormik } from 'formik';
 
 import { MainWrapper, Loader } from 'components';
 import { PageProps } from 'pages/types';
-import { useUsersPermissionsUser } from 'hooks';
-import { Avatar } from 'legos';
+import { useAuthUser, useNotification, useUsersPermissionsUser } from 'hooks';
+import { Avatar, Icon, Input, Select } from 'legos';
+import { profileInfo, validationSchema } from '../helpers';
+import { InitialValuesType, valuesType } from '../types';
+import { UPDATE_USERS_PERMISSIONS_USER_MUTATION } from 'api';
+import { useMutation } from '@apollo/client';
+import { useChangeAvatar } from '../useChangeAvatar';
+import ProfileInformation from '../ProfileInformation';
 
 const ProfileViewPage: React.FC<PageProps> = ({ title }) => {
   const { userId } = useParams();
-  const { userPermission } = useUsersPermissionsUser(`${userId}`);
 
   return (
     <MainWrapper>
-      {userPermission ? (
-        <>
-          <Avatar
-            width={180}
-            height={180}
-            firstName={userPermission?.firstName}
-            lastName={userPermission?.lastName}
-            avatar={`https://dev.strapi.track.softbee.io${userPermission.avatar.data.attributes.url}`}
-          />
-          <Typography>
-            {`${userPermission?.firstName} ${userPermission?.lastName}`}
-          </Typography>
-        </>
-      ) : (
-        <Loader />
-      )}
+      {<ProfileInformation id={`${userId}`} edit={false} />}
     </MainWrapper>
   );
 };

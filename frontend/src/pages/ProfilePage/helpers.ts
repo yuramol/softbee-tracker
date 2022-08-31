@@ -60,7 +60,7 @@ export const profileInfo: ProfileInfoType[] = [
   {
     label: 'Date Of Employment',
     fieldName: 'dateEmployment',
-    component: 'input',
+    component: 'timepicker',
     type: 'text',
     icon: 'calendarMonth',
   },
