@@ -2,11 +2,11 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { IconButton, Link, Stack, Typography } from '@mui/material';
 
-import { Avatar, Icon } from 'legos';
+import { Avatar, Icon, NavLink } from 'legos';
 import { ProjectEntity, Enum_Project_Type } from 'types/GraphqlTypes';
 
-type ProjectListProps = {
-  projectList?: ProjectEntity[];
+type ProjectsListProps = {
+  projectsList?: ProjectEntity[];
 };
 
 const getProjectIcon: (type?: string) => JSX.Element | null = (type) => {
@@ -22,10 +22,10 @@ const getProjectIcon: (type?: string) => JSX.Element | null = (type) => {
   }
 };
 
-export const ProjectList = ({ projectList }: ProjectListProps) => {
+export const ProjectsList = ({ projectsList }: ProjectsListProps) => {
   return (
     <>
-      {projectList?.map((project) => (
+      {projectsList?.map((project) => (
         <Stack
           key={project.id}
           direction="row"
@@ -61,13 +61,9 @@ export const ProjectList = ({ projectList }: ProjectListProps) => {
                   firstName={attributes?.firstName}
                   lastName={attributes?.lastName}
                 />
-                <Link
-                  component={RouterLink}
-                  to={`/profile/view/${id}`}
-                  underline="none"
-                >
+                <NavLink to={`/profile/view/${id}`}>
                   {`${attributes?.firstName} ${attributes?.lastName}`}
-                </Link>
+                </NavLink>
               </Stack>
             ))}
           </Stack>

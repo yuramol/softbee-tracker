@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Stack, Typography } from '@mui/material';
 
-import { ProjectList } from 'components/ProjectList/ProjectList';
+import { ProjectsList } from 'components/ProjectsList/ProjectsList';
 import { MainWrapper, SideBars, AddNewProject } from 'components';
 import { statusItem, ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
@@ -79,7 +79,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
             <Stack direction="row" spacing={2} mb={4}>
               <ProjectFilters {...projectFilters} />
             </Stack>
-            <ProjectList projectList={projects} />
+            <ProjectsList projectsList={projects} />
           </Stack>
         </>
       )}
