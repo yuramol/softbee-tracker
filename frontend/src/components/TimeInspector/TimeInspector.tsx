@@ -11,8 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuth } from 'AuthProvider';
-import { useCurrentWeek } from 'hooks';
+import { useAuthUser, useCurrentWeek } from 'hooks';
 import { getTotalTime } from 'helpers';
 import { PROJECTS_TRECKERS_BY_USER_ID_QUERY } from 'api';
 import {
@@ -22,7 +21,7 @@ import {
 } from 'types/GraphqlTypes';
 
 export const TimeInspector = () => {
-  const { user } = useAuth();
+  const { user } = useAuthUser();
   const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(new Date());
 
   const inspectionTypes = [

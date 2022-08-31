@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef, WheelEvent } from 'react';
-import { Box, InputAdornment } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+} from '@mui/material';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 import { Input } from 'legos';
@@ -17,6 +22,9 @@ interface TimePickerProps {
   width?: string;
   onChange: (value: string, submit?: boolean) => void;
   onClick?: () => void;
+  error?: boolean;
+  name?: string;
+  helperText?: string;
 }
 
 const TimePicker = ({
@@ -27,6 +35,9 @@ const TimePicker = ({
   width,
   onChange,
   onClick,
+  error = false,
+  name,
+  helperText,
 }: TimePickerProps) => {
   const [durationValue, setDurationValue] = useState(value);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -93,19 +104,25 @@ const TimePicker = ({
 
   return (
     <Box width={width ?? '100%'} position="relative">
-      <Input
-        onChange={(value) => onChange(`${value}`)}
-        onFocus={handleFocus}
-        value={durationValue}
-        InputProps={{
-          readOnly: true,
-          endAdornment: (
-            <InputAdornment position="end" onClick={openDialog}>
-              <HourglassBottomIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
+      <FormControl fullWidth error={error}>
+        <Input
+          onChange={(value) => onChange(`${value}`)}
+          onFocus={handleFocus}
+          value={durationValue}
+          name={name}
+          error={error}
+          InputProps={{
+            readOnly: true,
+            endAdornment: (
+              <InputAdornment position="end" onClick={openDialog}>
+                <HourglassBottomIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        {error && <FormHelperText>{helperText}</FormHelperText>}
+      </FormControl>
+
       {dialogOpen && (
         <TimePickerDialog ref={dialogRef} onBlur={closeDialog}>
           <TimePickerBlock

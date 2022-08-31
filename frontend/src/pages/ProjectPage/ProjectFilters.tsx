@@ -4,14 +4,14 @@ import { Button, MultipleSelect } from 'legos';
 import { SearchInput } from 'legos/SearchInput';
 //TODO add PM info
 const pm = [
-  'Alex Rooox ',
-  'Oleg Books ',
-  'Stas sss ',
-  'Oleg Bookssdfsdfsdf ',
-  'Olesdfsg Bossdfsdfoks ',
-  'Olsdfsdfeg Books ',
-  'Olsdfsdfeg Books ',
-  'Oleg Bosdfsdfoks ',
+  { label: 'Alex Rooox', value: '1' },
+  { label: 'Oleg Books', value: '2' },
+  { label: 'Stas sss', value: '3' },
+  { label: 'Oleg Bookssdfsdfsdf', value: '4' },
+  { label: 'Olesdfsg Bossdfsdfoks', value: '5' },
+  { label: 'Olsdfsdfeg Books', value: '6' },
+  { label: 'Olsdfsdfeg Books', value: '7' },
+  { label: 'Oleg Bosdfsdfoks', value: '8' },
 ];
 const filterItem = [
   { label: 'All', value: 'All' },
@@ -36,10 +36,13 @@ export const ProjectFilters = () => {
         onChange={(value) => setSearchProjects(value as string)}
       />
       <MultipleSelect
-        onChange={(value) => setSelectedItem(value)}
         label="Project manager"
+        variant="outlined"
+        size="small"
+        sx={{ width: 200 }}
         items={pm}
         value={selectedItem}
+        onChange={(e) => setSelectedItem(e.target.value as string[])}
       />
       <ButtonGroup size="small" variant="outlined" sx={{ height: '40px' }}>
         {filterItem.map(({ label, value }, e) => (

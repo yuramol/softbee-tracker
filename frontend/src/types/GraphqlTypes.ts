@@ -112,6 +112,11 @@ export enum Enum_Note_Type {
   User = 'user'
 }
 
+export enum Enum_Project_Status {
+  Active = 'active',
+  Archived = 'archived'
+}
+
 export enum Enum_Project_Type {
   FixedPrice = 'fixed_price',
   NonProfit = 'non_profit',
@@ -535,6 +540,7 @@ export type Project = {
   picture?: Maybe<UploadFileEntityResponse>;
   salary?: Maybe<Array<Maybe<ComponentProjectSalary>>>;
   start?: Maybe<Scalars['Date']>;
+  status: Enum_Project_Status;
   trackers?: Maybe<TrackerRelationResponseCollection>;
   type: Enum_Project_Type;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -607,6 +613,7 @@ export type ProjectFiltersInput = {
   or?: InputMaybe<Array<InputMaybe<ProjectFiltersInput>>>;
   salary?: InputMaybe<ComponentProjectSalaryFiltersInput>;
   start?: InputMaybe<DateFilterInput>;
+  status?: InputMaybe<StringFilterInput>;
   trackers?: InputMaybe<TrackerFiltersInput>;
   type?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
@@ -623,6 +630,7 @@ export type ProjectInput = {
   picture?: InputMaybe<Scalars['ID']>;
   salary?: InputMaybe<Array<InputMaybe<ComponentProjectSalaryInput>>>;
   start?: InputMaybe<Scalars['Date']>;
+  status?: InputMaybe<Enum_Project_Status>;
   trackers?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   type?: InputMaybe<Enum_Project_Type>;
   users?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;

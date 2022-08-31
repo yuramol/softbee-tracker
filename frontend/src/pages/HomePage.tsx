@@ -7,9 +7,9 @@ import {
   TrackerCalendar,
   TrackerDayView,
 } from '../components';
-import { useAuth } from 'AuthProvider';
-import { useNormalizedTrackers } from 'hooks';
+import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { PageProps } from './types';
 
 const HomePage = () => {
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
@@ -20,7 +20,7 @@ const HomePage = () => {
   const [endMonth, setEndMonth] = useState(
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
-  const { user } = useAuth();
+  const { user } = useAuthUser();
   const { trackers, refetch } = useNormalizedTrackers(
     user.id,
     startMonth,
