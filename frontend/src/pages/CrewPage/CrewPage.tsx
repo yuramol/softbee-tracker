@@ -8,8 +8,6 @@ const CrewPage = () => {
   const { users } = useUsersPermissionsUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
   const {  isManager } = useAuthUser();
-
-  console.log(isCreateUser);
   return (
     <MainWrapper
       sidebar={
