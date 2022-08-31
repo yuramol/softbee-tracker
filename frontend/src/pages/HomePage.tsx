@@ -11,8 +11,7 @@ import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { PageProps } from './types';
 
-const HomePage: React.FC<PageProps> = ({ title }) => {
-  // const { user } = useAuthUser();
+const HomePage = () => {
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
   const [startMonth, setStartMonth] = useState(
