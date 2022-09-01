@@ -16,6 +16,17 @@ export const TRACKERS_BY_USER_ID_QUERY = gql`
           date
           duration
           description
+          user {
+            data {
+              id
+              attributes {
+                username
+                firstName
+                lastName
+                position
+              }
+            }
+          }
           project {
             data {
               id
