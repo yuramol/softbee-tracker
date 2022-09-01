@@ -10,7 +10,6 @@ import {
 import { personalStaticRanges } from './personalStaticRanges';
 
 const DateRangePicker = styled(DateRange)`
-  width: 100px;
   .rdrCalendarWrapper
     .rdrMonths
     .rdrMonth
