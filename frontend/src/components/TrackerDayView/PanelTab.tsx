@@ -19,17 +19,9 @@ export const PanelTab: React.FC<PanelTabProps> = ({
     if (trackersByDay) {
       return (
         <Stack>
-          {trackersByDay.trackersByProject.map(({ trackers, name }) =>
-            trackers.map(({ attributes, id }) => (
-              <TrackerItem
-                key={id}
-                id={id}
-                name={name}
-                date={attributes?.date}
-                description={attributes?.description}
-                duration={attributes?.duration}
-                projectId={attributes?.project?.data?.id}
-              />
+          {trackersByDay.trackersByProject.map(({ trackers }) =>
+            trackers.map((tracker) => (
+              <TrackerItem key={tracker.id} tracker={tracker} />
             ))
           )}
           <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
