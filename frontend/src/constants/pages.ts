@@ -28,6 +28,14 @@ export const pages = [
   },
   {
     index: false,
+    name: 'Crew',
+    href: '/crew',
+    menuType: [MenuType.Main],
+    role: [Role.Employee, Role.Manager],
+    Component: lazy(() => import('pages/CrewPage/CrewPage')),
+  },
+  {
+    index: false,
     name: 'Profile',
     href: '/profile',
     menuType: [MenuType.Secondary],

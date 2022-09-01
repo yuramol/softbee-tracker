@@ -2,37 +2,38 @@ import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { TrackerItem } from './TrackerItem';
-import { getTotalTime, parseTrackerTime } from 'helpers';
-import { TrackerEntity } from 'types/GraphqlTypes';
+import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
-type Props = {
-  dataTabs: TrackerEntity[] | undefined;
+type PanelTabProps = {
+  trackersByDay?: TrackerByDay;
   value: number;
   index: number;
 };
 
-export const PanelTab: React.FC<Props> = ({ dataTabs, index, value }) => {
-  const totalTime = getTotalTime(dataTabs);
-
+export const PanelTab: React.FC<PanelTabProps> = ({
+  trackersByDay,
+  index,
+  value,
+}) => {
   if (value === index) {
-    if (dataTabs && dataTabs?.length > 0) {
+    if (trackersByDay) {
       return (
         <Stack>
-          {dataTabs.map(({ attributes, id }) => {
-            const trackerTime = parseTrackerTime(attributes?.duration);
-            if (trackerTime) {
-              return (
-                <TrackerItem
-                  key={id}
-                  id={id}
-                  attributes={attributes}
-                  trackerTime={trackerTime}
-                />
-              );
-            }
-          })}
+          {trackersByDay.trackersByProject.map(({ trackers, name }) =>
+            trackers.map(({ attributes, id }) => (
+              <TrackerItem
+                key={id}
+                id={id}
+                name={name}
+                date={attributes?.date}
+                description={attributes?.description}
+                duration={attributes?.duration}
+                projectId={attributes?.project?.data?.id}
+              />
+            ))
+          )}
           <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
-            Total: {totalTime}
+            Total: {trackersByDay.total}
           </Typography>
         </Stack>
       );

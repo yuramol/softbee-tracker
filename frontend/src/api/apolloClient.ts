@@ -10,17 +10,17 @@ import { createUploadLink } from 'apollo-upload-client';
 import { useLocalStorage } from 'hooks';
 
 const errorLink = onError(({ networkError }) => {
-  const { setStorageValue: setJwt } = useLocalStorage('jwt');
+  const [, setJwt] = useLocalStorage('jwt');
 
   if (networkError && (networkError as ServerError).statusCode === 401) {
-    setJwt('');
+    setJwt(null);
   }
 });
 
 const authLink = setContext((_, { headers }) => {
-  const { storedValue: jwt } = useLocalStorage('jwt');
+  const [jwt] = useLocalStorage('jwt');
 
-  if (jwt !== '') {
+  if (jwt !== null) {
     return {
       headers: {
         ...headers,

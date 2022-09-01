@@ -2,56 +2,65 @@ import React, { useState } from 'react';
 import { ButtonGroup } from '@mui/material';
 import { Button, MultipleSelect } from 'legos';
 import { SearchInput } from 'legos/SearchInput';
-//TODO add PM info
-const pm = [
-  { label: 'Alex Rooox', value: '1' },
-  { label: 'Oleg Books', value: '2' },
-  { label: 'Stas sss', value: '3' },
-  { label: 'Oleg Bookssdfsdfsdf', value: '4' },
-  { label: 'Olesdfsg Bossdfsdfoks', value: '5' },
-  { label: 'Olsdfsdfeg Books', value: '6' },
-  { label: 'Olsdfsdfeg Books', value: '7' },
-  { label: 'Oleg Bosdfsdfoks', value: '8' },
+import { useNormalizedUsers } from 'hooks';
+
+type ProjectFiltersProps = {
+  searchProject: string;
+  searchManagers: string[];
+  setSearchProject: React.Dispatch<React.SetStateAction<string>>;
+  setSearchManagers: React.Dispatch<React.SetStateAction<string[]>>;
+  setSearchStatus: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+export const statusItem = [
+  { label: 'All', value: 'all' },
+  { label: 'Active', value: 'active' },
+  { label: 'Archived', value: 'archived' },
 ];
-const filterItem = [
-  { label: 'All', value: 'All' },
-  { label: 'Active', value: 'Active' },
-  { label: 'Archived', value: 'Archived' },
-];
-export const ProjectFilters = () => {
-  const [active, setActive] = useState(filterItem[0]);
-  const [selectedItem, setSelectedItem] = useState<string[]>([]);
-  //Searchproject use for seach mutation
-  const [searchProjects, setSearchProjects] = useState('');
-  const handleClickButton = (e: number) => {
-    setActive(filterItem[e]);
+
+export const ProjectFilters = ({
+  searchProject,
+  searchManagers,
+  setSearchProject,
+  setSearchManagers,
+  setSearchStatus,
+}: ProjectFiltersProps) => {
+  const { managersChoices } = useNormalizedUsers();
+  const [activeStatus, setActiveStatus] = useState(statusItem[0]);
+
+  const handleClickStatusButton = (index: number) => {
+    setActiveStatus(statusItem[index]);
+    index === 0
+      ? setSearchStatus(statusItem.map(({ value }) => value))
+      : setSearchStatus([statusItem[index].value]);
   };
+
   return (
     <>
       <SearchInput
         sx={{ flexGrow: '1' }}
-        value={searchProjects}
+        value={searchProject}
         size="small"
-        label={'Search...'}
-        onChange={(value) => setSearchProjects(value as string)}
+        label="Search..."
+        onChange={(value) => setSearchProject(value as string)}
       />
       <MultipleSelect
         label="Project manager"
         variant="outlined"
         size="small"
         sx={{ width: 200 }}
-        items={pm}
-        value={selectedItem}
-        onChange={(e) => setSelectedItem(e.target.value as string[])}
+        items={managersChoices}
+        value={searchManagers}
+        onChange={(e) => setSearchManagers(e.target.value as string[])}
       />
       <ButtonGroup size="small" variant="outlined" sx={{ height: '40px' }}>
-        {filterItem.map(({ label, value }, e) => (
+        {statusItem.map(({ label, value }, index) => (
           <Button
             sx={{ width: '90px' }}
             title={label}
             key={value}
-            onClick={() => handleClickButton(e)}
-            variant={active.value === value ? 'contained' : 'outlined'}
+            onClick={() => handleClickStatusButton(index)}
+            variant={activeStatus.value === value ? 'contained' : 'outlined'}
           />
         ))}
       </ButtonGroup>

@@ -9,7 +9,7 @@ import { pages } from '../constants';
 export const AppRouter = () => {
   const { jwt, user, isAuth } = useAuthUser();
 
-  if (jwt !== '' && !isAuth) return <Loader />;
+  if (jwt !== null && !isAuth) return <Loader />;
 
   const currentPages = pages.filter(({ role }) =>
     role.includes(user.role.type)

@@ -3,7 +3,6 @@ import { Typography } from '@mui/material';
 
 import {
   MainWrapper,
-  RangeCalendar,
   TimeInspector,
   TrackerCalendar,
   TrackerDayView,
@@ -23,13 +22,15 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
 
-  const { trackers } = useNormalizedTrackers(user.id, startMonth, endMonth);
+  const { trackers, refetch } = useNormalizedTrackers({
+    user: { id: { in: [user.id] } },
+    date: { between: [startMonth, endMonth] },
+  });
 
   return (
     <MainWrapper
       sidebar={
         <>
-          <RangeCalendar />
           <TimeInspector />
           <TrackerCalendar
             selectedDay={selectedDay}
@@ -42,7 +43,11 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
       }
     >
       <Typography variant="h1">{title}</Typography>
-      <TrackerDayView selectedDay={selectedDay} />
+      <TrackerDayView
+        selectedDay={selectedDay}
+        trackers={trackers}
+        refetchTrackers={refetch}
+      />
     </MainWrapper>
   );
 };

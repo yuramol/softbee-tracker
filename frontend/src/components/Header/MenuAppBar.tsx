@@ -4,6 +4,7 @@ import { IconButton, Menu, MenuItem, Box } from '@mui/material';
 import { NavButton } from './NavButton';
 import { HeaderProps } from './types';
 import { Icon } from 'legos';
+
 interface MenuAppBarProps extends HeaderProps {
   anchorElNav: null | HTMLElement;
   handleOpenNavMenu: (event: React.MouseEvent<HTMLElement>) => void;

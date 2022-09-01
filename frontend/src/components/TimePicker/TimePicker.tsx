@@ -53,6 +53,10 @@ const TimePicker = ({
   }, []);
 
   useEffect(() => {
+    setDurationValue(value);
+  }, [value]);
+
+  useEffect(() => {
     if (dialogOpen) {
       dialogRef.current?.focus();
     }

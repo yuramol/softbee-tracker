@@ -20,6 +20,7 @@ import {
   NavigateNext,
   ArrowDropDown,
   WorkHistory,
+  VisibilityRounded,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -46,4 +47,5 @@ export const IconsMap: IconsNamesMapType = {
   navigateNext: NavigateNext,
   arrowDropDown: ArrowDropDown,
   upWork: WorkHistory,
+  watch: VisibilityRounded,
 };

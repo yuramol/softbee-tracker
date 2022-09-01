@@ -17,6 +17,7 @@ export const TrackerAddNewEntry = () => {
   const toggleOpenModal = () => {
     setIsOpenModal(!isOpenModal);
   };
+
   const handelSubmit = (values: TimeEntryValues) => {
     onCreateTracker({
       date: values.DATE,
@@ -25,6 +26,7 @@ export const TrackerAddNewEntry = () => {
       user: user.id,
       duration: values.DURATION,
     });
+
     toggleOpenModal();
   };
 
