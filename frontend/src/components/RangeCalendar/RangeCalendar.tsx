@@ -1,120 +1,223 @@
-import * as React from 'react';
-import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { ButtonGroup, Button, Input, OutlinedInput } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  PickersDay,
+  StaticDatePicker,
+  LocalizationProvider,
+} from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import enGb from 'date-fns/locale/en-GB';
+import {
+  ButtonGroup,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  IconButton,
+  Popper,
+  ClickAwayListener,
+} from '@mui/material';
 import {
   endOfMonth,
   endOfQuarter,
   endOfWeek,
   endOfYear,
   format,
+  isAfter,
+  isBefore,
   startOfMonth,
   startOfQuarter,
   startOfWeek,
   startOfYear,
+  subDays,
   subMonths,
   subQuarters,
   subWeeks,
   subYears,
 } from 'date-fns';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
+import { Icon } from 'legos';
+
+const getFormattedDate = (date: Date) => format(date, 'yyyy-MM-dd');
+
+const rangeDates = [
+  {
+    label: 'Current week',
+    value: [
+      getFormattedDate(startOfWeek(new Date(), { weekStartsOn: 1 })),
+      getFormattedDate(endOfWeek(new Date(), { weekStartsOn: 1 })),
+    ],
+  },
+  {
+    label: 'Last week',
+    value: [
+      getFormattedDate(
+        startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 })
+      ),
+      getFormattedDate(endOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 })),
+    ],
+  },
+  {
+    label: 'Current month',
+    value: [
+      getFormattedDate(startOfMonth(new Date())),
+      getFormattedDate(endOfMonth(new Date())),
+    ],
+  },
+  {
+    label: 'Last month',
+    value: [
+      getFormattedDate(startOfMonth(subMonths(new Date(), 1))),
+      getFormattedDate(endOfMonth(subMonths(new Date(), 1))),
+    ],
+  },
+  {
+    label: 'Current quarter',
+    value: [
+      getFormattedDate(startOfQuarter(new Date())),
+      getFormattedDate(endOfQuarter(new Date())),
+    ],
+  },
+  {
+    label: 'Last quarter',
+    value: [
+      getFormattedDate(startOfQuarter(subQuarters(new Date(), 1))),
+      getFormattedDate(endOfQuarter(subQuarters(new Date(), 1))),
+    ],
+  },
+  {
+    label: 'Current year',
+    value: [
+      getFormattedDate(startOfYear(new Date())),
+      getFormattedDate(endOfYear(new Date())),
+    ],
+  },
+  {
+    label: 'Last year',
+    value: [
+      getFormattedDate(startOfYear(subYears(new Date(), 1))),
+      getFormattedDate(endOfYear(subYears(new Date(), 1))),
+    ],
+  },
+];
 
 export const RangeCalendar = () => {
-  const [value, setValue] = React.useState<Date>(new Date());
-  const [dateValue, setDateValue] = React.useState<Date[]>([
-    new Date(),
-    new Date(),
+  const [isPopperOpen, setIsPopperOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const [dateArray, setDateArray] = useState<string[]>([
+    getFormattedDate(new Date()),
   ]);
-  const [open, setOpen] = React.useState(false);
-
-  const getCurrentWeekDates = () => {
-    setDateValue([
-      startOfWeek(new Date(), { weekStartsOn: 1 }),
-      endOfWeek(new Date(), { weekStartsOn: 1 }),
-    ]);
-  };
-  const getLastWeekDates = () => {
-    setDateValue([
-      startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }),
-      endOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }),
-    ]);
-  };
-  const getCurrentMonthDates = () => {
-    setDateValue([startOfMonth(new Date()), endOfMonth(new Date())]);
-  };
-  const getPastMonthDates = () => {
-    setDateValue([
-      startOfMonth(subMonths(new Date(), 1)),
-      endOfMonth(subMonths(new Date(), 1)),
-    ]);
-  };
-  const getCurrentQuarterDates = () => {
-    setDateValue([startOfQuarter(new Date()), endOfQuarter(new Date())]);
-  };
-  const getPastQuarterDates = () => {
-    setDateValue([
-      startOfQuarter(subQuarters(new Date(), 1)),
-      endOfQuarter(subQuarters(new Date(), 1)),
-    ]);
-  };
-  const getCurrentYearDates = () => {
-    setDateValue([startOfYear(new Date()), endOfYear(new Date())]);
-  };
-  const getPastYearDates = () => {
-    setDateValue([
-      startOfYear(subYears(new Date(), 1)),
-      endOfYear(subYears(new Date(), 1)),
-    ]);
-  };
-
-  const inputValue = `${format(dateValue[0], 'dd/MM/yyyy')} ${
-    dateValue[0].getDate() !== dateValue[1].getDate()
-      ? `- ${format(dateValue[1], 'dd/MM/yyyy')}`
-      : ''
-  }`;
-
-  const renderInput = (props: TextFieldProps) => (
-    /* eslint-disable react/prop-types */
-    <OutlinedInput
-      type="text"
-      inputRef={props.inputRef}
-      value={inputValue}
-      onClick={() => setOpen(true)}
-      onChange={props.onChange}
-      endAdornment={props.InputProps?.endAdornment}
-    />
+  const [value, setValue] = React.useState<Date | null>(
+    new Date(dateArray.sort()[0])
   );
+
+  const handleClickAway = () => {
+    setAnchorEl(null);
+    setIsPopperOpen(!isPopperOpen);
+  };
+
+  const handleClickSetRangeDate = (el: HTMLElement) => {
+    setAnchorEl(el);
+    setIsPopperOpen(!isPopperOpen);
+  };
+
+  const handleSetDate = (date: Date) => {
+    const selectedDay = getFormattedDate(date);
+    const newDateArray = [...dateArray];
+
+    if (newDateArray.length < 2) {
+      newDateArray.push(selectedDay);
+    } else {
+      newDateArray.length = 0;
+      newDateArray.push(selectedDay);
+    }
+
+    setDateArray(newDateArray.sort());
+    setValue(new Date(newDateArray[0]));
+  };
+
+  const handleSetRangeDate = (value: string[]) => {
+    setDateArray(value);
+    setValue(new Date(value[0]));
+  };
 
   return (
     <>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          label={inputValue}
-          value={value}
-          views={['day']}
-          open={open}
-          onOpen={() => setOpen(true)}
-          onClose={() => setOpen(false)}
-          onChange={(newValue) => {
-            console.log(newValue);
+      <Stack
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+        onClick={(e) => handleClickSetRangeDate(e.currentTarget)}
+      >
+        <Typography>{`${format(new Date(dateArray[0]), 'd MMM yyyy')}${
+          dateArray[1]
+            ? ` - ${format(new Date(dateArray[1]), 'd MMM yyyy')}`
+            : ''
+        }`}</Typography>
+        <IconButton color="primary">
+          <Icon icon="calendarMonth" size="small" />
+        </IconButton>
+      </Stack>
+      {isPopperOpen && (
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <Popper open={isPopperOpen} anchorEl={anchorEl}>
+            <Stack
+              flexDirection="row"
+              bgcolor="background.paper"
+              border={(t) => `1px solid ${t.palette.primary.main}`}
+              borderRadius={1}
+              gap={1}
+              pt={3}
+              pr={4}
+              pl={1}
+            >
+              <LocalizationProvider
+                adapterLocale={enGb}
+                dateAdapter={AdapterDateFns}
+              >
+                <StaticDatePicker
+                  displayStaticWrapperAs="desktop"
+                  openTo="day"
+                  views={['day']}
+                  value={value}
+                  onChange={(newValue) => handleSetDate(newValue as Date)}
+                  renderInput={(params) => <TextField {...params} />}
+                  renderDay={(day, selectedDays, pickersDayProps) => {
+                    let selectedMuiClass = '';
 
-            setValue(newValue);
-            setDateValue([new Date(newValue), new Date(newValue)]);
-          }}
-          renderInput={renderInput}
-        />
-      </LocalizationProvider>
-      <ButtonGroup size="small" orientation="vertical">
-        <Button onClick={getCurrentWeekDates}>Current week</Button>
-        <Button onClick={getLastWeekDates}>Last week</Button>
-        <Button onClick={getCurrentMonthDates}>Current month</Button>
-        <Button onClick={getPastMonthDates}>Past month</Button>
-        <Button onClick={getCurrentQuarterDates}>Current quarter</Button>
-        <Button onClick={getPastQuarterDates}>Past quarter</Button>
-        <Button onClick={getCurrentYearDates}>Current year</Button>
-        <Button onClick={getPastYearDates}>Past year</Button>
-      </ButtonGroup>
+                    if (
+                      isAfter(day, subDays(new Date(dateArray[0]), 1)) &&
+                      isBefore(day, new Date(dateArray[1]))
+                    ) {
+                      selectedMuiClass = 'Mui-selected';
+                    }
+
+                    return (
+                      <PickersDay
+                        className={selectedMuiClass}
+                        {...pickersDayProps}
+                      />
+                    );
+                  }}
+                />
+              </LocalizationProvider>
+              <ButtonGroup orientation="vertical" sx={{ mt: 2 }}>
+                {rangeDates.map(({ label, value }) => (
+                  <Button
+                    key={label}
+                    variant={dateArray === value ? 'contained' : 'text'}
+                    onClick={() => handleSetRangeDate(value)}
+                    style={{ justifyContent: 'flex-start', borderRadius: 0 }}
+                  >
+                    {label}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </Stack>
+          </Popper>
+        </ClickAwayListener>
+      )}
     </>
   );
 };

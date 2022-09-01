@@ -29,6 +29,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     <MainWrapper
       sidebar={
         <>
+          <RangeCalendar />
           <TimeInspector />
           <TrackerCalendar
             selectedDay={selectedDay}
@@ -42,7 +43,6 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     >
       <Typography variant="h1">{title}</Typography>
       <TrackerDayView selectedDay={selectedDay} />
-      <RangeCalendar />
     </MainWrapper>
   );
 };
