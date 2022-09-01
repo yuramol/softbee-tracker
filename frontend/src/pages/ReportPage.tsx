@@ -83,21 +83,23 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
                             component="th"
                             scope="row"
                             rowSpan={trackers.length}
+                            sx={{ width: 125 }}
                           >
                             {format(new Date(date), 'd MMM y')}
                           </TableCell>
                         )}
-
                         <TableCell>
-                          <Typography
-                            variant="subtitle1"
-                            sx={{ fontWeight: 600 }}
-                          >
+                          <Typography variant="subtitle1" fontWeight="600">
                             {name}
                           </Typography>
                           <Typography>{attributes?.description}</Typography>
+                          <Typography variant="body2" mt={2}>
+                            {`${attributes?.user?.data?.attributes?.firstName}
+                            ${attributes?.user?.data?.attributes?.lastName}
+                            (${attributes?.user?.data?.attributes?.username})
+                            `}
+                          </Typography>
                         </TableCell>
-
                         <TableCell>
                           {format(
                             parseTrackerTime(attributes?.duration),
