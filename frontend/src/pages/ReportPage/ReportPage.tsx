@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import {
-  IconButton,
   Stack,
   Table,
   TableBody,
@@ -12,41 +11,43 @@ import {
   Typography,
 } from '@mui/material';
 
-import { MainWrapper, RangeCalendar } from '../components';
-import { PageProps } from './types';
+import { MainWrapper } from '../../components';
+import { PageProps } from '../types';
+import { useNormalizedTrackers } from 'hooks';
 import {
-  useAuthUser,
-  useNormalizedTrackers,
-  useNormalizedUsers,
-  useProjects,
-} from 'hooks';
-import { getHours, getMinutes, parseTrackerTime } from 'helpers';
-import { Icon, MultipleSelect } from 'legos';
+  getFormattedDate,
+  getHours,
+  getMinutes,
+  parseTrackerTime,
+} from 'helpers';
+import { ReportPageSidebar } from './ReportPageSidebar';
 
 const reportTableHead = ['Date', 'Description', 'Time'];
 
 const ReportPage: React.FC<PageProps> = ({ title }) => {
-  const { user } = useAuthUser();
-  const { usersChoices } = useNormalizedUsers();
-  const { projectsChoices } = useProjects();
-
+  const [selectedDates, setSelectedDates] = useState<string[]>([
+    getFormattedDate(new Date()),
+  ]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
-  const [startDate, setStartDate] = useState(
-    format(new Date('2022-08-01'), 'YYY-MM-dd')
-  );
-  const [endDate, setEndDate] = useState(
-    format(new Date('2022-09-31'), 'YYY-MM-dd')
-  );
+  const reportFilter = {
+    user: {
+      id: selectedEmployees.length !== 0 ? { in: selectedEmployees } : {},
+    },
+    project: {
+      id: selectedProjects.length !== 0 ? { in: selectedProjects } : {},
+    },
+    date:
+      selectedDates.length > 1
+        ? { between: selectedDates }
+        : { eq: selectedDates[0] },
+  };
 
-  const { trackers } = useNormalizedTrackers({
-    user: { id: { in: [user.id] } },
-    date: { between: [startDate, endDate] },
-  });
+  const { trackers } = useNormalizedTrackers(reportFilter);
 
   const reportTotalTime = useMemo(() => {
-    let totalTime = '00:00';
+    let totalTime = '0:00';
 
     trackers.forEach(({ total }) => {
       totalTime = getHours(
@@ -57,44 +58,27 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
     return totalTime;
   }, [trackers]);
 
+  const reportSidebarProps = {
+    selectedDates,
+    selectedEmployees,
+    selectedProjects,
+    setSelectedDates,
+    setSelectedEmployees,
+    setSelectedProjects,
+  };
+
   return (
-    <MainWrapper
-      sidebar={
-        <Stack gap={3}>
-          <RangeCalendar />
-          <MultipleSelect
-            label="Employees"
-            size="small"
-            variant="outlined"
-            IconComponent={() => <Icon icon="add" />}
-            items={usersChoices}
-            value={selectedEmployees}
-            onChange={(e) => setSelectedEmployees(e.target.value as string[])}
-          />
-          <MultipleSelect
-            label="Projects"
-            size="small"
-            variant="outlined"
-            IconComponent={() => <Icon icon="add" />}
-            items={projectsChoices}
-            value={selectedProjects}
-            onChange={(e) => setSelectedProjects(e.target.value as string[])}
-          />
-          <Stack alignItems="center">
-            <IconButton color="primary">
-              <Icon icon="download" />
-            </IconButton>
-          </Stack>
-        </Stack>
-      }
-    >
+    <MainWrapper sidebar={<ReportPageSidebar {...reportSidebarProps} />}>
       <Typography variant="h1">{title}</Typography>
       <Stack mt={6} flexDirection="row" justifyContent="space-between">
         <Stack flexDirection="row" gap={2}>
           <Typography fontWeight="600">Period:</Typography>
           <Typography>
-            {format(new Date(startDate), 'd MMM y')} -{' '}
-            {format(new Date(endDate), 'd MMM y')}
+            {`${format(new Date(selectedDates[0]), 'd MMM yyyy')}${
+              selectedDates[1]
+                ? ` - ${format(new Date(selectedDates[1]), 'd MMM yyyy')}`
+                : ''
+            }`}
           </Typography>
         </Stack>
         <Stack flexDirection="row" gap={2}>

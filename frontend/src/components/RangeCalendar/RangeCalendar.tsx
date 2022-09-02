@@ -36,8 +36,12 @@ import {
 } from 'date-fns';
 
 import { Icon } from 'legos';
+import { getFormattedDate } from 'helpers';
 
-const getFormattedDate = (date: Date) => format(date, 'yyyy-MM-dd');
+type Props = {
+  selectedDates: string[];
+  setSelectedDates: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 const rangeDates = [
   {
@@ -100,15 +104,16 @@ const rangeDates = [
   },
 ];
 
-export const RangeCalendar = () => {
+export const RangeCalendar: React.FC<Props> = ({
+  selectedDates,
+  setSelectedDates,
+}) => {
   const rangeCalendarRef = useRef(null);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const [dateArray, setDateArray] = useState<string[]>([
-    getFormattedDate(new Date()),
-  ]);
-  const [value, setValue] = React.useState<Date | null>(new Date(dateArray[0]));
+  const [value, setValue] = React.useState<Date | null>(
+    new Date(selectedDates[0])
+  );
 
   const handleClickAway = () => {
     setAnchorEl(null);
@@ -122,21 +127,21 @@ export const RangeCalendar = () => {
 
   const handleSetDate = (date: Date) => {
     const selectedDay = getFormattedDate(date);
-    const newDateArray = [...dateArray];
+    const newSelectedDates = [...selectedDates];
 
-    if (newDateArray.length < 2) {
-      newDateArray.push(selectedDay);
+    if (newSelectedDates.length < 2) {
+      newSelectedDates.push(selectedDay);
     } else {
-      newDateArray.length = 0;
-      newDateArray.push(selectedDay);
+      newSelectedDates.length = 0;
+      newSelectedDates.push(selectedDay);
     }
 
-    setDateArray(newDateArray.sort());
-    setValue(new Date(newDateArray[0]));
+    setSelectedDates(newSelectedDates.sort());
+    setValue(new Date(newSelectedDates[0]));
   };
 
   const handleSetRangeDate = (value: string[]) => {
-    setDateArray(value);
+    setSelectedDates(value);
     setValue(new Date(value[0]));
   };
 
@@ -151,14 +156,11 @@ export const RangeCalendar = () => {
       >
         <Stack>
           <Typography fontWeight="600">Period:</Typography>
-          <Typography width="100%" textAlign="center">{`${format(
-          new Date(dateArray[0]),
-          'd MMM yyyy'
-          )}${
-          dateArray[1]
-            ? ` - ${format(new Date(dateArray[1]), 'd MMM yyyy')}`
-            : ''
-        }`}</Typography>
+          <Typography>{`${format(new Date(selectedDates[0]), 'd MMM yyyy')}${
+            selectedDates[1]
+              ? ` - ${format(new Date(selectedDates[1]), 'd MMM yyyy')}`
+              : ''
+          }`}</Typography>
         </Stack>
 
         <IconButton color="primary" onClick={handleOpenRangeCalendar}>
@@ -191,8 +193,8 @@ export const RangeCalendar = () => {
                   renderInput={(params) => <TextField {...params} />}
                   renderDay={(day, selectedDays, pickersDayProps) => {
                     const isBetweenDates =
-                      isAfter(day, subDays(new Date(dateArray[0]), 1)) &&
-                      isBefore(day, new Date(dateArray[1]));
+                      isAfter(day, subDays(new Date(selectedDates[0]), 1)) &&
+                      isBefore(day, new Date(selectedDates[1]));
 
                     return (
                       <PickersDay
@@ -207,7 +209,7 @@ export const RangeCalendar = () => {
                 {rangeDates.map(({ label, value }) => (
                   <Button
                     key={label}
-                    variant={dateArray === value ? 'contained' : 'text'}
+                    variant={selectedDates === value ? 'contained' : 'text'}
                     onClick={() => handleSetRangeDate(value)}
                     style={{ justifyContent: 'flex-start', borderRadius: 0 }}
                   >
