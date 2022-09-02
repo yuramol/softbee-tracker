@@ -147,16 +147,20 @@ export const RangeCalendar = () => {
         justifyContent="space-between"
         alignItems="center"
         ref={rangeCalendarRef}
-        mb={2}
+        // border="1px solid rgba(0,0,0,0.25)"
+        // borderRadius={1}
+        // pt="1px"
+        // pb="1px"
       >
-        <Typography width="100%" textAlign="center">{`${format(
-          new Date(dateArray[0]),
-          'd MMM yyyy'
-        )}${
-          dateArray[1]
-            ? ` - ${format(new Date(dateArray[1]), 'd MMM yyyy')}`
-            : ''
-        }`}</Typography>
+        <Stack>
+          <Typography fontWeight="600">Period:</Typography>
+          <Typography>{`${format(new Date(dateArray[0]), 'd MMM yyyy')}${
+            dateArray[1]
+              ? ` - ${format(new Date(dateArray[1]), 'd MMM yyyy')}`
+              : ''
+          }`}</Typography>
+        </Stack>
+
         <IconButton color="primary" onClick={handleOpenRangeCalendar}>
           <Icon icon="calendarMonth" size="small" />
         </IconButton>
