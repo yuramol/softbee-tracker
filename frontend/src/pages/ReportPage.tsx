@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { MainWrapper } from '../components';
+import { MainWrapper, RangeCalendar } from '../components';
 import { PageProps } from './types';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { getHours, getMinutes, parseTrackerTime } from 'helpers';
@@ -27,7 +27,10 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
     format(new Date('2022-08-31'), 'YYY-MM-dd')
   );
 
-  const { trackers } = useNormalizedTrackers(user.id, startDate, endDate);
+  const { trackers } = useNormalizedTrackers({
+    user: { id: { in: [user.id] } },
+    date: { between: [startDate, endDate] },
+  });
 
   const reportTotalTime = useMemo(() => {
     let totalTime = '00:00';
@@ -42,7 +45,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   }, [trackers]);
 
   return (
-    <MainWrapper sidebar={<p>Filters</p>}>
+    <MainWrapper sidebar={<RangeCalendar />}>
       <Typography variant="h1">{title}</Typography>
       <Stack mt={6} flexDirection="row" justifyContent="space-between">
         <Stack flexDirection="row" gap={2}>
