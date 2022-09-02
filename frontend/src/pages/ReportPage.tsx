@@ -27,7 +27,10 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
     format(new Date('2022-07-31'), 'YYY-MM-dd')
   );
 
-  const { trackers } = useNormalizedTrackers(user.id, startDate, endDate);
+  const { trackers } = useNormalizedTrackers({
+    user: { id: { in: [user.id] } },
+    date: { between: [startDate, endDate] },
+  });
 
   const reportTotalTime = useMemo(() => {
     let totalTime = '00:00';
