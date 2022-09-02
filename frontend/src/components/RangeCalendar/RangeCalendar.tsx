@@ -151,11 +151,14 @@ export const RangeCalendar = () => {
       >
         <Stack>
           <Typography fontWeight="600">Period:</Typography>
-          <Typography>{`${format(new Date(dateArray[0]), 'd MMM yyyy')}${
-            dateArray[1]
-              ? ` - ${format(new Date(dateArray[1]), 'd MMM yyyy')}`
-              : ''
-          }`}</Typography>
+          <Typography width="100%" textAlign="center">{`${format(
+          new Date(dateArray[0]),
+          'd MMM yyyy'
+          )}${
+          dateArray[1]
+            ? ` - ${format(new Date(dateArray[1]), 'd MMM yyyy')}`
+            : ''
+        }`}</Typography>
         </Stack>
 
         <IconButton color="primary" onClick={handleOpenRangeCalendar}>
