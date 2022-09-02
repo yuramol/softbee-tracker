@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { format, formatISO } from 'date-fns';
 
-import { CREATE_TRACKER_BY_USER_ID_MUTATION, TRACKERS_LIVE_QUERY } from 'api';
+import { CREATE_TRACKER_BY_USER_ID_MUTATION, TRACKERS_QUERY } from 'api';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 import {
   Enum_Tracker_Live_Status,
@@ -29,7 +29,7 @@ const useCreateTracker = () => {
           duration: '00:00:00',
         },
       },
-      refetchQueries: [TRACKERS_LIVE_QUERY],
+      refetchQueries: [TRACKERS_QUERY],
     });
   return { createTracker };
 };

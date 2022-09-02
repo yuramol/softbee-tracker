@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { parseISO, secondsToMinutes } from 'date-fns';
 
-import { TRACKERS_LIVE_QUERY, UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
+import { TRACKERS_QUERY, UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
 import {
   Enum_Tracker_Live_Status,
   MutationUpdateTrackerArgs,
@@ -30,7 +30,7 @@ const usePauseTracker = () => {
           liveDurationMinutes: secondsToMinutes(seconds),
         },
       },
-      refetchQueries: [TRACKERS_LIVE_QUERY],
+      refetchQueries: [TRACKERS_QUERY],
     });
   };
   return { pauseTracker };

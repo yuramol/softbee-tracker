@@ -6,7 +6,7 @@ import {
   TrackerEntityResponseCollection,
   TrackerFiltersInput,
 } from 'types/GraphqlTypes';
-import { TRACKERS_LIVE_QUERY } from 'api';
+import { TRACKERS_QUERY } from 'api';
 
 import { ShowTracker } from '../ShowTracker/ShowTracker';
 
@@ -21,7 +21,7 @@ export const ShowTrackers = ({ userId }: ShowTrackersProps) => {
     {
       filters: TrackerFiltersInput;
     }
-  >(TRACKERS_LIVE_QUERY, {
+  >(TRACKERS_QUERY, {
     variables: {
       filters: {
         user: { id: { eq: userId } },
