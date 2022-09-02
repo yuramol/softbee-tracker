@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { MainWrapper } from '../../components';
+import { Loader, MainWrapper } from '../../components';
 import { PageProps } from '../types';
 import { useNormalizedTrackers } from 'hooks';
 import {
@@ -100,23 +100,20 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
               <TableBody>
                 {trackers.map(({ date, trackersByProject }) =>
                   trackersByProject.map(({ name, trackers }) =>
-                    trackers.map(({ id, attributes }, trackerIndex) => (
+                    trackers.map(({ id, attributes }) => (
                       <TableRow
                         key={id}
                         sx={{
                           '&:last-child td, &:last-child th': { border: 0 },
                         }}
                       >
-                        {trackerIndex === 0 && (
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            rowSpan={trackers.length}
-                            sx={{ width: 125 }}
-                          >
-                            {format(new Date(date), 'd MMM y')}
-                          </TableCell>
-                        )}
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          sx={{ width: 125 }}
+                        >
+                          {format(new Date(date), 'd MMM y')}
+                        </TableCell>
                         <TableCell>
                           <Typography variant="subtitle1" fontWeight="600">
                             {name}
