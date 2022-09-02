@@ -147,10 +147,7 @@ export const RangeCalendar = () => {
         justifyContent="space-between"
         alignItems="center"
         ref={rangeCalendarRef}
-        // border="1px solid rgba(0,0,0,0.25)"
-        // borderRadius={1}
-        // pt="1px"
-        // pb="1px"
+        mb={2}
       >
         <Stack>
           <Typography fontWeight="600">Period:</Typography>
@@ -167,7 +164,7 @@ export const RangeCalendar = () => {
       </Stack>
       {isPopperOpen && (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <Popper open={isPopperOpen} anchorEl={anchorEl}>
+          <Popper open={isPopperOpen} anchorEl={anchorEl} style={{ zIndex: 1 }}>
             <Stack
               flexDirection="row"
               bgcolor="background.paper"

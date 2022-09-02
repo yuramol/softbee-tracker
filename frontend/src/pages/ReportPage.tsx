@@ -14,7 +14,12 @@ import {
 
 import { MainWrapper, RangeCalendar } from '../components';
 import { PageProps } from './types';
-import { useAuthUser, useNormalizedTrackers, useNormalizedUsers } from 'hooks';
+import {
+  useAuthUser,
+  useNormalizedTrackers,
+  useNormalizedUsers,
+  useProjects,
+} from 'hooks';
 import { getHours, getMinutes, parseTrackerTime } from 'helpers';
 import { Icon, MultipleSelect } from 'legos';
 
@@ -23,12 +28,10 @@ const reportTableHead = ['Date', 'Description', 'Time'];
 const ReportPage: React.FC<PageProps> = ({ title }) => {
   const { user } = useAuthUser();
   const { usersChoices } = useNormalizedUsers();
+  const { projectsChoices } = useProjects();
 
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
-
-  const handleChangeUsers = (value: string[]) => {
-    setSelectedEmployees(value);
-  };
+  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
   const [startDate, setStartDate] = useState(
     format(new Date('2022-08-01'), 'YYY-MM-dd')
@@ -57,7 +60,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   return (
     <MainWrapper
       sidebar={
-        <Stack spacing={2}>
+        <Stack gap={3}>
           <RangeCalendar />
           <MultipleSelect
             label="Employees"
@@ -66,13 +69,16 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
             IconComponent={() => <Icon icon="add" />}
             items={usersChoices}
             value={selectedEmployees}
-            onChange={(e) => handleChangeUsers(e.target.value as string[])}
+            onChange={(e) => setSelectedEmployees(e.target.value as string[])}
           />
           <MultipleSelect
             label="Projects"
             size="small"
             variant="outlined"
             IconComponent={() => <Icon icon="add" />}
+            items={projectsChoices}
+            value={selectedProjects}
+            onChange={(e) => setSelectedProjects(e.target.value as string[])}
           />
           <Stack alignItems="center">
             <IconButton color="primary">
