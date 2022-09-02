@@ -5,6 +5,6 @@ export { useUsersPermissionsUser } from './useUsersPermissionsUser';
 export { useNormalizedTrackers } from './useNormalizedTrackers';
 export { useNotification } from './useNotification';
 export { useDebounce } from './useDebounce';
-export { useProjectsByUserId } from './useProjectsByUserId';
+export { useProjects } from './useProjects';
 export { useNormalizedUsers } from './useNormalizedUsers';
 export { useUsersPermissionsUsers } from './useUsersPermissionsUsers';

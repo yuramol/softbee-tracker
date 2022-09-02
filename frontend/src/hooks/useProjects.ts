@@ -1,13 +1,16 @@
 import { useQuery } from '@apollo/client';
 
-import { PROJECTS_BY_USER_ID_QUERY } from 'api';
-import { ProjectEntityResponseCollection, Scalars } from 'types/GraphqlTypes';
+import { PROJECTS_QUERY } from 'api';
+import {
+  ProjectEntityResponseCollection,
+  ProjectFiltersInput,
+} from 'types/GraphqlTypes';
 
-export const useProjectsByUserId = (userId: Scalars['ID']) => {
+export const useProjects = (filters: ProjectFiltersInput = {}) => {
   const { data, loading, refetch } = useQuery<{
     projects: ProjectEntityResponseCollection;
-  }>(PROJECTS_BY_USER_ID_QUERY, {
-    variables: { userId },
+  }>(PROJECTS_QUERY, {
+    variables: { filters },
   });
 
   const projects = data?.projects.data;
