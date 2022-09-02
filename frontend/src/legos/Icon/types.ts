@@ -20,7 +20,8 @@ export type IconsNames =
   | 'navigateNext'
   | 'arrowDropDown'
   | 'upWork'
-  | 'watch';
+  | 'watch'
+  | 'download';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;

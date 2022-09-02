@@ -21,6 +21,7 @@ import {
   ArrowDropDown,
   WorkHistory,
   VisibilityRounded,
+  Download,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -48,4 +49,5 @@ export const IconsMap: IconsNamesMapType = {
   arrowDropDown: ArrowDropDown,
   upWork: WorkHistory,
   watch: VisibilityRounded,
+  download: Download,
 };
