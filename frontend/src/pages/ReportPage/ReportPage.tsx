@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Loader, MainWrapper } from '../../components';
+import { MainWrapper } from '../../components';
 import { PageProps } from '../types';
 import { useNormalizedTrackers } from 'hooks';
 import {
