@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const UPDATE_TRACKER_BY_ID_MUTATION = gql`
-  mutation UpdateTrackerById($id: ID!, $data: TrackerInput!) {
+  mutation updateTrackerById($id: ID!, $data: TrackerInput!) {
     updateTracker(id: $id, data: $data) {
       data {
         id

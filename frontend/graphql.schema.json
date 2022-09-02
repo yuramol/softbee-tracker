@@ -6837,24 +6837,24 @@
             "deprecationReason": null
           },
           {
-            "name": "liveDuration",
+            "name": "liveDurationMinutes",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Time",
+              "name": "Long",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "liveStatus",
+            "name": "live_status",
             "description": null,
             "args": [],
             "type": {
               "kind": "ENUM",
-              "name": "ENUM_TRACKER_LIVESTATUS",
+              "name": "ENUM_TRACKER_LIVE_STATUS",
               "ofType": null
             },
             "isDeprecated": false,
@@ -7118,11 +7118,11 @@
             "deprecationReason": null
           },
           {
-            "name": "liveDuration",
+            "name": "liveDurationMinutes",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "TimeFilterInput",
+              "name": "LongFilterInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -7130,7 +7130,7 @@
             "deprecationReason": null
           },
           {
-            "name": "liveStatus",
+            "name": "live_status",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -7277,11 +7277,11 @@
             "deprecationReason": null
           },
           {
-            "name": "liveDuration",
+            "name": "liveDurationMinutes",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Time",
+              "name": "Long",
               "ofType": null
             },
             "defaultValue": null,
@@ -7289,11 +7289,11 @@
             "deprecationReason": null
           },
           {
-            "name": "liveStatus",
+            "name": "live_status",
             "description": null,
             "type": {
               "kind": "ENUM",
-              "name": "ENUM_TRACKER_LIVESTATUS",
+              "name": "ENUM_TRACKER_LIVE_STATUS",
               "ofType": null
             },
             "defaultValue": null,
