@@ -12,7 +12,9 @@ export interface ProfileHeaderProps {
   firstName: string;
   lastName: string;
   setEdit: (value: boolean) => void;
-  edit: boolean;
+  edit?: boolean;
+  isCanEdit: boolean;
+
   resetForm: (() => void) &
     ((nextState?: Partial<FormikState<InitialValuesType>> | undefined) => void);
   submitForm: (() => void) & (() => Promise<void>) & (() => Promise<any>);

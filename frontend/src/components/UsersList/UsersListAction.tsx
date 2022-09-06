@@ -104,10 +104,10 @@ export const UsersListAction = ({
               p={2}
               textAlign="center"
             >
-              <Typography marginBottom={2}>Are you sure to delete </Typography>
-              <Typography variant="body2" marginBottom={2}>
-                {`${firstName} ${lastName}`}?
+              <Typography marginBottom={2}>
+                Remove {`${firstName} ${lastName}`}?
               </Typography>
+
               <Stack direction="row" justifyContent="center" gap={2}>
                 <Button
                   size="small"

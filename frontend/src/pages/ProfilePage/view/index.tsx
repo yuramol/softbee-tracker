@@ -10,7 +10,7 @@ const ProfileViewPage: React.FC<PageProps> = () => {
 
   return (
     <MainWrapper>
-      {<ProfileInformation id={`${userId}`} edit={false} />}
+      <ProfileInformation id={`${userId}`} isCanEdit={false} />
     </MainWrapper>
   );
 };
