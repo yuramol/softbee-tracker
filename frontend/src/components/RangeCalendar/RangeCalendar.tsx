@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   PickersDay,
   StaticDatePicker,
@@ -101,23 +101,22 @@ const rangeDates = [
 ];
 
 export const RangeCalendar = () => {
+  const rangeCalendarRef = useRef(null);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const [dateArray, setDateArray] = useState<string[]>([
     getFormattedDate(new Date()),
   ]);
-  const [value, setValue] = React.useState<Date | null>(
-    new Date(dateArray.sort()[0])
-  );
+  const [value, setValue] = React.useState<Date | null>(new Date(dateArray[0]));
 
   const handleClickAway = () => {
     setAnchorEl(null);
     setIsPopperOpen(!isPopperOpen);
   };
 
-  const handleClickSetRangeDate = (el: HTMLElement) => {
-    setAnchorEl(el);
+  const handleOpenRangeCalendar = () => {
+    setAnchorEl(rangeCalendarRef.current);
     setIsPopperOpen(!isPopperOpen);
   };
 
@@ -147,15 +146,18 @@ export const RangeCalendar = () => {
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
+        ref={rangeCalendarRef}
         mb={2}
-        onClick={(e) => handleClickSetRangeDate(e.currentTarget)}
       >
-        <Typography>{`${format(new Date(dateArray[0]), 'd MMM yyyy')}${
+        <Typography width="100%" textAlign="center">{`${format(
+          new Date(dateArray[0]),
+          'd MMM yyyy'
+        )}${
           dateArray[1]
             ? ` - ${format(new Date(dateArray[1]), 'd MMM yyyy')}`
             : ''
         }`}</Typography>
-        <IconButton color="primary">
+        <IconButton color="primary" onClick={handleOpenRangeCalendar}>
           <Icon icon="calendarMonth" size="small" />
         </IconButton>
       </Stack>
@@ -184,18 +186,13 @@ export const RangeCalendar = () => {
                   onChange={(newValue) => handleSetDate(newValue as Date)}
                   renderInput={(params) => <TextField {...params} />}
                   renderDay={(day, selectedDays, pickersDayProps) => {
-                    let selectedMuiClass = '';
-
-                    if (
+                    const isBetweenDates =
                       isAfter(day, subDays(new Date(dateArray[0]), 1)) &&
-                      isBefore(day, new Date(dateArray[1]))
-                    ) {
-                      selectedMuiClass = 'Mui-selected';
-                    }
+                      isBefore(day, new Date(dateArray[1]));
 
                     return (
                       <PickersDay
-                        className={selectedMuiClass}
+                        className={isBetweenDates ? 'Mui-selected' : ''}
                         {...pickersDayProps}
                       />
                     );
