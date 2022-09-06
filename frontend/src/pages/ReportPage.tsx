@@ -34,28 +34,11 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
   const [startDate, setStartDate] = useState(
-    format(new Date('2022-07-01'), 'YYY-MM-dd')
+    format(new Date('2022-08-01'), 'YYY-MM-dd')
   );
   const [endDate, setEndDate] = useState(
-    format(new Date('2022-07-31'), 'YYY-MM-dd')
+    format(new Date('2022-09-31'), 'YYY-MM-dd')
   );
-
-  const { trackers } = useNormalizedTrackers({
-    user: { id: { in: [user.id] } },
-    date: { between: [startDate, endDate] },
-  });
-
-  const reportTotalTime = useMemo(() => {
-    let totalTime = '00:00';
-
-    trackers.forEach(({ total }) => {
-      totalTime = getHours(
-        getMinutes(totalTime, 'HH:mm') + getMinutes(total, 'HH:mm')
-      );
-    });
-
-    return totalTime;
-  }, [trackers]);
 
   const { trackers } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
