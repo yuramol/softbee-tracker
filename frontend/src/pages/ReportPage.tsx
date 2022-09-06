@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import {
+  IconButton,
   Stack,
   Table,
   TableBody,
@@ -13,18 +14,30 @@ import {
 
 import { MainWrapper, RangeCalendar } from '../components';
 import { PageProps } from './types';
-import { useAuthUser, useNormalizedTrackers } from 'hooks';
+import {
+  useAuthUser,
+  useNormalizedTrackers,
+  useNormalizedUsers,
+  useProjects,
+} from 'hooks';
 import { getHours, getMinutes, parseTrackerTime } from 'helpers';
+import { Icon, MultipleSelect } from 'legos';
 
 const reportTableHead = ['Date', 'Description', 'Time'];
 
 const ReportPage: React.FC<PageProps> = ({ title }) => {
   const { user } = useAuthUser();
+  const { usersChoices } = useNormalizedUsers();
+  const { projectsChoices } = useProjects();
+
+  const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
+  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+
   const [startDate, setStartDate] = useState(
-    format(new Date('2022-07-01'), 'YYY-MM-dd')
+    format(new Date('2022-08-01'), 'YYY-MM-dd')
   );
   const [endDate, setEndDate] = useState(
-    format(new Date('2022-07-31'), 'YYY-MM-dd')
+    format(new Date('2022-09-31'), 'YYY-MM-dd')
   );
 
   const { trackers } = useNormalizedTrackers({
@@ -45,7 +58,36 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   }, [trackers]);
 
   return (
-    <MainWrapper sidebar={<RangeCalendar />}>
+    <MainWrapper
+      sidebar={
+        <Stack gap={3}>
+          <RangeCalendar />
+          <MultipleSelect
+            label="Employees"
+            size="small"
+            variant="outlined"
+            IconComponent={() => <Icon icon="add" />}
+            items={usersChoices}
+            value={selectedEmployees}
+            onChange={(e) => setSelectedEmployees(e.target.value as string[])}
+          />
+          <MultipleSelect
+            label="Projects"
+            size="small"
+            variant="outlined"
+            IconComponent={() => <Icon icon="add" />}
+            items={projectsChoices}
+            value={selectedProjects}
+            onChange={(e) => setSelectedProjects(e.target.value as string[])}
+          />
+          <Stack alignItems="center">
+            <IconButton color="primary">
+              <Icon icon="download" />
+            </IconButton>
+          </Stack>
+        </Stack>
+      }
+    >
       <Typography variant="h1">{title}</Typography>
       <Stack mt={6} flexDirection="row" justifyContent="space-between">
         <Stack flexDirection="row" gap={2}>
