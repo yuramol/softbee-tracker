@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSnackbar } from 'notistack';
 import AddIcon from '@mui/icons-material/Add';
 import { GraphQLError } from 'graphql';
+import { Paper } from '@mui/material';
 
 import {
   TimeEntryValues,
@@ -9,7 +10,7 @@ import {
 } from 'components/TrackerEntryModalForm';
 
 import { useCreateTracker } from '../../hooks';
-import { IconButton, Paper } from '@mui/material';
+import { IconButtonTracker } from '../../helpers';
 
 type AddTrackerProps = {
   userId: string;
@@ -45,12 +46,9 @@ export const AddTracker = ({ userId }: AddTrackerProps) => {
         buttonSubmitTitle="Start"
       />
       <Paper>
-        <IconButton
-          sx={{ borderRadius: 0, height: '2rem', width: '2rem' }}
-          onClick={toggleOpenModal}
-        >
+        <IconButtonTracker onClick={toggleOpenModal}>
           <AddIcon color="primary" />
-        </IconButton>
+        </IconButtonTracker>
       </Paper>
     </>
   );

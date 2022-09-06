@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { IconButton } from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
+import CheckIcon from '@mui/icons-material/Check';
 import { useSnackbar } from 'notistack';
 import { GraphQLError } from 'graphql';
+import { parseISO, subMinutes } from 'date-fns';
 
 import { Enum_Tracker_Live_Status, TrackerEntity } from 'types/GraphqlTypes';
 import { TrackerEntryModalForm } from 'components';
@@ -12,8 +12,11 @@ import {
 } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 import { useSaveTracker } from '../../hooks';
-import { intervalDateSeconds, secondsToHms } from 'modules/LiveTracker/helpers';
-import { parseISO, subMinutes } from 'date-fns';
+import {
+  intervalDateSeconds,
+  secondsToHms,
+  IconButtonTracker,
+} from '../../helpers';
 
 type TrackerSaveProps = {
   tracker: TrackerEntity;
@@ -51,7 +54,7 @@ export const TrackerSave = ({ tracker, userId }: TrackerSaveProps) => {
     saveTracker(tracker.id ?? '', values)
       .then(() => {
         toggleOpenModal();
-        enqueueSnackbar(`Tracker save`, { variant: 'success' });
+        enqueueSnackbar(`Track saved`, { variant: 'success' });
       })
       .catch((error: GraphQLError) => {
         enqueueSnackbar(error.message, { variant: 'error' });
@@ -75,12 +78,9 @@ export const TrackerSave = ({ tracker, userId }: TrackerSaveProps) => {
         }}
       />
 
-      <IconButton
-        onClick={toggleOpenModal}
-        sx={{ borderRadius: 0, height: '2rem', width: '2rem' }}
-      >
-        <SaveIcon color="primary" />
-      </IconButton>
+      <IconButtonTracker onClick={toggleOpenModal}>
+        <CheckIcon color="primary" />
+      </IconButtonTracker>
     </>
   );
 };

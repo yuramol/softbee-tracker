@@ -1,4 +1,11 @@
+import { IconButton, styled } from '@mui/material';
 import { differenceInSeconds } from 'date-fns';
+
+export const IconButtonTracker = styled(IconButton)(() => ({
+  borderRadius: 0,
+  height: '3rem',
+  width: '3rem',
+}));
 
 export const intervalDateSeconds = ({
   startDate = new Date(),

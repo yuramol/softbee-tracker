@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Paper, Stack, styled, Typography } from '@mui/material';
+import { Paper, Stack, Typography } from '@mui/material';
 
 import { Enum_Tracker_Live_Status, TrackerEntity } from 'types/GraphqlTypes';
 
@@ -8,6 +8,7 @@ import { TrackerStart } from './TrackerStart';
 import { TrackerSave } from './TrackerSave';
 import { TrackerPauseShowTime } from './TrackerPauseShowTime';
 import { TrackerStartShowTime } from './TrackerStartShowTime';
+import { TrackerDelete } from './TrackerDelete';
 
 type ShowTrackerProps = {
   tracker: TrackerEntity;
@@ -23,11 +24,7 @@ export const ShowTracker = ({ tracker, userId }: ShowTrackerProps) => {
     tracker.attributes.live_status === Enum_Tracker_Live_Status.Pause;
   return (
     <>
-      <Paper
-        sx={{
-          height: '2rem',
-        }}
-      >
+      <Paper>
         <Stack
           spacing={1}
           direction="row"
@@ -42,14 +39,9 @@ export const ShowTracker = ({ tracker, userId }: ShowTrackerProps) => {
           {isLiveStatusPause && <TrackerPauseShowTime tracker={tracker} />}
           {isLiveStatusStart && <TrackerStartShowTime tracker={tracker} />}
           <TrackerSave tracker={tracker} userId={userId} />
+          <TrackerDelete tracker={tracker} />
         </Stack>
       </Paper>
     </>
   );
 };
-
-export const IconButtonTracker = styled(IconButton)(() => ({
-  borderRadius: 0,
-  height: '2rem',
-  width: '2rem',
-}));

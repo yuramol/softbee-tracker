@@ -1,11 +1,12 @@
 import React from 'react';
-import { IconButton } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useSnackbar } from 'notistack';
 import { GraphQLError } from 'graphql';
 
 import { Enum_Tracker_Live_Status, TrackerEntity } from 'types/GraphqlTypes';
+
 import { useStartTracker } from '../../hooks';
+import { IconButtonTracker } from '../../helpers';
 
 type TrackerStartProps = {
   tracker: TrackerEntity;
@@ -23,7 +24,7 @@ export const TrackerStart = ({ tracker }: TrackerStartProps) => {
   const handelStartTracker = () => {
     startTracker(tracker)
       .then(() => {
-        enqueueSnackbar(`Tracker start`, { variant: 'success' });
+        enqueueSnackbar(`Tracker started`, { variant: 'success' });
       })
       .catch((error: GraphQLError) => {
         enqueueSnackbar(error.message, { variant: 'error' });
@@ -32,12 +33,9 @@ export const TrackerStart = ({ tracker }: TrackerStartProps) => {
   return (
     <>
       {isLiveStatusPause && (
-        <IconButton
-          onClick={handelStartTracker}
-          sx={{ borderRadius: 0, height: '2rem', width: '2rem' }}
-        >
+        <IconButtonTracker onClick={handelStartTracker}>
           <PlayArrowIcon color="primary" />
-        </IconButton>
+        </IconButtonTracker>
       )}
     </>
   );

@@ -11,7 +11,7 @@ export const LiveTracker = () => {
   if (!user) return null;
   return (
     <Box
-      sx={{ position: 'fixed', bottom: 5, right: 5, zIndex: 9, height: '2rem' }}
+      sx={{ position: 'fixed', bottom: 5, right: 5, zIndex: 9, height: '3rem' }}
     >
       <Stack
         direction="row"
