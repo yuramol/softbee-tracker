@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 import { Link, Stack, Typography } from '@mui/material';
-import { Avatar } from 'legos';
+import { Avatar, NavLink } from 'legos';
 import { Loader } from 'components/Loader';
 import { UsersListAction } from './UsersListAction';
 import { Maybe, Scalars } from 'types/GraphqlTypes';
@@ -40,7 +40,7 @@ export const UsersList = ({ usersList }: UsersListProps) => {
                 />
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Stack>
-                    <Link href={`/profile/view/${id}`} underline="none">
+                    <Link href={`/profile/view/${id}`} component={NavLink}>
                       {`${attributes.firstName} ${attributes.lastName?.charAt(
                         0
                       )}.`}

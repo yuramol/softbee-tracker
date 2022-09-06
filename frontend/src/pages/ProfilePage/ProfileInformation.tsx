@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { FormikContext, useFormik } from 'formik';
 
@@ -11,17 +11,19 @@ import { profileInfo, validationSchema } from './helpers';
 import { ProfileHeader } from './ProfileHeader';
 import { InitialValuesType, valuesType } from './types';
 import { useChangeAvatar } from './useChangeAvatar';
+import { useLocation } from 'react-router-dom';
+import { formatUserFullName } from 'helpers';
+import format from 'date-fns/format';
 
 type ProfileInformationProps = {
   id: any;
-  edit: boolean;
-  setEdit?: any;
+  isCanEdit: boolean;
 };
 
-const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
+const ProfileInformation = ({ id, isCanEdit }: ProfileInformationProps) => {
   const { userPermission } = useUsersPermissionsUser(id);
   const { user } = useAuthUser();
-
+  const [edit, setEdit] = useState(false);
   const showNotification = useNotification();
   const handleChangeAvatar = useChangeAvatar();
   const [updateUserMutation] = useMutation(
@@ -33,7 +35,7 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
     phone: userPermission?.phone ?? '-',
     lastName: userPermission?.lastName ?? '-',
     position: userPermission?.position ?? 'developer',
-    linkedIn: userPermission?.linkedIn ?? '-',
+    linkedIn: userPermission?.linkedIn ?? '',
     // upWork: userPermission?.upWork ?? '-',
     firstName: userPermission?.firstName ?? '-',
     salaryInfo: userPermission?.salaryInfo ?? '-',
@@ -49,7 +51,12 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
         const {
           data: { updateUsersPermissionsUser },
         } = await updateUserMutation({
-          variables: { id: user.id, data: { ...values } },
+          variables: {
+            id: id,
+            data: {
+              ...values,
+            },
+          },
         });
         if (updateUsersPermissionsUser?.data?.id) {
           showNotification({
@@ -64,22 +71,38 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
       }
     },
   });
+  // console.log(values, 'values');
   const { values, resetForm, submitForm, setFieldValue, errors, touched } =
     formik;
+  const location = useLocation();
+  console.log(location.pathname);
   return (
     <MainWrapper>
       {userPermission ? (
         <FormikContext.Provider value={formik}>
           <Grid container spacing={3}>
             <Grid container item xs={12} justifyContent="space-between">
-              <ProfileHeader
-                firstName={userPermission?.firstName}
-                lastName={userPermission?.lastName}
-                setEdit={setEdit}
-                edit={edit}
-                resetForm={resetForm}
-                submitForm={submitForm}
-              />
+              {!isCanEdit ? (
+                <Box ml={3}>
+                  {id}
+                  <Typography fontWeight={700} fontSize={32}>
+                    {formatUserFullName(
+                      userPermission?.firstName,
+                      userPermission?.lastName
+                    )}
+                  </Typography>
+                </Box>
+              ) : (
+                <ProfileHeader
+                  firstName={userPermission?.firstName}
+                  lastName={userPermission?.lastName}
+                  setEdit={setEdit}
+                  edit={edit}
+                  resetForm={resetForm}
+                  submitForm={submitForm}
+                  isCanEdit={isCanEdit}
+                />
+              )}
             </Grid>
             <Grid container item xs={3} justifyContent="center">
               <AvatarUpload
@@ -89,7 +112,7 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
                 onChange={(event) =>
                   handleChangeAvatar({
                     event,
-                    userId: user.id,
+                    userId: id,
                     avatarId: userPermission?.avatar.data?.id,
                     updateUserMutation,
                   })
@@ -121,24 +144,28 @@ const ProfileInformation = ({ id, edit, setEdit }: ProfileInformationProps) => {
                         (fieldName === 'upWork' ||
                           fieldName === 'linkedIn') && (
                           <Box ml={1}>
-                            <a
-                              style={{
-                                color: 'black',
-                              }}
-                              href={
-                                fieldName === 'upWork'
-                                  ? values.linkedIn
-                                  : values.linkedIn
-                              }
-                              target="blank"
-                              rel="noreferrer"
-                            >
-                              {fieldName === 'upWork' ? (
-                                <Typography color="black">upWork</Typography>
-                              ) : (
-                                <Typography color="black">linkedIn</Typography>
-                              )}
-                            </a>
+                            {values.linkedIn !== '' && (
+                              <a
+                                style={{
+                                  color: 'black',
+                                }}
+                                href={
+                                  fieldName === 'upWork'
+                                    ? values.linkedIn
+                                    : values.linkedIn
+                                }
+                                target="blank"
+                                rel="noreferrer"
+                              >
+                                {fieldName === 'upWork' ? (
+                                  <Typography color="black">upWork</Typography>
+                                ) : (
+                                  <Typography color="black">
+                                    linkedIn
+                                  </Typography>
+                                )}
+                              </a>
+                            )}
                           </Box>
                         )) ||
                         (component === 'input' && (
