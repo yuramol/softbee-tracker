@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import {
-  format,
   endOfMonth,
   startOfMonth,
   eachWeekendOfMonth,
@@ -18,7 +17,7 @@ import {
 } from '@mui/material';
 
 import { useAuthUser, useCurrentWeek } from 'hooks';
-import { getTotalTime } from 'helpers';
+import { getFormattedDate, getTotalTime } from 'helpers';
 import { PROJECTS_TRACKERS_BY_USER_ID_QUERY } from 'api';
 import {
   ProjectEntity,
@@ -53,8 +52,8 @@ export const TimeInspector = () => {
       value: 'month',
       limit: DAYS_PER_MONTH * HOURS_PER_DAY,
       filter: [
-        format(startOfMonth(new Date(days[currentDay].fullDate)), 'yyyy-MM-dd'),
-        format(endOfMonth(new Date(days[currentDay].fullDate)), 'yyyy-MM-dd'),
+        getFormattedDate(startOfMonth(new Date(days[currentDay].fullDate))),
+        getFormattedDate(endOfMonth(new Date(days[currentDay].fullDate))),
       ],
     },
   ];
