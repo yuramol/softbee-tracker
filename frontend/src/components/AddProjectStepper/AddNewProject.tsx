@@ -16,6 +16,7 @@ import { useNotification } from 'hooks';
 import { CREATE_PROJECT_MUTATION } from 'api';
 import { Loader, NewProjectStep, SummaryStep, TeamStep } from 'components';
 import { CreateProjectFields, CreateProjectStep, ProjectProps } from './types';
+import { Enum_Project_Type } from 'types/GraphqlTypes';
 
 const steps: CreateProjectStep[] = [
   {
@@ -53,7 +54,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({
   };
 
   const initialValues = {
-    [CreateProjectFields.Type]: 'time_material',
+    [CreateProjectFields.Type]: Enum_Project_Type.TimeMaterial,
     [CreateProjectFields.Name]: '',
     [CreateProjectFields.Client]: '',
     [CreateProjectFields.Start]: new Date(),

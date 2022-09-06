@@ -28,12 +28,12 @@ export const TeamStep = () => {
     handleChange(e);
 
     const addedUsers = (e.target as { value: Scalars['ID'][] }).value;
-    const salarys: ComponentProjectSalaryInput[] =
+    const salaries: ComponentProjectSalaryInput[] =
       values[CreateProjectFields.Salary];
-    const salaryUsers = salarys.map(({ users }) => users);
+    const salaryUsers = salaries.map(({ users }) => users);
 
     const addSalary = addedUsers.filter((x) => !salaryUsers.includes(x));
-    const removeSalery = salaryUsers.filter(
+    const removeSalary = salaryUsers.filter(
       (x) => !addedUsers.includes(x as string)
     );
 
@@ -41,13 +41,13 @@ export const TeamStep = () => {
       salaryHelpers.push({ users: addSalary[0], rate: 0 } as Salary);
     }
 
-    if (removeSalery.length > 0) {
-      const indexRemoveSalery = values[CreateProjectFields.Salary].indexOf(
+    if (removeSalary.length > 0) {
+      const indexRemoveSalary = values[CreateProjectFields.Salary].indexOf(
         values[CreateProjectFields.Salary].find(
-          ({ users }: ComponentProjectSalaryInput) => users === removeSalery[0]
+          ({ users }: ComponentProjectSalaryInput) => users === removeSalary[0]
         )
       );
-      salaryHelpers.remove(indexRemoveSalery);
+      salaryHelpers.remove(indexRemoveSalary);
     }
   };
 
