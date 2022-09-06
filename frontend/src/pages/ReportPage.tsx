@@ -21,10 +21,10 @@ const reportTableHead = ['Date', 'Description', 'Time'];
 const ReportPage: React.FC<PageProps> = ({ title }) => {
   const { user } = useAuthUser();
   const [startDate, setStartDate] = useState(
-    format(new Date('2022-08-01'), 'YYY-MM-dd')
+    format(new Date('2022-07-01'), 'YYY-MM-dd')
   );
   const [endDate, setEndDate] = useState(
-    format(new Date('2022-08-31'), 'YYY-MM-dd')
+    format(new Date('2022-07-31'), 'YYY-MM-dd')
   );
 
   const { trackers } = useNormalizedTrackers({
@@ -71,7 +71,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
                   ))}
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody style={{ verticalAlign: 'top' }}>
                 {trackers.map(({ date, trackersByProject }) =>
                   trackersByProject.map(({ name, trackers }) =>
                     trackers.map(({ id, attributes }, trackerIndex) => (
@@ -118,7 +118,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
           </TableContainer>
         ) : (
           <Typography variant="h6">
-            There is no data to generate a report
+            There&apos;s nothing to report on — yet. Get tracking first!
           </Typography>
         )}
       </Stack>
