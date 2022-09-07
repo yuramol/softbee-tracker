@@ -43,11 +43,14 @@ export interface ChangeAvatarProps {
   updateUserMutation: (
     options?:
       | MutationFunctionOptions<
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           any,
           OperationVariables,
           DefaultContext,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ApolloCache<any>
         >
       | undefined
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => Promise<any>;
 }
