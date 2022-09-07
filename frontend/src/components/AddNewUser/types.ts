@@ -8,7 +8,7 @@ export enum CreateUserFields {
   SalaryInfo = 'salaryInfo',
   Password = 'password',
   UserName = 'username',
-  Сonfirmed = 'confirmed',
+  Confirmed = 'confirmed',
 }
 
 export type UserProps = {

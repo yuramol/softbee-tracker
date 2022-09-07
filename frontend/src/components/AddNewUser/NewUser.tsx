@@ -20,6 +20,7 @@ const positions = [
 export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
   const [createUsersPermissionsUser] = useMutation(CREATE_USER_MUTATION);
   const showNotification = useNotification();
+
   const initialValues = {
     [CreateUserFields.FirstName]: '',
     [CreateUserFields.LastName]: '',
@@ -30,8 +31,9 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
     [CreateUserFields.SalaryInfo]: '1',
     [CreateUserFields.Password]: '',
     [CreateUserFields.UserName]: '',
-    [CreateUserFields.Сonfirmed]: true,
+    [CreateUserFields.Confirmed]: true,
   };
+
   const validationSchema = yup.object({
     [CreateUserFields.FirstName]: yup.string().required('Should not be empty'),
     [CreateUserFields.LastName]: yup.string().required('Should not be empty'),
@@ -48,6 +50,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
       .email('Please enter a valid e-mail address')
       .required('Should not be empty'),
   });
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -150,7 +153,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
               onChange={handleChange}
             />
             <CalendarPickerFormik
-              label="Date employment"
+              label="Date Employment"
               field={CreateUserFields.DateEmployment}
               disableFuture
               views={['day']}

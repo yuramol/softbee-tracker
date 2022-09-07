@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Button } from 'legos';
-import { useAuthUser, useUsersPermissionsUsers } from 'hooks';
+import { useAuthUser, useNormalizedUsers } from 'hooks';
 import { Stack, Typography } from '@mui/material';
 import { MainWrapper, SideBars, UsersList, NewUser } from 'components';
 
 const CrewPage = () => {
-  const { users } = useUsersPermissionsUsers();
+  const { users } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
   const { isManager } = useAuthUser();
   return (
