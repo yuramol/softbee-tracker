@@ -45,18 +45,10 @@ export const pages = [
   {
     index: false,
     name: 'View Profile',
-    href: '/profile/view/:userId',
+    href: '/profile/:userId',
     menuType: [],
     role: [Role.Employee, Role.Manager],
     Component: lazy(() => import('pages/ProfilePage/view')),
-  },
-  {
-    index: false,
-    name: 'Edit Profile',
-    href: '/profile/edit/:userId',
-    menuType: [],
-    role: [Role.Manager],
-    Component: lazy(() => import('pages/ProfilePage/edit')),
   },
   {
     index: false,
@@ -72,6 +64,6 @@ export const pages = [
     href: '/reports',
     menuType: [MenuType.Main],
     role: [Role.Manager],
-    Component: lazy(() => import('pages/ReportPage')),
+    Component: lazy(() => import('pages/ReportPage/ReportPage')),
   },
 ];

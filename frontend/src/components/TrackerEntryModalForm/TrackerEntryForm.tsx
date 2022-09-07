@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
 import TimePicker from 'components/TimePicker';
-import { useProjectsByUserId } from 'hooks';
+import { useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { Maybe, Scalars } from 'types/GraphqlTypes';
 
@@ -57,7 +57,9 @@ export const TrackerEntryForm = ({
   buttonCloseTitle = 'Cancel',
   buttonSubmitTitle = 'Save Time',
 }: TrackerEntryFormProps) => {
-  const { projectsChoices } = useProjectsByUserId(userId);
+  const { projectsChoices, loading } = useProjects({
+    users: { id: { eq: userId } },
+  });
 
   const validationSchema = yup.object({
     ...(!isLive
@@ -117,15 +119,17 @@ export const TrackerEntryForm = ({
                 />
               </Stack>
             )}
-            <Select
-              label="Project"
-              items={projectsChoices}
-              value={values[FIELD_TIME_ENTRY.PROJECT]}
-              name={FIELD_TIME_ENTRY.PROJECT}
-              {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
-              variant="outlined"
-              onChange={handleChange}
-            />
+            {!loading && (
+              <Select
+                label="Project"
+                items={projectsChoices}
+                value={values[FIELD_TIME_ENTRY.PROJECT]}
+                name={FIELD_TIME_ENTRY.PROJECT}
+                {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
+                variant="outlined"
+                onChange={handleChange}
+              />
+            )}
             <TextField
               label="Description"
               fullWidth

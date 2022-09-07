@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
 import { Stack, Typography } from '@mui/material';
 
 import { ProjectsList } from 'components/ProjectsList/ProjectsList';
 import { MainWrapper, SideBars, AddNewProject } from 'components';
 import { statusItem, ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
-import { PROJECTS_LIST_QUERY } from 'api';
-import { useNormalizedUsers } from 'hooks';
-import { ProjectEntityResponseCollection } from 'types/GraphqlTypes';
+import { useNormalizedUsers, useProjects } from 'hooks';
 import { PageProps } from 'pages/types';
 
 const ProjectPage: React.FC<PageProps> = ({ title }) => {
+  const { projects } = useProjects();
   const { managersChoices } = useNormalizedUsers();
 
   const [isCreateProject, setIsCreateProject] = useState(false);
@@ -29,12 +27,8 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     setSearchStatus,
   };
 
-  const { data } = useQuery<{ projects: ProjectEntityResponseCollection }>(
-    PROJECTS_LIST_QUERY
-  );
-
-  const projects = data?.projects.data
-    .filter(({ attributes }) =>
+  const filteredProjects = projects
+    ?.filter(({ attributes }) =>
       searchStatus.includes(attributes?.status as string)
     )
     .filter(({ attributes }) => {
@@ -79,7 +73,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
             <Stack direction="row" spacing={2} mb={4}>
               <ProjectFilters {...projectFilters} />
             </Stack>
-            <ProjectsList projectsList={projects} />
+            <ProjectsList projectsList={filteredProjects} />
           </Stack>
         </>
       )}

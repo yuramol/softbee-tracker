@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { format, endOfMonth, startOfMonth } from 'date-fns';
+import {
+  endOfMonth,
+  startOfMonth,
+  eachWeekendOfMonth,
+  getDaysInMonth,
+} from 'date-fns';
 import {
   List,
   ListItem,
@@ -12,7 +17,7 @@ import {
 } from '@mui/material';
 
 import { useAuthUser, useCurrentWeek } from 'hooks';
-import { getTotalTime } from 'helpers';
+import { getFormattedDate, getTotalTime } from 'helpers';
 import { PROJECTS_TRACKERS_BY_USER_ID_QUERY } from 'api';
 import {
   ProjectEntity,
@@ -24,26 +29,31 @@ export const TimeInspector = () => {
   const { user } = useAuthUser();
   const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(new Date());
 
+  const HOURS_PER_DAY = 5;
+  const DAYS_PER_WEEK = 5;
+  const DAYS_PER_MONTH =
+    getDaysInMonth(new Date()) - eachWeekendOfMonth(new Date()).length;
+
   const inspectionTypes = [
     {
       label: 'Day',
       value: 'day',
-      limit: 5,
+      limit: HOURS_PER_DAY,
       filter: [days[currentDay].fullDate, days[currentDay].fullDate],
     },
     {
       label: 'Week',
       value: 'week',
-      limit: 25,
+      limit: DAYS_PER_WEEK * HOURS_PER_DAY,
       filter: [weekStart, weekEnd],
     },
     {
       label: 'Month',
       value: 'month',
-      limit: 110,
+      limit: DAYS_PER_MONTH * HOURS_PER_DAY,
       filter: [
-        format(startOfMonth(new Date(days[currentDay].fullDate)), 'yyyy-MM-dd'),
-        format(endOfMonth(new Date(days[currentDay].fullDate)), 'yyyy-MM-dd'),
+        getFormattedDate(startOfMonth(new Date(days[currentDay].fullDate))),
+        getFormattedDate(endOfMonth(new Date(days[currentDay].fullDate))),
       ],
     },
   ];

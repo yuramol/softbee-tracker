@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-export const PROJECTS_LIST_QUERY = gql`
-  query ProjectsList {
-    projects(sort: "id") {
+export const PROJECTS_QUERY = gql`
+  query ProjectsByUserId($filters: ProjectFiltersInput!) {
+    projects(filters: $filters, pagination: { limit: -1 }) {
       data {
         id
         attributes {

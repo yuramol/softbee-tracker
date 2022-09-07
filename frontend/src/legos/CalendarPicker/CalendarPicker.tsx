@@ -14,11 +14,13 @@ export type CalendarPickerProps = Omit<
 > &
   React.RefAttributes<HTMLDivElement> & {
     value: Date;
+    variant?: 'filled' | 'outlined' | 'standard' | undefined;
     isMinDateFirstDayOfMonth?: boolean;
   };
 
 export const CalendarPicker = ({
   value,
+  variant,
   isMinDateFirstDayOfMonth = false,
   onChange,
   ...arg
@@ -34,7 +36,13 @@ export const CalendarPicker = ({
         {...arg}
         value={value}
         onChange={onChange}
-        renderInput={(params) => <TextField {...params} fullWidth />}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            fullWidth
+            variant={variant ? variant : 'outlined'}
+          />
+        )}
       />
     </LocalizationProvider>
   );
