@@ -71,7 +71,7 @@ export const ProfileEditView = ({ id }: Props) => {
     },
   });
 
-  const isCanEdit = id === user.id || isManager;
+  const canEdit = id === user.id || isManager;
   const isDisabled = isManager ? !isEdit : !isManager;
   const { values, errors, touched, resetForm, handleChange, handleSubmit } =
     formik;
@@ -87,7 +87,7 @@ export const ProfileEditView = ({ id }: Props) => {
           <Typography variant="h1">
             {formatUserFullName(userData?.firstName, userData?.lastName)}
           </Typography>
-          {isCanEdit && (
+          {canEdit && (
             <Stack direction="row" gap={2}>
               {!isEdit && (
                 <Button
@@ -117,7 +117,7 @@ export const ProfileEditView = ({ id }: Props) => {
         </Stack>
         <Stack flexDirection="row" gap={8}>
           <AvatarUpload
-            isCanEdit={isCanEdit}
+            canEdit={canEdit}
             firstName={values[ProfileFields.FirstName]}
             lastName={values[ProfileFields.LastName]}
             avatar={userData?.avatar.data?.attributes?.url}
@@ -328,7 +328,7 @@ export const ProfileEditView = ({ id }: Props) => {
                 />
               </Stack>
             </Stack>
-            {isCanEdit && (
+            {canEdit && (
               <Stack flexDirection="row" alignItems="center" gap={3}>
                 <Icon icon="money" />
                 <Stack flexGrow="1">

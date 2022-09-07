@@ -4,7 +4,7 @@ import { Typography, Box, Button } from '@mui/material';
 import { Avatar } from 'legos';
 
 type AvatarUploadProps = {
-  isCanEdit: boolean;
+  canEdit: boolean;
   avatar?: string;
   firstName: string;
   lastName: string;
@@ -12,7 +12,7 @@ type AvatarUploadProps = {
 };
 
 export const AvatarUpload = ({
-  isCanEdit,
+  canEdit,
   avatar,
   firstName,
   lastName,
@@ -29,7 +29,7 @@ export const AvatarUpload = ({
         lastName={lastName}
         avatar={path}
       />
-      {isCanEdit && (
+      {canEdit && (
         <Button component="label" color="primary" aria-label="upload picture">
           <Typography fontSize={12}>Upload new photo</Typography>
           <input hidden accept="image/*" type="file" onChange={onChange} />
