@@ -18,3 +18,5 @@ export {
 export { RangeCalendar } from './RangeCalendar';
 export { UsersList, UsersListAction } from './UsersList';
 export { NewUser } from './AddNewUser';
+export { TrackerEntryModalForm } from './TrackerEntryModalForm';
+export { ConfirmationDialog } from './ConfirmationDialog';

@@ -9,6 +9,10 @@ export const CREATE_TRACKER_BY_USER_ID_MUTATION = gql`
           date
           duration
           description
+          live
+          startLiveDate
+          liveDurationMinutes
+          live_status
         }
       }
     }

@@ -9,6 +9,10 @@ export const TRACKERS_QUERY = gql`
           date
           duration
           description
+          live
+          startLiveDate
+          liveDurationMinutes
+          live_status
           user {
             data {
               id

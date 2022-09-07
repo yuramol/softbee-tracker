@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -19,6 +20,7 @@ export type Scalars = {
   Date: any;
   DateTime: any;
   JSON: any;
+  Long: any;
   Time: any;
   Upload: any;
 };
@@ -129,7 +131,7 @@ export enum Enum_Project_Type {
   TimeMaterial = 'time_material',
 }
 
-export enum Enum_Tracker_Livestatus {
+export enum Enum_Tracker_Live_Status {
   Finish = 'finish',
   Pause = 'pause',
   Start = 'start',
@@ -285,6 +287,29 @@ export type JsonFilterInput = {
   null?: InputMaybe<Scalars['Boolean']>;
   or?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
   startsWith?: InputMaybe<Scalars['JSON']>;
+};
+
+export type LongFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  between?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  contains?: InputMaybe<Scalars['Long']>;
+  containsi?: InputMaybe<Scalars['Long']>;
+  endsWith?: InputMaybe<Scalars['Long']>;
+  eq?: InputMaybe<Scalars['Long']>;
+  gt?: InputMaybe<Scalars['Long']>;
+  gte?: InputMaybe<Scalars['Long']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  lt?: InputMaybe<Scalars['Long']>;
+  lte?: InputMaybe<Scalars['Long']>;
+  ne?: InputMaybe<Scalars['Long']>;
+  not?: InputMaybe<LongFilterInput>;
+  notContains?: InputMaybe<Scalars['Long']>;
+  notContainsi?: InputMaybe<Scalars['Long']>;
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  notNull?: InputMaybe<Scalars['Boolean']>;
+  null?: InputMaybe<Scalars['Boolean']>;
+  or?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
+  startsWith?: InputMaybe<Scalars['Long']>;
 };
 
 export type Mutation = {
@@ -777,8 +802,8 @@ export type Tracker = {
   description: Scalars['String'];
   duration?: Maybe<Scalars['Time']>;
   live?: Maybe<Scalars['Boolean']>;
-  liveDuration?: Maybe<Scalars['Time']>;
-  liveStatus?: Maybe<Enum_Tracker_Livestatus>;
+  liveDurationMinutes?: Maybe<Scalars['Long']>;
+  live_status?: Maybe<Enum_Tracker_Live_Status>;
   project?: Maybe<ProjectEntityResponse>;
   startLiveDate?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -810,8 +835,8 @@ export type TrackerFiltersInput = {
   duration?: InputMaybe<TimeFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   live?: InputMaybe<BooleanFilterInput>;
-  liveDuration?: InputMaybe<TimeFilterInput>;
-  liveStatus?: InputMaybe<StringFilterInput>;
+  liveDurationMinutes?: InputMaybe<LongFilterInput>;
+  live_status?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<TrackerFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<TrackerFiltersInput>>>;
   project?: InputMaybe<ProjectFiltersInput>;
@@ -825,8 +850,8 @@ export type TrackerInput = {
   description?: InputMaybe<Scalars['String']>;
   duration?: InputMaybe<Scalars['Time']>;
   live?: InputMaybe<Scalars['Boolean']>;
-  liveDuration?: InputMaybe<Scalars['Time']>;
-  liveStatus?: InputMaybe<Enum_Tracker_Livestatus>;
+  liveDurationMinutes?: InputMaybe<Scalars['Long']>;
+  live_status?: InputMaybe<Enum_Tracker_Live_Status>;
   project?: InputMaybe<Scalars['ID']>;
   startLiveDate?: InputMaybe<Scalars['DateTime']>;
   user?: InputMaybe<Scalars['ID']>;

@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   IconButton,
@@ -7,9 +7,10 @@ import {
   ClickAwayListener,
   Stack,
 } from '@mui/material';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 import { TimeContext } from './TrackerDayView';
+import { useCreateTracker } from 'modules';
 import { Icon } from 'legos';
 import TimePicker from 'components/TimePicker';
 import {
@@ -18,38 +19,30 @@ import {
 } from 'components/TrackerEntryModalForm';
 import { parseTrackerTime } from 'helpers';
 import { useAuthUser } from 'hooks';
-import { Maybe } from 'types/GraphqlTypes';
+import { TrackerEntity } from 'types/GraphqlTypes';
 
-type Props = {
-  id?: Maybe<string>;
-  name?: string;
-  date: string;
-  description?: string;
-  duration: string;
-  projectId?: Maybe<string>;
+type TrackerItemProps = {
+  tracker: TrackerEntity;
 };
 
-export const TrackerItem: FC<Props> = ({
-  id,
-  name,
-  date,
-  description,
-  duration,
-  projectId,
-}) => {
+export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   const { user } = useAuthUser();
   const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
+  const { createTracker } = useCreateTracker();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isTrackerStart, setIsTrackerStart] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
-  const [time, setTime] = useState(parseTrackerTime(duration));
+  const [time, setTime] = useState(
+    parseTrackerTime(tracker.attributes?.duration ?? '')
+  );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleChange = (value: string, submit?: boolean) => {
     setTime(parseTrackerTime(value, 'HH:mm'));
     if (submit) {
-      onUpdateTracker(id, { duration: parseTrackerTime(value, 'HH:mm') });
+      onUpdateTracker(tracker.id, {
+        duration: parseTrackerTime(value, 'HH:mm'),
+      });
     }
   };
 
@@ -69,20 +62,27 @@ export const TrackerItem: FC<Props> = ({
 
   const handleDelete = () => {
     handleClickAway();
-    onDeleteTracker(id);
+    onDeleteTracker(tracker.id);
   };
 
   const initialValuesForm: TimeEntryValues = {
-    DATE: new Date(date),
-    DURATION: format(parseTrackerTime(duration), 'HH:mm'),
-    DESCRIPTION: description,
-    PROJECT: projectId,
+    DATE: parseISO(tracker.attributes?.date ?? ''),
+    DURATION: format(
+      parseTrackerTime(tracker.attributes?.duration ?? ''),
+      'HH:mm'
+    ),
+    DESCRIPTION: tracker.attributes?.description ?? '',
+    PROJECT: tracker.attributes?.project?.data?.id ?? '',
+  };
+
+  const handleStartTracker = () => {
+    createTracker(user.id, initialValuesForm);
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
     setTime(parseTrackerTime(values.DURATION, 'HH:mm'));
 
-    onUpdateTracker(id, {
+    onUpdateTracker(tracker.id, {
       date: format(values.DATE, 'yyyy-MM-dd'),
       description: values.DESCRIPTION,
       project: values.PROJECT,
@@ -103,8 +103,10 @@ export const TrackerItem: FC<Props> = ({
       py={4}
     >
       <Stack>
-        <Typography variant="h6">{name}</Typography>
-        <Typography>{description}</Typography>
+        <Typography variant="h6">
+          {tracker.attributes?.project?.data?.attributes?.name ?? ''}
+        </Typography>
+        <Typography>{tracker.attributes?.description}</Typography>
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
         <TimePicker
@@ -119,13 +121,9 @@ export const TrackerItem: FC<Props> = ({
           size="large"
           color="primary"
           sx={{ border: '1px solid' }}
-          onClick={() => setIsTrackerStart(!isTrackerStart)}
+          onClick={handleStartTracker}
         >
-          {isTrackerStart ? (
-            <Icon icon="pause" size="inherit" />
-          ) : (
-            <Icon icon="playArrow" size="inherit" />
-          )}
+          <Icon icon="playArrow" size="inherit" />
         </IconButton>
         <IconButton
           color="error"
