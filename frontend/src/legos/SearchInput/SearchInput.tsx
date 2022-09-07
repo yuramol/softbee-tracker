@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { FormControl, InputAdornment } from '@mui/material';
+import { Search } from '@mui/icons-material';
+
 import { useDebounce } from 'hooks';
 import { SearchInputProps } from './types';
 import { Input } from 'legos';
-import { FormControl, InputAdornment, InputLabel } from '@mui/material';
-import { Search } from '@mui/icons-material';
 
 export const SearchInput = ({
   label,
@@ -19,42 +20,24 @@ export const SearchInput = ({
   useEffect(() => {
     onChange(debouncedSearchText);
   }, [debouncedSearchText, onChange]);
-  return (
-    <>
-      <FormControl sx={{ width: '25ch', flexGrow: 1  }}>
-        <Input
-          {...props}
-          label={label}
-          size={size}
-          value={searchValue}
-          onChange={(value) => setSearchValue(value)}
-          type="search"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <Search />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </FormControl>
 
-      {/* <Input
+  return (
+    <FormControl sx={{ width: '25ch', flexGrow: 1 }}>
+      <Input
         {...props}
         label={label}
         size={size}
         value={searchValue}
         onChange={(value) => setSearchValue(value)}
         type="search"
-        id="input-with-icon-adornment"
         InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
+          endAdornment: (
+            <InputAdornment position="end">
               <Search />
             </InputAdornment>
           ),
         }}
-      /> */}
-    </>
+      />
+    </FormControl>
   );
 };

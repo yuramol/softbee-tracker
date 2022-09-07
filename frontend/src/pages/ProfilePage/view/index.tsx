@@ -1,16 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-
 import { MainWrapper } from 'components';
-import { PageProps } from 'pages/types';
-import ProfileInformation from '../ProfileInformation';
+import { ProfileEditView } from '../ProfileEditView';
 
-const ProfileViewPage: React.FC<PageProps> = () => {
+const ProfileViewPage = () => {
   const { userId } = useParams();
 
   return (
     <MainWrapper>
-      <ProfileInformation id={`${userId}`} isCanEdit={false} />
+      <ProfileEditView id={`${userId}`} />
     </MainWrapper>
   );
 };

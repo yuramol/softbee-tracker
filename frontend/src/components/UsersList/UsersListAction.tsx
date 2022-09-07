@@ -17,9 +17,9 @@ import {
 } from '@mui/material';
 
 type UsersListActionProps = {
-  id: Maybe<Scalars['ID']>;
-  firstName: string;
-  lastName: string;
+  id?: Maybe<Scalars['ID']>;
+  firstName?: string;
+  lastName?: string;
 };
 
 export const UsersListAction = ({
@@ -27,8 +27,7 @@ export const UsersListAction = ({
   firstName,
   lastName,
 }: UsersListActionProps) => {
-  const { user } = useAuthUser();
-  const isManager = user.role.type === 'manager';
+  const { isManager } = useAuthUser();
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const notification = useNotification();
@@ -63,7 +62,7 @@ export const UsersListAction = ({
         {isManager ? (
           <Stack direction="row">
             <Tooltip title="Edit">
-              <Link to={`/profile/edit/${id}`}>
+              <Link to={`/profile/${id}`}>
                 <IconButton>
                   <Icon icon="editOutlined" />
                 </IconButton>
@@ -76,20 +75,15 @@ export const UsersListAction = ({
                 <Icon icon="deleteOutline" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Watch profile">
-              <Link to={`/profile/view/${id}`}>
-                <IconButton>
-                  <Icon icon="watch" />
-                </IconButton>
-              </Link>
-            </Tooltip>
           </Stack>
         ) : (
           <Stack direction="row">
             <Tooltip title="Watch profile">
-              <IconButton>
-                <Icon icon="watch" />
-              </IconButton>
+              <Link to={`/profile/${id}`}>
+                <IconButton>
+                  <Icon icon="watch" />
+                </IconButton>
+              </Link>
             </Tooltip>
           </Stack>
         )}

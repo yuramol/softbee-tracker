@@ -1,67 +1,60 @@
 import React, { Fragment } from 'react';
-
 import { Link, Stack, Typography } from '@mui/material';
+
 import { Avatar, NavLink } from 'legos';
-import { Loader } from 'components/Loader';
 import { UsersListAction } from './UsersListAction';
-import { Maybe, Scalars } from 'types/GraphqlTypes';
+import { UsersPermissionsUserEntity } from 'types/GraphqlTypes';
 
-type UsersListType = {
-  id: Maybe<Scalars['ID']>;
-  firstName: string;
-  attributes: any;
-};
-type UsersListProps = {
-  usersList: UsersListType[];
+type Props = {
+  usersList?: UsersPermissionsUserEntity[];
 };
 
-export const UsersList = ({ usersList }: UsersListProps) => {
+export const UsersList = ({ usersList }: Props) => {
   return (
     <>
-      {usersList ? (
-        usersList.map(({ id, attributes }) => (
-          <Fragment key={id}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Stack
-                mb={2}
-                direction="row"
-                alignItems="center"
-                spacing={1}
-                width="300px"
-              >
-                <Avatar
-                  firstName={attributes.firstName}
-                  lastName={attributes.lastName}
-                  avatar={`https://dev.strapi.track.softbee.io${attributes.avatar.data?.attributes?.url}`}
-                />
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Stack>
-                    <Link href={`/profile/view/${id}`} component={NavLink}>
-                      {`${attributes.firstName} ${attributes.lastName?.charAt(
-                        0
-                      )}.`}
-                    </Link>
-                    <Typography fontSize="10px">
-                      {`${attributes.role.data.attributes.name} | ${attributes.position}`}
-                    </Typography>
-                  </Stack>
-                </Stack>
+      {usersList?.map(({ id, attributes }) => (
+        <Stack
+          key={id}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Stack
+            mb={2}
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            width="300px"
+          >
+            <Avatar
+              firstName={attributes?.firstName}
+              lastName={attributes?.lastName}
+              avatar={
+                attributes?.avatar.data?.attributes?.url
+                  ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
+                  : undefined
+              }
+            />
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack>
+                <Link to={`/profile/${id}`} component={NavLink}>
+                  {`${attributes?.firstName} ${attributes?.lastName?.charAt(
+                    0
+                  )}.`}
+                </Link>
+                <Typography fontSize="10px">
+                  {`${attributes?.role?.data?.attributes?.name} | ${attributes?.position}`}
+                </Typography>
               </Stack>
-              <UsersListAction
-                id={id}
-                firstName={attributes.firstName}
-                lastName={attributes.lastName}
-              />
             </Stack>
-          </Fragment>
-        ))
-      ) : (
-        <Loader />
-      )}
+          </Stack>
+          <UsersListAction
+            id={id}
+            firstName={attributes?.firstName}
+            lastName={attributes?.lastName}
+          />
+        </Stack>
+      ))}
     </>
   );
 };

@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
-import { Grid } from '@mui/material';
-
-import { useAuthUser, useUsersPermissionsUser } from 'hooks';
-import {
-  MainWrapper,
-  Loader,
-  TrackerCalendar,
-  TimeInspector,
-} from 'components';
-import ProfileInformation from './ProfileInformation';
+import { useAuthUser } from 'hooks';
+import { MainWrapper, TrackerCalendar, TimeInspector } from 'components';
+import { ProfileEditView } from './ProfileEditView';
 
 const ProfilePage = () => {
   const { user } = useAuthUser();
-  const { loading } = useUsersPermissionsUser(user.id);
-
-
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
   return (
@@ -29,13 +19,7 @@ const ProfilePage = () => {
         </>
       }
     >
-      {loading ? (
-        <Loader />
-      ) : (
-        <Grid container spacing={3}>
-          <ProfileInformation id={user.id} isCanEdit={true} />
-        </Grid>
-      )}
+      <ProfileEditView id={user.id} />
     </MainWrapper>
   );
 };

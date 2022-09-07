@@ -1,55 +1,45 @@
-import { FormikState } from 'formik';
 import {
   ApolloCache,
   DefaultContext,
   MutationFunctionOptions,
   OperationVariables,
 } from '@apollo/client';
+import {
+  Enum_Userspermissionsuser_Position,
+  Maybe,
+  Scalars,
+} from 'types/GraphqlTypes';
 
-import { IconsNames } from 'legos/Icon';
-
-export interface ProfileHeaderProps {
-  firstName: string;
-  lastName: string;
-  setEdit: (value: boolean) => void;
-  edit?: boolean;
-  isCanEdit: boolean;
-
-  resetForm: (() => void) &
-    ((nextState?: Partial<FormikState<InitialValuesType>> | undefined) => void);
-  submitForm: (() => void) & (() => Promise<void>) & (() => Promise<any>);
+export enum ProfileFields {
+  UserName = 'username',
+  FirstName = 'firstName',
+  LastName = 'lastName',
+  Position = 'position',
+  Email = 'email',
+  LinkedIn = 'linkedIn',
+  UpWork = 'upWork',
+  Phone = 'phone',
+  DateEmployment = 'dateEmployment',
+  SalaryInfo = 'salaryInfo',
 }
 
-export type InitialValuesType = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  position: string;
-  linkedIn: string;
-  dateEmployment: string;
-  avatar: string;
-  salaryInfo: string;
+export type ProfileInitialValues = {
+  [ProfileFields.UserName]: string;
+  [ProfileFields.FirstName]: string;
+  [ProfileFields.LastName]: string;
+  [ProfileFields.Position]: Enum_Userspermissionsuser_Position;
+  [ProfileFields.Email]: string;
+  [ProfileFields.LinkedIn]: string;
+  // [ProfileFields.UpWork]: string;
+  [ProfileFields.Phone]: string;
+  [ProfileFields.DateEmployment]: Date;
+  [ProfileFields.SalaryInfo]: string;
 };
-
-export type valuesType = {
-  [key: string]: string;
-};
-
-export interface ProfileInfoType {
-  label: string;
-  fieldName: string;
-  component: string;
-  type: string;
-  icon: IconsNames;
-  items?: { label: string; value: string }[];
-}
 
 export interface ChangeAvatarProps {
-  event: any;
-  avatarId: string | number;
+  event: React.ChangeEvent<Element>;
+  avatarId?: Maybe<Scalars['ID']>;
   userId: string | number;
-
   updateUserMutation: (
     options?:
       | MutationFunctionOptions<

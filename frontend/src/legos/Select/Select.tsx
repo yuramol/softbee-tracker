@@ -20,7 +20,7 @@ export const Select = ({
   ...props
 }: SelectPropsType) => (
   <FormControl variant={variant} fullWidth error={error}>
-    <InputLabel>{label}</InputLabel>
+    {label && <InputLabel>{label}</InputLabel>}
     <StyledSelect
       label={label}
       IconComponent={IconComponent}
@@ -33,6 +33,6 @@ export const Select = ({
         </MenuItem>
       ))}
     </StyledSelect>
-    <FormHelperText>{helperText}</FormHelperText>
+    {helperText && <FormHelperText>{helperText}</FormHelperText>}
   </FormControl>
 );

@@ -1,93 +1,30 @@
 import * as yup from 'yup';
-import { ProfileInfoType } from './types';
+import { Enum_Userspermissionsuser_Position } from 'types/GraphqlTypes';
+import { ProfileFields } from './types';
 
-export const profileInfo: ProfileInfoType[] = [
-  {
-    label: 'First name *',
-    fieldName: 'firstName',
-    component: 'input',
-    type: 'text',
-    icon: 'person',
-  },
-  {
-    label: 'Last name *',
-    fieldName: 'lastName',
-    component: 'input',
-    type: 'text',
-    icon: 'person',
-  },
-  {
-    label: 'Position',
-    fieldName: 'position',
-    component: 'select',
-    items: [
-      { value: 'developer', label: 'developer' },
-      { value: 'designer', label: 'designer' },
-      { value: 'cdo', label: 'cdo' },
-      { value: 'cto', label: 'cto' },
-    ],
-    type: 'text',
-    icon: 'work',
-  },
-  {
-    label: 'Email *',
-    fieldName: 'email',
-    component: 'input',
-    type: 'email',
-    icon: 'email',
-  },
-  {
-    label: 'linkedIn',
-    fieldName: 'linkedIn',
-    component: 'input',
-    type: 'text',
-    icon: 'link',
-  },
-  {
-    label: 'upWork',
-    fieldName: 'upWork',
-    component: 'input',
-    type: 'text',
-    icon: 'upWork',
-  },
-  {
-    label: 'Phone *',
-    fieldName: 'phone',
-    component: 'input',
-    type: 'text',
-    icon: 'phone',
-  },
-  {
-    label: 'Date Of Employment',
-    fieldName: 'dateEmployment',
-    component: 'timepicker',
-    type: 'text',
-    icon: 'calendarMonth',
-  },
-  {
-    label: 'Salary Info ',
-    fieldName: 'salaryInfo',
-    component: 'input',
-    type: 'text',
-    icon: 'money',
-  },
+export const positionItems = [
+  { value: Enum_Userspermissionsuser_Position.Developer, label: 'Developer' },
+  { value: Enum_Userspermissionsuser_Position.Designer, label: 'Designer' },
+  { value: Enum_Userspermissionsuser_Position.Cdo, label: 'CDO' },
+  { value: Enum_Userspermissionsuser_Position.Cto, label: 'CTO' },
 ];
 
 export const validationSchema = yup.object({
-  firstName: yup.string().required('Should not be empty'),
-  lastName: yup.string().required('Should not be empty'),
-  email: yup
+  [ProfileFields.FirstName]: yup.string().required('Should not be empty'),
+  [ProfileFields.LastName]: yup.string().required('Should not be empty'),
+  [ProfileFields.Email]: yup
     .string()
     .email('Please enter a valid e-mail address')
     .required('Should not be empty'),
-  linkedIn: yup.string().url(),
-  upWork: yup.string().url(),
-
-  phone: yup
+  [ProfileFields.LinkedIn]: yup.string().url(),
+  [ProfileFields.UpWork]: yup.string().url(),
+  [ProfileFields.Phone]: yup
     .string()
     .required('Should not be empty')
     .matches(/^[0-9]+$/, 'Must be only digits')
     .min(10, 'Phone must be at least 10 characters'),
-
-  dateEmployment: yup.date(),
+  [ProfileFields.SalaryInfo]: yup
+    .number()
+    .typeError('Must be a number')
+    .required('Should not be empty'),
 });
