@@ -25,7 +25,7 @@ export const MultipleSelect = ({
   ...props
 }: MultipleSelectProps) => (
   <FormControl variant={variant} size={size} sx={sx} fullWidth error={error}>
-    <InputLabel>{label}</InputLabel>
+    {label && <InputLabel>{label}</InputLabel>}
     <Select
       label={label}
       multiple
@@ -51,6 +51,6 @@ export const MultipleSelect = ({
         </MenuItem>
       ))}
     </Select>
-    <FormHelperText>{helperText}</FormHelperText>
+    {helperText && <FormHelperText>{helperText}</FormHelperText>}
   </FormControl>
 );

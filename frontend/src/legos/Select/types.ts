@@ -7,7 +7,7 @@ export type ItemType = {
 };
 
 export type SelectPropsType = SelectProps & {
-  label: string;
+  label: string | null;
   items?: ItemType[];
   helperText?: boolean | string;
 };

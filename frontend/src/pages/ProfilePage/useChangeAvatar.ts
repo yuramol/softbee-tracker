@@ -12,7 +12,7 @@ export const useChangeAvatar = () => {
 
   return useCallback(
     ({ event, avatarId, userId, updateUserMutation }: ChangeAvatarProps) => {
-      const [file] = event.target.files;
+      const file = (event.target as HTMLInputElement).files?.item(0);
 
       if (file) {
         return uploadMutation({

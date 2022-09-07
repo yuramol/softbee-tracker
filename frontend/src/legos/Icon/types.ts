@@ -3,6 +3,7 @@ export type IconsNames =
   | 'link'
   | 'calendarMonth'
   | 'person'
+  | 'personOutline'
   | 'phone'
   | 'work'
   | 'money'
