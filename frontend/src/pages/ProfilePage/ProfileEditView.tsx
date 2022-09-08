@@ -25,9 +25,9 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
   const { userData } = useUser(id);
   const { user, isManager } = useAuthUser();
   const [isEdit, setIsEdit] = useState(enableEdit ?? false);
+  const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const showNotification = useNotification();
   const handleChangeAvatar = useChangeAvatar();
-  const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
 
   const initialValues: ProfileInitialValues = {
     [ProfileFields.UserName]: userData?.username ?? '',
