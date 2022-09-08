@@ -1,13 +1,5 @@
 import * as yup from 'yup';
-import { Enum_Userspermissionsuser_Position } from 'types/GraphqlTypes';
 import { ProfileFields } from './types';
-
-export const positionItems = [
-  { value: Enum_Userspermissionsuser_Position.Developer, label: 'Developer' },
-  { value: Enum_Userspermissionsuser_Position.Designer, label: 'Designer' },
-  { value: Enum_Userspermissionsuser_Position.Cdo, label: 'CDO' },
-  { value: Enum_Userspermissionsuser_Position.Cto, label: 'CTO' },
-];
 
 export const validationSchema = yup.object({
   [ProfileFields.FirstName]: yup.string().required('Should not be empty'),

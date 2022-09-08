@@ -52,14 +52,16 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     <MainWrapper
       sidebar={
         <>
-          <Button
-            sx={{ mb: 2 }}
-            fullWidth
-            variant="contained"
-            title="Add new project"
-            size="large"
-            onClick={() => setIsCreateProject(!isCreateProject)}
-          />
+          {!isCreateProject && (
+            <Button
+              sx={{ mb: 2 }}
+              fullWidth
+              variant="contained"
+              title="Add new project"
+              size="large"
+              onClick={() => setIsCreateProject(!isCreateProject)}
+            />
+          )}
           <SideBars />
         </>
       }
