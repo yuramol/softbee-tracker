@@ -13,15 +13,9 @@ import { employeePositionChoices } from '../../constants';
 import { Role } from 'constants/types';
 
 export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
-  const { roles } = useRoles({
-    type: { in: [Role.Manager, Role.Employee] },
-  });
+  const { roles } = useRoles({ type: { eq: Role.Employee } });
   const [createUser] = useMutation(CREATE_USER_MUTATION);
   const showNotification = useNotification();
-
-  const employeeRoleId = roles?.find(
-    ({ attributes }) => attributes?.type === Role.Employee
-  )?.id;
 
   const initialValues = {
     [CreateUserFields.Role]: '',
@@ -60,7 +54,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
     onSubmit: (values) => {
       const data = {
         ...values,
-        [CreateUserFields.Role]: employeeRoleId,
+        [CreateUserFields.Role]: roles?.at(0)?.id,
         [CreateUserFields.DateEmployment]: getFormattedDate(
           values[CreateUserFields.DateEmployment]
         ),
@@ -84,11 +78,11 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
 
   return (
     <FormikContext.Provider value={formik}>
-      <Stack component="form" onSubmit={handleSubmit}>
+      <Stack component="form" onSubmit={handleSubmit} gap={4}>
         <Typography variant="h3" mb={3}>
           Add new user
         </Typography>
-        <Stack direction="row" gap={3} mb={4}>
+        <Stack direction="row" gap={3}>
           <TextField
             fullWidth
             label="User name"
@@ -106,7 +100,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
             onChange={handleChange}
           />
         </Stack>
-        <Stack direction="row" gap={3} mb={4}>
+        <Stack direction="row" gap={3}>
           <TextField
             fullWidth
             label="First name"
@@ -124,7 +118,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
             onChange={handleChange}
           />
         </Stack>
-        <Stack direction="row" gap={3} mb={4}>
+        <Stack direction="row" gap={3}>
           <TextField
             fullWidth
             label="Email"
@@ -142,7 +136,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
             onChange={handleChange}
           />
         </Stack>
-        <Stack direction="row" gap={3} mb={4}>
+        <Stack direction="row" gap={3}>
           <Select
             label="Position"
             items={employeePositionChoices}
