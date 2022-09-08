@@ -30,7 +30,7 @@ export const AppRouter = () => {
             path={href}
             element={
               <Suspense fallback={<div />}>
-                <Component />
+                <Component title={name} />
                 {isAuth && <LiveTracker />}
               </Suspense>
             }

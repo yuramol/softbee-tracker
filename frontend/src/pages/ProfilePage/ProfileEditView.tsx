@@ -18,12 +18,13 @@ import {
 
 type Props = {
   id: Scalars['ID'];
+  enableEdit?: boolean;
 };
 
-export const ProfileEditView = ({ id }: Props) => {
+export const ProfileEditView = ({ id, enableEdit }: Props) => {
   const { userData } = useUser(id);
   const { user, isManager } = useAuthUser();
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(enableEdit ?? false);
   const showNotification = useNotification();
   const handleChangeAvatar = useChangeAvatar();
   const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
@@ -231,14 +232,26 @@ export const ProfileEditView = ({ id }: Props) => {
             <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="link" />
               <Stack flexGrow="1">
-                {isEdit ? (
+                {!isEdit && !!values[ProfileFields.LinkedIn] ? (
+                  <Link
+                    href={values[ProfileFields.LinkedIn]}
+                    underline="none"
+                    target="_blank"
+                  >
+                    LinkedIn
+                  </Link>
+                ) : (
                   <Input
                     variant="standard"
                     placeholder="LinkedIn"
-                    label="LinkedIn"
+                    label={isEdit ? 'LinkedIn' : null}
                     name={ProfileFields.LinkedIn}
                     value={values[ProfileFields.LinkedIn]}
                     onChange={handleChange}
+                    InputProps={{
+                      readOnly: !isEdit,
+                      disableUnderline: !isEdit,
+                    }}
                     helperText={
                       touched[ProfileFields.LinkedIn] &&
                       errors[ProfileFields.LinkedIn]
@@ -250,14 +263,6 @@ export const ProfileEditView = ({ id }: Props) => {
                       )
                     }
                   />
-                ) : (
-                  <Link
-                    href={values[ProfileFields.LinkedIn]}
-                    underline="none"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </Link>
                 )}
               </Stack>
             </Stack>
