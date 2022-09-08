@@ -24,6 +24,7 @@ declare module '@mui/material/styles' {
   }
   interface CommonColors {
     grey: string;
+    white: string;
     lightBackground: string;
     brandYellow: string;
     successGreen?: string;
@@ -38,6 +39,7 @@ export const theme: Theme = createTheme({
       light: '#f0f6f4',
     },
     common: {
+      white: '#ffffff',
       grey: '#3b4649',
       lightBackground: '#f0f6f4',
       brandYellow: '#f5d040',
@@ -49,27 +51,27 @@ export const theme: Theme = createTheme({
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
     h1: {
-      fontSize: '2.566rem',
-      fontWeight: 600,
-    },
-    h2: {
-      fontSize: '2.281rem',
-      fontWeight: 600,
-    },
-    h3: {
       fontSize: '2.027rem',
       fontWeight: 600,
     },
-    h4: {
+    h2: {
       fontSize: '1.802rem',
       fontWeight: 600,
     },
-    h5: {
+    h3: {
       fontSize: '1.602rem',
       fontWeight: 600,
     },
-    h6: {
+    h4: {
       fontSize: '1.424rem',
+      fontWeight: 600,
+    },
+    h5: {
+      fontSize: '1.266rem',
+      fontWeight: 600,
+    },
+    h6: {
+      fontSize: '1.125rem',
       fontWeight: 600,
     },
   },

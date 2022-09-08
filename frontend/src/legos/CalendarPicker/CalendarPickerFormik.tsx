@@ -7,10 +7,12 @@ type CalendarPickerFormikProps = Omit<
   'onChange' | 'value'
 > & {
   field: string;
+  variant?: 'filled' | 'outlined' | 'standard' | undefined;
 };
 
 export const CalendarPickerFormik = ({
   field,
+  variant,
   ...arg
 }: CalendarPickerFormikProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -19,6 +21,7 @@ export const CalendarPickerFormik = ({
     <CalendarPicker
       {...arg}
       value={value}
+      variant={variant}
       onChange={(newValue) => {
         setValue(newValue ?? new Date());
       }}

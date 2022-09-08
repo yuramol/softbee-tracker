@@ -3,6 +3,7 @@ export type IconsNames =
   | 'link'
   | 'calendarMonth'
   | 'person'
+  | 'personOutline'
   | 'phone'
   | 'work'
   | 'money'
@@ -18,7 +19,10 @@ export type IconsNames =
   | 'add'
   | 'navigateBefore'
   | 'navigateNext'
-  | 'arrowDropDown';
+  | 'arrowDropDown'
+  | 'upWork'
+  | 'watch'
+  | 'download';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;

@@ -1,7 +1,11 @@
 import { gql } from '@apollo/client';
 
-export const PROJECTS_TRECKERS_BY_USER_ID_QUERY = gql`
-  query ProjectsTrackersByUserId($userId: ID!, $filterByDate: [Date]) {
+export const PROJECTS_TRACKERS_BY_USER_ID_QUERY = gql`
+  query ProjectsTrackersByUserId(
+    $userId: ID!
+    $startDate: Date
+    $endDate: Date
+  ) {
     projects(filters: { users: { id: { eq: $userId } } }) {
       data {
         id
@@ -10,8 +14,10 @@ export const PROJECTS_TRECKERS_BY_USER_ID_QUERY = gql`
           trackers(
             filters: {
               user: { id: { eq: $userId } }
-              date: { between: $filterByDate }
+              date: { between: [$startDate, $endDate] }
+              live: { eq: false }
             }
+            sort: "date"
           ) {
             data {
               id

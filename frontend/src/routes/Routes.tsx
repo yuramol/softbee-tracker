@@ -1,26 +1,27 @@
 import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { useAuth } from '../AuthProvider';
+import { useAuthUser } from 'hooks';
 import { Loader, Layout } from '../components';
 import { NotFoundPage } from '../pages';
-import { Role, pages } from '../constants';
+import { pages } from '../constants';
+import { LiveTracker } from '../modules';
 
 export const AppRouter = () => {
-  const { jwt, user } = useAuth();
+  const { jwt, user, isAuth } = useAuthUser();
 
-  if (jwt !== null && Object.keys(user).length === 0) return <Loader />;
-  if (user.role === null) return <Loader />;
+  if (jwt !== null && !isAuth) return <Loader />;
 
-  const userRole = user && user.role ? user.role.type : Role.Public;
-  const currentPages = pages.filter(({ role }) => role.includes(userRole));
+  const currentPages = pages.filter(({ role }) =>
+    role.includes(user.role.type)
+  );
 
   return (
     <Routes>
       <Route element={<Layout pages={currentPages} />}>
         <Route
           path="*"
-          element={user ? <NotFoundPage /> : <Navigate to="/login" replace />}
+          element={isAuth ? <NotFoundPage /> : <Navigate to="/login" replace />}
         />
         {currentPages.map(({ index, name, href, Component }) => (
           <Route
@@ -30,6 +31,7 @@ export const AppRouter = () => {
             element={
               <Suspense fallback={<div />}>
                 <Component />
+                {isAuth && <LiveTracker />}
               </Suspense>
             }
           />

@@ -11,38 +11,28 @@ import { Icon } from '../Icon';
 import { StyledSelect } from './styled';
 
 export const Select = ({
-  name,
   items,
   label,
-  disabled,
-  value,
   error,
-  errorText,
-  onChange,
+  helperText,
   variant = 'standard',
-  readOnly,
   IconComponent = () => <Icon icon="arrowDropDown" />,
   ...props
 }: SelectPropsType) => (
   <FormControl variant={variant} fullWidth error={error}>
-    <InputLabel id="select-label">{label}</InputLabel>
+    {label && <InputLabel>{label}</InputLabel>}
     <StyledSelect
-      IconComponent={IconComponent}
       label={label}
-      value={value}
-      name={name}
-      disabled={disabled}
-      readOnly={readOnly}
-      onChange={onChange}
-      sx={{ maxWidth: '100%', paddingRight: 1 }}
+      IconComponent={IconComponent}
+      sx={{ paddingRight: 1 }}
       {...props}
     >
-      {items?.map(({ id, attributes }) => (
-        <MenuItem key={id} value={id as string}>
-          {attributes?.name}
+      {items?.map(({ label, value }) => (
+        <MenuItem key={value} value={value as string}>
+          {label}
         </MenuItem>
       ))}
     </StyledSelect>
-    {error && <FormHelperText>{errorText}</FormHelperText>}
+    {helperText && <FormHelperText>{helperText}</FormHelperText>}
   </FormControl>
 );

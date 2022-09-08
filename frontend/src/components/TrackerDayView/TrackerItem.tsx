@@ -1,51 +1,57 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   IconButton,
-  Input,
   Popper,
   Typography,
   ClickAwayListener,
   Stack,
 } from '@mui/material';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 import { TimeContext } from './TrackerDayView';
-import { parseTrackerTime } from 'helpers';
-import { Maybe, Tracker } from 'types/GraphqlTypes';
+import { useCreateTracker } from 'modules';
 import { Icon } from 'legos';
+import TimePicker from 'components/TimePicker';
+import {
+  TimeEntryValues,
+  TrackerEntryModalForm,
+} from 'components/TrackerEntryModalForm';
+import { parseTrackerTime } from 'helpers';
+import { useAuthUser } from 'hooks';
+import { TrackerEntity } from 'types/GraphqlTypes';
 
-type Props = {
-  id: Maybe<string> | undefined;
-  attributes: Maybe<Tracker> | undefined;
-  trackerTime: Date;
+type TrackerItemProps = {
+  tracker: TrackerEntity;
 };
 
-export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
-  const [isEdit, setIsEdit] = useState(false);
-  const [isTrackerStart, setIsTrackerStart] = useState(false);
-  const [isPopperOpen, setIsPopperOpen] = useState(false);
+export const TrackerItem = ({ tracker }: TrackerItemProps) => {
+  const { user } = useAuthUser();
+  const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
+  const { createTracker } = useCreateTracker();
 
-  const [time, setTime] = useState(trackerTime);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isPopperOpen, setIsPopperOpen] = useState(false);
+  const [time, setTime] = useState(
+    parseTrackerTime(tracker.attributes?.duration ?? '')
+  );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
-
-  const handleBlur = () => {
-    onUpdateTracker(time, id);
-    setIsEdit(!isEdit);
-  };
-
-  const handleChange = (value: string) => {
+  const handleChange = (value: string, submit?: boolean) => {
     setTime(parseTrackerTime(value, 'HH:mm'));
+    if (submit) {
+      onUpdateTracker(tracker.id, {
+        duration: parseTrackerTime(value, 'HH:mm'),
+      });
+    }
   };
 
-  const onHaldlerTime = (detail: number) => {
-    if (detail === 2) setIsEdit(!isEdit);
+  const toggleOpenModal = () => {
+    setIsOpenModal(!isOpenModal);
   };
 
   const handleClickDeleteButton = (el: HTMLElement) => {
-    setAnchorEl(anchorEl ? null : el);
+    setAnchorEl(el);
     setIsPopperOpen(true);
   };
 
@@ -56,7 +62,34 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
 
   const handleDelete = () => {
     handleClickAway();
-    onDeleteTracker(id);
+    onDeleteTracker(tracker.id);
+  };
+
+  const initialValuesForm: TimeEntryValues = {
+    DATE: parseISO(tracker.attributes?.date ?? ''),
+    DURATION: format(
+      parseTrackerTime(tracker.attributes?.duration ?? ''),
+      'HH:mm'
+    ),
+    DESCRIPTION: tracker.attributes?.description ?? '',
+    PROJECT: tracker.attributes?.project?.data?.id ?? '',
+  };
+
+  const handleStartTracker = () => {
+    createTracker(user.id, initialValuesForm);
+  };
+
+  const handelSubmit = (values: TimeEntryValues) => {
+    setTime(parseTrackerTime(values.DURATION, 'HH:mm'));
+
+    onUpdateTracker(tracker.id, {
+      date: format(values.DATE, 'yyyy-MM-dd'),
+      description: values.DESCRIPTION,
+      project: values.PROJECT,
+      duration: parseTrackerTime(values.DURATION, 'HH:mm'),
+    });
+
+    toggleOpenModal();
   };
 
   return (
@@ -71,41 +104,26 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
     >
       <Stack>
         <Typography variant="h6">
-          {attributes?.project?.data?.attributes?.name}
+          {tracker.attributes?.project?.data?.attributes?.name ?? ''}
         </Typography>
-        <Typography>{attributes?.description}</Typography>
+        <Typography>{tracker.attributes?.description}</Typography>
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
-        {isEdit ? (
-          <Input
-            type="time"
-            value={format(time, 'HH:mm:ss.SSS')}
-            onBlur={handleBlur}
-            onChange={(e) => handleChange(e.target.value)}
-            onClick={(e) => onHaldlerTime(e.detail)}
-          />
-        ) : (
-          <Typography
-            sx={{ userSelect: 'none' }}
-            onClick={(e) => onHaldlerTime(e.detail)}
-          >
-            {format(time, 'HH:mm')}
-          </Typography>
-        )}
-        <IconButton color="primary" onClick={() => setIsEdit(!isEdit)}>
+        <TimePicker
+          width="110px"
+          value={format(time, 'HH:mm')}
+          onChange={handleChange}
+        />
+        <IconButton color="primary" onClick={toggleOpenModal}>
           <Icon icon="edit" size="small" />
         </IconButton>
         <IconButton
           size="large"
           color="primary"
           sx={{ border: '1px solid' }}
-          onClick={() => setIsTrackerStart(!isTrackerStart)}
+          onClick={handleStartTracker}
         >
-          {isTrackerStart ? (
-            <Icon icon="pause" size="inherit" />
-          ) : (
-            <Icon icon="playArrow" size="inherit" />
-          )}
+          <Icon icon="playArrow" size="inherit" />
         </IconButton>
         <IconButton
           color="error"
@@ -147,6 +165,15 @@ export const TrackerItem: FC<Props> = ({ id, attributes, trackerTime }) => {
           </ClickAwayListener>
         )}
       </Stack>
+      <TrackerEntryModalForm
+        open={isOpenModal}
+        onClose={toggleOpenModal}
+        onSubmit={(values) => handelSubmit(values)}
+        initialValuesForm={initialValuesForm}
+        titleForm="Edit time entry"
+        buttonSubmitTitle="Update"
+        userId={user.id}
+      />
     </Stack>
   );
 };

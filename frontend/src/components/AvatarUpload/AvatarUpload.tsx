@@ -4,20 +4,37 @@ import { Typography, Box, Button } from '@mui/material';
 import { Avatar } from 'legos';
 
 type AvatarUploadProps = {
-  avatar: Blob | MediaSource;
-  name: string;
+  canEdit: boolean;
+  avatar?: string;
+  firstName: string;
+  lastName: string;
   onChange: (data: ChangeEvent) => void;
 };
 
-export const AvatarUpload = ({ avatar, name, onChange }: AvatarUploadProps) => {
-  const path = avatar ? `https://dev.strapi.track.softbee.io${avatar}` : '';
+export const AvatarUpload = ({
+  canEdit,
+  avatar,
+  firstName,
+  lastName,
+  onChange,
+}: AvatarUploadProps) => {
+  const path = avatar ? `${process.env.REACT_APP_URI}${avatar}` : '';
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-      <Avatar width={180} height={180} name={name} avatar={path} />
-      <Button component="label" color="primary" aria-label="upload picture">
-        <Typography fontSize={12}>Upload new photo</Typography>
-        <input hidden accept="image/*" type="file" onChange={onChange} />
-      </Button>
+      <Avatar
+        width={180}
+        height={180}
+        firstName={firstName}
+        lastName={lastName}
+        avatar={path}
+      />
+      {canEdit && (
+        <Button component="label" color="primary" aria-label="upload picture">
+          <Typography fontSize={12}>Upload new photo</Typography>
+          <input hidden accept="image/*" type="file" onChange={onChange} />
+        </Button>
+      )}
     </Box>
   );
 };

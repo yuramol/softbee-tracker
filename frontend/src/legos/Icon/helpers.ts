@@ -3,6 +3,7 @@ import {
   Email,
   Link,
   Person,
+  PersonOutline,
   Phone,
   Work,
   Money,
@@ -19,6 +20,9 @@ import {
   NavigateBefore,
   NavigateNext,
   ArrowDropDown,
+  WorkHistory,
+  VisibilityRounded,
+  Download,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -28,6 +32,7 @@ export const IconsMap: IconsNamesMapType = {
   email: Email,
   link: Link,
   person: Person,
+  personOutline: PersonOutline,
   phone: Phone,
   work: Work,
   money: Money,
@@ -44,4 +49,7 @@ export const IconsMap: IconsNamesMapType = {
   navigateBefore: NavigateBefore,
   navigateNext: NavigateNext,
   arrowDropDown: ArrowDropDown,
+  upWork: WorkHistory,
+  watch: VisibilityRounded,
+  download: Download,
 };

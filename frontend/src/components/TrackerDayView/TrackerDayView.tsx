@@ -1,6 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react';
-
-import { useQuery, useMutation } from '@apollo/client';
+import {
+  useMutation,
+  OperationVariables,
+  ApolloQueryResult,
+} from '@apollo/client';
 import {
   addDays,
   format,
@@ -17,10 +20,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
 import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
-import { useAuth } from 'AuthProvider';
-import { useCurrentWeek } from 'hooks';
+import { useCurrentWeek, useNotification } from 'hooks';
 import {
-  TRECKERS_BY_USER_ID_QUERY,
   UPDATE_TRACKER_BY_ID_MUTATION,
   DELETE_TRACKER_BY_ID_MUTATION,
   CREATE_TRACKER_BY_USER_ID_MUTATION,
@@ -32,21 +33,32 @@ import {
   TrackerInput,
 } from 'types/GraphqlTypes';
 import { parseTrackerTime } from 'helpers';
+import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 export type TrackerContext = {
   onCreateTracker: (values: TrackerInput) => void;
-  onUpdateTracker: (time: Date, id: Maybe<string> | undefined) => void;
-  onDeleteTracker: (id: Maybe<string> | undefined) => void;
+  onUpdateTracker: (id?: Maybe<string>, values?: TrackerInput) => void;
+  onDeleteTracker: (id?: Maybe<string>) => void;
 };
 
 type TrackerDayViewProps = {
   selectedDay: Date;
+  trackers: TrackerByDay[];
+  refetchTrackers: (variables?: Partial<OperationVariables>) => Promise<
+    ApolloQueryResult<{
+      trackers: TrackerEntityResponseCollection;
+    }>
+  >;
 };
 
 export const TimeContext = createContext<TrackerContext>({} as TrackerContext);
 
-export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
-  const { user } = useAuth();
+export const TrackerDayView = ({
+  selectedDay,
+  trackers,
+  refetchTrackers,
+}: TrackerDayViewProps) => {
+  const notification = useNotification();
   const [currentWeekDay, setCurrentWeekDay] = useState(selectedDay);
   const { weekStart, weekEnd, days, currentDay } =
     useCurrentWeek(currentWeekDay);
@@ -58,11 +70,6 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
     setTabsValue(currentDay);
   }, [selectedDay]);
 
-  const { data, refetch } = useQuery<{
-    trackers: TrackerEntityResponseCollection;
-  }>(TRECKERS_BY_USER_ID_QUERY, {
-    variables: { userId: user.id, weekStart, weekEnd },
-  });
   const [createTracker] = useMutation(CREATE_TRACKER_BY_USER_ID_MUTATION);
   const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
   const [deleteTracker] = useMutation(DELETE_TRACKER_BY_ID_MUTATION);
@@ -75,24 +82,39 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
         parseTrackerTime(values.duration, 'HH:mm'),
         'HH:mm:ss.SSS'
       ),
-      user: user.id,
     };
 
     createTracker({ variables: { data } }).then(() => {
-      refetch();
+      refetchTrackers();
+      notification({
+        message: 'The tracker was successfully created',
+        variant: 'success',
+      });
     });
   };
 
-  const onUpdateTracker = (time: Date, id: Maybe<Scalars['ID']>) => {
-    const formatedTime = format(time, 'HH:mm:ss.SSS');
-    updateTracker({ variables: { id, time: formatedTime } }).then(() => {
-      refetch();
+  const onUpdateTracker = (id: Maybe<Scalars['ID']>, values: TrackerInput) => {
+    const data = {
+      ...values,
+      duration: format(values.duration, 'HH:mm:ss.SSS'),
+    };
+
+    updateTracker({ variables: { id, data } }).then(() => {
+      refetchTrackers();
+      notification({
+        message: 'The tracker was successfully updated',
+        variant: 'info',
+      });
     });
   };
 
   const onDeleteTracker = (id: Maybe<Scalars['ID']>) => {
     deleteTracker({ variables: { id } }).then(() => {
-      refetch();
+      refetchTrackers();
+      notification({
+        message: 'The tracker was successfully deleted',
+        variant: 'warning',
+      });
     });
   };
 
@@ -172,7 +194,7 @@ export const TrackerDayView = ({ selectedDay }: TrackerDayViewProps) => {
       </Stack>
       <DayTabs
         currentWeekDay={currentWeekDay}
-        dataTabs={data?.trackers.data}
+        trackers={trackers}
         tabsValue={tabsValue}
         setTabsValue={setTabsValue}
       />

@@ -1,33 +1,17 @@
-import { useState } from 'react';
+import { Maybe, Scalars } from 'types/GraphqlTypes';
 
 export const useLocalStorage = (
-  keyName: string,
-  defaultValue: string | null
+  key: Scalars['String'],
+  value: Maybe<Scalars['String']> = ''
 ) => {
-  const [storedValue, setStoredValue] = useState(() => {
-    try {
-      const value = window.localStorage.getItem(keyName);
+  if (!Object.prototype.hasOwnProperty.call(window.localStorage, key)) {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }
 
-      if (value) {
-        return JSON.parse(value);
-      } else {
-        window.localStorage.setItem(keyName, JSON.stringify(defaultValue));
-
-        return defaultValue;
-      }
-    } catch (err) {
-      return defaultValue;
-    }
-  });
-
-  const setValue = (newValue: Record<string, unknown> | null) => {
-    try {
-      window.localStorage.setItem(keyName, JSON.stringify(newValue));
-      // eslint-disable-next-line no-empty
-    } catch (err) {}
-
-    setStoredValue(newValue);
+  const storedValue = JSON.parse(`${window.localStorage.getItem(key)}`);
+  const setStorageValue = (newValue: Maybe<Scalars['String']>) => {
+    window.localStorage.setItem(key, JSON.stringify(newValue));
   };
 
-  return [storedValue, setValue];
+  return [storedValue, setStorageValue];
 };

@@ -7,17 +7,20 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import { createUploadLink } from 'apollo-upload-client';
+import { useLocalStorage } from 'hooks';
 
 const errorLink = onError(({ networkError }) => {
+  const [, setJwt] = useLocalStorage('jwt');
+
   if (networkError && (networkError as ServerError).statusCode === 401) {
-    window.localStorage.setItem('jwt', JSON.stringify(null));
+    setJwt(null);
   }
 });
 
 const authLink = setContext((_, { headers }) => {
-  const jwt = JSON.parse(`${window.localStorage.getItem('jwt')}`);
+  const [jwt] = useLocalStorage('jwt');
 
-  if (jwt && jwt !== 'null') {
+  if (jwt !== null) {
     return {
       headers: {
         ...headers,
@@ -43,6 +46,9 @@ export const apolloClient = new ApolloClient({
   link,
   cache: new InMemoryCache({
     typePolicies: {
+      UsersPermissionsUser: {
+        merge: true,
+      },
       Tracker: {
         merge: true,
       },

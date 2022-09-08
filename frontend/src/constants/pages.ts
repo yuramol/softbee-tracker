@@ -1,12 +1,12 @@
 import { lazy } from 'react';
-import { Role } from './types';
+import { MenuType, Role } from './types';
 
 export const pages = [
   {
     index: true,
     name: 'Login',
     href: '/login',
-    mainMenu: true,
+    menuType: [MenuType.Main],
     role: [Role.Public],
     Component: lazy(() => import('pages/LoginPage')),
   },
@@ -14,7 +14,7 @@ export const pages = [
     index: false,
     name: 'Register',
     href: '/register',
-    mainMenu: true,
+    menuType: [MenuType.Main],
     role: [Role.Public],
     Component: lazy(() => import('pages/LoginPage')),
   },
@@ -22,32 +22,48 @@ export const pages = [
     index: true,
     name: 'Tracker',
     href: '/',
-    mainMenu: true,
+    menuType: [MenuType.Main],
     role: [Role.Employee, Role.Manager],
     Component: lazy(() => import('pages/HomePage')),
   },
   {
     index: false,
+    name: 'Crew',
+    href: '/crew',
+    menuType: [MenuType.Main],
+    role: [Role.Employee, Role.Manager],
+    Component: lazy(() => import('pages/CrewPage/CrewPage')),
+  },
+  {
+    index: false,
     name: 'Profile',
     href: '/profile',
-    mainMenu: false,
+    menuType: [MenuType.Secondary],
     role: [Role.Employee, Role.Manager],
     Component: lazy(() => import('pages/ProfilePage/ProfilePage')),
   },
   {
     index: false,
+    name: 'View Profile',
+    href: '/profile/:userId',
+    menuType: [],
+    role: [Role.Employee, Role.Manager],
+    Component: lazy(() => import('pages/ProfilePage/view')),
+  },
+  {
+    index: false,
     name: 'Projects',
     href: '/projects',
-    mainMenu: true,
+    menuType: [MenuType.Main],
     role: [Role.Manager],
-    Component: lazy(() => import('pages/ProjectPage')),
+    Component: lazy(() => import('pages/ProjectPage/ProjectPage')),
   },
   {
     index: false,
     name: 'Reports',
     href: '/reports',
-    mainMenu: true,
+    menuType: [MenuType.Main],
     role: [Role.Manager],
-    Component: lazy(() => import('pages/ReportPage')),
+    Component: lazy(() => import('pages/ReportPage/ReportPage')),
   },
 ];

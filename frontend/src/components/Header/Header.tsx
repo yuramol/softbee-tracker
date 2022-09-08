@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Container } from '@mui/material';
+import { AppBar, Toolbar, Container, Stack } from '@mui/material';
 
-import { useAuth } from '../../AuthProvider';
-
+import { useAuthUser } from 'hooks';
 import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
 import { HeaderProps } from './types';
+import { MenuType } from 'constants/types';
 
 export const Header: React.FC<HeaderProps> = ({ pages }) => {
+  const { isAuth } = useAuthUser();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -21,9 +22,12 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
     setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
-  const { user } = useAuth();
-  const mainMenuPages = pages.filter(({ mainMenu }) => mainMenu);
-  const avatarMenuPages = pages.filter(({ mainMenu }) => !mainMenu);
+  const mainMenu = pages.filter(({ menuType }) =>
+    menuType.includes(MenuType.Main)
+  );
+  const secondaryMenu = pages.filter(({ menuType }) =>
+    menuType.includes(MenuType.Secondary)
+  );
 
   return (
     <AppBar
@@ -36,21 +40,23 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <MenuAppBar
-            pages={mainMenuPages}
+            pages={mainMenu}
             anchorElNav={anchorElNav}
             handleOpenNavMenu={handleOpenNavMenu}
             handleCloseNavMenu={handleCloseNavMenu}
           />
-          <Logo />
-          <NavBar pages={mainMenuPages} />
-          {user && (
-            <HeaderAvatar
-              pages={avatarMenuPages}
-              anchorElUser={anchorElUser}
-              handleOpenUserMenu={handleOpenUserMenu}
-              handleCloseUserMenu={handleCloseUserMenu}
-            />
-          )}
+          <Stack width="100%" direction="row" spacing={3} alignItems="center">
+            <Logo />
+            <NavBar pages={mainMenu} />
+            {isAuth && (
+              <HeaderAvatar
+                pages={secondaryMenu}
+                anchorElUser={anchorElUser}
+                handleOpenUserMenu={handleOpenUserMenu}
+                handleCloseUserMenu={handleCloseUserMenu}
+              />
+            )}
+          </Stack>
         </Toolbar>
       </Container>
     </AppBar>
