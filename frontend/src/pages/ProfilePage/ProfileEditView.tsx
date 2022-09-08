@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Link, Stack, Typography } from '@mui/material';
 import { FormikContext, useFormik } from 'formik';
@@ -24,10 +24,14 @@ type Props = {
 export const ProfileEditView = ({ id, enableEdit }: Props) => {
   const { userData } = useUser(id);
   const { user, isManager } = useAuthUser();
-  const [isEdit, setIsEdit] = useState(enableEdit ?? false);
+  const [isEdit, setIsEdit] = useState(false);
   const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const showNotification = useNotification();
   const handleChangeAvatar = useChangeAvatar();
+
+  useEffect(() => {
+    setIsEdit(enableEdit ?? false);
+  }, [enableEdit]);
 
   const initialValues: ProfileInitialValues = {
     [ProfileFields.UserName]: userData?.username ?? '',
