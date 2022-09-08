@@ -23,6 +23,7 @@ import {
   WorkHistory,
   VisibilityRounded,
   Download,
+  Clear,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -52,4 +53,5 @@ export const IconsMap: IconsNamesMapType = {
   upWork: WorkHistory,
   watch: VisibilityRounded,
   download: Download,
+  clear: Clear,
 };

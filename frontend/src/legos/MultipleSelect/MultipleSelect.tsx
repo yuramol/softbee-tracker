@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   FormControl,
   FormHelperText,
+  Stack,
 } from '@mui/material';
 
 import { Icon } from '../Icon';
@@ -41,8 +42,19 @@ export const MultipleSelect = ({
           ))}
         </Box>
       )}
-      sx={{ paddingRight: 1 }}
-      IconComponent={IconComponent}
+      IconComponent={() => (
+        <Stack
+          sx={{
+            cursor: 'pointer',
+            paddingRight: 1,
+            position: 'absolute !important',
+            right: '0 !important',
+            pointerEvents: 'none !important',
+          }}
+        >
+          <Icon icon="arrowDropDown" />
+        </Stack>
+      )}
       {...props}
     >
       {items?.map(({ label, value }) => (
