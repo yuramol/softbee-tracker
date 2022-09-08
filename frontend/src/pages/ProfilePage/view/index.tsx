@@ -8,7 +8,7 @@ const ProfileViewPage = () => {
 
   return (
     <MainWrapper>
-      <ProfileEditView id={`${userId}`} />
+      <ProfileEditView id={`${userId}`} enableEdit={true} />
     </MainWrapper>
   );
 };
