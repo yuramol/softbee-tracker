@@ -1,9 +1,9 @@
 import React from 'react';
 import { IconButton, Stack } from '@mui/material';
 
-import { RangeCalendar } from 'components';
-import { Icon, MultipleSelect } from 'legos';
+import { Icon, MultipleSelect, RangeCalendar } from 'legos';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
+import { reportRangeDates } from 'helpers';
 
 type Props = {
   selectedDates: string[];
@@ -31,6 +31,7 @@ export const ReportPageSidebar: React.FC<Props> = ({
       <RangeCalendar
         selectedDates={selectedDates}
         setSelectedDates={setSelectedDates}
+        defaultRangeDates={reportRangeDates}
       />
       {isManager && (
         <MultipleSelect

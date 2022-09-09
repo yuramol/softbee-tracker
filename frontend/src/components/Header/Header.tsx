@@ -7,7 +7,7 @@ import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
 import { HeaderProps } from './types';
-import { MenuType } from 'constants/types';
+import { MenuType } from 'constant';
 
 export const Header: React.FC<HeaderProps> = ({ pages }) => {
   const { isAuth } = useAuthUser();

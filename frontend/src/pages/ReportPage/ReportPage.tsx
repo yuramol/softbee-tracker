@@ -14,12 +14,7 @@ import {
 import { MainWrapper } from '../../components';
 import { PageProps } from '../types';
 import { useNormalizedTrackers } from 'hooks';
-import {
-  getFormattedDate,
-  getHours,
-  getMinutes,
-  parseTrackerTime,
-} from 'helpers';
+import { getFormattedDate, getHours, parseTrackerTime } from 'helpers';
 import { ReportPageSidebar } from './ReportPageSidebar';
 
 const reportTableHead = ['Date', 'Description', 'Time'];
@@ -45,17 +40,11 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   };
 
   const { trackers } = useNormalizedTrackers(reportFilter);
-
   const reportTotalTime = useMemo(() => {
-    let totalTime = '0:00';
+    let totalTime = 0;
+    trackers.forEach(({ total }) => (totalTime += total));
 
-    trackers.forEach(({ total }) => {
-      totalTime = getHours(
-        getMinutes(totalTime, 'HH:mm') + getMinutes(total, 'HH:mm')
-      );
-    });
-
-    return totalTime;
+    return getHours(totalTime);
   }, [trackers]);
 
   const reportSidebarProps = {
