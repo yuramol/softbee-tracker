@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 
 import { TRACKERS_QUERY } from 'api';
-import { getHours, getMinutes } from 'helpers';
+import { getMinutes } from 'helpers';
 import {
   TrackerEntity,
   TrackerEntityResponseCollection,
@@ -11,13 +11,13 @@ import {
 type TrackerByProject = {
   name: string | undefined;
   trackers: TrackerEntity[];
-  total: string;
+  total: number;
 };
 
 export type TrackerByDay = {
   date: string;
   trackersByProject: TrackerByProject[];
-  total: string;
+  total: number;
 };
 
 export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
@@ -36,13 +36,13 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
     const trackerByProject: TrackerByProject = {
       name: projectName,
       trackers: [tracker],
-      total: getHours(getMinutes(tracker.attributes?.duration)),
+      total: getMinutes(tracker.attributes?.duration),
     };
 
     const trackerByDay: TrackerByDay = {
       date,
       trackersByProject: [trackerByProject],
-      total: getHours(getMinutes(tracker.attributes?.duration)),
+      total: getMinutes(tracker.attributes?.duration),
     };
 
     const findTrackerByDay = trackers.find((tracker) => tracker.date === date);
@@ -52,17 +52,13 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
         ({ name }) => name === projectName
       );
 
-      findTrackerByDay.total = getHours(
-        getMinutes(findTrackerByDay.total, 'HH:mm') +
-          getMinutes(tracker.attributes?.duration)
-      );
+      findTrackerByDay.total =
+        findTrackerByDay.total + getMinutes(tracker.attributes?.duration);
 
       if (findTrackerByProject) {
         findTrackerByProject.trackers.push(tracker);
-        findTrackerByProject.total = getHours(
-          getMinutes(findTrackerByProject.total, 'HH:mm') +
-            getMinutes(tracker.attributes?.duration)
-        );
+        findTrackerByProject.total =
+          findTrackerByProject.total + getMinutes(tracker.attributes?.duration);
       } else {
         findTrackerByDay.trackersByProject.push(trackerByProject);
       }
