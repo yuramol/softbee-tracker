@@ -3,7 +3,7 @@ import { IconButton, Stack } from '@mui/material';
 
 import { Icon, MultipleSelect, RangeCalendar } from 'legos';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
-import { reportRangeDates } from 'constant';
+import { reportRangeDates } from 'helpers';
 
 type Props = {
   selectedDates: string[];
