@@ -4,7 +4,7 @@ import { isAfter, isFuture, startOfDay, startOfMonth } from 'date-fns';
 
 import { PanelTab } from './PanelTab';
 import { useCurrentWeek } from 'hooks';
-import { getHours, getMinutes } from 'helpers';
+import { getHours } from 'helpers';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 type Props = {
@@ -23,19 +23,15 @@ export const DayTabs: React.FC<Props> = ({
   const { days } = useCurrentWeek(currentWeekDay);
 
   const totalByWeek = useMemo(() => {
-    let totalTime = '00:00';
+    let totalTime = 0;
     days.forEach(({ fullDate }) => {
       const totalByDay =
-        typeof trackers.find(({ date }) => date === fullDate) === 'object'
-          ? trackers.find(({ date }) => date === fullDate)?.total
-          : '00:00';
-      totalTime = getHours(
-        getMinutes(totalTime, 'HH:mm') +
-          getMinutes(totalByDay as string, 'HH:mm')
-      );
+        trackers.find(({ date }) => date === fullDate)?.total ?? 0;
+
+      totalTime += totalByDay;
     });
 
-    return totalTime;
+    return getHours(totalTime);
   }, [days]);
 
   return (
@@ -58,7 +54,7 @@ export const DayTabs: React.FC<Props> = ({
             const trackersByDay = trackers.find(
               ({ date }) => date === fullDate
             );
-            const totalByDay = trackersByDay?.total ?? '00:00';
+            const totalByDay = getHours(trackersByDay?.total ?? 0);
             return (
               <Tab
                 key={fullDate}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { IconButton, Stack } from '@mui/material';
 
-import { RangeCalendar } from 'components';
-import { Icon, MultipleSelect } from 'legos';
-import { useNormalizedUsers, useProjects } from 'hooks';
+import { Icon, MultipleSelect, RangeCalendar } from 'legos';
+import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
+import { reportRangeDates } from 'helpers';
 
 type Props = {
   selectedDates: string[];
@@ -22,6 +22,7 @@ export const ReportPageSidebar: React.FC<Props> = ({
   setSelectedEmployees,
   setSelectedProjects,
 }) => {
+  const { isManager } = useAuthUser();
   const { usersChoices } = useNormalizedUsers();
   const { projectsChoices } = useProjects();
 
@@ -30,16 +31,19 @@ export const ReportPageSidebar: React.FC<Props> = ({
       <RangeCalendar
         selectedDates={selectedDates}
         setSelectedDates={setSelectedDates}
+        defaultRangeDates={reportRangeDates}
       />
-      <MultipleSelect
-        label="Employees"
-        size="small"
-        variant="outlined"
-        IconComponent={() => <Icon icon="add" />}
-        items={usersChoices}
-        value={selectedEmployees}
-        onChange={(e) => setSelectedEmployees(e.target.value as string[])}
-      />
+      {isManager && (
+        <MultipleSelect
+          label="Employees"
+          size="small"
+          variant="outlined"
+          IconComponent={() => <Icon icon="add" />}
+          items={usersChoices}
+          value={selectedEmployees}
+          onChange={(e) => setSelectedEmployees(e.target.value as string[])}
+        />
+      )}
       <MultipleSelect
         label="Projects"
         size="small"

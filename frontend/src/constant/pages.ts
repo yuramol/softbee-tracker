@@ -63,7 +63,7 @@ export const pages = [
     name: 'Reports',
     href: '/reports',
     menuType: [MenuType.Main],
-    role: [Role.Manager],
+    role: [Role.Employee, Role.Manager],
     Component: lazy(() => import('pages/ReportPage/ReportPage')),
   },
 ];

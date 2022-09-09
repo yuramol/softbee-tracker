@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 
 import { USERS_QUERY } from 'api';
-import { Role } from 'constants/types';
+import { Role } from 'constant/types';
 import {
   Maybe,
   Scalars,
