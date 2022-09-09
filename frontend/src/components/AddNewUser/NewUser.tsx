@@ -35,7 +35,10 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
     [CreateUserFields.FirstName]: yup.string().required('Should not be empty'),
     [CreateUserFields.LastName]: yup.string().required('Should not be empty'),
     [CreateUserFields.UserName]: yup.string().required('Should not be empty'),
-    [CreateUserFields.Password]: yup.string().required('Should not be empty'),
+    [CreateUserFields.Password]: yup
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .required('Should not be empty'),
     [CreateUserFields.Position]: yup.string().required('Should not be empty'),
     [CreateUserFields.Phone]: yup
       .string()
