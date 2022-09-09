@@ -2,10 +2,10 @@ import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { useAuthUser } from 'hooks';
-import { Loader, Layout } from '../components';
-import { NotFoundPage } from '../pages';
-import { pages } from '../constants';
-import { LiveTracker } from '../modules';
+import { Loader, Layout } from 'components';
+import { NotFoundPage } from 'pages';
+import { pages } from 'constant';
+import { LiveTracker } from 'modules';
 
 export const AppRouter = () => {
   const { jwt, user, isAuth } = useAuthUser();

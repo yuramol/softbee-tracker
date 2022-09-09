@@ -1,4 +1,4 @@
-import { MenuType } from 'constants/types';
+import { MenuType } from 'constant/types';
 
 export type Page = {
   index: boolean;

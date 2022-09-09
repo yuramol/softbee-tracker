@@ -3,7 +3,7 @@ import { useLazyQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from './useLocalStorage';
 import { ME_QUERY } from 'api';
-import { Role } from 'constants/types';
+import { Role } from 'constant/types';
 import { Maybe, Scalars } from 'types/GraphqlTypes';
 
 export type AuthUser = {
