@@ -23,6 +23,12 @@ export const AppRouter = () => {
           path="*"
           element={isAuth ? <NotFoundPage /> : <Navigate to="/login" replace />}
         />
+        {isAuth && (
+          <>
+            <Route path="/login" element={<Navigate to="/" replace />} />
+            <Route path="/register" element={<Navigate to="/" replace />} />
+          </>
+        )}
         {currentPages.map(({ index, name, href, Component }) => (
           <Route
             index={index}
