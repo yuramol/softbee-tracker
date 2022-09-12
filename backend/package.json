@@ -11,20 +11,20 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@strapi/plugin-graphql": "^4.2.2",
-    "@strapi/plugin-i18n": "4.2.2",
-    "@strapi/plugin-users-permissions": "4.2.2",
-    "@strapi/strapi": "4.2.2",
-    "pg": "8.6.0"
+    "@strapi/plugin-i18n": "4.3.8",
+    "@strapi/plugin-users-permissions": "4.3.8",
+    "@strapi/strapi": "4.3.8",
+    "better-sqlite3": "7.4.6",
+    "pg": "^8.8.0"
   },
   "author": {
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": "bf3316e2-bc4d-48cf-a457-b91b933ef297"
+    "uuid": "a758d0d8-7f78-492b-b473-89172f13eab7"
   },
   "engines": {
-    "node": ">=12.x.x <=16.x.x",
+    "node": ">=14.19.1 <=16.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT"

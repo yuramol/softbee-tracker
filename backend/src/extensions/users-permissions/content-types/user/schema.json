@@ -76,7 +76,7 @@
     "avatar": {
       "type": "media",
       "multiple": false,
-      "required": true,
+      "required": false,
       "allowedTypes": [
         "images"
       ]
@@ -89,12 +89,15 @@
     "linkedIn": {
       "type": "string"
     },
+    "upwork": {
+      "type": "string"
+    },
     "dateEmployment": {
       "type": "date"
     },
     "salaryInfo": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "position": {
       "type": "enumeration",
