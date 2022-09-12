@@ -5,8 +5,6 @@ import { RangeCalendar } from 'components';
 import { Icon, MultipleSelect } from 'legos';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 
-import ClearIcon from '@mui/icons-material/Clear';
-
 type Props = {
   selectedDates: string[];
   selectedEmployees: string[];
