@@ -8,6 +8,9 @@ export type ItemType = {
 
 export type MultipleSelectProps = SelectProps & {
   label: string;
+  setValue?: React.Dispatch<React.SetStateAction<string[]>>;
+  handleClear?: () => void;
+  handleClearItem?: (item: string) => void;
   items?: ItemType[];
   helperText?: boolean | string;
 };
