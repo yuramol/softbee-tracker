@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   InputLabel,
@@ -8,8 +8,8 @@ import {
   OutlinedInput,
   FormControl,
   FormHelperText,
-  Stack,
   SelectChangeEvent,
+  IconButton,
 } from '@mui/material';
 
 import { Icon } from '../Icon';
@@ -25,15 +25,21 @@ export const MultipleSelect = ({
   helperText,
   variant = 'standard',
   setValue,
+  handleClear,
+  handleClearItem,
   ...props
 }: MultipleSelectProps) => {
-  const [isSelected, setIsSelected] = React.useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
-  React.useEffect(() => {
-    if ((props as { value: [] }).value.length === 0) {
+  const inputRef = useRef(null);
+
+  const values = (props as { value: [] }).value;
+
+  useEffect(() => {
+    if (values.length === 0) {
       setIsSelected(false);
     }
-    if ((props as { value: [] }).value.length > 0) {
+    if (values.length > 0) {
       setIsSelected(true);
     }
   }, [props.value]);
@@ -45,10 +51,8 @@ export const MultipleSelect = ({
     setValue?.(event.target.value as SetStateAction<string[]>);
   };
 
-  const handleDelete = (value: string) => {
-    setValue?.(
-      (props as { value: [] }).value.filter((id: string) => id !== value)
-    );
+  const handleDelete = (item: string) => {
+    setValue?.(values.filter((id: string) => id !== item));
   };
 
   return (
@@ -57,56 +61,68 @@ export const MultipleSelect = ({
       <Select
         label={label}
         multiple
+        value={values}
         onChange={handleChange}
-        input={<OutlinedInput label={label} />}
-        renderValue={(selected) => (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            {(selected as string[]).map((value) => (
-              <Chip
-                sx={{
-                  height: '20px',
-                  '& .MuiChip-deleteIcon': {
-                    fontSize: '15px',
-                  },
-                }}
-                key={value}
-                label={items?.find((i) => i.value === value)?.label}
-                onMouseDown={(event) => {
-                  event.stopPropagation();
-                }}
-                onDelete={() => handleDelete(value)}
-                deleteIcon={<Icon icon="clear" />}
-              />
-            ))}
-          </Box>
-        )}
+        input={<OutlinedInput ref={inputRef} label={label} />}
+        renderValue={() => null}
+        startAdornment={
+          values.length > 0 ? (
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 0.5,
+                paddingY: '10px',
+                width: '100%',
+              }}
+            >
+              {values.map((item) => (
+                <Chip
+                  sx={{
+                    height: '20px',
+                    '& .MuiChip-deleteIcon': {
+                      fontSize: '15px',
+                    },
+                  }}
+                  key={item}
+                  label={items?.find((i) => i.value === item)?.label}
+                  onDelete={() =>
+                    handleClearItem ? handleClearItem(item) : handleDelete(item)
+                  }
+                  onMouseDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  deleteIcon={<Icon icon="clear" />}
+                />
+              ))}
+            </Box>
+          ) : null
+        }
         IconComponent={() => (
           <>
             {isSelected ? (
-              <Stack
+              <IconButton
                 onClick={(event) => {
                   event.stopPropagation();
-                  setValue?.([]);
-                }}
-                sx={{
-                  cursor: 'pointer',
-                  paddingRight: 1,
+                  if (handleClear) {
+                    handleClear();
+                  } else {
+                    setValue?.([]);
+                  }
                 }}
               >
                 <Icon icon="clear" />
-              </Stack>
+              </IconButton>
             ) : (
-              <Stack
+              <IconButton
                 sx={{
-                  cursor: 'pointer',
-                  paddingRight: 1,
                   position: 'absolute !important',
                   right: '0 !important',
                   pointerEvents: 'none !important',
                 }}
               >
                 <Icon icon="arrowDropDown" />
-              </Stack>
+              </IconButton>
             )}
           </>
         )}
