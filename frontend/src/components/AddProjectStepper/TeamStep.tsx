@@ -1,5 +1,11 @@
 import React from 'react';
-import { Typography, TextField, Stack, SelectChangeEvent } from '@mui/material';
+import {
+  Typography,
+  TextField,
+  Stack,
+  SelectChangeEvent,
+  IconButton,
+} from '@mui/material';
 import {
   FieldArray,
   FieldArrayRenderProps,
@@ -20,6 +26,25 @@ export const TeamStep = () => {
   const { values, errors, touched, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
   const { managersChoices, employeesChoices } = useNormalizedUsers();
+
+  const handleClearEmployees = (
+    item: string,
+    salaryHelpers: FieldArrayRenderProps
+  ) => {
+    const indexRemoveSalary = values[CreateProjectFields.Salary].indexOf(
+      values[CreateProjectFields.Salary].find(
+        ({ users }: ComponentProjectSalaryInput) => users === item
+      )
+    );
+    setFieldValue(
+      `${CreateProjectFields.Users}`,
+      values[CreateProjectFields.Users].filter(
+        (user: string) =>
+          +user !== +values[CreateProjectFields.Salary][indexRemoveSalary].users
+      )
+    );
+    salaryHelpers.remove(indexRemoveSalary);
+  };
 
   const handleChangeEmployees = (
     e: SelectChangeEvent<unknown>,
@@ -79,10 +104,16 @@ export const TeamStep = () => {
               <MultipleSelect
                 label="Employees"
                 variant="outlined"
-                IconComponent={() => <Icon icon="add" />}
                 name={CreateProjectFields.Users}
                 items={employeesChoices}
                 value={values[CreateProjectFields.Users]}
+                handleClear={() => {
+                  setFieldValue(`${CreateProjectFields.Users}`, []);
+                  setFieldValue(`${CreateProjectFields.Salary}`, []);
+                }}
+                handleClearItem={(item: string) =>
+                  handleClearEmployees(item, salaryHelpers)
+                }
                 error={
                   touched[CreateProjectFields.Users] &&
                   !!errors[CreateProjectFields.Users]
@@ -102,7 +133,6 @@ export const TeamStep = () => {
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
-                        gap={4}
                       >
                         <Typography>
                           {
@@ -111,21 +141,49 @@ export const TeamStep = () => {
                             )?.label
                           }
                         </Typography>
-                        {values[CreateProjectFields.Type] !==
-                          Enum_Project_Type.NonProfit && (
-                          <TextField
-                            label="Rate"
-                            autoComplete="off"
-                            type="number"
-                            value={values[CreateProjectFields.Salary][i].rate}
-                            onChange={(e) => {
-                              setFieldValue(
-                                `${CreateProjectFields.Salary}.${i}.rate`,
-                                +e.target.value
-                              );
-                            }}
-                          />
-                        )}
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                          gap={4}
+                        >
+                          {values[CreateProjectFields.Type] !==
+                            Enum_Project_Type.NonProfit && (
+                            <>
+                              <TextField
+                                label="Rate"
+                                autoComplete="off"
+                                type="number"
+                                value={
+                                  values[CreateProjectFields.Salary][i].rate
+                                }
+                                onChange={(e) => {
+                                  setFieldValue(
+                                    `${CreateProjectFields.Salary}.${i}.rate`,
+                                    +e.target.value
+                                  );
+                                }}
+                              />
+                              <IconButton
+                                color="primary"
+                                onClick={() => {
+                                  setFieldValue(
+                                    `${CreateProjectFields.Users}`,
+                                    values[CreateProjectFields.Users].filter(
+                                      (user: string) =>
+                                        +user !==
+                                        +values[CreateProjectFields.Salary][i]
+                                          .users
+                                    )
+                                  );
+                                  salaryHelpers.remove(i);
+                                }}
+                              >
+                                <Icon icon="deleteOutline" />
+                              </IconButton>
+                            </>
+                          )}
+                        </Stack>
                       </Stack>
                     )
                   )
