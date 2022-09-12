@@ -25,7 +25,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
     [CreateUserFields.DateEmployment]: new Date(),
     [CreateUserFields.Position]: '',
     [CreateUserFields.Phone]: '',
-    [CreateUserFields.SalaryInfo]: '0',
+    [CreateUserFields.SalaryInfo]: '',
     [CreateUserFields.Password]: '',
     [CreateUserFields.UserName]: '',
     [CreateUserFields.Confirmed]: true,
@@ -72,6 +72,8 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
           setIsCreateUser(false);
         })
         .catch((error) => {
+          console.log(error);
+
           showNotification({ error });
         });
     },
