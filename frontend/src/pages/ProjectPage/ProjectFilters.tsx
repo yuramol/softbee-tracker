@@ -51,7 +51,7 @@ export const ProjectFilters = ({
         sx={{ width: 200 }}
         items={managersChoices}
         value={searchManagers}
-        onChange={(e) => setSearchManagers(e.target.value as string[])}
+        setValue={setSearchManagers}
       />
       <ButtonGroup size="small" variant="outlined" sx={{ height: '40px' }}>
         {statusItem.map(({ label, value }, index) => (

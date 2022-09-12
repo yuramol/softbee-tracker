@@ -5,6 +5,8 @@ import { RangeCalendar } from 'components';
 import { Icon, MultipleSelect } from 'legos';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 
+import ClearIcon from '@mui/icons-material/Clear';
+
 type Props = {
   selectedDates: string[];
   selectedEmployees: string[];
@@ -37,20 +39,18 @@ export const ReportPageSidebar: React.FC<Props> = ({
           label="Employees"
           size="small"
           variant="outlined"
-          IconComponent={() => <Icon icon="add" />}
           items={usersChoices}
           value={selectedEmployees}
-          onChange={(e) => setSelectedEmployees(e.target.value as string[])}
+          setValue={setSelectedEmployees}
         />
       )}
       <MultipleSelect
         label="Projects"
         size="small"
         variant="outlined"
-        IconComponent={() => <Icon icon="add" />}
         items={projectsChoices}
         value={selectedProjects}
-        onChange={(e) => setSelectedProjects(e.target.value as string[])}
+        setValue={setSelectedProjects}
       />
       <Stack alignItems="center">
         <IconButton color="primary">

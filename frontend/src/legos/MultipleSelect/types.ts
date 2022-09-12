@@ -8,6 +8,7 @@ export type ItemType = {
 
 export type MultipleSelectProps = SelectProps & {
   label: string;
+  setValue?: React.Dispatch<React.SetStateAction<string[]>> | undefined;
   items?: ItemType[];
   helperText?: boolean | string;
 };
