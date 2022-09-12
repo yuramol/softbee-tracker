@@ -78,6 +78,15 @@
       "type": "component",
       "repeatable": true,
       "component": "project.salary"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "required": true,
+      "default": "active"
     }
   }
 }
