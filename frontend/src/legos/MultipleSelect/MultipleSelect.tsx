@@ -31,8 +31,6 @@ export const MultipleSelect = ({
 }: MultipleSelectProps) => {
   const [isSelected, setIsSelected] = useState(false);
 
-  const inputRef = useRef(null);
-
   const values = (props as { value: [] }).value;
 
   useEffect(() => {
@@ -63,16 +61,14 @@ export const MultipleSelect = ({
         multiple
         value={values}
         onChange={handleChange}
-        input={<OutlinedInput ref={inputRef} label={label} />}
-        renderValue={() => null}
-        startAdornment={
+        input={<OutlinedInput label={label} />}
+        renderValue={() =>
           values.length > 0 ? (
             <Box
               sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: 0.5,
-                paddingY: '10px',
                 width: '100%',
               }}
             >
@@ -90,6 +86,7 @@ export const MultipleSelect = ({
                     handleClearItem ? handleClearItem(item) : handleDelete(item)
                   }
                   onMouseDown={(event) => {
+                    event.preventDefault();
                     event.stopPropagation();
                   }}
                   deleteIcon={<Icon icon="clear" />}
@@ -102,8 +99,7 @@ export const MultipleSelect = ({
           <>
             {isSelected ? (
               <IconButton
-                onClick={(event) => {
-                  event.stopPropagation();
+                onClick={() => {
                   if (handleClear) {
                     handleClear();
                   } else {
@@ -111,7 +107,7 @@ export const MultipleSelect = ({
                   }
                 }}
               >
-                <Icon icon="clear" />
+                <Icon icon="clear" size="small" />
               </IconButton>
             ) : (
               <IconButton
