@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuthUser, useCurrentWeek } from 'hooks';
+import { useAuthUser, useCurrentWeek, useProjects } from 'hooks';
 import { getFormattedDate, getTotalTime } from 'helpers';
 import { PROJECTS_TRACKERS_BY_USER_ID_QUERY } from 'api';
 import {
@@ -24,6 +24,8 @@ import {
   ProjectEntityResponseCollection,
   TrackerEntity,
 } from 'types/GraphqlTypes';
+import { Breaks, breaksSlugs } from 'constant';
+import { useProj } from 'hooks';
 
 export const TimeInspector = () => {
   const { user } = useAuthUser();
@@ -72,9 +74,24 @@ export const TimeInspector = () => {
     },
   });
 
+  // const proj = useProj(
+  //   {
+  //     users: { id: { eq: user.id } },
+  //   },
+  //   {
+  //     user: { id: { eq: user.id } },
+  //     date: { between: inspectBy.filter },
+  //   }
+  // );
+
+  // console.log(projectsChoices);
+
   useEffect(() => {
     loadProjects().then(({ data }) => {
-      projectsData.current = data?.projects.data;
+      projectsData.current = data?.projects.data.filter(
+        ({ attributes }) =>
+          !breaksSlugs.includes(attributes?.name.toLowerCase() as Breaks)
+      );
       setProjects([...(projectsData.current as ProjectEntity[])]);
     });
   }, [data]);
