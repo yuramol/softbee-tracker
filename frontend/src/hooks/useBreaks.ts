@@ -7,29 +7,27 @@ import {
   ProjectFiltersInput,
 } from 'types/GraphqlTypes';
 
-export const useProjects = (filters: ProjectFiltersInput = {}) => {
+export const useBreaks = (filters: ProjectFiltersInput = {}) => {
   const { data, loading, refetch } = useQuery<{
     projects: ProjectEntityResponseCollection;
   }>(PROJECTS_QUERY, {
     variables: {
       filters: {
-        name: {
-          notIn: breaksSlugs.map((s) => s[0].toUpperCase() + s.slice(1)),
-        },
+        name: { in: breaksSlugs.map((s) => s[0].toUpperCase() + s.slice(1)) },
         ...filters,
       },
     },
   });
 
-  const projects = data?.projects.data;
-  const projectsChoices = projects?.map(({ id, attributes }) => ({
+  const breaks = data?.projects.data;
+  const breaksChoices = breaks?.map(({ id, attributes }) => ({
     value: id,
     label: attributes?.name,
   }));
 
   return {
-    projects,
-    projectsChoices,
+    breaks,
+    breaksChoices,
     loading,
     refetch,
   };
