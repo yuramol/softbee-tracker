@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { IconButton, Link, Stack, Typography } from '@mui/material';
 
 import { Avatar, Icon, NavLink } from 'legos';
@@ -54,7 +53,7 @@ export const ProjectsList = ({ projectsList }: ProjectsListProps) => {
               >
                 <Avatar
                   avatar={
-                    attributes?.avatar.data?.attributes?.url
+                    attributes?.avatar?.data?.attributes?.url
                       ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
                       : undefined
                   }

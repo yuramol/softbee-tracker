@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 
 import { ROLES_QUERY } from 'api';
+import { Role } from 'constants/types';
 import {
   UsersPermissionsRoleEntityResponseCollection,
   UsersPermissionsRoleFiltersInput,
@@ -10,7 +11,9 @@ export const useRoles = (filters: UsersPermissionsRoleFiltersInput = {}) => {
   const { data, loading, refetch } = useQuery<{
     usersPermissionsRoles: UsersPermissionsRoleEntityResponseCollection;
   }>(ROLES_QUERY, {
-    variables: { filters },
+    variables: {
+      filters: { type: { in: [Role.Manager, Role.Employee] }, ...filters },
+    },
   });
 
   const roles = data?.usersPermissionsRoles.data;

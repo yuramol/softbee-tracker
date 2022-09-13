@@ -42,7 +42,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
       userData?.position ?? Enum_Userspermissionsuser_Position.Developer,
     [ProfileFields.Email]: userData?.email ?? '',
     [ProfileFields.LinkedIn]: userData?.linkedIn ?? '',
-    // [ProfileFields.UpWork]: '',
+    [ProfileFields.UpWork]: userData?.upwork ?? '',
     [ProfileFields.Phone]: userData?.phone ?? '',
     [ProfileFields.DateEmployment]: new Date(
       userData?.dateEmployment ?? getFormattedDate(new Date())
@@ -126,12 +126,12 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
             canEdit={canEdit}
             firstName={values[ProfileFields.FirstName]}
             lastName={values[ProfileFields.LastName]}
-            avatar={userData?.avatar.data?.attributes?.url}
+            avatar={userData?.avatar?.data?.attributes?.url}
             onChange={(event) =>
               handleChangeAvatar({
                 event,
                 userId: id,
-                avatarId: userData?.avatar.data?.id,
+                avatarId: userData?.avatar?.data?.id,
                 updateUserMutation,
               })
             }
@@ -281,23 +281,32 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                 )}
               </Stack>
             </Stack>
-            {/* ADD FIELD IN BACK-END */}
-            {/* <Stack flexDirection="row" alignItems="center" gap={3}>
+            <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="upWork" />
               <Stack flexGrow="1">
-                <Input
-                  variant="standard"
-                  placeholder="UpWork"
-                  label={isEdit ? 'UpWork' : null}
-                  name={ProfileFields.UpWork}
-                  value={values[ProfileFields.UpWork]}
-                  onChange={handleChange}
-                  InputProps={{
-                    readOnly: !isEdit,
-                    disableUnderline: !isEdit,
-                  }}
-                  helperText={
-                      touched[ProfileFields.UpWork] && errors[ProfileFields.UpWork]
+                {!isEdit && !!values[ProfileFields.UpWork] ? (
+                  <Link
+                    href={values[ProfileFields.UpWork]}
+                    underline="none"
+                    target="_blank"
+                  >
+                    View profile UpWork
+                  </Link>
+                ) : (
+                  <Input
+                    variant="standard"
+                    placeholder="UpWork"
+                    label={isEdit ? 'UpWork' : null}
+                    name={ProfileFields.UpWork}
+                    value={values[ProfileFields.UpWork]}
+                    onChange={handleChange}
+                    InputProps={{
+                      readOnly: !isEdit,
+                      disableUnderline: !isEdit,
+                    }}
+                    helperText={
+                      touched[ProfileFields.UpWork] &&
+                      errors[ProfileFields.UpWork]
                     }
                     error={
                       !!(
@@ -305,9 +314,10 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                         errors[ProfileFields.UpWork]
                       )
                     }
-                />
+                  />
+                )}
               </Stack>
-            </Stack> */}
+            </Stack>
             <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="phone" />
               <Stack flexGrow="1">
