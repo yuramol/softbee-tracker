@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { Button, TextField, Stack, Typography } from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
@@ -13,7 +13,7 @@ import { employeePositionChoices } from '../../constants';
 import { Role } from 'constants/types';
 
 export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
-  const { roles } = useRoles({ type: { eq: Role.Employee } });
+  const { roles, rolesChoices } = useRoles();
   const [createUser] = useMutation(CREATE_USER_MUTATION);
   const showNotification = useNotification();
 
@@ -25,7 +25,6 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
     [CreateUserFields.DateEmployment]: new Date(),
     [CreateUserFields.Position]: '',
     [CreateUserFields.Phone]: '',
-    [CreateUserFields.SalaryInfo]: '',
     [CreateUserFields.Password]: '',
     [CreateUserFields.UserName]: '',
     [CreateUserFields.Confirmed]: true,
@@ -40,6 +39,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
       .min(8, 'Password must be at least 8 characters')
       .required('Should not be empty'),
     [CreateUserFields.Position]: yup.string().required('Should not be empty'),
+    [CreateUserFields.Role]: yup.string().required('Should not be empty'),
     [CreateUserFields.Phone]: yup
       .string()
       .required('Should not be empty')
@@ -57,7 +57,6 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
     onSubmit: (values) => {
       const data = {
         ...values,
-        [CreateUserFields.Role]: roles?.at(0)?.id,
         [CreateUserFields.DateEmployment]: getFormattedDate(
           values[CreateUserFields.DateEmployment]
         ),
@@ -72,14 +71,20 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
           setIsCreateUser(false);
         })
         .catch((error) => {
-          console.log(error);
-
           showNotification({ error });
         });
     },
   });
 
-  const { handleChange, handleSubmit, values } = formik;
+  const { values, setFieldValue, handleChange, handleSubmit } = formik;
+
+  useEffect(() => {
+    setFieldValue(
+      CreateUserFields.Role,
+      (roles?.find(({ attributes }) => attributes?.type === Role.Employee)
+        ?.id as string) ?? ''
+    );
+  }, [roles]);
 
   return (
     <FormikContext.Provider value={formik}>
@@ -143,6 +148,15 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
         </Stack>
         <Stack direction="row" gap={3}>
           <Select
+            label="Role"
+            items={rolesChoices}
+            value={values[CreateUserFields.Role]}
+            name={CreateUserFields.Role}
+            {...formikPropsErrors(CreateUserFields.Role, formik)}
+            variant="outlined"
+            onChange={handleChange}
+          />
+          <Select
             label="Position"
             items={employeePositionChoices}
             value={values[CreateUserFields.Position]}
@@ -158,12 +172,12 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
             views={['day']}
           />
         </Stack>
-        <Stack direction="row-reverse" gap={2} mt={1}>
-          <Button variant="contained" type="submit">
-            Save
-          </Button>
+        <Stack direction="row" justifyContent="flex-end" gap={2} mt={1}>
           <Button variant="outlined" onClick={() => setIsCreateUser(false)}>
             Cancel
+          </Button>
+          <Button variant="contained" type="submit">
+            Save
           </Button>
         </Stack>
       </Stack>

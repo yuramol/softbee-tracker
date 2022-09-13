@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -1090,7 +1089,7 @@ export type UsersPermissionsUpdateRolePayload = {
 
 export type UsersPermissionsUser = {
   __typename?: 'UsersPermissionsUser';
-  avatar: UploadFileEntityResponse;
+  avatar?: Maybe<UploadFileEntityResponse>;
   blocked?: Maybe<Scalars['Boolean']>;
   confirmed?: Maybe<Scalars['Boolean']>;
   create_notes?: Maybe<NoteRelationResponseCollection>;
@@ -1107,9 +1106,10 @@ export type UsersPermissionsUser = {
   projects?: Maybe<ProjectRelationResponseCollection>;
   provider?: Maybe<Scalars['String']>;
   role?: Maybe<UsersPermissionsRoleEntityResponse>;
-  salaryInfo: Scalars['String'];
+  salaryInfo?: Maybe<Scalars['String']>;
   trackers?: Maybe<TrackerRelationResponseCollection>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+  upwork?: Maybe<Scalars['String']>;
   username: Scalars['String'];
 };
 
@@ -1187,6 +1187,7 @@ export type UsersPermissionsUserFiltersInput = {
   salaryInfo?: InputMaybe<StringFilterInput>;
   trackers?: InputMaybe<TrackerFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
+  upwork?: InputMaybe<StringFilterInput>;
   username?: InputMaybe<StringFilterInput>;
 };
 
@@ -1212,6 +1213,7 @@ export type UsersPermissionsUserInput = {
   role?: InputMaybe<Scalars['ID']>;
   salaryInfo?: InputMaybe<Scalars['String']>;
   trackers?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  upwork?: InputMaybe<Scalars['String']>;
   username?: InputMaybe<Scalars['String']>;
 };
 

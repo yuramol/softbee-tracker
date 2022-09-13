@@ -17,7 +17,7 @@ export enum ProfileFields {
   Position = 'position',
   Email = 'email',
   LinkedIn = 'linkedIn',
-  UpWork = 'upWork',
+  UpWork = 'upwork',
   Phone = 'phone',
   DateEmployment = 'dateEmployment',
   SalaryInfo = 'salaryInfo',
@@ -30,7 +30,7 @@ export type ProfileInitialValues = {
   [ProfileFields.Position]: Enum_Userspermissionsuser_Position;
   [ProfileFields.Email]: string;
   [ProfileFields.LinkedIn]: string;
-  // [ProfileFields.UpWork]: string;
+  [ProfileFields.UpWork]: string;
   [ProfileFields.Phone]: string;
   [ProfileFields.DateEmployment]: Date;
   [ProfileFields.SalaryInfo]: string;
