@@ -11,7 +11,7 @@ import { formatUserFullName, getFormattedDate } from 'helpers';
 import { validationSchema } from './helpers';
 import { ProfileFields, ProfileInitialValues } from './types';
 import { useChangeAvatar } from './useChangeAvatar';
-import { employeePositionChoices } from '../../constants';
+import { employeePositionChoices } from 'constant';
 import {
   Enum_Userspermissionsuser_Position,
   Scalars,

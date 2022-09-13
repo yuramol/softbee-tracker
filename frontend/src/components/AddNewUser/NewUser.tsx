@@ -9,8 +9,7 @@ import { formikPropsErrors, getFormattedDate } from 'helpers';
 import { CREATE_USER_MUTATION } from 'api';
 import { CreateUserFields, UserProps } from './types';
 import { useNotification, useRoles } from 'hooks';
-import { employeePositionChoices } from '../../constants';
-import { Role } from 'constants/types';
+import { employeePositionChoices, Role } from 'constant';
 
 export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
   const { roles, rolesChoices } = useRoles();

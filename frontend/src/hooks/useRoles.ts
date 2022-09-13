@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 
 import { ROLES_QUERY } from 'api';
-import { Role } from 'constants/types';
+import { Role } from 'constant';
 import {
   UsersPermissionsRoleEntityResponseCollection,
   UsersPermissionsRoleFiltersInput,
