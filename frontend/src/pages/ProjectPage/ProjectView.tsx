@@ -4,11 +4,12 @@ import { useProject } from '../../hooks/useProject';
 import { Enum_Project_Type, Scalars } from 'types/GraphqlTypes';
 import { Link, Stack, Typography } from '@mui/material';
 import { Avatar, Icon, NavLink } from 'legos';
+import { getMinutes, getTotalTime, parseTrackerTime } from 'helpers';
+import { format } from 'date-fns';
 
 type Props = {
   id: Scalars['ID'];
 };
-
 export const ProjectView = ({ id }: Props) => {
   const { projectData } = useProject(id);
   const getProjectIcon: (type?: string) => JSX.Element | null = (type) => {
@@ -23,6 +24,11 @@ export const ProjectView = ({ id }: Props) => {
         return null;
     }
   };
+
+  const trakedTime = format(
+    parseTrackerTime(projectData?.trackers?.data[0].attributes?.duration),
+    'HH:mm'
+  );
 
   return (
     <>
@@ -108,9 +114,7 @@ export const ProjectView = ({ id }: Props) => {
                 <Typography fontSize="15px" color="GrayText">
                   Tracked time
                 </Typography>
-                <Typography>
-                  {`${projectData?.trackers?.data[0].attributes?.duration}`}
-                </Typography>
+                <Typography>{trakedTime}</Typography>
               </Stack>
             </Stack>
           )}
