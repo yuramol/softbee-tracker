@@ -3,6 +3,7 @@ import { Stack, Typography } from '@mui/material';
 
 import { TrackerItem } from './TrackerItem';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
+import { getHours } from 'helpers';
 
 type PanelTabProps = {
   trackersByDay?: TrackerByDay;
@@ -25,7 +26,7 @@ export const PanelTab: React.FC<PanelTabProps> = ({
             ))
           )}
           <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
-            Total: {trackersByDay.total}
+            Total: {getHours(trackersByDay.total)}
           </Typography>
         </Stack>
       );

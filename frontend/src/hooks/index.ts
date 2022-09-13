@@ -8,3 +8,4 @@ export { useDebounce } from './useDebounce';
 export { useProjects } from './useProjects';
 export { useNormalizedUsers } from './useNormalizedUsers';
 export { useRoles } from './useRoles';
+export { useBreaks } from './useBreaks';
