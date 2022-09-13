@@ -18,7 +18,6 @@ export const useProjects = (filters: ProjectFiltersInput = {}) => {
     value: id,
     label: attributes?.name,
   }));
-
   return {
     projects,
     projectsChoices,

@@ -11,7 +11,6 @@ import { PageProps } from 'pages/types';
 const ProjectPage: React.FC<PageProps> = ({ title }) => {
   const { projects } = useProjects();
   const { managersChoices } = useNormalizedUsers();
-
   const [isCreateProject, setIsCreateProject] = useState(false);
   const [searchProject, setSearchProject] = useState('');
   const [searchManagers, setSearchManagers] = useState<string[]>([]);

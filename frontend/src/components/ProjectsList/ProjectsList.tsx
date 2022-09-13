@@ -36,7 +36,7 @@ export const ProjectsList = ({ projectsList }: ProjectsListProps) => {
             <Stack>{getProjectIcon(project.attributes?.type)}</Stack>
 
             <Stack>
-              <Link component={NavLink} to="*">
+              <Link to={`/project/${project.id}`} component={NavLink}>
                 {project.attributes?.name}
               </Link>
               <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.start}`}</Typography>
