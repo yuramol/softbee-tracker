@@ -1,4 +1,5 @@
 export enum CreateUserFields {
+  Role = 'role',
   FirstName = 'firstName',
   LastName = 'lastName',
   Email = 'email',

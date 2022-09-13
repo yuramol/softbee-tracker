@@ -30,7 +30,7 @@ export const UsersList = ({ usersList }: Props) => {
               firstName={attributes?.firstName}
               lastName={attributes?.lastName}
               avatar={
-                attributes?.avatar.data?.attributes?.url
+                attributes?.avatar?.data?.attributes?.url
                   ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
                   : undefined
               }
