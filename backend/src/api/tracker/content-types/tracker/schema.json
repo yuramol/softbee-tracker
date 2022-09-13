@@ -30,7 +30,7 @@
     },
     "duration": {
       "type": "time",
-      "required": true
+      "required": false
     },
     "user": {
       "type": "relation",
@@ -46,11 +46,7 @@
     "startLiveDate": {
       "type": "datetime"
     },
-    "liveDuration": {
-      "type": "time",
-      "default": "00:00"
-    },
-    "liveStatus": {
+    "live_status": {
       "type": "enumeration",
       "enum": [
         "start",
@@ -58,6 +54,11 @@
         "finish"
       ],
       "default": "finish"
+    },
+    "liveDurationMinutes": {
+      "type": "biginteger",
+      "default": "0"
     }
+
   }
 }
