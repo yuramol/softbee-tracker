@@ -12,23 +12,56 @@ type Props = {
 };
 export const ProjectView = ({ id }: Props) => {
   const { projectData } = useProject(id);
-  const getProjectIcon: (type?: string) => JSX.Element | null = (type) => {
+
+  const getProjectType: (type?: string) => JSX.Element | null = (type) => {
     switch (type) {
       case Enum_Project_Type.TimeMaterial:
-        return <Icon icon="paidOutlined" color="warning" />;
+        return (
+          <>
+            <Icon icon="paidOutlined" color="warning" />
+            <Stack flexGrow="1">
+              <Typography fontSize="15px" color="GrayText">
+                Project type
+              </Typography>
+              <Typography>Time Material</Typography>
+            </Stack>
+          </>
+        );
       case Enum_Project_Type.FixedPrice:
-        return <Icon icon="paidOutlined" color="success" />;
+        return (
+          <>
+            <Icon icon="paidOutlined" color="success" />
+            <Stack flexGrow="1">
+              <Typography fontSize="15px" color="GrayText">
+                Project type
+              </Typography>
+              <Typography>Fixed Price</Typography>
+            </Stack>
+          </>
+        );
       case Enum_Project_Type.NonProfit:
-        return <Icon icon="paidOutlined" color="error" />;
+        return (
+          <>
+            <Icon icon="paidOutlined" color="error" />
+            <Stack flexGrow="1">
+              <Typography fontSize="15px" color="GrayText">
+                Project type
+              </Typography>
+              <Typography>Non Profit</Typography>
+            </Stack>
+          </>
+        );
       default:
         return null;
     }
   };
-
-  const trakedTime = format(
-    parseTrackerTime(projectData?.trackers?.data[0].attributes?.duration),
-    'HH:mm'
-  );
+  let trakedTime = '';
+  if (projectData?.trackers?.data[0]?.attributes?.duration) {
+    trakedTime = format(
+      parseTrackerTime(projectData?.trackers?.data[0].attributes?.duration),
+      'HH:mm'
+    );
+  }
 
   return (
     <>
@@ -64,14 +97,7 @@ export const ProjectView = ({ id }: Props) => {
             </Stack>
           </Stack>
           <Stack flexDirection="row" alignItems="center" gap={3}>
-            <Stack>{getProjectIcon(projectData?.type)}</Stack>
-
-            <Stack flexGrow="1">
-              <Typography fontSize="15px" color="GrayText">
-                Project type
-              </Typography>
-              <Typography>{projectData?.type}</Typography>
-            </Stack>
+            {getProjectType(projectData?.type)}
           </Stack>
           <Stack flexDirection="row" alignItems="center" gap={3}>
             <Icon icon="calendarMonth" />
