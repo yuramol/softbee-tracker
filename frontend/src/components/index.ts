@@ -19,3 +19,5 @@ export { UsersList, UsersListAction } from './UsersList';
 export { NewUser } from './AddNewUser';
 export { TrackerEntryModalForm } from './TrackerEntryModalForm';
 export { ConfirmationDialog } from './ConfirmationDialog';
+export { ProjectReportTab } from './ProjectReportTab';
+export { ReportTable } from './ReportTable';
