@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 
 import {
   MainWrapper,
+  ProjectReportPage,
   TimeInspector,
   TrackerCalendar,
   TrackerDayView,
@@ -49,6 +50,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
         trackers={trackers}
         refetchTrackers={refetch}
       />
+      <ProjectReportPage />
     </MainWrapper>
   );
 };
