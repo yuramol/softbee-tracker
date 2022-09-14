@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { ReportTable } from '..';
 import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
 import { Icon, MultipleSelect, RangeCalendar } from 'legos';
 
-export const ReportProjectPage = () => {
+export const ProjectReportTab = () => {
   const [selectedDates, setSelectedDates] = useState<string[]>([
     getFormattedDate(new Date()),
   ]);
@@ -29,7 +29,7 @@ export const ReportProjectPage = () => {
   const { trackers } = useNormalizedTrackers(reportFilter);
 
   return (
-    <Box>
+    <>
       <Grid
         container
         direction="row"
@@ -60,6 +60,6 @@ export const ReportProjectPage = () => {
         </Grid>
       </Grid>
       <ReportTable trackers={trackers} />
-    </Box>
+    </>
   );
 };
