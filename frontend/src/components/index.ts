@@ -20,3 +20,4 @@ export { NewUser } from './AddNewUser';
 export { TrackerEntryModalForm } from './TrackerEntryModalForm';
 export { ConfirmationDialog } from './ConfirmationDialog';
 export { ProjectReportPage } from './ProjectReportPage';
+export { ReportTable } from './ReportTable';
