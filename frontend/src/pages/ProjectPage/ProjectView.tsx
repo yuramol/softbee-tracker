@@ -4,7 +4,7 @@ import { useProject } from '../../hooks/useProject';
 import { Enum_Project_Type, Scalars } from 'types/GraphqlTypes';
 import { Link, Stack, Typography } from '@mui/material';
 import { Avatar, Icon, NavLink } from 'legos';
-import { getMinutes, getTotalTime, parseTrackerTime } from 'helpers';
+import { parseTrackerTime } from 'helpers';
 import { format } from 'date-fns';
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
 };
 export const ProjectView = ({ id }: Props) => {
   const { projectData } = useProject(id);
+  let trakedTime = '';
 
   const getProjectType: (type?: string) => JSX.Element | null = (type) => {
     switch (type) {
@@ -55,7 +56,7 @@ export const ProjectView = ({ id }: Props) => {
         return null;
     }
   };
-  let trakedTime = '';
+
   if (projectData?.trackers?.data[0]?.attributes?.duration) {
     trakedTime = format(
       parseTrackerTime(projectData?.trackers?.data[0].attributes?.duration),
@@ -101,7 +102,6 @@ export const ProjectView = ({ id }: Props) => {
           </Stack>
           <Stack flexDirection="row" alignItems="center" gap={3}>
             <Icon icon="calendarMonth" />
-
             <Stack flexGrow="1">
               <Typography fontSize="15px" color="GrayText">
                 Project start
@@ -112,7 +112,6 @@ export const ProjectView = ({ id }: Props) => {
           {projectData?.end && (
             <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="calendarMonth" />
-
               <Stack flexGrow="1">
                 <Typography fontSize="15px" color="GrayText">
                   Project end
@@ -124,7 +123,6 @@ export const ProjectView = ({ id }: Props) => {
 
           <Stack flexDirection="row" alignItems="center" gap={3}>
             <Icon icon="person" />
-
             <Stack flexGrow="1">
               <Typography fontSize="15px" color="GrayText">
                 Client
@@ -146,6 +144,7 @@ export const ProjectView = ({ id }: Props) => {
           )}
         </Stack>
       </Stack>
+      {/* <VerticalTabsContainer label="Project info" tabsContent={} /> */}
     </>
   );
 };

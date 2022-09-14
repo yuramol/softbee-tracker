@@ -61,7 +61,7 @@ export const ProjectsList = ({ projectsList }: ProjectsListProps) => {
                   firstName={attributes?.firstName}
                   lastName={attributes?.lastName}
                 />
-                <Link to={`/profile/view/${id}`} component={NavLink}>
+                <Link to={`/profile/${id}`} component={NavLink}>
                   {`${attributes?.firstName} ${attributes?.lastName}`}
                 </Link>
               </Stack>
