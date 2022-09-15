@@ -1,0 +1,10 @@
+overwrite: true
+schema: ${REACT_APP_GRAPHQL_URI}
+# documents: "src/**/*.graphql"
+generates:
+  src/types/GraphqlTypes.ts:
+    plugins:
+      - 'typescript'
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'
