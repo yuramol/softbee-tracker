@@ -1,0 +1,92 @@
+{
+    "kind": "collectionType",
+    "collectionName": "projects",
+    "info": {
+        "singularName": "project",
+        "pluralName": "projects",
+        "displayName": "Project",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "note": {
+            "type": "text",
+            "maxLength": 1000
+        },
+        "picture": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "notes": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::note.note",
+            "mappedBy": "project"
+        },
+        "trackers": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::tracker.tracker",
+            "mappedBy": "project"
+        },
+        "users": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "plugin::users-permissions.user",
+            "inversedBy": "projects"
+        },
+        "client": {
+            "type": "string",
+            "required": true
+        },
+        "type": {
+            "type": "enumeration",
+            "enum": [
+                "time_material",
+                "fixed_price",
+                "non_profit"
+            ],
+            "default": "fixed_price",
+            "required": true
+        },
+        "start": {
+            "type": "date"
+        },
+        "managers": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "plugin::users-permissions.user",
+            "mappedBy": "manager_projects"
+        },
+        "end": {
+            "type": "date"
+        },
+        "salary": {
+            "displayName": "salary",
+            "type": "component",
+            "repeatable": true,
+            "component": "project.salary"
+        },
+        "status": {
+            "type": "enumeration",
+            "enum": [
+                "active",
+                "archived"
+            ],
+            "required": true,
+            "default": "active"
+        }
+    }
+}
