@@ -45,6 +45,14 @@ export const pages = [
   {
     index: false,
     name: 'View Profile',
+    href: '/project/:projectId',
+    menuType: [],
+    role: [Role.Employee, Role.Manager],
+    Component: lazy(() => import('pages/ProjectPage/view')),
+  },
+  {
+    index: false,
+    name: 'View Profile',
     href: '/profile/:userId',
     menuType: [],
     role: [Role.Employee, Role.Manager],
