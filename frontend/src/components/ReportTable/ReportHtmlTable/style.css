@@ -1,0 +1,43 @@
+table {
+  width: 100%;
+  font-family: Poppins, sans-serif;
+  color: rgba(0, 0, 0, 0.87);
+  text-align: left;
+}
+
+tr {
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+td {
+  font-size: 0.875rem;
+  line-height: 1.43;
+  padding: 16px;
+}
+
+.table-header {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  padding: 16px;
+}
+
+.table-project {
+  font-size: 1rem;
+  line-height: 1.75;
+  font-weight: 600;
+}
+
+.table-description {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.table-employee {
+  font-size: 0.875rem;
+  line-height: 1.43;
+  margin-top: 16px;
+}
