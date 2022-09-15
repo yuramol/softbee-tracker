@@ -4847,6 +4847,11 @@ anymatch@^3.0.0, anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+apollo-link-rest@^0.9.0-rc.1:
+  version "0.9.0-rc.1"
+  resolved "https://registry.yarnpkg.com/apollo-link-rest/-/apollo-link-rest-0.9.0-rc.1.tgz#bc462ecf20c5e6fa041a3a6fd818fbb9aae4016c"
+  integrity sha512-v4iztbE1uDAbs5jXCCIZzOs+muLfRHpzj1Ej5Ajo+LnKD+n4Yfh0W1X41NyPSvmHeVkBjcFza+ma9JRrU7nVCg==
+
 apollo-upload-client@^17.0.0:
   version "17.0.0"
   resolved "https://registry.npmjs.org/apollo-upload-client/-/apollo-upload-client-17.0.0.tgz"
