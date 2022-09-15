@@ -25,7 +25,6 @@ type TTracker = {
   }
 }
 
-
 export default factories.createCoreController('api::project.project', ({strapi})=>({
     async generatePdf(ctx) {
         try {
