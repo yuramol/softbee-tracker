@@ -76,8 +76,8 @@ export const ProjectView = ({ id }: Props) => {
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <Avatar
             avatar={
-              projectData?.managers?.data[0].attributes?.avatar.data?.attributes
-                ?.url
+              projectData?.managers?.data[0].attributes?.avatar?.data
+                ?.attributes?.url
                 ? `${process.env.REACT_APP_URI}${projectData?.managers?.data[0].attributes?.avatar.data?.attributes?.url}`
                 : undefined
             }
