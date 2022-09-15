@@ -89,7 +89,11 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
       </Stack>
       {isPopperOpen && (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <Popper open={isPopperOpen} anchorEl={anchorEl} style={{ zIndex: 1 }}>
+          <Popper
+            open={isPopperOpen}
+            anchorEl={anchorEl}
+            style={{ zIndex: 2000 }}
+          >
             <Stack
               flexDirection="row"
               bgcolor="background.paper"

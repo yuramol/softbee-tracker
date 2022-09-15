@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 
 import {
+  BreaksRequest,
   MainWrapper,
   TimeInspector,
   TrackerCalendar,
   TrackerDayView,
-} from '../components';
+} from 'components';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { PageProps } from './types';
@@ -32,6 +33,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     <MainWrapper
       sidebar={
         <>
+          <BreaksRequest />
           <TimeInspector />
           <TrackerCalendar
             selectedDay={selectedDay}

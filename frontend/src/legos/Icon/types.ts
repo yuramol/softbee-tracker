@@ -23,7 +23,10 @@ export type IconsNames =
   | 'upWork'
   | 'watch'
   | 'download'
-  | 'clear';
+  | 'clear'
+  | 'sailing'
+  | 'medicalServices'
+  | 'info';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;
