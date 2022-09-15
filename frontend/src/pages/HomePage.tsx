@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import {
   MainWrapper,
   TimeInspector,
   TrackerCalendar,
   TrackerDayView,
+  VacationWidget,
 } from '../components';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
@@ -49,6 +50,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
         trackers={trackers}
         refetchTrackers={refetch}
       />
+      <VacationWidget />
     </MainWrapper>
   );
 };

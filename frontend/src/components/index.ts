@@ -21,3 +21,4 @@ export { TrackerEntryModalForm } from './TrackerEntryModalForm';
 export { ConfirmationDialog } from './ConfirmationDialog';
 export { ProjectReportTab } from './ProjectReportTab';
 export { ReportTable } from './ReportTable';
+export { VacationWidget } from './VacationWidget';
