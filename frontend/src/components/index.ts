@@ -20,4 +20,6 @@ export { UsersList, UsersListAction } from './UsersList';
 export { NewUser } from './AddNewUser';
 export { TrackerEntryModalForm } from './TrackerEntryModalForm';
 export { ConfirmationDialog } from './ConfirmationDialog';
-export { ProjectTabs } from 'components/ProjectTabs/ProjectTabs';
+export { ProjectTabs } from './ProjectTabs';
+export { ProjectReportTab } from './ProjectReportTab';
+export { ReportTable } from './ReportTable';

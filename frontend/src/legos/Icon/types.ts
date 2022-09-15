@@ -22,7 +22,8 @@ export type IconsNames =
   | 'arrowDropDown'
   | 'upWork'
   | 'watch'
-  | 'download';
+  | 'download'
+  | 'clear';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;

@@ -53,7 +53,7 @@ export const ProjectsList = ({ projectsList }: ProjectsListProps) => {
               >
                 <Avatar
                   avatar={
-                    attributes?.avatar.data?.attributes?.url
+                    attributes?.avatar?.data?.attributes?.url
                       ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
                       : undefined
                   }

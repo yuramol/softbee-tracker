@@ -10,6 +10,7 @@ import enGb from 'date-fns/locale/en-GB';
 import { LegendCalendar } from './LegendCalendar';
 import { endOfMonth, format, startOfMonth, subMonths } from 'date-fns';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
+import { getHours } from 'helpers';
 
 type TrackerCalendarProps = {
   selectedDay: Date | null;
@@ -75,7 +76,7 @@ export const TrackerCalendar = ({
                 day.getTime() === new Date(new Date(date).setHours(0)).getTime()
               ) {
                 isWorkDay = true;
-                const time = total.split(':');
+                const time = getHours(total).split(':');
                 +time[0] >= 5
                   ? (isEnoughHours = true)
                   : (isEnoughHours = false);
@@ -92,6 +93,7 @@ export const TrackerCalendar = ({
                 }}
                 sx={{
                   '& 	.MuiBadge-badge': {
+                    pointerEvents: 'none !important',
                     width: '100%',
                     justifyContent: 'left',
                     paddingLeft: '2px',

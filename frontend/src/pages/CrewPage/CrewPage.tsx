@@ -5,9 +5,10 @@ import { Stack, Typography } from '@mui/material';
 import { MainWrapper, SideBars, UsersList, NewUser } from 'components';
 
 const CrewPage = () => {
+  const { isManager } = useAuthUser();
   const { users } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
-  const { isManager } = useAuthUser();
+
   return (
     <MainWrapper
       sidebar={

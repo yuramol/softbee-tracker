@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Link, Stack, Typography } from '@mui/material';
 import { FormikContext, useFormik } from 'formik';
@@ -8,9 +8,10 @@ import { AvatarUpload } from 'components';
 import { useAuthUser, useNotification, useUser } from 'hooks';
 import { Button, CalendarPickerFormik, Icon, Input, Select } from 'legos';
 import { formatUserFullName, getFormattedDate } from 'helpers';
-import { positionItems, validationSchema } from './helpers';
+import { validationSchema } from './helpers';
 import { ProfileFields, ProfileInitialValues } from './types';
 import { useChangeAvatar } from './useChangeAvatar';
+import { employeePositionChoices } from 'constant';
 import {
   Enum_Userspermissionsuser_Position,
   Scalars,
@@ -18,15 +19,20 @@ import {
 
 type Props = {
   id: Scalars['ID'];
+  enableEdit?: boolean;
 };
 
-export const ProfileEditView = ({ id }: Props) => {
+export const ProfileEditView = ({ id, enableEdit }: Props) => {
   const { userData } = useUser(id);
   const { user, isManager } = useAuthUser();
   const [isEdit, setIsEdit] = useState(false);
+  const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const showNotification = useNotification();
   const handleChangeAvatar = useChangeAvatar();
-  const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
+
+  useEffect(() => {
+    setIsEdit(enableEdit ?? false);
+  }, [enableEdit]);
 
   const initialValues: ProfileInitialValues = {
     [ProfileFields.UserName]: userData?.username ?? '',
@@ -36,7 +42,7 @@ export const ProfileEditView = ({ id }: Props) => {
       userData?.position ?? Enum_Userspermissionsuser_Position.Developer,
     [ProfileFields.Email]: userData?.email ?? '',
     [ProfileFields.LinkedIn]: userData?.linkedIn ?? '',
-    // [ProfileFields.UpWork]: '',
+    [ProfileFields.UpWork]: userData?.upwork ?? '',
     [ProfileFields.Phone]: userData?.phone ?? '',
     [ProfileFields.DateEmployment]: new Date(
       userData?.dateEmployment ?? getFormattedDate(new Date())
@@ -120,12 +126,12 @@ export const ProfileEditView = ({ id }: Props) => {
             canEdit={canEdit}
             firstName={values[ProfileFields.FirstName]}
             lastName={values[ProfileFields.LastName]}
-            avatar={userData?.avatar.data?.attributes?.url}
+            avatar={userData?.avatar?.data?.attributes?.url}
             onChange={(event) =>
               handleChangeAvatar({
                 event,
                 userId: id,
-                avatarId: userData?.avatar.data?.id,
+                avatarId: userData?.avatar?.data?.id,
                 updateUserMutation,
               })
             }
@@ -192,7 +198,7 @@ export const ProfileEditView = ({ id }: Props) => {
                   label={isEdit ? 'Position' : null}
                   name={ProfileFields.Position}
                   value={values[ProfileFields.Position]}
-                  items={positionItems}
+                  items={employeePositionChoices}
                   IconComponent={() => null}
                   disabled={isDisabled}
                   readOnly={isDisabled}
@@ -204,41 +210,63 @@ export const ProfileEditView = ({ id }: Props) => {
             <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="email" />
               <Stack flexGrow="1">
-                <Input
-                  variant="standard"
-                  type="email"
-                  placeholder="Email"
-                  label={isEdit ? 'Email' : null}
-                  name={ProfileFields.Email}
-                  value={values[ProfileFields.Email]}
-                  onChange={handleChange}
-                  InputProps={{
-                    readOnly: !isEdit,
-                    disableUnderline: !isEdit,
-                  }}
-                  helperText={
-                    touched[ProfileFields.Email] && errors[ProfileFields.Email]
-                  }
-                  error={
-                    !!(
+                {!isEdit && !!values[ProfileFields.Email] ? (
+                  <Link
+                    href={`mailto: ${values[ProfileFields.Email]}`}
+                    underline="none"
+                  >
+                    Send Email ({values[ProfileFields.Email]})
+                  </Link>
+                ) : (
+                  <Input
+                    variant="standard"
+                    type="email"
+                    placeholder="Email"
+                    label={isEdit ? 'Email' : null}
+                    name={ProfileFields.Email}
+                    value={values[ProfileFields.Email]}
+                    onChange={handleChange}
+                    InputProps={{
+                      readOnly: !isEdit,
+                      disableUnderline: !isEdit,
+                    }}
+                    helperText={
                       touched[ProfileFields.Email] &&
                       errors[ProfileFields.Email]
-                    )
-                  }
-                />
+                    }
+                    error={
+                      !!(
+                        touched[ProfileFields.Email] &&
+                        errors[ProfileFields.Email]
+                      )
+                    }
+                  />
+                )}
               </Stack>
             </Stack>
             <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="link" />
               <Stack flexGrow="1">
-                {isEdit ? (
+                {!isEdit && !!values[ProfileFields.LinkedIn] ? (
+                  <Link
+                    href={values[ProfileFields.LinkedIn]}
+                    underline="none"
+                    target="_blank"
+                  >
+                    View profile LinkedIn
+                  </Link>
+                ) : (
                   <Input
                     variant="standard"
                     placeholder="LinkedIn"
-                    label="LinkedIn"
+                    label={isEdit ? 'LinkedIn' : null}
                     name={ProfileFields.LinkedIn}
                     value={values[ProfileFields.LinkedIn]}
                     onChange={handleChange}
+                    InputProps={{
+                      readOnly: !isEdit,
+                      disableUnderline: !isEdit,
+                    }}
                     helperText={
                       touched[ProfileFields.LinkedIn] &&
                       errors[ProfileFields.LinkedIn]
@@ -250,34 +278,35 @@ export const ProfileEditView = ({ id }: Props) => {
                       )
                     }
                   />
-                ) : (
-                  <Link
-                    href={values[ProfileFields.LinkedIn]}
-                    underline="none"
-                    target="_blank"
-                  >
-                    LinkedIn
-                  </Link>
                 )}
               </Stack>
             </Stack>
-            {/* ADD FIELD IN BACK-END */}
-            {/* <Stack flexDirection="row" alignItems="center" gap={3}>
+            <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="upWork" />
               <Stack flexGrow="1">
-                <Input
-                  variant="standard"
-                  placeholder="UpWork"
-                  label={isEdit ? 'UpWork' : null}
-                  name={ProfileFields.UpWork}
-                  value={values[ProfileFields.UpWork]}
-                  onChange={handleChange}
-                  InputProps={{
-                    readOnly: !isEdit,
-                    disableUnderline: !isEdit,
-                  }}
-                  helperText={
-                      touched[ProfileFields.UpWork] && errors[ProfileFields.UpWork]
+                {!isEdit && !!values[ProfileFields.UpWork] ? (
+                  <Link
+                    href={values[ProfileFields.UpWork]}
+                    underline="none"
+                    target="_blank"
+                  >
+                    View profile UpWork
+                  </Link>
+                ) : (
+                  <Input
+                    variant="standard"
+                    placeholder="UpWork"
+                    label={isEdit ? 'UpWork' : null}
+                    name={ProfileFields.UpWork}
+                    value={values[ProfileFields.UpWork]}
+                    onChange={handleChange}
+                    InputProps={{
+                      readOnly: !isEdit,
+                      disableUnderline: !isEdit,
+                    }}
+                    helperText={
+                      touched[ProfileFields.UpWork] &&
+                      errors[ProfileFields.UpWork]
                     }
                     error={
                       !!(
@@ -285,33 +314,44 @@ export const ProfileEditView = ({ id }: Props) => {
                         errors[ProfileFields.UpWork]
                       )
                     }
-                />
+                  />
+                )}
               </Stack>
-            </Stack> */}
+            </Stack>
             <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="phone" />
               <Stack flexGrow="1">
-                <Input
-                  variant="standard"
-                  placeholder="Phone"
-                  label={isEdit ? 'Phone' : null}
-                  name={ProfileFields.Phone}
-                  value={values[ProfileFields.Phone]}
-                  onChange={handleChange}
-                  InputProps={{
-                    readOnly: !isEdit,
-                    disableUnderline: !isEdit,
-                  }}
-                  helperText={
-                    touched[ProfileFields.Phone] && errors[ProfileFields.Phone]
-                  }
-                  error={
-                    !!(
+                {!isEdit && !!values[ProfileFields.Phone] ? (
+                  <Link
+                    href={`tel: ${values[ProfileFields.Phone]}`}
+                    underline="none"
+                  >
+                    Call ({values[ProfileFields.Phone]})
+                  </Link>
+                ) : (
+                  <Input
+                    variant="standard"
+                    placeholder="Phone"
+                    label={isEdit ? 'Phone' : null}
+                    name={ProfileFields.Phone}
+                    value={values[ProfileFields.Phone]}
+                    onChange={handleChange}
+                    InputProps={{
+                      readOnly: !isEdit,
+                      disableUnderline: !isEdit,
+                    }}
+                    helperText={
                       touched[ProfileFields.Phone] &&
                       errors[ProfileFields.Phone]
-                    )
-                  }
-                />
+                    }
+                    error={
+                      !!(
+                        touched[ProfileFields.Phone] &&
+                        errors[ProfileFields.Phone]
+                      )
+                    }
+                  />
+                )}
               </Stack>
             </Stack>
             <Stack flexDirection="row" alignItems="center" gap={3}>

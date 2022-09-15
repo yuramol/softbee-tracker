@@ -46,6 +46,9 @@ export const apolloClient = new ApolloClient({
   link,
   cache: new InMemoryCache({
     typePolicies: {
+      UsersPermissionsRole: {
+        merge: true,
+      },
       UsersPermissionsUser: {
         merge: true,
       },

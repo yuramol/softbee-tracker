@@ -30,13 +30,35 @@
     },
     "duration": {
       "type": "time",
-      "required": true
+      "required": false
     },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "trackers"
+    },
+    "live": {
+      "type": "boolean",
+      "default": false,
+      "required": false
+    },
+    "startLiveDate": {
+      "type": "datetime"
+    },
+    "live_status": {
+      "type": "enumeration",
+      "enum": [
+        "start",
+        "pause",
+        "finish"
+      ],
+      "default": "finish"
+    },
+    "liveDurationMinutes": {
+      "type": "biginteger",
+      "default": "0"
     }
+
   }
 }
