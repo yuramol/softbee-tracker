@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { IconButton, Link, Stack, Typography } from '@mui/material';
 
 import { Avatar, Icon, NavLink } from 'legos';
