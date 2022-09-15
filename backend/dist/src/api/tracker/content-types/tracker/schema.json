@@ -1,0 +1,63 @@
+{
+    "kind": "collectionType",
+    "collectionName": "trackers",
+    "info": {
+        "singularName": "tracker",
+        "pluralName": "trackers",
+        "displayName": "Tracker",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "description": {
+            "type": "string",
+            "required": true,
+            "minLength": 5,
+            "maxLength": 100
+        },
+        "date": {
+            "type": "date",
+            "required": true
+        },
+        "project": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::project.project",
+            "inversedBy": "trackers"
+        },
+        "duration": {
+            "type": "time",
+            "required": true
+        },
+        "user": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "plugin::users-permissions.user",
+            "inversedBy": "trackers"
+        },
+        "live": {
+            "type": "boolean",
+            "default": false,
+            "required": false
+        },
+        "startLiveDate": {
+            "type": "datetime"
+        },
+        "liveDuration": {
+            "type": "time",
+            "default": "00:00"
+        },
+        "liveStatus": {
+            "type": "enumeration",
+            "enum": [
+                "start",
+                "pause",
+                "finish"
+            ],
+            "default": "finish"
+        }
+    }
+}
