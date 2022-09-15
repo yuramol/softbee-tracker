@@ -42,11 +42,13 @@ const httpLink = createUploadLink({
 });
 
 const restLink = new RestLink({
-  uri: `${process.env.REACT_APP_GRAPHQL_URI}/api/v1/`,
-  credentials: 'include',
-  // headersToOverride: ['authorization'],
-  headers: {
-    'Content-Type': 'application/json',
+  uri: '/api',
+  typePatcher: {
+    ProjectPDFPayload: (data: any): any => {
+      console.log('data===', data);
+      return data;
+    },
+    // ... other nested type patchers
   },
 });
 

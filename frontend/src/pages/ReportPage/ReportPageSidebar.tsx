@@ -2,7 +2,12 @@ import React from 'react';
 import { IconButton, Stack } from '@mui/material';
 
 import { Icon, MultipleSelect, RangeCalendar } from 'legos';
-import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
+import {
+  useAuthUser,
+  useNormalizedUsers,
+  useProjects,
+  useReportPDF,
+} from 'hooks';
 import { reportRangeDates } from 'helpers';
 
 type Props = {
@@ -25,6 +30,16 @@ export const ReportPageSidebar: React.FC<Props> = ({
   const { isManager } = useAuthUser();
   const { usersChoices } = useNormalizedUsers();
   const { projectsChoices } = useProjects();
+  const { downloadPDF } = useReportPDF();
+
+  const handleDownload = () => {
+    downloadPDF({
+      variables: {
+        query:
+          'userId=1&projectsId=2&projectsId=1&start=2022-09-01&end=2022-09-30',
+      },
+    });
+  };
 
   return (
     <Stack gap={3}>
@@ -52,7 +67,7 @@ export const ReportPageSidebar: React.FC<Props> = ({
         setValue={setSelectedProjects}
       />
       <Stack alignItems="center">
-        <IconButton color="primary">
+        <IconButton color="primary" onClick={handleDownload}>
           <Icon icon="download" />
         </IconButton>
       </Stack>
