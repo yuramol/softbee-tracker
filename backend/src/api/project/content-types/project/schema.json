@@ -85,8 +85,8 @@
         "active",
         "archived"
       ],
-      "default": "active",
-      "required": true
+      "required": true,
+      "default": "active"
     }
   }
 }
