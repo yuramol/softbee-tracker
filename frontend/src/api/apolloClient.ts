@@ -44,7 +44,7 @@ const httpLink = createUploadLink({
 const restLink = new RestLink({
   uri: '/api',
   typePatcher: {
-    ProjectPDFPayload: (data: any): any => {
+    ReportPDFPayload: (data: any): any => {
       console.log('data===', data);
       return data;
     },
