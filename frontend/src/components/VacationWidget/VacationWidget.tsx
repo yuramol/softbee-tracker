@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Button,
   List,
@@ -6,9 +7,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Box } from '@mui/system';
 import { useAuthUser } from 'hooks';
-import React from 'react';
+import { Icon } from 'legos';
 
 export const VacationWidget = () => {
   const { isManager } = useAuthUser();
@@ -28,20 +28,38 @@ export const VacationWidget = () => {
       <List disablePadding>
         <ListItem disableGutters disablePadding>
           <ListItemText
-            primary={<Typography fontWeight={600}>Vacations:</Typography>}
+            primary={
+              <Stack direction="row">
+                <Icon icon="houseboat" />
+                <Typography ml={0.5} fontWeight={600}>
+                  Vacations:
+                </Typography>
+              </Stack>
+            }
           />
           <ListItemText
             sx={{ ml: 2, display: 'contents' }}
-            primary={<Typography fontWeight={600}>1</Typography>}
+            primary={<Typography fontWeight={600}>0 / 30</Typography>}
           />
         </ListItem>
         <ListItem disableGutters disablePadding>
           <ListItemText
-            primary={<Typography fontWeight={600}>Sick leave:</Typography>}
+            primary={
+              <Stack direction="row">
+                <Icon icon="medication" />
+                <Typography ml={0.5} fontWeight={600}>
+                  Sick leave:
+                </Typography>
+              </Stack>
+            }
           />
           <ListItemText
             sx={{ ml: 2, display: 'contents' }}
-            primary={<Typography fontWeight={600}>1</Typography>}
+            primary={
+              <Typography sx={{ verticalAlign: 'center' }} fontWeight={600}>
+                0 / 5
+              </Typography>
+            }
           />
         </ListItem>
       </List>

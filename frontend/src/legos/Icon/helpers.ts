@@ -24,6 +24,8 @@ import {
   VisibilityRounded,
   Download,
   Clear,
+  Houseboat,
+  Medication,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -54,4 +56,6 @@ export const IconsMap: IconsNamesMapType = {
   watch: VisibilityRounded,
   download: Download,
   clear: Clear,
+  houseboat: Houseboat,
+  medication: Medication,
 };
