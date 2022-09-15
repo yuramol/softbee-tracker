@@ -42,7 +42,7 @@ const httpLink = createUploadLink({
 });
 
 const restLink = new RestLink({
-  uri: '/api',
+  uri: `${process.env.REACT_APP_URI}/api`,
   typePatcher: {
     ReportPDFPayload: (data: any): any => {
       console.log('data===', data);
@@ -52,7 +52,7 @@ const restLink = new RestLink({
   },
 });
 
-const link = ApolloLink.from([errorLink, authLink.concat(httpLink), restLink]);
+const link = ApolloLink.from([errorLink, restLink, authLink.concat(httpLink)]);
 
 export const apolloClient = new ApolloClient({
   link,

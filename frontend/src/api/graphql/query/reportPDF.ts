@@ -2,13 +2,13 @@ import { gql } from '@apollo/client';
 
 export const REPORT_PDF_QUERY = gql`
   query ReportPDF($query: String!) {
-    reportPDF
+    reportPDF(input: $query)
       @rest(
-        path: "/report/pdf?{args.query}"
+        path: "/report/pdf?{args.input}"
         method: "GET"
         type: "ReportPDFPayload"
       ) {
-      data
+      pdfBuffer
     }
   }
 `;
