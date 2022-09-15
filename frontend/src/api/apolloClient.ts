@@ -44,7 +44,7 @@ const httpLink = createUploadLink({
 const restLink = new RestLink({
   uri: `${process.env.REACT_APP_GRAPHQL_URI}/api/v1/`,
   credentials: 'include',
-  headersToOverride: ['authorization'],
+  // headersToOverride: ['authorization'],
   headers: {
     'Content-Type': 'application/json',
   },
