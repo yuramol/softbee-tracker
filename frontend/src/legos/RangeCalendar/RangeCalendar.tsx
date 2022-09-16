@@ -26,6 +26,7 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
   selectedDates,
   setSelectedDates,
   defaultRangeDates,
+  ...rest
 }) => {
   const isSetDefaultRangeDates = !!defaultRangeDates;
   const rangeCalendarRef = useRef(null);
@@ -109,6 +110,7 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
                 dateAdapter={AdapterDateFns}
               >
                 <StaticDatePicker
+                  {...rest}
                   displayStaticWrapperAs="desktop"
                   openTo="day"
                   views={['day']}

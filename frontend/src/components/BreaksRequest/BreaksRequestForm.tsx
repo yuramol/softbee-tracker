@@ -7,10 +7,11 @@ import {
   Typography,
 } from '@mui/material';
 import { eachDayOfInterval, endOfYear, isWeekend, startOfYear } from 'date-fns';
+import * as yup from 'yup';
 
 import { useAuthUser, useBreaks } from 'hooks';
 import { Icon, RangeCalendar } from 'legos';
-import { getFormattedDate, toUpperCaseFirst } from 'helpers';
+import { getFormattedDate, toUpperCaseFirst, formikPropsErrors } from 'helpers';
 import { Breaks } from 'constant';
 import { useFormik } from 'formik';
 import { BreaksRequestFields, BreaksRequestFormProps } from './types';
@@ -28,12 +29,15 @@ const modalStyle = {
   p: 4,
 };
 
+const VACATION_DAYS = 30;
+const SICKNESS_DAYS = 5;
+
 export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   onClose,
 }) => {
   const { user } = useAuthUser();
   const { breaks, breaksChoices, loading } = useBreaks(
-    {},
+    { users: { id: { eq: user.id } } },
     {
       user: {
         id: {
@@ -52,6 +56,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   const [selectedDates, setSelectedDates] = useState([
     getFormattedDate(new Date()),
   ]);
+  const [breakId, setBreakId] = useState('');
 
   const getIcon = (value?: string) => {
     let icon: IconsNames = 'moneyOff';
@@ -73,45 +78,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         : new Date(selectedDates[0]),
   }).filter((date) => !isWeekend(date));
 
-  const initialValues = {
-    [BreaksRequestFields.User]: '',
-    [BreaksRequestFields.Break]: '',
-    [BreaksRequestFields.Date]: getFormattedDate(new Date()),
-    [BreaksRequestFields.Duration]: '00:00:00.000',
-    [BreaksRequestFields.Comment]: '',
-  };
-
-  const formik = useFormik({
-    initialValues,
-    // validationSchema,
-    onSubmit: (values) => {
-      const data = {
-        ...values,
-        [BreaksRequestFields.User]: user.id,
-      };
-
-      console.log(data);
-    },
-  });
-
-  const { values, handleChange, handleSubmit, setFieldValue } = formik;
-
-  useEffect(() => {
-    setFieldValue(
-      BreaksRequestFields.Break,
-      breaksChoices?.find(
-        ({ label }) => label === toUpperCaseFirst(Breaks.Vacation)
-      )?.value
-    );
-  }, [loading]);
-
-  const VACATION_DAYS = 30;
-  const SICKNESS_DAYS = 5;
-
-  const selectedBreak = breaks?.find(
-    ({ id }) => id === values[BreaksRequestFields.Break]
-  );
-
+  const selectedBreak = breaks?.find(({ id }) => id === breakId);
   const selectedBreakType = selectedBreak?.attributes?.name.toLowerCase();
   const selectedUsedBreakDays = selectedBreak?.attributes?.trackers?.data
     .length as number;
@@ -122,6 +89,48 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
       : selectedBreakType === Breaks.Sickness
       ? SICKNESS_DAYS - selectedUsedBreakDays
       : 0;
+
+  const initialValues = {
+    [BreaksRequestFields.User]: '',
+    [BreaksRequestFields.Break]: '',
+    [BreaksRequestFields.Date]: getFormattedDate(new Date()),
+    [BreaksRequestFields.Duration]: '00:00:00.000',
+    [BreaksRequestFields.Comment]: 'Test comment',
+  };
+
+  const validationSchema = yup.object({
+    [BreaksRequestFields.Comment]: yup
+      .string()
+      .min(5, 'Description must be at least 5 characters')
+      .required('Should not be empty'),
+  });
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: (values) => {
+      const data = {
+        ...values,
+        [BreaksRequestFields.User]: user.id,
+      };
+
+      console.log('Submit:', data);
+    },
+  });
+
+  const { values, errors, touched, handleChange, handleSubmit, setFieldValue } =
+    formik;
+
+  useEffect(() => {
+    const breaksChoiceId = breaksChoices?.find(
+      ({ label }) => label === toUpperCaseFirst(Breaks.Vacation)
+    )?.value as string;
+
+    setFieldValue(BreaksRequestFields.Break, breaksChoiceId);
+    setBreakId(breaksChoiceId);
+  }, [loading]);
+
+  console.log('errors', errors, touched);
 
   return (
     <Stack component="form" gap={4} sx={modalStyle} onSubmit={handleSubmit}>
@@ -169,6 +178,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
             startIcon={getIcon(label)}
             onClick={() => {
               setFieldValue(BreaksRequestFields.Break, value);
+              setBreakId(value as string);
             }}
           >
             {label}
@@ -176,10 +186,21 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         ))}
       </ButtonGroup>
       <RangeCalendar
+        disablePast
+        maxDate={endOfYear(new Date())}
         selectedDates={selectedDates}
         setSelectedDates={setSelectedDates}
       />
-      <TextField label="Comment" fullWidth multiline rows={4} />
+      <TextField
+        label="Comment"
+        fullWidth
+        multiline
+        rows={4}
+        value={values[BreaksRequestFields.Comment]}
+        name={BreaksRequestFields.Comment}
+        {...formikPropsErrors(BreaksRequestFields.Comment, formik)}
+        onChange={handleChange}
+      />
       <Stack direction="row" gap={2} justifyContent="flex-end">
         <Button variant="outlined" onClick={onClose}>
           Cancel
