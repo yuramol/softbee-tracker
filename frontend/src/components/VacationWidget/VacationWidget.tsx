@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   List,
@@ -10,6 +10,7 @@ import {
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { Icon } from 'legos';
 import { Breaks } from 'constant';
+import { VacationEntryModalForm } from './VacationEntryModalForm';
 
 export const VacationWidget = () => {
   const { user, isManager } = useAuthUser();
@@ -29,58 +30,70 @@ export const VacationWidget = () => {
     }
   });
 
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const toggleOpenModal = () => {
+    setIsOpenModal(!isOpenModal);
+  };
+
   return (
-    <Stack gap={3}>
-      {isManager && (
-        <Button
-          sx={{
-            textTransform: 'none',
-          }}
-          variant="contained"
-        >
-          Vacation request
-        </Button>
-      )}
-      <List disablePadding>
-        <ListItem disableGutters disablePadding>
-          <ListItemText
-            primary={
-              <Stack direction="row">
-                <Icon icon="houseboat" />
-                <Typography ml={0.5} fontWeight={600}>
-                  Vacations:
+    <>
+      <VacationEntryModalForm open={isOpenModal} onClose={toggleOpenModal} />
+      <Stack gap={3}>
+        {isManager && (
+          <Button
+            sx={{
+              textTransform: 'none',
+            }}
+            variant="contained"
+            onClick={toggleOpenModal}
+          >
+            Vacation request
+          </Button>
+        )}
+        <List disablePadding>
+          <ListItem disableGutters disablePadding>
+            <ListItemText
+              primary={
+                <Stack direction="row">
+                  <Icon icon="houseboat" />
+                  <Typography ml={0.5} fontWeight={600}>
+                    Vacations:
+                  </Typography>
+                </Stack>
+              }
+            />
+            <ListItemText
+              sx={{ ml: 2, display: 'contents' }}
+              primary={
+                <Typography
+                  fontWeight={600}
+                >{`${vacationDays} / 30`}</Typography>
+              }
+            />
+          </ListItem>
+          <ListItem disableGutters disablePadding>
+            <ListItemText
+              primary={
+                <Stack direction="row">
+                  <Icon icon="medication" />
+                  <Typography ml={0.5} fontWeight={600}>
+                    Sick leave:
+                  </Typography>
+                </Stack>
+              }
+            />
+            <ListItemText
+              sx={{ ml: 2, display: 'contents' }}
+              primary={
+                <Typography sx={{ verticalAlign: 'center' }} fontWeight={600}>
+                  {`${sicknessDays} / 5`}
                 </Typography>
-              </Stack>
-            }
-          />
-          <ListItemText
-            sx={{ ml: 2, display: 'contents' }}
-            primary={
-              <Typography fontWeight={600}>{`${vacationDays} / 30`}</Typography>
-            }
-          />
-        </ListItem>
-        <ListItem disableGutters disablePadding>
-          <ListItemText
-            primary={
-              <Stack direction="row">
-                <Icon icon="medication" />
-                <Typography ml={0.5} fontWeight={600}>
-                  Sick leave:
-                </Typography>
-              </Stack>
-            }
-          />
-          <ListItemText
-            sx={{ ml: 2, display: 'contents' }}
-            primary={
-              <Typography sx={{ verticalAlign: 'center' }} fontWeight={600}>
-                {`${sicknessDays} / 5`}
-              </Typography>
-            }
-          />
-        </ListItem>
-      </List>
-    </Stack>
+              }
+            />
+          </ListItem>
+        </List>
+      </Stack>
+    </>
   );
 };
