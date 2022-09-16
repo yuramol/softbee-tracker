@@ -1,7 +1,7 @@
 import React from 'react';
-import { IconButton, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
-import { Icon, MultipleSelect, RangeCalendar } from 'legos';
+import { Button, MultipleSelect, RangeCalendar } from 'legos';
 import {
   useAuthUser,
   useNormalizedUsers,
@@ -33,10 +33,14 @@ export const ReportPageSidebar: React.FC<Props> = ({
   const { downloadPDF } = useReportPDF();
 
   const handleDownload = () => {
+    const userId = selectedEmployees.join(`&userId=`);
+    const projectsId = selectedProjects.join(`&projectsId=`);
+    const range = selectedDates.join(`&end=`);
     downloadPDF({
       variables: {
-        query:
-          'userId=1&projectsId=2&projectsId=1&start=2022-09-01&end=2022-09-30',
+        query: `${selectedEmployees.length > 0 ? `userId=${userId}&` : ''}${
+          selectedProjects.length > 0 ? `projectsId=${projectsId}&` : ''
+        }start=${range}`,
       },
     }).then(({ data }) => {
       if (data) {
@@ -45,7 +49,7 @@ export const ReportPageSidebar: React.FC<Props> = ({
         });
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        link.download = 'test';
+        link.download = 'Tracking-Report';
         link.click();
       }
     });
@@ -77,9 +81,12 @@ export const ReportPageSidebar: React.FC<Props> = ({
         setValue={setSelectedProjects}
       />
       <Stack alignItems="center">
-        <IconButton color="primary" onClick={handleDownload}>
-          <Icon icon="download" />
-        </IconButton>
+        <Button
+          variant="contained"
+          title="Download PDF"
+          icon="download"
+          onClick={handleDownload}
+        />
       </Stack>
     </Stack>
   );
