@@ -42,15 +42,26 @@ const httpLink = createUploadLink({
 });
 
 const restLink = new RestLink({
-  uri: `${process.env.REACT_APP_GRAPHQL_URI}/api/v1/`,
-  credentials: 'include',
-  // headersToOverride: ['authorization'],
-  headers: {
-    'Content-Type': 'application/json',
+  uri: `${process.env.REACT_APP_URI}/api`,
+  endpoints: {
+    blob: {
+      uri: `${process.env.REACT_APP_URI}/api`,
+      responseTransformer: async (response) => {
+        return {
+          blob: response.blob(),
+        };
+      },
+    },
+  },
+  typePatcher: {
+    ReportPDFPayload: (data: Promise<{ blob: Blob }>) => data,
   },
 });
-
-const link = ApolloLink.from([errorLink, authLink.concat(httpLink), restLink]);
+const link = ApolloLink.from([
+  errorLink,
+  authLink.concat(restLink),
+  authLink.concat(httpLink),
+]);
 
 export const apolloClient = new ApolloClient({
   link,
