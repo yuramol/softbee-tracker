@@ -43,16 +43,25 @@ const httpLink = createUploadLink({
 
 const restLink = new RestLink({
   uri: `${process.env.REACT_APP_URI}/api`,
-  typePatcher: {
-    ReportPDFPayload: (data: any): any => {
-      console.log('data===', data);
-      return data;
+  endpoints: {
+    blob: {
+      uri: `${process.env.REACT_APP_URI}/api`,
+      responseTransformer: async (response) => {
+        return {
+          blob: response.blob(),
+        };
+      },
     },
-    // ... other nested type patchers
+  },
+  typePatcher: {
+    ReportPDFPayload: (data: Promise<{ blob: Blob }>) => data,
   },
 });
-
-const link = ApolloLink.from([errorLink, restLink, authLink.concat(httpLink)]);
+const link = ApolloLink.from([
+  errorLink,
+  authLink.concat(restLink),
+  authLink.concat(httpLink),
+]);
 
 export const apolloClient = new ApolloClient({
   link,

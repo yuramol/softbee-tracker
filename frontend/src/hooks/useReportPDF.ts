@@ -1,19 +1,21 @@
 import { useLazyQuery } from '@apollo/client';
 import { REPORT_PDF_QUERY } from 'api/graphql/query/reportPDF';
 
+export type ReportPDF = {
+  reportPDF: {
+    blob: Blob;
+  };
+};
+
 export const useReportPDF = () => {
   const [downloadPDF, { data, refetch, loading }] = useLazyQuery<
-    {
-      data: string;
-    },
+    ReportPDF,
     { query: string }
   >(REPORT_PDF_QUERY);
-
-  const projectPDFData = data?.data;
-  console.log('====projectPDFData', data);
+  const reportPDFData = data;
   return {
     downloadPDF,
-    projectPDFData,
+    reportPDFData,
     refetch,
     loading,
   };

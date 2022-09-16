@@ -38,6 +38,16 @@ export const ReportPageSidebar: React.FC<Props> = ({
         query:
           'userId=1&projectsId=2&projectsId=1&start=2022-09-01&end=2022-09-30',
       },
+    }).then(({ data }) => {
+      if (data) {
+        const blob = new Blob([data.reportPDF.blob], {
+          type: 'application/pdf',
+        });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'test';
+        link.click();
+      }
     });
   };
 

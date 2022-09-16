@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client';
-
 export const REPORT_PDF_QUERY = gql`
   query ReportPDF($query: String!) {
     reportPDF(input: $query)
@@ -7,8 +6,9 @@ export const REPORT_PDF_QUERY = gql`
         path: "/report/pdf?{args.input}"
         method: "GET"
         type: "ReportPDFPayload"
+        endpoint: "blob"
       ) {
-      pdfBuffer
+      blob
     }
   }
 `;
