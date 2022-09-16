@@ -7,14 +7,30 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useAuthUser } from 'hooks';
+import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { Icon } from 'legos';
+import { Breaks } from 'constant';
 
 export const VacationWidget = () => {
-  const { isManager } = useAuthUser();
+  const { user, isManager } = useAuthUser();
+  const { trackers } = useNormalizedTrackers({
+    user: { id: { in: [user.id] } },
+  });
+
+  let vacationDays = 0;
+  let sicknessDays = 0;
+
+  trackers?.forEach((el) => {
+    if (el?.trackersByProject[0].name?.toLowerCase() === Breaks.Vacation) {
+      vacationDays += 1;
+    }
+    if (el?.trackersByProject[0].name?.toLowerCase() === Breaks.Sickness) {
+      sicknessDays += 1;
+    }
+  });
 
   return (
-    <Stack gap={4} maxWidth={200} mt={10}>
+    <Stack gap={3}>
       {isManager && (
         <Button
           sx={{
@@ -39,7 +55,9 @@ export const VacationWidget = () => {
           />
           <ListItemText
             sx={{ ml: 2, display: 'contents' }}
-            primary={<Typography fontWeight={600}>0 / 30</Typography>}
+            primary={
+              <Typography fontWeight={600}>{`${vacationDays} / 30`}</Typography>
+            }
           />
         </ListItem>
         <ListItem disableGutters disablePadding>
@@ -57,7 +75,7 @@ export const VacationWidget = () => {
             sx={{ ml: 2, display: 'contents' }}
             primary={
               <Typography sx={{ verticalAlign: 'center' }} fontWeight={600}>
-                0 / 5
+                {`${sicknessDays} / 5`}
               </Typography>
             }
           />
