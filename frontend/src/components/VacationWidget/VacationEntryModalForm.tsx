@@ -31,7 +31,7 @@ const modalStyle = {
   p: 4,
 };
 
-const vacationModalHead = ['Date', 'Description', 'Confirmation'];
+const vacationModalHead = ['Date', 'Description', ''];
 
 export const VacationEntryModalForm = ({
   open,
@@ -45,66 +45,71 @@ export const VacationEntryModalForm = ({
     <Modal open={open} closeAfterTransition onClose={onClose}>
       <>
         {open && (
-          <TableContainer sx={modalStyle}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {vacationModalHead.map((item, i) => (
-                    <TableCell sx={{ fontWeight: 600 }} key={i}>
-                      {item}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody style={{ verticalAlign: 'top' }}>
-                {trackers.map(({ date, trackersByProject }) =>
-                  trackersByProject.map(({ trackers }) =>
-                    trackers.map(({ id, attributes }) => (
-                      <TableRow
-                        key={id}
-                        sx={{
-                          '&:last-child td, &:last-child th': { border: 0 },
-                        }}
-                      >
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          sx={{ width: 125 }}
+          <Stack sx={modalStyle}>
+            <Stack mb={2}>
+              <Typography variant="h6">Approve vacations</Typography>
+            </Stack>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    {vacationModalHead.map((item, i) => (
+                      <TableCell sx={{ fontWeight: 600 }} key={i}>
+                        {item}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody style={{ verticalAlign: 'top' }}>
+                  {trackers.map(({ date, trackersByProject }) =>
+                    trackersByProject.map(({ trackers }) =>
+                      trackers.map(({ id, attributes }) => (
+                        <TableRow
+                          key={id}
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
                         >
-                          {format(new Date(date), 'd MMM y')}
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{attributes?.description}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Stack direction="row" gap={1}>
-                            <Button
-                              color="success"
-                              variant="contained"
-                              sx={{
-                                textTransform: 'none',
-                              }}
-                            >
-                              Approve
-                            </Button>
-                            <Button
-                              color="error"
-                              variant="contained"
-                              sx={{
-                                textTransform: 'none',
-                              }}
-                            >
-                              Reject
-                            </Button>
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ width: 125 }}
+                          >
+                            {format(new Date(date), 'd MMM y')}
+                          </TableCell>
+                          <TableCell>
+                            <Typography>{attributes?.description}</Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Stack direction="row" gap={1}>
+                              <Button
+                                color="success"
+                                variant="contained"
+                                sx={{
+                                  textTransform: 'none',
+                                }}
+                              >
+                                Approve
+                              </Button>
+                              <Button
+                                color="error"
+                                variant="contained"
+                                sx={{
+                                  textTransform: 'none',
+                                }}
+                              >
+                                Reject
+                              </Button>
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Stack>
         )}
       </>
     </Modal>
