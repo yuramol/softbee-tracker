@@ -19,6 +19,32 @@
         vertical-align: center;
       }
 
+      body {
+        margin: 15px;
+      }
+
+      h1 {
+        margin: 20;
+        font-size: 2.027rem;
+        font-weight: 600;
+        font-family: Poppins, sans-serif;
+        line-height: 1.167;
+      }
+      .wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin: 50px 0 30px 0;
+      }
+      .container {
+        display: flex;
+        font-family: Poppins, sans-serif;
+      }
+
+      .period {
+        font-weight: 600;
+        padding-right: 15px;
+      }
+
       table {
         border-collapse: collapse;
         border-spacing: 0;
@@ -44,6 +70,14 @@
 
       .table-header {
         font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.5rem;
+        padding: 16px;
+      }
+
+      .table-date {
+        font-weight: 400;
+        font-size: 0.875rem;
         line-height: 1.5rem;
         padding: 16px;
       }
@@ -67,6 +101,22 @@
     </style>
   </head>
   <body>
+    <h1>Tracking report</h1>
+    <div class="wrapper">
+      <div class="container">
+        <p class="period">Period:</p>
+        <p>1 Sep 2022 - 3- Sep 2022</p>
+      </div>
+      <div class="container">
+        <p class="period">Empoyee:</p>
+        <p>Andrey Petruk</p>
+      </div>
+      <div class="container">
+        <p class="period">Project:</p>
+        <p>SoftBee</p>
+      </div>
+    </div>
+
     <table>
       <thead>
         <tr>
@@ -78,7 +128,7 @@
 
       <tbody>
         <tr>
-          <th class="table-header">9 Sep 2022</th>
+          <th class="table-date">9 Sep 2022</th>
           <td>
             <h6 class="table-project">Paletto</h6>
             <p class="table-description">
@@ -89,7 +139,7 @@
           <td>07:00</td>
         </tr>
         <tr>
-          <th class="table-header">15 Sep 2022</th>
+          <th class="table-date">15 Sep 2022</th>
           <td>
             <h6 class="table-project">Demigos</h6>
             <p class="table-description">
@@ -100,7 +150,7 @@
           <td>05:00</td>
         </tr>
         <tr>
-          <th class="table-header">12 Sep 2022</th>
+          <th class="table-date">12 Sep 2022</th>
           <td>
             <h6 class="table-project">SoftBee</h6>
             <p class="table-description">
