@@ -116,7 +116,7 @@ export function generateHtmlReports(data: generateHtmlReportsParams) {
         group.trackers.forEach((tracker) => {
             totalTime += tracker.hoursMinutes;
             html += `<tr>
-                <th class="table-header">${format(group.date, 'MM/dd/yyyy')}</th>
+                <td class="table-header">${format(group.date, 'MM/dd/yyyy')}</td>
                 <td>
                   <h6 class="table-project">${tracker.projectName}</h6>
                   <p class="table-description">
@@ -129,7 +129,7 @@ export function generateHtmlReports(data: generateHtmlReportsParams) {
     })
     html += `
           <tr>
-            <th class="table-header"><b>Total</b></th>
+            <td class="table-header"><b>Total</b></td>
             <td></td>
             <td><b>${toHoursAndMinutes(totalTime)}</b></td>
           </tr>
