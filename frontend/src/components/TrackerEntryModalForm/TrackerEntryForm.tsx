@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
 import TimePicker from 'components/TimePicker';
-import { useProjects } from 'hooks';
+import { useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { Maybe, Scalars } from 'types/GraphqlTypes';
 
@@ -27,6 +27,7 @@ export const FIELD_TIME_ENTRY = {
   DURATION: 'DURATION',
   DESCRIPTION: 'DESCRIPTION',
   PROJECT: 'PROJECT',
+  EMPLOYEE: 'EMPLOYEE',
 } as const;
 
 export type TimeEntryValues = {
@@ -34,11 +35,15 @@ export type TimeEntryValues = {
   [FIELD_TIME_ENTRY.DURATION]: string;
   [FIELD_TIME_ENTRY.DESCRIPTION]?: string;
   [FIELD_TIME_ENTRY.PROJECT]?: Maybe<Scalars['ID']>;
+  [FIELD_TIME_ENTRY.EMPLOYEE]?: Scalars['ID'];
 };
 
 export type TrackerEntryFormProps = {
   titleForm: string;
   isLive?: boolean;
+  isManual?: boolean;
+  projectId?: string;
+
   userId: string;
   onSubmit: (values: TimeEntryValues) => void;
   onClose: () => void;
@@ -49,8 +54,10 @@ export type TrackerEntryFormProps = {
 
 export const TrackerEntryForm = ({
   titleForm,
+  isManual = false,
   isLive = false,
   userId,
+  projectId,
   onSubmit,
   onClose,
   initialValuesForm,
@@ -61,9 +68,25 @@ export const TrackerEntryForm = ({
     users: { id: { eq: userId } },
   });
 
+  const { usersChoices } = useNormalizedUsers({
+    projects: { id: { eq: projectId } },
+  });
   const validationSchema = yup.object({
     ...(!isLive
       ? {
+          [FIELD_TIME_ENTRY.DATE]: yup.date().required('Should not be empty'),
+          [FIELD_TIME_ENTRY.DURATION]: yup
+            .string()
+            .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
+            .required('Should not be empty'),
+        }
+      : {}),
+    ...(!isManual
+      ? {
+          [FIELD_TIME_ENTRY.EMPLOYEE]: yup
+            .string()
+            .required('Should not be empty'),
+
           [FIELD_TIME_ENTRY.DATE]: yup.date().required('Should not be empty'),
           [FIELD_TIME_ENTRY.DURATION]: yup
             .string()
@@ -82,7 +105,10 @@ export const TrackerEntryForm = ({
     [FIELD_TIME_ENTRY.DATE]: initialValuesForm?.DATE ?? new Date(),
     [FIELD_TIME_ENTRY.DURATION]: initialValuesForm?.DURATION ?? '00:00',
     [FIELD_TIME_ENTRY.DESCRIPTION]: initialValuesForm?.DESCRIPTION ?? '',
-    [FIELD_TIME_ENTRY.PROJECT]: initialValuesForm?.PROJECT ?? '',
+    [FIELD_TIME_ENTRY.PROJECT]: projectId
+      ? initialValuesForm?.PROJECT ?? projectId
+      : initialValuesForm?.PROJECT ?? '',
+    [FIELD_TIME_ENTRY.EMPLOYEE]: initialValuesForm?.EMPLOYEE ?? '',
   };
 
   const formik = useFormik<TimeEntryValues>({
@@ -119,15 +145,28 @@ export const TrackerEntryForm = ({
                 />
               </Stack>
             )}
-            <Select
-              label="Project"
-              items={projectsChoices}
-              value={values[FIELD_TIME_ENTRY.PROJECT]}
-              name={FIELD_TIME_ENTRY.PROJECT}
-              {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
-              variant="outlined"
-              onChange={handleChange}
-            />
+            {!!isManual && (
+              <Select
+                label="Users"
+                items={usersChoices}
+                value={values[FIELD_TIME_ENTRY.EMPLOYEE]}
+                name={FIELD_TIME_ENTRY.EMPLOYEE}
+                {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
+                variant="outlined"
+                onChange={handleChange}
+              />
+            )}
+            {!isManual && (
+              <Select
+                label="Project"
+                items={projectsChoices}
+                value={values[FIELD_TIME_ENTRY.PROJECT]}
+                name={FIELD_TIME_ENTRY.PROJECT}
+                {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
+                variant="outlined"
+                onChange={handleChange}
+              />
+            )}
             <TextField
               label="Description"
               fullWidth
