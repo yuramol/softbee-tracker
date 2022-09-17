@@ -43,6 +43,9 @@ const httpLink = createUploadLink({
 
 const restLink = new RestLink({
   uri: `${process.env.REACT_APP_URI}/api`,
+  headers: {
+    Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+  },
   endpoints: {
     blob: {
       uri: `${process.env.REACT_APP_URI}/api`,
@@ -57,11 +60,7 @@ const restLink = new RestLink({
     ReportPDFPayload: (data: Promise<{ blob: Blob }>) => data,
   },
 });
-const link = ApolloLink.from([
-  errorLink,
-  authLink.concat(restLink),
-  authLink.concat(httpLink),
-]);
+const link = ApolloLink.from([errorLink, restLink, authLink.concat(httpLink)]);
 
 export const apolloClient = new ApolloClient({
   link,
