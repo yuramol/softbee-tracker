@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Modal,
   Table,
   TableBody,
@@ -13,6 +12,7 @@ import {
 import { format } from 'date-fns';
 import { useNormalizedTrackers } from 'hooks';
 import { Stack } from '@mui/system';
+import { Button } from 'legos';
 
 type VacationEntryModalFormProps = {
   open: boolean;
@@ -85,21 +85,19 @@ export const VacationEntryModalForm = ({
                               <Button
                                 color="success"
                                 variant="contained"
+                                title="Approve"
                                 sx={{
                                   textTransform: 'none',
                                 }}
-                              >
-                                Approve
-                              </Button>
+                              />
                               <Button
                                 color="error"
                                 variant="contained"
+                                title="Reject"
                                 sx={{
                                   textTransform: 'none',
                                 }}
-                              >
-                                Reject
-                              </Button>
+                              />
                             </Stack>
                           </TableCell>
                         </TableRow>
