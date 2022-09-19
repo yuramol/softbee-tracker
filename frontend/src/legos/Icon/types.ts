@@ -24,6 +24,9 @@ export type IconsNames =
   | 'watch'
   | 'download'
   | 'clear'
+  | 'sailing'
+  | 'medicalServices'
+  | 'info';
   | 'houseboat'
   | 'medication';
 

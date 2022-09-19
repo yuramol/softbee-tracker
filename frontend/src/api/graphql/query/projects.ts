@@ -5,7 +5,7 @@ export const PROJECTS_QUERY = gql`
     $projectFilters: ProjectFiltersInput!
     $trackerFilters: TrackerFiltersInput!
   ) {
-    projects(filters: $projectFilters, pagination: { limit: -1 }) {
+    projects(filters: $projectFilters, pagination: { limit: -1 }, sort: "id") {
       data {
         id
         attributes {

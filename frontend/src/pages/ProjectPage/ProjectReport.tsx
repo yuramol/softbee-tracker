@@ -6,13 +6,15 @@ import { Icon } from 'legos';
 import { TrackerEntryModalForm } from 'components';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 import { GraphQLError } from 'graphql';
-import { useCreateTracker } from 'modules';
 import { useSnackbar } from 'notistack';
+import { useCreateTracker } from 'hooks/useCreateTracker';
+import { format } from 'date-fns';
+import { parseTrackerTime } from 'helpers';
 
 type Props = {
-  id: Scalars['ID'];
+  projectId: Scalars['ID'];
 };
-export const ProjectReport = ({ id }: Props) => {
+export const ProjectReport = ({ projectId }: Props) => {
   const { enqueueSnackbar } = useSnackbar();
   const { createTracker } = useCreateTracker();
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -20,8 +22,23 @@ export const ProjectReport = ({ id }: Props) => {
   const toggleOpenModal = () => {
     setIsOpenModal(!isOpenModal);
   };
+
+  const initialValuesForm: TimeEntryValues = {
+    date: new Date(),
+    duration: '00:00',
+    project: projectId,
+  };
+
   const handelSubmit = (values: TimeEntryValues) => {
-    createTracker(values.EMPLOYEE as string, values)
+    const data = {
+      ...values,
+      duration: format(
+        parseTrackerTime(values.duration, 'HH:mm'),
+        'HH:mm:ss.SSS'
+      ),
+      date: format(values.date, 'yyyy-MM-dd'),
+    };
+    createTracker(data)
       .then(() => {
         enqueueSnackbar(`Track added`, { variant: 'success' });
         toggleOpenModal();
@@ -39,9 +56,9 @@ export const ProjectReport = ({ id }: Props) => {
         onClose={toggleOpenModal}
         onSubmit={(values) => handelSubmit(values)}
         titleForm="New time entry"
-        isManual={true}
-        projectId={id}
-        userId={''}
+        withEmployee={true}
+        projectId={projectId}
+        initialValuesForm={initialValuesForm}
       />
       <Tooltip title="Add New Entry">
         <Button variant="contained" onClick={toggleOpenModal}>
