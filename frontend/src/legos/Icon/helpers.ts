@@ -27,6 +27,8 @@ import {
   Sailing,
   MedicalServices,
   Info,
+  Houseboat,
+  Medication,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -60,4 +62,6 @@ export const IconsMap: IconsNamesMapType = {
   sailing: Sailing,
   medicalServices: MedicalServices,
   info: Info,
+  houseboat: Houseboat,
+  medication: Medication,
 };

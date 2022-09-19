@@ -7,7 +7,8 @@ import {
   TimeInspector,
   TrackerCalendar,
   TrackerDayView,
-} from 'components';
+  VacationWidget,
+} from '../components';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { PageProps } from './types';
@@ -34,6 +35,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
       sidebar={
         <>
           <BreaksRequest />
+          <VacationWidget />
           <TimeInspector />
           <TrackerCalendar
             selectedDay={selectedDay}
@@ -41,7 +43,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
             trackers={trackers}
             setStartMonth={setStartMonth}
             setEndMonth={setEndMonth}
-          />
+          />{' '}
         </>
       }
     >

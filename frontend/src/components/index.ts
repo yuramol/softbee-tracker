@@ -23,3 +23,4 @@ export { ProjectTabs } from './ProjectTabs';
 export { ProjectReportTab } from './ProjectReportTab';
 export { ReportTable } from './ReportTable';
 export { BreaksRequest } from './BreaksRequest';
+export { VacationWidget } from './VacationWidget';
