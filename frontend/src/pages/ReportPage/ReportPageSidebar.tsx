@@ -33,14 +33,25 @@ export const ReportPageSidebar: React.FC<Props> = ({
   const { downloadPDF } = useReportPDF();
 
   const handleDownload = () => {
-    const userId = selectedEmployees.join(`&userId=`);
-    const projectsId = selectedProjects.join(`&projectsId=`);
+    let userId;
+    let projectsId;
+    if (selectedEmployees.length > 0) {
+      userId = selectedEmployees.join(`,`);
+    } else {
+      userId = usersChoices.map((item) => item.value).join(',');
+    }
+    if (selectedProjects.length > 0) {
+      projectsId = selectedProjects.join(`&projectsId=`);
+    } else {
+      projectsId = projectsChoices
+        .map((item) => item.value)
+        .join('&projectsId=');
+    }
+
     const range = selectedDates.join(`&end=`);
     downloadPDF({
       variables: {
-        query: `${selectedEmployees.length > 0 ? `userId=${userId}&` : ''}${
-          selectedProjects.length > 0 ? `projectsId=${projectsId}&` : ''
-        }start=${range}`,
+        query: `userId=${userId}&projectsId=${projectsId}&start=${range}`,
       },
     }).then(({ data }) => {
       if (data) {
