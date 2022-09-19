@@ -26,7 +26,7 @@ export type IconsNames =
   | 'clear'
   | 'sailing'
   | 'medicalServices'
-  | 'info';
+  | 'info'
   | 'houseboat'
   | 'medication';
 
