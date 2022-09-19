@@ -1,0 +1,1 @@
+export { VacationWidget } from './VacationWidget';
