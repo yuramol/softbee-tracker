@@ -55,50 +55,48 @@ export const ProjectReportTab = ({ projectId }: Props) => {
   };
 
   return (
-    <>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={4}
-      >
-        <Grid xs={4} item>
-          <RangeCalendar
-            selectedDates={selectedDates}
-            setSelectedDates={setSelectedDates}
-          />
-        </Grid>
-        <Grid item xs={7}>
-          <MultipleSelect
-            label="Employees"
-            size="small"
-            variant="outlined"
-            items={usersChoices}
-            value={selectedEmployees}
-            setValue={setSelectedEmployees}
-          />
-        </Grid>
-        <Grid item xs={1}>
-          <TrackerEntryModalForm
-            open={isOpenModal}
-            onClose={toggleOpenModal}
-            onSubmit={(values) => handelSubmit(values)}
-            titleForm="New time entry"
-            isManual={true}
-            projectId={projectId}
-            userId={''}
-          />
-          <Tooltip title="Add New Entry">
-            <Button variant="contained" onClick={toggleOpenModal}>
-              <Icon icon="add" />
-            </Button>
-          </Tooltip>
-        </Grid>
-        <Grid item xs={12}>
-          <ReportTable trackers={trackers} />
-        </Grid>
+    <Grid
+      container
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+      spacing={4}
+    >
+      <Grid xs={4} item>
+        <RangeCalendar
+          selectedDates={selectedDates}
+          setSelectedDates={setSelectedDates}
+        />
       </Grid>
-    </>
+      <Grid item xs={7}>
+        <MultipleSelect
+          label="Employees"
+          size="small"
+          variant="outlined"
+          items={usersChoices}
+          value={selectedEmployees}
+          setValue={setSelectedEmployees}
+        />
+      </Grid>
+      <Grid item xs={1}>
+        <TrackerEntryModalForm
+          open={isOpenModal}
+          onClose={toggleOpenModal}
+          onSubmit={(values) => handelSubmit(values)}
+          titleForm="New time entry"
+          isManual={true}
+          projectId={projectId}
+          userId={''}
+        />
+        <Tooltip title="Add New Entry">
+          <Button variant="contained" onClick={toggleOpenModal}>
+            <Icon icon="add" />
+          </Button>
+        </Tooltip>
+      </Grid>
+      <Grid item xs={12}>
+        <ReportTable trackers={trackers} />
+      </Grid>
+    </Grid>
   );
 };
