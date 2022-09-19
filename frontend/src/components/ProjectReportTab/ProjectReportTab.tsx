@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
-import { Button, Grid } from '@mui/material';
-import { ReportTable } from '..';
+import { Button, Grid, Tooltip } from '@mui/material';
+import { ReportTable, TrackerEntryModalForm } from '..';
 import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
 import { Icon, MultipleSelect, RangeCalendar } from 'legos';
+import { useSnackbar } from 'notistack';
+import { useCreateTracker } from 'modules';
+import { TimeEntryValues } from 'components/TrackerEntryModalForm';
+import { GraphQLError } from 'graphql';
 
-export const ProjectReportTab = () => {
+type Props = {
+  projectId: string;
+};
+
+export const ProjectReportTab = ({ projectId }: Props) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedDates, setSelectedDates] = useState<string[]>([
     getFormattedDate(new Date()),
   ]);
@@ -28,6 +37,23 @@ export const ProjectReportTab = () => {
 
   const { trackers } = useNormalizedTrackers(reportFilter);
 
+  const { enqueueSnackbar } = useSnackbar();
+  const { createTracker } = useCreateTracker();
+
+  const toggleOpenModal = () => {
+    setIsOpenModal(!isOpenModal);
+  };
+  const handelSubmit = (values: TimeEntryValues) => {
+    createTracker(values.EMPLOYEE as string, values)
+      .then(() => {
+        enqueueSnackbar(`Track added`, { variant: 'success' });
+        toggleOpenModal();
+      })
+      .catch((error: GraphQLError) => {
+        enqueueSnackbar(error.message, { variant: 'error' });
+      });
+  };
+
   return (
     <>
       <Grid
@@ -37,7 +63,7 @@ export const ProjectReportTab = () => {
         alignItems="center"
         spacing={4}
       >
-        <Grid item xs={4}>
+        <Grid xs={4} item>
           <RangeCalendar
             selectedDates={selectedDates}
             setSelectedDates={setSelectedDates}
@@ -54,12 +80,25 @@ export const ProjectReportTab = () => {
           />
         </Grid>
         <Grid item xs={1}>
-          <Button variant="contained">
-            <Icon icon="add" />
-          </Button>
+          <TrackerEntryModalForm
+            open={isOpenModal}
+            onClose={toggleOpenModal}
+            onSubmit={(values) => handelSubmit(values)}
+            titleForm="New time entry"
+            isManual={true}
+            projectId={projectId}
+            userId={''}
+          />
+          <Tooltip title="Add New Entry">
+            <Button variant="contained" onClick={toggleOpenModal}>
+              <Icon icon="add" />
+            </Button>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12}>
+          <ReportTable trackers={trackers} />
         </Grid>
       </Grid>
-      <ReportTable trackers={trackers} />
     </>
   );
 };
