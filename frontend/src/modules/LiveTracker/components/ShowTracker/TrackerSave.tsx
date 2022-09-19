@@ -6,10 +6,7 @@ import { parseISO, subMinutes } from 'date-fns';
 
 import { Enum_Tracker_Live_Status, TrackerEntity } from 'types/GraphqlTypes';
 import { TrackerEntryModalForm } from 'components';
-import {
-  FIELD_TIME_ENTRY,
-  TimeEntryValues,
-} from 'components/TrackerEntryModalForm/TrackerEntryForm';
+import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 import { useSaveTracker } from '../../hooks';
 import {
@@ -17,6 +14,7 @@ import {
   secondsToHms,
   IconButtonTracker,
 } from '../../helpers';
+import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 
 type TrackerSaveProps = {
   tracker: TrackerEntity;
@@ -70,10 +68,10 @@ export const TrackerSave = ({ tracker, userId }: TrackerSaveProps) => {
         titleForm="New live time entry"
         userId={userId}
         initialValuesForm={{
-          [FIELD_TIME_ENTRY.DATE]: new Date(),
-          [FIELD_TIME_ENTRY.DURATION]: duration(),
-          [FIELD_TIME_ENTRY.DESCRIPTION]: tracker.attributes.description,
-          [FIELD_TIME_ENTRY.PROJECT]:
+          [TIME_ENTRY_FIELDS.DATE]: new Date(),
+          [TIME_ENTRY_FIELDS.DURATION]: duration(),
+          [TIME_ENTRY_FIELDS.DESCRIPTION]: tracker.attributes.description,
+          [TIME_ENTRY_FIELDS.PROJECT]:
             tracker.attributes.project?.data?.id ?? '',
         }}
       />

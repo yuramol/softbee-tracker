@@ -1,11 +1,9 @@
+import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
+
 export type BreaksRequestFormProps = {
   onClose: () => void;
 };
 
-export enum BreaksRequestFields {
-  User = 'user',
-  Break = 'project',
-  Date = 'date',
-  Duration = 'duration',
-  Comment = 'description',
-}
+export const BreaksRequestFields = {
+  ...TIME_ENTRY_FIELDS,
+} as const;

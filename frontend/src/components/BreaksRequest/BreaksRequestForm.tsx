@@ -6,7 +6,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { eachDayOfInterval, endOfYear, isWeekend, startOfYear } from 'date-fns';
+import {
+  eachDayOfInterval,
+  endOfYear,
+  format,
+  isWeekend,
+  startOfYear,
+} from 'date-fns';
 import * as yup from 'yup';
 
 import { useAuthUser, useBreaks } from 'hooks';
@@ -16,6 +22,10 @@ import { Breaks } from 'constant';
 import { useFormik } from 'formik';
 import { BreaksRequestFields, BreaksRequestFormProps } from './types';
 import { IconsNames } from 'legos/Icon';
+import { useSnackbar } from 'notistack';
+import { TimeEntryValues } from 'components/TrackerEntryModalForm';
+import { GraphQLError } from 'graphql';
+import { useCreateTracker } from 'hooks/useCreateTracker';
 
 const modalStyle = {
   position: 'absolute',
@@ -36,6 +46,8 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   onClose,
 }) => {
   const { user } = useAuthUser();
+  const { enqueueSnackbar } = useSnackbar();
+  const { createTracker } = useCreateTracker();
   const { breaks, breaksChoices, loading } = useBreaks(
     { users: { id: { eq: user.id } } },
     {
@@ -91,46 +103,48 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
       : 0;
 
   const initialValues = {
-    [BreaksRequestFields.User]: '',
-    [BreaksRequestFields.Break]: '',
-    [BreaksRequestFields.Date]: getFormattedDate(new Date()),
-    [BreaksRequestFields.Duration]: '00:00:00.000',
-    [BreaksRequestFields.Comment]: 'Test comment',
+    [BreaksRequestFields.USER]: user.id,
+    [BreaksRequestFields.PROJECT]: '',
+    [BreaksRequestFields.DATE]: new Date(),
+    [BreaksRequestFields.DURATION]: '05:00:00.000',
+    [BreaksRequestFields.DESCRIPTION]: '',
+    // [BreaksRequestFields.STATUS]: 'New',
   };
 
   const validationSchema = yup.object({
-    [BreaksRequestFields.Comment]: yup
+    [BreaksRequestFields.DESCRIPTION]: yup
       .string()
       .min(5, 'Description must be at least 5 characters')
       .required('Should not be empty'),
   });
 
-  const formik = useFormik({
+  const formik = useFormik<TimeEntryValues>({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      const data = {
-        ...values,
-        [BreaksRequestFields.User]: user.id,
-      };
-
-      console.log('Submit:', data);
+      const data = { ...values, date: format(values.date, 'yyyy-MM-dd') };
+      createTracker(data)
+        .then(() => {
+          enqueueSnackbar(`Request sent`, { variant: 'success' });
+          onClose();
+        })
+        .catch((error: GraphQLError) => {
+          enqueueSnackbar(error.message, { variant: 'error' });
+        });
     },
   });
 
-  const { values, errors, touched, handleChange, handleSubmit, setFieldValue } =
-    formik;
+  const { values, handleChange, handleSubmit, setFieldValue } = formik;
 
   useEffect(() => {
     const breaksChoiceId = breaksChoices?.find(
       ({ label }) => label === toUpperCaseFirst(Breaks.Vacation)
     )?.value as string;
 
-    setFieldValue(BreaksRequestFields.Break, breaksChoiceId);
+    setFieldValue(BreaksRequestFields.PROJECT, breaksChoiceId);
+    setFieldValue(BreaksRequestFields.USER, user.id);
     setBreakId(breaksChoiceId);
   }, [loading]);
-
-  console.log('errors', errors, touched);
 
   return (
     <Stack component="form" gap={4} sx={modalStyle} onSubmit={handleSubmit}>
@@ -148,19 +162,25 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
           <Typography>
             You request for{' '}
             <Typography component={'span'} fontWeight="600">
-              {breaksDateArray.length} days
+              {`${breaksDateArray.length} ${
+                breaksDateArray.length === 1 ? 'day' : 'days'
+              }`}
             </Typography>{' '}
             of paid time off, from{' '}
             <Typography component={'span'} fontWeight="600">
-              {breaksDaysUserHave} days
+              {`${breaksDaysUserHave} ${
+                breaksDaysUserHave === 1 ? 'day' : 'days'
+              }`}
             </Typography>{' '}
-            do you have.
+            you have.
           </Typography>
         ) : (
           <Typography>
             You request for{' '}
             <Typography component={'span'} fontWeight="600">
-              {breaksDateArray.length} days
+              {`${breaksDateArray.length} ${
+                breaksDateArray.length === 1 ? 'day' : 'days'
+              }`}
             </Typography>{' '}
             of unpaid time off.
           </Typography>
@@ -171,13 +191,13 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
           <Button
             key={value}
             variant={
-              value === values[BreaksRequestFields.Break]
+              value === values[BreaksRequestFields.PROJECT]
                 ? 'contained'
                 : 'outlined'
             }
             startIcon={getIcon(label)}
             onClick={() => {
-              setFieldValue(BreaksRequestFields.Break, value);
+              setFieldValue(BreaksRequestFields.PROJECT, value);
               setBreakId(value as string);
             }}
           >
@@ -196,9 +216,9 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         fullWidth
         multiline
         rows={4}
-        value={values[BreaksRequestFields.Comment]}
-        name={BreaksRequestFields.Comment}
-        {...formikPropsErrors(BreaksRequestFields.Comment, formik)}
+        value={values[BreaksRequestFields.DESCRIPTION]}
+        name={BreaksRequestFields.DESCRIPTION}
+        {...formikPropsErrors(BreaksRequestFields.DESCRIPTION, formik)}
         onChange={handleChange}
       />
       <Stack direction="row" gap={2} justifyContent="flex-end">
