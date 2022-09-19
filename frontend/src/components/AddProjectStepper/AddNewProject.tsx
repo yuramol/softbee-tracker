@@ -77,7 +77,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({
     [CreateProjectFields.Managers]: yup
       .string()
       .required('Should not be empty'),
-    [CreateProjectFields.Users]: yup.array().min(1, 'Minimum of 1 employee'),
+    [CreateProjectFields.Users]: yup.array().min(1, 'Minimum one employee'),
   });
 
   const formik = useFormik({

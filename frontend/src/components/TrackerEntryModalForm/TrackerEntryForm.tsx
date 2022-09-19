@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
 import TimePicker from 'components/TimePicker';
-import { useProjects } from 'hooks';
+import { useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
 
@@ -33,8 +33,10 @@ export const TIME_ENTRY_FIELDS = {
 
 export const TrackerEntryForm = ({
   titleForm,
+  withEmployee = false,
   isLive = false,
   userId,
+  projectId,
   onSubmit,
   onClose,
   initialValuesForm,
@@ -45,6 +47,9 @@ export const TrackerEntryForm = ({
     users: { id: { eq: userId } },
   });
 
+  const { usersChoices } = useNormalizedUsers({
+    projects: { id: { eq: projectId } },
+  });
   const validationSchema = yup.object({
     ...(!isLive
       ? {
@@ -56,6 +61,7 @@ export const TrackerEntryForm = ({
         }
       : {}),
     [TIME_ENTRY_FIELDS.PROJECT]: yup.string().required('Should not be empty'),
+    [FIELD_TIME_ENTRY.USER]: yup.string().required('Should not be empty'),
     [TIME_ENTRY_FIELDS.DESCRIPTION]: yup
       .string()
       .min(5, 'Description must be at least 5 characters')
@@ -104,15 +110,29 @@ export const TrackerEntryForm = ({
                 />
               </Stack>
             )}
-            <Select
-              label="Project"
-              items={projectsChoices}
-              value={values[TIME_ENTRY_FIELDS.PROJECT]}
-              name={TIME_ENTRY_FIELDS.PROJECT}
-              {...formikPropsErrors(TIME_ENTRY_FIELDS.PROJECT, formik)}
-              variant="outlined"
-              onChange={handleChange}
-            />
+
+            {withEmployee && (
+              <Select
+                label="Employee"
+                items={usersChoices}
+                value={values[FIELD_TIME_ENTRY.USER]}
+                name={FIELD_TIME_ENTRY.USER}
+                {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
+                variant="outlined"
+                onChange={handleChange}
+              />
+            )}
+            {!withEmployee && (
+              <Select
+                label="Project"
+                items={projectsChoices}
+                value={values[TIME_ENTRY_FIELDS.PROJECT]}
+                name={TIME_ENTRY_FIELDS.PROJECT}
+                {...formikPropsErrors(TIME_ENTRY_FIELDS.PROJECT, formik)}
+                variant="outlined"
+                onChange={handleChange}
+              />
+            )}
             <TextField
               label="Description"
               fullWidth
