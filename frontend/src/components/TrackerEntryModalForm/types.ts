@@ -11,8 +11,10 @@ export type TimeEntryValues = {
 
 export type TrackerEntryFormProps = {
   titleForm: string;
+  userId?: string;
+  projectId?: string;
+  withEmployee?: boolean;
   isLive?: boolean;
-  userId: string;
   onSubmit: (values: TimeEntryValues) => void;
   onClose: () => void;
   initialValuesForm?: TimeEntryValues;

@@ -71,7 +71,7 @@ export const ProjectTabs: FC<ProjectTabsProps> = ({ id }) => {
           <ProjectView id={id} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ProjectReport id={id} />
+          <ProjectReport projectId={id} />
         </TabPanel>
       </Grid>
     </Grid>

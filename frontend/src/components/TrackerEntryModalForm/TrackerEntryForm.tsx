@@ -61,7 +61,7 @@ export const TrackerEntryForm = ({
         }
       : {}),
     [TIME_ENTRY_FIELDS.PROJECT]: yup.string().required('Should not be empty'),
-    [FIELD_TIME_ENTRY.USER]: yup.string().required('Should not be empty'),
+    [TIME_ENTRY_FIELDS.USER]: yup.string().required('Should not be empty'),
     [TIME_ENTRY_FIELDS.DESCRIPTION]: yup
       .string()
       .min(5, 'Description must be at least 5 characters')
@@ -115,9 +115,9 @@ export const TrackerEntryForm = ({
               <Select
                 label="Employee"
                 items={usersChoices}
-                value={values[FIELD_TIME_ENTRY.USER]}
-                name={FIELD_TIME_ENTRY.USER}
-                {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
+                value={values[TIME_ENTRY_FIELDS.USER]}
+                name={TIME_ENTRY_FIELDS.USER}
+                {...formikPropsErrors(TIME_ENTRY_FIELDS.PROJECT, formik)}
                 variant="outlined"
                 onChange={handleChange}
               />

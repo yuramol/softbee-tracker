@@ -76,7 +76,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   };
 
   const handleStartTracker = () => {
-    createTracker(user.id, false, initialValuesForm);
+    createTracker(user.id, initialValuesForm);
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
