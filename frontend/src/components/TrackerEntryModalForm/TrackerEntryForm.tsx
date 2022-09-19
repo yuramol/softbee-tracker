@@ -147,7 +147,7 @@ export const TrackerEntryForm = ({
             )}
             {!!isManual && (
               <Select
-                label="Users"
+                label="Employee"
                 items={usersChoices}
                 value={values[FIELD_TIME_ENTRY.EMPLOYEE]}
                 name={FIELD_TIME_ENTRY.EMPLOYEE}
