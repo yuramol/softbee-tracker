@@ -21,7 +21,7 @@ export const ProjectReport = ({ id }: Props) => {
     setIsOpenModal(!isOpenModal);
   };
   const handelSubmit = (values: TimeEntryValues) => {
-    createTracker(values.EMPLOYEE as string, values)
+    createTracker(values.EMPLOYEE as string, false, values)
       .then(() => {
         enqueueSnackbar(`Track added`, { variant: 'success' });
         toggleOpenModal();

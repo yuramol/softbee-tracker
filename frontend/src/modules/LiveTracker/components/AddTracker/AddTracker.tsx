@@ -25,7 +25,7 @@ export const AddTracker = ({ userId }: AddTrackerProps) => {
     setIsOpenModal(!isOpenModal);
   };
   const handelSubmit = (values: TimeEntryValues) => {
-    createTracker(userId, values)
+    createTracker(userId, true, values)
       .then(() => {
         enqueueSnackbar(`the countdown has started`, { variant: 'success' });
         toggleOpenModal();

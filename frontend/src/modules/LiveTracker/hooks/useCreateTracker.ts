@@ -15,7 +15,11 @@ const useCreateTracker = () => {
     MutationCreateTrackerArgs
   >(CREATE_TRACKER_BY_USER_ID_MUTATION);
 
-  const createTracker = (userId: string, values: TimeEntryValues) =>
+  const createTracker = (
+    userId: string,
+    isLive: boolean,
+    values: TimeEntryValues
+  ) =>
     create({
       variables: {
         data: {
@@ -23,7 +27,7 @@ const useCreateTracker = () => {
           date: format(new Date(), 'yyyy-MM-dd'),
           project: values.PROJECT,
           description: values.DESCRIPTION,
-          live: true,
+          live: isLive,
           live_status: Enum_Tracker_Live_Status.Start,
           startLiveDate: formatISO(new Date()),
           duration: '00:00:00',
