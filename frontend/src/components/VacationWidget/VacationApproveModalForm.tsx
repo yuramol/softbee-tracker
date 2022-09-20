@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   Table,
@@ -17,11 +17,6 @@ import { useMutation } from '@apollo/client';
 import { UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
-type VacationEntryModalFormProps = {
-  open: boolean;
-  onClose: () => void;
-};
-
 const modalStyle = {
   position: 'absolute',
   top: '50%',
@@ -36,10 +31,7 @@ const modalStyle = {
 
 const vacationModalHead = ['Date', 'Description', 'Status', ''];
 
-export const VacationApproveModalForm = ({
-  open,
-  onClose,
-}: VacationEntryModalFormProps) => {
+export const VacationApproveModalForm = () => {
   const { trackers } = useNormalizedTrackers({
     user: { id: { in: ['46'] } },
   });
@@ -73,94 +65,116 @@ export const VacationApproveModalForm = ({
     });
   };
 
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const toggleOpenModal = () => {
+    setIsOpenModal(!isOpenModal);
+  };
+
   return (
-    <Modal open={open} closeAfterTransition onClose={onClose}>
-      <>
-        {open && (
-          <Stack sx={modalStyle}>
-            <Stack mb={2}>
-              <Typography variant="h6">Approve vacations</Typography>
-            </Stack>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {vacationModalHead.map((item, i) => (
-                      <TableCell sx={{ fontWeight: 600 }} key={i}>
-                        {item}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody style={{ verticalAlign: 'top' }}>
-                  {trackers.map(({ date, trackersByProject }) =>
-                    trackersByProject.map(({ trackers }) =>
-                      trackers.map(({ id, attributes }) => {
-                        return (
-                          <TableRow
-                            key={id}
-                            sx={{
-                              '&:last-child td, &:last-child th': { border: 0 },
-                            }}
-                          >
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              sx={{ width: 125 }}
+    <>
+      <Button
+        title="Vacation approve"
+        variant="contained"
+        fullWidth
+        onClick={toggleOpenModal}
+      />
+      <Modal open={isOpenModal} closeAfterTransition onClose={toggleOpenModal}>
+        <>
+          {isOpenModal && (
+            <Stack sx={modalStyle}>
+              <Stack mb={2}>
+                <Typography variant="h6">Approve vacations</Typography>
+              </Stack>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {vacationModalHead.map((item, i) => (
+                        <TableCell sx={{ fontWeight: 600 }} key={i}>
+                          {item}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody style={{ verticalAlign: 'top' }}>
+                    {trackers.map(({ date, trackersByProject }) =>
+                      trackersByProject.map(({ trackers }) =>
+                        trackers.map(({ id, attributes }) => {
+                          return (
+                            <TableRow
+                              key={id}
+                              sx={{
+                                '&:last-child td, &:last-child th': {
+                                  border: 0,
+                                },
+                              }}
                             >
-                              {format(new Date(date), 'd MMM y')}
-                            </TableCell>
-                            <TableCell>
-                              <Typography>{attributes?.description}</Typography>
-                            </TableCell>
-                            <TableCell align="center">
-                              <Typography>
-                                {attributes?.live_status === 'start' ? (
-                                  <Icon color="success" icon="checkCircle" />
-                                ) : attributes?.live_status === 'pause' ? (
-                                  <Icon color="error" icon="highlightOff" />
-                                ) : (
-                                  <></>
-                                )}
-                              </Typography>
-                            </TableCell>
-                            <TableCell>
-                              <Stack direction="row" gap={1}>
-                                <Button
-                                  color="success"
-                                  variant="contained"
-                                  title="Approve"
-                                  disabled={attributes?.live_status === 'pause'}
-                                  sx={{
-                                    textTransform: 'none',
-                                  }}
-                                  onClick={() => {
-                                    handleApprove(id);
-                                  }}
-                                />
-                                <Button
-                                  color="error"
-                                  variant="contained"
-                                  title="Reject"
-                                  disabled={attributes?.live_status === 'start'}
-                                  sx={{
-                                    textTransform: 'none',
-                                  }}
-                                  onClick={() => handleReject(id)}
-                                />
-                              </Stack>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })
-                    )
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Stack>
-        )}
-      </>
-    </Modal>
+                              <TableCell
+                                component="th"
+                                scope="row"
+                                sx={{ width: 125 }}
+                              >
+                                {format(new Date(date), 'd MMM y')}
+                              </TableCell>
+                              <TableCell>
+                                <Typography>
+                                  {attributes?.description}
+                                </Typography>
+                              </TableCell>
+                              <TableCell align="center">
+                                <Typography>
+                                  {attributes?.live_status === 'start' ? (
+                                    <Icon color="success" icon="checkCircle" />
+                                  ) : attributes?.live_status === 'pause' ? (
+                                    <Icon color="error" icon="highlightOff" />
+                                  ) : (
+                                    <></>
+                                  )}
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Stack direction="row" gap={1}>
+                                  <Button
+                                    color="success"
+                                    variant="contained"
+                                    title="Approve"
+                                    disabled={
+                                      attributes?.live_status === 'pause'
+                                    }
+                                    sx={{
+                                      textTransform: 'none',
+                                    }}
+                                    onClick={() => {
+                                      handleApprove(id);
+                                    }}
+                                  />
+                                  <Button
+                                    color="error"
+                                    variant="contained"
+                                    title="Reject"
+                                    disabled={
+                                      attributes?.live_status === 'start'
+                                    }
+                                    sx={{
+                                      textTransform: 'none',
+                                    }}
+                                    onClick={() => handleReject(id)}
+                                  />
+                                </Stack>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
+                      )
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Stack>
+          )}
+        </>
+      </Modal>
+    </>
   );
 };

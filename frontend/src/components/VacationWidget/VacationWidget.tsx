@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
-import { Button, Icon } from 'legos';
+import { Icon } from 'legos';
 import { Breaks } from 'constant';
 import { VacationApproveModalForm } from './VacationApproveModalForm';
 import { BreaksRequest } from 'components/BreaksRequest';
@@ -11,9 +11,6 @@ export const VacationWidget = () => {
   const { trackers } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
   });
-
-  const pageLink = window.location.href.split('/');
-  const isProfilePage = pageLink[pageLink.length - 1] === 'profile';
 
   let vacationDays = 0;
   let sicknessDays = 0;
@@ -27,26 +24,11 @@ export const VacationWidget = () => {
     }
   });
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
-
-  const toggleOpenModal = () => {
-    setIsOpenModal(!isOpenModal);
-  };
-
   return (
     <>
-      <VacationApproveModalForm open={isOpenModal} onClose={toggleOpenModal} />
       <Stack gap={3} mb={3}>
         <Stack gap={1}>
           <BreaksRequest />
-          {isManager && isProfilePage && (
-            <Button
-              title="Vacation approve"
-              variant="contained"
-              fullWidth
-              onClick={toggleOpenModal}
-            />
-          )}
         </Stack>
 
         <List disablePadding>
