@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
-import { Icon } from 'legos';
+import { Button, Icon } from 'legos';
 import { Breaks } from 'constant';
 import { VacationApproveModalForm } from './VacationApproveModalForm';
 
@@ -39,17 +32,13 @@ export const VacationWidget = () => {
   return (
     <>
       <VacationApproveModalForm open={isOpenModal} onClose={toggleOpenModal} />
-      <Stack gap={3}>
+      <Stack gap={3} mb={3}>
         {isManager && (
           <Button
-            sx={{
-              textTransform: 'none',
-            }}
+            title="Vacation approve"
             variant="contained"
             onClick={toggleOpenModal}
-          >
-            Vacation request
-          </Button>
+          />
         )}
         <List disablePadding>
           <ListItem disableGutters disablePadding>
