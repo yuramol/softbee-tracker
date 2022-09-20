@@ -29,6 +29,8 @@ import {
   Info,
   Houseboat,
   Medication,
+  CheckCircleOutline,
+  HighlightOff,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -64,4 +66,6 @@ export const IconsMap: IconsNamesMapType = {
   info: Info,
   houseboat: Houseboat,
   medication: Medication,
+  checkCircle: CheckCircleOutline,
+  highlightOff: HighlightOff,
 };
