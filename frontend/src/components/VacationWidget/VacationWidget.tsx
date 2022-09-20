@@ -10,6 +10,7 @@ import {
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { Icon } from 'legos';
 import { Breaks } from 'constant';
+import { BreaksRequest } from 'components/BreaksRequest';
 
 export const VacationWidget = () => {
   const { user, isManager } = useAuthUser();
@@ -30,17 +31,8 @@ export const VacationWidget = () => {
   });
 
   return (
-    <Stack gap={3}>
-      {isManager && (
-        <Button
-          sx={{
-            textTransform: 'none',
-          }}
-          variant="contained"
-        >
-          Vacation request
-        </Button>
-      )}
+    <Stack gap={2} mb={3}>
+      {isManager && <BreaksRequest />}
       <List disablePadding>
         <ListItem disableGutters disablePadding>
           <ListItemText

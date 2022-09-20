@@ -10,10 +10,10 @@ export const BreaksRequest = () => {
   };
 
   return (
-    <Stack mb={2}>
+    <Stack mb={1}>
       <Button
         onClick={toggleOpenModal}
-        variant="outlined"
+        variant="contained"
         size="small"
         fullWidth
       >
