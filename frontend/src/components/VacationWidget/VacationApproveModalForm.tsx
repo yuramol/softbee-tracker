@@ -36,7 +36,7 @@ const modalStyle = {
 
 const vacationModalHead = ['Date', 'Description', ''];
 
-export const VacationEntryModalForm = ({
+export const VacationApproveModalForm = ({
   open,
   onClose,
 }: VacationEntryModalFormProps) => {
@@ -47,6 +47,7 @@ export const VacationEntryModalForm = ({
   const notification = useNotification();
   const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
 
+  // TODO change live_status to status
   const handleApprove = (id: Maybe<string>) => {
     const data = { live_status: 'start' };
     updateTracker({
@@ -59,6 +60,7 @@ export const VacationEntryModalForm = ({
     });
   };
 
+  // TODO change live_status to status
   const handleReject = (id: Maybe<string>) => {
     const data = { live_status: 'pause' };
     updateTracker({

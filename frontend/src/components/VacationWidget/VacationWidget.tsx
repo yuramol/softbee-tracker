@@ -10,7 +10,7 @@ import {
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { Icon } from 'legos';
 import { Breaks } from 'constant';
-import { VacationEntryModalForm } from './VacationEntryModalForm';
+import { VacationApproveModalForm } from './VacationApproveModalForm';
 
 export const VacationWidget = () => {
   const { user, isManager } = useAuthUser();
@@ -38,7 +38,7 @@ export const VacationWidget = () => {
 
   return (
     <>
-      <VacationEntryModalForm open={isOpenModal} onClose={toggleOpenModal} />
+      <VacationApproveModalForm open={isOpenModal} onClose={toggleOpenModal} />
       <Stack gap={3}>
         {isManager && (
           <Button

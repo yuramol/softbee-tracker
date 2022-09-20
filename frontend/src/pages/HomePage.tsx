@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import {
   MainWrapper,
