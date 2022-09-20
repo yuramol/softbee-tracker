@@ -20,11 +20,11 @@ export const TrackerAddNewEntry = () => {
 
   const handelSubmit = (values: TimeEntryValues) => {
     onCreateTracker({
-      date: values.DATE,
-      description: values.DESCRIPTION,
-      project: values.PROJECT,
+      date: values.date,
+      description: values.description,
+      project: values.project,
       user: user.id,
-      duration: values.DURATION,
+      duration: values.duration,
     });
 
     toggleOpenModal();

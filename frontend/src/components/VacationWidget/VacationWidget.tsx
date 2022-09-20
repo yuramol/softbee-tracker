@@ -4,6 +4,7 @@ import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { Button, Icon } from 'legos';
 import { Breaks } from 'constant';
 import { VacationApproveModalForm } from './VacationApproveModalForm';
+import { BreaksRequest } from 'components/BreaksRequest';
 
 export const VacationWidget = () => {
   const { user, isManager } = useAuthUser();
@@ -36,13 +37,18 @@ export const VacationWidget = () => {
     <>
       <VacationApproveModalForm open={isOpenModal} onClose={toggleOpenModal} />
       <Stack gap={3} mb={3}>
-        {isManager && isProfilePage && (
-          <Button
-            title="Vacation approve"
-            variant="contained"
-            onClick={toggleOpenModal}
-          />
-        )}
+        <Stack gap={1}>
+          <BreaksRequest />
+          {isManager && isProfilePage && (
+            <Button
+              title="Vacation approve"
+              variant="contained"
+              fullWidth
+              onClick={toggleOpenModal}
+            />
+          )}
+        </Stack>
+
         <List disablePadding>
           <ListItem disableGutters disablePadding>
             <ListItemText

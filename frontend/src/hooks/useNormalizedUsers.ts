@@ -8,6 +8,7 @@ import {
   UsersPermissionsUser,
   UsersPermissionsUserEntity,
   UsersPermissionsUserEntityResponseCollection,
+  UsersPermissionsUserFiltersInput,
 } from 'types/GraphqlTypes';
 
 type Choices = {
@@ -28,10 +29,12 @@ const getUserChoicesData = (
   value: id,
 });
 
-export const useNormalizedUsers = () => {
+export const useNormalizedUsers = (
+  filters: UsersPermissionsUserFiltersInput = {}
+) => {
   const { data, loading, refetch } = useQuery<{
     usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
-  }>(USERS_QUERY);
+  }>(USERS_QUERY, { variables: { filters } });
 
   const users = data?.usersPermissionsUsers.data;
   const managers: UsersPermissionsUserEntity[] = [];

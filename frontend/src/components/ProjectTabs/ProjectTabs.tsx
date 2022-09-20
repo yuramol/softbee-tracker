@@ -6,6 +6,7 @@ import { Grid } from '@mui/material';
 import { FC, useState } from 'react';
 import { ProjectView } from 'pages/ProjectPage/ProjectView';
 import { Scalars } from 'types/GraphqlTypes';
+import { ProjectReport } from 'pages/ProjectPage/ProjectReport';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -70,7 +71,7 @@ export const ProjectTabs: FC<ProjectTabsProps> = ({ id }) => {
           <ProjectView id={id} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Three
+          <ProjectReport projectId={id} />
         </TabPanel>
       </Grid>
     </Grid>

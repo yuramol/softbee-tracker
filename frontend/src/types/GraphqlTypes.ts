@@ -853,6 +853,7 @@ export type TrackerInput = {
   live_status?: InputMaybe<Enum_Tracker_Live_Status>;
   project?: InputMaybe<Scalars['ID']>;
   startLiveDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<Scalars['String']>;
   user?: InputMaybe<Scalars['ID']>;
 };
 

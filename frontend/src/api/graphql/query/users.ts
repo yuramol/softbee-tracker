@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const USERS_QUERY = gql`
-  query Users {
-    usersPermissionsUsers(pagination: { limit: -1 }) {
+  query Users($filters: UsersPermissionsUserFiltersInput!) {
+    usersPermissionsUsers(filters: $filters, pagination: { limit: -1 }) {
       data {
         id
         attributes {
