@@ -34,7 +34,6 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     <MainWrapper
       sidebar={
         <>
-          <BreaksRequest />
           <VacationWidget />
           <TimeInspector />
           <TrackerCalendar
