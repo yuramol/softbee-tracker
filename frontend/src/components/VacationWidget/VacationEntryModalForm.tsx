@@ -10,9 +10,12 @@ import {
   Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
-import { useNormalizedTrackers } from 'hooks';
+import { useNormalizedTrackers, useNotification } from 'hooks';
 import { Stack } from '@mui/system';
 import { Button } from 'legos';
+import { useMutation } from '@apollo/client';
+import { UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
+import { Maybe } from 'graphql/jsutils/Maybe';
 
 type VacationEntryModalFormProps = {
   open: boolean;
@@ -40,6 +43,33 @@ export const VacationEntryModalForm = ({
   const { trackers } = useNormalizedTrackers({
     user: { id: { in: ['38'] } },
   });
+
+  const notification = useNotification();
+  const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
+
+  const handleApprove = (id: Maybe<string>) => {
+    const data = { live_status: 'start' };
+    updateTracker({
+      variables: { id, data },
+    }).then(() => {
+      notification({
+        message: 'The tracker was successfully updated',
+        variant: 'info',
+      });
+    });
+  };
+
+  const handleReject = (id: Maybe<string>) => {
+    const data = { live_status: 'pause' };
+    updateTracker({
+      variables: { id, data },
+    }).then(() => {
+      notification({
+        message: 'The tracker was successfully updated',
+        variant: 'info',
+      });
+    });
+  };
 
   return (
     <Modal open={open} closeAfterTransition onClose={onClose}>
@@ -89,6 +119,7 @@ export const VacationEntryModalForm = ({
                                 sx={{
                                   textTransform: 'none',
                                 }}
+                                onClick={() => handleApprove(id)}
                               />
                               <Button
                                 color="error"
@@ -97,6 +128,7 @@ export const VacationEntryModalForm = ({
                                 sx={{
                                   textTransform: 'none',
                                 }}
+                                onClick={() => handleReject(id)}
                               />
                             </Stack>
                           </TableCell>
