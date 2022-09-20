@@ -11,6 +11,9 @@ export const VacationWidget = () => {
     user: { id: { in: [user.id] } },
   });
 
+  const pageLink = window.location.href.split('/');
+  const isProfilePage = pageLink[pageLink.length - 1] === 'profile';
+
   let vacationDays = 0;
   let sicknessDays = 0;
 
@@ -33,7 +36,7 @@ export const VacationWidget = () => {
     <>
       <VacationApproveModalForm open={isOpenModal} onClose={toggleOpenModal} />
       <Stack gap={3} mb={3}>
-        {isManager && (
+        {isManager && isProfilePage && (
           <Button
             title="Vacation approve"
             variant="contained"
