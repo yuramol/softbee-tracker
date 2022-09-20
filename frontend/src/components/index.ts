@@ -23,4 +23,5 @@ export { ProjectTabs } from './ProjectTabs';
 export { ProjectReportTab } from './ProjectReportTab';
 export { ReportTable } from './ReportTable';
 export { BreaksRequest } from './BreaksRequest';
-export { VacationWidget, VacationApproveModalForm } from './VacationWidget';
+export { VacationWidget } from './VacationWidget';
+export { VacationApproveModalForm } from './VacationApproveModalForm';

@@ -3,11 +3,10 @@ import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { Icon } from 'legos';
 import { Breaks } from 'constant';
-import { VacationApproveModalForm } from './VacationApproveModalForm';
 import { BreaksRequest } from 'components/BreaksRequest';
 
 export const VacationWidget = () => {
-  const { user, isManager } = useAuthUser();
+  const { user } = useAuthUser();
   const { trackers } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
   });
