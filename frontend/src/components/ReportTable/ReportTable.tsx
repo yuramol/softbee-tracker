@@ -19,7 +19,7 @@ type ReportTableProps = {
 };
 
 const reportTableHead = ['Date', 'Description', 'Time'];
-
+const breacks = ['Sickness', 'Unpaid', 'Vacation'];
 export const ReportTable: React.FC<ReportTableProps> = ({
   trackers,
   isShowVacation,
@@ -39,11 +39,7 @@ export const ReportTable: React.FC<ReportTableProps> = ({
             {trackers.map(({ date, trackersByProject }) =>
               trackersByProject.map(({ name, trackers }) =>
                 trackers.map(({ id, attributes }) => {
-                  if (
-                    (!isShowVacation && name === 'Vacation') ||
-                    (!isShowVacation && name === 'Sickness') ||
-                    (!isShowVacation && name === 'Unpaid')
-                  )
+                  if (!isShowVacation && breacks.includes(name as string))
                     return null;
                   return (
                     <TableRow
@@ -56,9 +52,7 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                         {format(new Date(date), 'd MMM y')}
                       </TableCell>
                       <TableCell>
-                        {name === 'Vacation' ||
-                        name === 'Sickness' ||
-                        name === 'Unpaid' ? (
+                        {breacks.includes(name as string) ? (
                           <>
                             <BreaksDay breaks={name} />
                             <Typography>{attributes?.description}</Typography>

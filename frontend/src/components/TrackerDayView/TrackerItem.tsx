@@ -93,20 +93,20 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
 
     toggleOpenModal();
   };
-  const breaksType = tracker.attributes?.project?.data?.attributes?.name;
+  const breacks = ['Sickness', 'Unpaid', 'Vacation'];
+
   return (
-    <Stack
+    <Grid
       direction="row"
       justifyContent="space-between"
       alignItems="center"
-      gap={3}
       borderBottom={1}
       borderColor="gray"
       py={4}
     >
-      {breaksType === 'Vacation' ||
-      breaksType === 'Unpaid' ||
-      breaksType === 'Sickness' ? (
+      {breacks.includes(
+        tracker.attributes?.project?.data?.attributes?.name as string
+      ) ? (
         <Grid container spacing={2}>
           <Grid item xs={8}>
             <BreaksDay
@@ -125,48 +125,51 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
         </Grid>
       ) : (
         <>
-          <Stack>
-            <Typography variant="h6">
-              {tracker.attributes?.project?.data?.attributes?.name ?? ''}
-            </Typography>
-            <Typography>{tracker.attributes?.description}</Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" gap={1}>
-            <TimePicker
-              width="110px"
-              value={format(time, 'HH:mm')}
-              onChange={handleChange}
-            />
-            <IconButton color="primary" onClick={toggleOpenModal}>
-              <Icon icon="edit" size="small" />
-            </IconButton>
-            <IconButton
-              size="large"
-              color="primary"
-              sx={{ border: '1px solid' }}
-              onClick={handleStartTracker}
-            >
-              <Icon icon="playArrow" size="inherit" />
-            </IconButton>
-            <IconButton
-              color="error"
-              onClick={(e) => handleClickDeleteButton(e.currentTarget)}
-            >
-              <Icon icon="deleteOutline" />
-            </IconButton>
+          <Grid container spacing={2}>
+            <Grid item xs={8} justifyContent="space-between">
+              <Typography variant="h6">
+                {tracker.attributes?.project?.data?.attributes?.name ?? ''}
+              </Typography>
+              <Typography>{tracker.attributes?.description}</Typography>
+            </Grid>
+            <Grid item xs={4} display="flex">
+              <TimePicker
+                width="110px"
+                value={format(time, 'HH:mm')}
+                onChange={handleChange}
+              />
+              <IconButton color="primary" onClick={toggleOpenModal}>
+                <Icon icon="edit" size="small" />
+              </IconButton>
+              <IconButton
+                size="large"
+                color="primary"
+                sx={{ border: '1px solid' }}
+                onClick={handleStartTracker}
+              >
+                <Icon icon="playArrow" size="inherit" />
+              </IconButton>
+              <IconButton
+                color="error"
+                onClick={(e) => handleClickDeleteButton(e.currentTarget)}
+              >
+                <Icon icon="deleteOutline" />
+              </IconButton>
+            </Grid>
+          </Grid>
+
+          <Grid direction="row" alignItems="center" gap={1}>
             {isPopperOpen && (
               <ClickAwayListener onClickAway={handleClickAway}>
                 <Popper open={isPopperOpen} anchorEl={anchorEl}>
-                  <Stack
+                  <Grid
                     bgcolor="background.paper"
                     border="1px solid"
                     borderRadius={1}
                     p={2}
                   >
-                    <Typography marginBottom={2}>
-                      Are you sure to delete this timesheet?
-                    </Typography>
-                    <Stack direction="row" justifyContent="flex-end" gap={2}>
+                    <Typography marginBottom={2}>Are you sure?</Typography>
+                    <Grid direction="row" justifyContent="flex-end" gap={2}>
                       <Button
                         size="small"
                         variant="outlined"
@@ -182,12 +185,12 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                       >
                         Yes
                       </Button>
-                    </Stack>
-                  </Stack>
+                    </Grid>
+                  </Grid>
                 </Popper>
               </ClickAwayListener>
             )}
-          </Stack>
+          </Grid>
         </>
       )}
       <TrackerEntryModalForm
@@ -199,6 +202,6 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
         buttonSubmitTitle="Update"
         userId={user.id}
       />
-    </Stack>
+    </Grid>
   );
 };
