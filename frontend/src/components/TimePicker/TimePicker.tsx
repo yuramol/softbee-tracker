@@ -15,6 +15,7 @@ import TimePickerDialog from './TimePickerDialog';
 import { TimePickerBlock } from './TimePickerBlock';
 
 interface TimePickerProps {
+  disabled?: boolean;
   minutesPerStep?: number;
   value: string;
   from?: number;
@@ -28,6 +29,7 @@ interface TimePickerProps {
 }
 
 const TimePicker = ({
+  disabled,
   minutesPerStep = 5,
   value = '00:00',
   from,
@@ -110,6 +112,7 @@ const TimePicker = ({
     <Box width={width ?? '100%'} position="relative">
       <FormControl fullWidth error={error}>
         <Input
+          disabled={disabled}
           onChange={(value) => onChange(`${value}`)}
           onFocus={handleFocus}
           value={durationValue}

@@ -10,11 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
-import { useNormalizedTrackers, useNotification } from 'hooks';
+import { useNormalizedTrackers, useUpdateTracker } from 'hooks';
 import { Stack } from '@mui/system';
 import { Button, Icon } from 'legos';
-import { useMutation } from '@apollo/client';
-import { UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
 const modalStyle = {
@@ -36,33 +34,18 @@ export const VacationApproveModalForm = () => {
     user: { id: { in: ['46'] } },
   });
 
-  const notification = useNotification();
-  const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
+  const { updateTracker } = useUpdateTracker();
 
   // TODO change live_status to status
   const handleApprove = (id: Maybe<string>) => {
     const data = { live_status: 'start' };
-    updateTracker({
-      variables: { id, data },
-    }).then(() => {
-      notification({
-        message: 'The tracker was successfully updated',
-        variant: 'info',
-      });
-    });
+    updateTracker(id, data);
   };
 
   // TODO change live_status to status
   const handleReject = (id: Maybe<string>) => {
     const data = { live_status: 'pause' };
-    updateTracker({
-      variables: { id, data },
-    }).then(() => {
-      notification({
-        message: 'The tracker was successfully updated',
-        variant: 'info',
-      });
-    });
+    updateTracker(id, data);
   };
 
   const [isOpenModal, setIsOpenModal] = useState(false);
