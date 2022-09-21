@@ -11,11 +11,18 @@ export const useUpdateTracker = () => {
   const updateTracker = (id: Maybe<string>, data: object) =>
     update({
       variables: { id, data },
-    }).then(() => {
-      notification({
-        message: 'The tracker was successfully updated',
-        variant: 'info',
+    })
+      .then(() => {
+        notification({
+          message: 'The tracker was successfully updated',
+          variant: 'info',
+        });
+      })
+      .catch(() => {
+        notification({
+          message: 'A problem occurred when updating a tracker',
+          variant: 'error',
+        });
       });
-    });
   return { updateTracker };
 };
