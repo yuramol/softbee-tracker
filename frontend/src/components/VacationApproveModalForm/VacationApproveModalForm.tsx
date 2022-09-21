@@ -74,7 +74,7 @@ export const VacationApproveModalForm = () => {
   return (
     <>
       <Button
-        title="Vacation approve"
+        title="Approve vacation"
         variant="contained"
         fullWidth
         onClick={toggleOpenModal}
