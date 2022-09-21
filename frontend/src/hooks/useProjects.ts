@@ -12,7 +12,7 @@ import {
   TrackerEntity,
   TrackerFiltersInput,
 } from 'types/GraphqlTypes';
-import { getTotalTime } from 'helpers';
+import { getTotalTime, toUpperCaseFirst } from 'helpers';
 
 type TotalByProject = {
   name?: string;
@@ -37,7 +37,7 @@ export const useProjects = (
     variables: {
       projectFilters: {
         name: {
-          notIn: breaksSlugs.map((s) => s[0].toUpperCase() + s.slice(1)),
+          notIn: breaksSlugs.map((s) => toUpperCaseFirst(s)),
         },
         ...projectFilters,
       },

@@ -21,8 +21,8 @@ const useCreateTracker = () => {
         data: {
           user: userId,
           date: format(new Date(), 'yyyy-MM-dd'),
-          project: values.PROJECT,
-          description: values.DESCRIPTION,
+          project: values.project,
+          description: values.description,
           live: true,
           live_status: Enum_Tracker_Live_Status.Start,
           startLiveDate: formatISO(new Date()),

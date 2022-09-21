@@ -66,13 +66,13 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   };
 
   const initialValuesForm: TimeEntryValues = {
-    DATE: parseISO(tracker.attributes?.date ?? ''),
-    DURATION: format(
+    date: parseISO(tracker.attributes?.date ?? ''),
+    duration: format(
       parseTrackerTime(tracker.attributes?.duration ?? ''),
       'HH:mm'
     ),
-    DESCRIPTION: tracker.attributes?.description ?? '',
-    PROJECT: tracker.attributes?.project?.data?.id ?? '',
+    description: tracker.attributes?.description ?? '',
+    project: tracker.attributes?.project?.data?.id ?? '',
   };
 
   const handleStartTracker = () => {
@@ -80,13 +80,13 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
-    setTime(parseTrackerTime(values.DURATION, 'HH:mm'));
+    setTime(parseTrackerTime(values.duration, 'HH:mm'));
 
     onUpdateTracker(tracker.id, {
-      date: format(values.DATE, 'yyyy-MM-dd'),
-      description: values.DESCRIPTION,
-      project: values.PROJECT,
-      duration: parseTrackerTime(values.DURATION, 'HH:mm'),
+      date: format(values.date, 'yyyy-MM-dd'),
+      description: values.description,
+      project: values.project,
+      duration: parseTrackerTime(values.duration, 'HH:mm'),
     });
 
     toggleOpenModal();

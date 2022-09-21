@@ -24,8 +24,13 @@ export type IconsNames =
   | 'watch'
   | 'download'
   | 'clear'
+  | 'sailing'
+  | 'medicalServices'
+  | 'info'
   | 'houseboat'
-  | 'medication';
+  | 'medication'
+  | 'checkCircle'
+  | 'highlightOff';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;

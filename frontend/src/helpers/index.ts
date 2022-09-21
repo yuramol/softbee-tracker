@@ -6,4 +6,5 @@ export { getInitials } from './getInitials';
 export { formikPropsErrors } from './formik';
 export { getFormattedDate } from './getFormattedDate';
 export { reportRangeDates } from './getCalendarRanges';
+export { toUpperCaseFirst } from './toUpperCaseFirst';
 export * from './formaters';

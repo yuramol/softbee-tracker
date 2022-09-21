@@ -19,7 +19,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
-import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
+import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
 import { useCurrentWeek, useNotification } from 'hooks';
 import {
   UPDATE_TRACKER_BY_ID_MUTATION,
