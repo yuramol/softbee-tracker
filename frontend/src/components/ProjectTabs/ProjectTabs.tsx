@@ -4,9 +4,9 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
 import { FC, useState } from 'react';
-import { ProjectView } from 'pages/ProjectPage/ProjectView';
+import { ProjectInfoTab } from 'components/ProjectTabs/ProjectInfoTab';
 import { Scalars } from 'types/GraphqlTypes';
-import { ProjectReport } from 'pages/ProjectPage/ProjectReport';
+import { ProjectReportTab } from 'components/ProjectTabs/ProjectReportTab';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -66,12 +66,12 @@ export const ProjectTabs: FC<ProjectTabsProps> = ({ id }) => {
           <Tab label="Report" sx={{ fontWeight: '600' }} />
         </Tabs>
       </Grid>
-      <Grid container item xs={9}>
+      <Grid item xs={9}>
         <TabPanel value={value} index={0}>
-          <ProjectView id={id} />
+          <ProjectInfoTab id={id} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ProjectReport projectId={id} />
+          <ProjectReportTab projectId={id} />
         </TabPanel>
       </Grid>
     </Grid>

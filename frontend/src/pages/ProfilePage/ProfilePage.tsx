@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useAuthUser } from 'hooks';
-import { MainWrapper, TrackerCalendar, TimeInspector } from 'components';
+import {
+  MainWrapper,
+  TrackerCalendar,
+  TimeInspector,
+  VacationWidget,
+} from 'components';
 import { ProfileEditView } from './ProfileEditView';
 
 const ProfilePage = () => {
@@ -11,6 +16,7 @@ const ProfilePage = () => {
     <MainWrapper
       sidebar={
         <>
+          <VacationWidget />
           <TimeInspector />
           <TrackerCalendar
             selectedDay={selectedDay}

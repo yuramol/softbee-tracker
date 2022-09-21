@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 
 import {
-  BreaksRequest,
   MainWrapper,
   TimeInspector,
   TrackerCalendar,
@@ -34,7 +33,6 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     <MainWrapper
       sidebar={
         <>
-          <BreaksRequest />
           <VacationWidget />
           <TimeInspector />
           <TrackerCalendar
