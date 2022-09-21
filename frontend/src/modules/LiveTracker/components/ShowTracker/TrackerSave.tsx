@@ -58,9 +58,6 @@ export const TrackerSave = ({ tracker, userId }: TrackerSaveProps) => {
       })
       .catch((error: GraphQLError) => {
         enqueueSnackbar(error.message, { variant: 'error' });
-      })
-      .finally(() => {
-        enqueueSnackbar('error', { variant: 'error' });
       });
   };
 
