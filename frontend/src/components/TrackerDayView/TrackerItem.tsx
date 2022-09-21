@@ -7,6 +7,8 @@ import {
   ClickAwayListener,
   Grid,
   Stack,
+  Box,
+  LinearProgress,
 } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 
@@ -35,13 +37,9 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
-  const [time, setTime] = useState(
-    parseTrackerTime(tracker.attributes?.duration ?? '')
-  );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleChange = (value: string, submit?: boolean) => {
-    setTime(parseTrackerTime(value, 'HH:mm'));
     if (submit) {
       onUpdateTracker(tracker.id, {
         duration: parseTrackerTime(value, 'HH:mm'),
@@ -83,8 +81,6 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
-    setTime(parseTrackerTime(values.duration, 'HH:mm'));
-
     onUpdateTracker(tracker.id, {
       date: format(values.date, 'yyyy-MM-dd'),
       description: values.description,
@@ -111,7 +107,10 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
             <TimePicker
               disabled={true}
               width="110px"
-              value={format(time, 'HH:mm')}
+              value={format(
+                parseTrackerTime(tracker.attributes?.duration ?? ''),
+                'HH:mm'
+              )}
               onChange={handleChange}
             />
           </Grid>
@@ -126,30 +125,42 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
               <Typography>{tracker.attributes?.description}</Typography>
             </Grid>
             <Grid item container xs={4}>
-              <TimePicker
-                width="110px"
-                value={format(time, 'HH:mm')}
-                onChange={handleChange}
-              />
-              <Grid>
-                <IconButton color="primary" onClick={toggleOpenModal}>
-                  <Icon icon="edit" size="small" />
-                </IconButton>
-                <IconButton
-                  size="large"
-                  color="primary"
-                  sx={{ border: '1px solid' }}
-                  onClick={handleStartTracker}
-                >
-                  <Icon icon="playArrow" size="inherit" />
-                </IconButton>
-                <IconButton
-                  color="error"
-                  onClick={(e) => handleClickDeleteButton(e.currentTarget)}
-                >
-                  <Icon icon="deleteOutline" />
-                </IconButton>
-              </Grid>
+              {tracker.attributes?.live_status === 'start' ? (
+                <>
+                  <Typography variant="caption">live tracking ... </Typography>
+                  <Box sx={{ width: '100%' }}>
+                    <LinearProgress />
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <TimePicker
+                    width="110px"
+                    value={format(
+                      parseTrackerTime(tracker.attributes?.duration ?? ''),
+                      'HH:mm'
+                    )}
+                    onChange={handleChange}
+                  />
+                  <IconButton color="primary" onClick={toggleOpenModal}>
+                    <Icon icon="edit" size="small" />
+                  </IconButton>
+                  <IconButton
+                    size="large"
+                    color="primary"
+                    sx={{ border: '1px solid' }}
+                    onClick={handleStartTracker}
+                  >
+                    <Icon icon="playArrow" size="inherit" />
+                  </IconButton>
+                  <IconButton
+                    color="error"
+                    onClick={(e) => handleClickDeleteButton(e.currentTarget)}
+                  >
+                    <Icon icon="deleteOutline" />
+                  </IconButton>
+                </>
+              )}
             </Grid>
           </Grid>
 
