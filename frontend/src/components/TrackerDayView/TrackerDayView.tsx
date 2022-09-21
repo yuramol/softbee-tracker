@@ -198,7 +198,7 @@ export const TrackerDayView = ({
         tabsValue={tabsValue}
         setTabsValue={setTabsValue}
       />
-      <TrackerAddNewEntry />
+      <TrackerAddNewEntry currentDay={new Date(days[tabsValue].fullDate)} />
     </TimeContext.Provider>
   );
 };
