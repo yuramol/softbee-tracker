@@ -140,7 +140,7 @@ export const VacationApproveModalForm = () => {
                                     variant="contained"
                                     title="Approve"
                                     disabled={
-                                      attributes?.live_status === 'pause'
+                                      attributes?.live_status === 'start'
                                     }
                                     sx={{
                                       textTransform: 'none',
@@ -154,7 +154,7 @@ export const VacationApproveModalForm = () => {
                                     variant="contained"
                                     title="Reject"
                                     disabled={
-                                      attributes?.live_status === 'start'
+                                      attributes?.live_status === 'pause'
                                     }
                                     sx={{
                                       textTransform: 'none',
