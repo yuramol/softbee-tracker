@@ -10,7 +10,6 @@ import {
 import { format, parseISO } from 'date-fns';
 
 import { TimeContext } from './TrackerDayView';
-import { useCreateTracker } from 'modules';
 import { Icon } from 'legos';
 import TimePicker from 'components/TimePicker';
 import {
@@ -20,6 +19,7 @@ import {
 import { parseTrackerTime } from 'helpers';
 import { useAuthUser } from 'hooks';
 import { TrackerEntity } from 'types/GraphqlTypes';
+import { useStartTracker } from 'modules/LiveTracker/hooks';
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
@@ -28,7 +28,7 @@ type TrackerItemProps = {
 export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   const { user } = useAuthUser();
   const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
-  const { createTracker } = useCreateTracker();
+  const { startTracker } = useStartTracker();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
@@ -76,7 +76,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   };
 
   const handleStartTracker = () => {
-    createTracker(user.id, initialValuesForm);
+    startTracker(tracker);
   };
 
   const handelSubmit = (values: TimeEntryValues) => {

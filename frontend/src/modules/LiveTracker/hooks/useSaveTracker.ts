@@ -25,7 +25,7 @@ const useSaveTracker = () => {
           live_status: Enum_Tracker_Live_Status.Finish,
           startLiveDate: null,
           liveDurationMinutes: null,
-          date: format(values.date, 'yyyy-MM-dd'),
+          date: values.date,
           duration: format(
             parseTrackerTime(values.duration, 'HH:mm'),
             'HH:mm:ss.SSS'
