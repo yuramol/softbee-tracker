@@ -12,6 +12,7 @@ import { parseTrackerTime } from 'helpers';
 import { format } from 'date-fns';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 import { BreaksDay } from 'components';
+import { breaksTitles } from 'constant';
 
 type ReportTableProps = {
   trackers: TrackerByDay[];
@@ -19,7 +20,6 @@ type ReportTableProps = {
 };
 
 const reportTableHead = ['Date', 'Description', 'Time'];
-const breacks = ['Sickness', 'Unpaid', 'Vacation'];
 export const ReportTable: React.FC<ReportTableProps> = ({
   trackers,
   isShowVacation,
@@ -39,7 +39,7 @@ export const ReportTable: React.FC<ReportTableProps> = ({
             {trackers.map(({ date, trackersByProject }) =>
               trackersByProject.map(({ name, trackers }) =>
                 trackers.map(({ id, attributes }) => {
-                  if (!isShowVacation && breacks.includes(name as string))
+                  if (!isShowVacation && breaksTitles.includes(name as string))
                     return null;
                   return (
                     <TableRow
@@ -52,7 +52,7 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                         {format(new Date(date), 'd MMM y')}
                       </TableCell>
                       <TableCell>
-                        {breacks.includes(name as string) ? (
+                        {breaksTitles.includes(name as string) ? (
                           <>
                             <BreaksDay breaks={name} />
                             <Typography>{attributes?.description}</Typography>
