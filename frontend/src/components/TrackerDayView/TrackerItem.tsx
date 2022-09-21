@@ -97,13 +97,13 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
         tracker.attributes?.project?.data?.attributes?.name as string
       ) ? (
         <Grid container spacing={2}>
-          <Grid item xs={8}>
+          <Grid item xs={7}>
             <BreaksDay
               breaks={tracker.attributes?.project?.data?.attributes?.name}
               description={tracker.attributes?.description}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <TimePicker
               disabled={true}
               width="110px"
@@ -118,13 +118,13 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
       ) : (
         <>
           <Grid container spacing={2}>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <Typography variant="h6">
                 {tracker.attributes?.project?.data?.attributes?.name ?? ''}
               </Typography>
               <Typography>{tracker.attributes?.description}</Typography>
             </Grid>
-            <Grid item container xs={4}>
+            <Grid item container xs={5} gap={1}>
               {tracker.attributes?.live_status === 'start' ? (
                 <>
                   <Typography variant="caption">live tracking ... </Typography>
@@ -142,7 +142,11 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                     )}
                     onChange={handleChange}
                   />
-                  <IconButton color="primary" onClick={toggleOpenModal}>
+                  <IconButton
+                    sx={{ width: '56px' }}
+                    color="primary"
+                    onClick={toggleOpenModal}
+                  >
                     <Icon icon="edit" size="small" />
                   </IconButton>
                   <IconButton
@@ -154,6 +158,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                     <Icon icon="playArrow" size="inherit" />
                   </IconButton>
                   <IconButton
+                    sx={{ width: '56px' }}
                     color="error"
                     onClick={(e) => handleClickDeleteButton(e.currentTarget)}
                   >
