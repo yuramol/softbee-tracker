@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
+import { TRACKERS_QUERY, UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
 import { useNotification } from 'hooks';
 
 export const useUpdateTracker = () => {
@@ -11,6 +11,7 @@ export const useUpdateTracker = () => {
   const updateTracker = (id: Maybe<string>, data: object) =>
     update({
       variables: { id, data },
+      refetchQueries: [TRACKERS_QUERY],
     })
       .then(() => {
         notification({
