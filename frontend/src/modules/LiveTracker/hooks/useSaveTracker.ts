@@ -17,7 +17,6 @@ const useSaveTracker = () => {
   );
 
   const saveTracker = (trackerId: string, values: TimeEntryValues) => {
-    console.log('debug > values===', values);
     return save({
       variables: {
         id: trackerId,
