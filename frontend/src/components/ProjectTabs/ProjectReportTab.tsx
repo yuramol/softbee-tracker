@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
+
 import { Button, Grid, Tooltip } from '@mui/material';
 import { ReportTable, TrackerEntryModalForm } from '..';
 import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
 import { Icon, MultipleSelect, RangeCalendar } from 'legos';
 import { useSnackbar } from 'notistack';
-import { useCreateTracker } from 'modules';
+import { useCreateTracker } from 'hooks/useCreateTracker';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 import { GraphQLError } from 'graphql';
+import { format } from 'date-fns';
+import { parseTrackerTime } from 'helpers';
 
 type Props = {
   projectId: string;
 };
 
 export const ProjectReportTab = ({ projectId }: Props) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { createTracker } = useCreateTracker();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedDates, setSelectedDates] = useState<string[]>([
     getFormattedDate(new Date()),
@@ -35,16 +40,28 @@ export const ProjectReportTab = ({ projectId }: Props) => {
         : { eq: selectedDates[0] },
   };
 
-  const { trackers } = useNormalizedTrackers(reportFilter);
+  const initialValuesForm: TimeEntryValues = {
+    date: new Date(),
+    duration: '00:00',
+    project: projectId,
+  };
 
-  const { enqueueSnackbar } = useSnackbar();
-  const { createTracker } = useCreateTracker();
+  const { trackers } = useNormalizedTrackers(reportFilter);
 
   const toggleOpenModal = () => {
     setIsOpenModal(!isOpenModal);
   };
+
   const handelSubmit = (values: TimeEntryValues) => {
-    createTracker(values.EMPLOYEE as string, values)
+    const data = {
+      ...values,
+      duration: format(
+        parseTrackerTime(values.duration, 'HH:mm'),
+        'HH:mm:ss.SSS'
+      ),
+      date: format(values.date, 'yyyy-MM-dd'),
+    };
+    createTracker(data)
       .then(() => {
         enqueueSnackbar(`Track added`, { variant: 'success' });
         toggleOpenModal();
@@ -84,9 +101,9 @@ export const ProjectReportTab = ({ projectId }: Props) => {
           onClose={toggleOpenModal}
           onSubmit={(values) => handelSubmit(values)}
           titleForm="New time entry"
-          isManual={true}
+          withEmployee={true}
           projectId={projectId}
-          userId={''}
+          initialValuesForm={initialValuesForm}
         />
         <Tooltip title="Add New Entry">
           <Button variant="contained" onClick={toggleOpenModal}>
