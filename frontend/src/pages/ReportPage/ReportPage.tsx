@@ -14,6 +14,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   ]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const [checked, setChecked] = useState(true);
 
   const reportFilter = {
     user: {
@@ -38,6 +39,8 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   }, [trackers]);
 
   const reportSidebarProps = {
+    checked,
+    setChecked,
     selectedDates,
     selectedEmployees,
     selectedProjects,
@@ -66,7 +69,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
         </Stack>
       </Stack>
       <Stack mt={6}>
-        <ReportTable trackers={trackers} />
+        <ReportTable trackers={trackers} isShowVacation={checked} />
       </Stack>
     </MainWrapper>
   );

@@ -24,3 +24,4 @@ export { ProjectReportTab } from './ProjectReportTab';
 export { ReportTable } from './ReportTable';
 export { BreaksRequest } from './BreaksRequest';
 export { VacationWidget } from './VacationWidget';
+export { BreaksDay } from 'components/BreaksDay/BreaksDay';
