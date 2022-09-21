@@ -62,13 +62,13 @@ export const ProjectReportTab = ({ projectId }: Props) => {
       alignItems="center"
       spacing={4}
     >
-      <Grid xs={4} item>
+      <Grid xs={5} item>
         <RangeCalendar
           selectedDates={selectedDates}
           setSelectedDates={setSelectedDates}
         />
       </Grid>
-      <Grid item xs={7}>
+      <Grid item xs={5}>
         <MultipleSelect
           label="Employees"
           size="small"
@@ -78,7 +78,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
           setValue={setSelectedEmployees}
         />
       </Grid>
-      <Grid item xs={1}>
+      <Grid item xs={2}>
         <TrackerEntryModalForm
           open={isOpenModal}
           onClose={toggleOpenModal}

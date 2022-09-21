@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 type Props = {
   id: Scalars['ID'];
 };
-export const ProjectView = ({ id }: Props) => {
+export const ProjectInfoTab = ({ id }: Props) => {
   const { projectData } = useProject(id);
   let trakedTime = '';
 
