@@ -1,19 +1,12 @@
 import React from 'react';
-import {
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { Icon } from 'legos';
 import { Breaks } from 'constant';
 import { BreaksRequest } from 'components/BreaksRequest';
 
 export const VacationWidget = () => {
-  const { user, isManager } = useAuthUser();
+  const { user } = useAuthUser();
   const { trackers } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
   });
@@ -31,48 +24,55 @@ export const VacationWidget = () => {
   });
 
   return (
-    <Stack gap={2} mb={3}>
-      {isManager && <BreaksRequest />}
-      <List disablePadding>
-        <ListItem disableGutters disablePadding>
-          <ListItemText
-            primary={
-              <Stack direction="row">
-                <Icon icon="houseboat" />
-                <Typography ml={0.5} fontWeight={600}>
-                  Vacations:
+    <>
+      <Stack gap={3} mb={3}>
+        <Stack gap={1}>
+          <BreaksRequest />
+        </Stack>
+
+        <List disablePadding>
+          <ListItem disableGutters disablePadding>
+            <ListItemText
+              primary={
+                <Stack direction="row">
+                  <Icon icon="houseboat" />
+                  <Typography ml={0.5} fontWeight={600}>
+                    Vacations:
+                  </Typography>
+                </Stack>
+              }
+            />
+            <ListItemText
+              sx={{ ml: 2, display: 'contents' }}
+              primary={
+                <Typography
+                  fontWeight={600}
+                >{`${vacationDays} / 30`}</Typography>
+              }
+            />
+          </ListItem>
+          <ListItem disableGutters disablePadding>
+            <ListItemText
+              primary={
+                <Stack direction="row">
+                  <Icon icon="medication" />
+                  <Typography ml={0.5} fontWeight={600}>
+                    Sick leave:
+                  </Typography>
+                </Stack>
+              }
+            />
+            <ListItemText
+              sx={{ ml: 2, display: 'contents' }}
+              primary={
+                <Typography sx={{ verticalAlign: 'center' }} fontWeight={600}>
+                  {`${sicknessDays} / 5`}
                 </Typography>
-              </Stack>
-            }
-          />
-          <ListItemText
-            sx={{ ml: 2, display: 'contents' }}
-            primary={
-              <Typography fontWeight={600}>{`${vacationDays} / 30`}</Typography>
-            }
-          />
-        </ListItem>
-        <ListItem disableGutters disablePadding>
-          <ListItemText
-            primary={
-              <Stack direction="row">
-                <Icon icon="medication" />
-                <Typography ml={0.5} fontWeight={600}>
-                  Sick leave:
-                </Typography>
-              </Stack>
-            }
-          />
-          <ListItemText
-            sx={{ ml: 2, display: 'contents' }}
-            primary={
-              <Typography sx={{ verticalAlign: 'center' }} fontWeight={600}>
-                {`${sicknessDays} / 5`}
-              </Typography>
-            }
-          />
-        </ListItem>
-      </List>
-    </Stack>
+              }
+            />
+          </ListItem>
+        </List>
+      </Stack>
+    </>
   );
 };
