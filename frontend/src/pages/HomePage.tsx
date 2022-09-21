@@ -41,7 +41,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
             trackers={trackers}
             setStartMonth={setStartMonth}
             setEndMonth={setEndMonth}
-          />{' '}
+          />
         </>
       }
     >
