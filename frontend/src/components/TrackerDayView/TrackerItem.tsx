@@ -5,7 +5,6 @@ import {
   Popper,
   Typography,
   ClickAwayListener,
-  Stack,
   Grid,
 } from '@mui/material';
 import { format, parseISO } from 'date-fns';
