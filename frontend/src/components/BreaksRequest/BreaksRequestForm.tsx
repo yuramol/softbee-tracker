@@ -21,11 +21,11 @@ import { getFormattedDate, toUpperCaseFirst, formikPropsErrors } from 'helpers';
 import { Breaks } from 'constant';
 import { useFormik } from 'formik';
 import { BreaksRequestFields, BreaksRequestFormProps } from './types';
-import { IconsNames } from 'legos/Icon';
 import { useSnackbar } from 'notistack';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 import { GraphQLError } from 'graphql';
 import { useCreateTracker } from 'hooks/useCreateTracker';
+import { getBreakTypesIcon } from 'components/BreaksDay/getBreakTypesIcon';
 
 const modalStyle = {
   position: 'absolute',
@@ -69,18 +69,6 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     getFormattedDate(new Date()),
   ]);
   const [breakId, setBreakId] = useState('');
-
-  const getIcon = (value?: string) => {
-    let icon: IconsNames = 'moneyOff';
-
-    if (toUpperCaseFirst(Breaks.Vacation) === value) {
-      icon = 'sailing';
-    } else if (toUpperCaseFirst(Breaks.Sickness) === value) {
-      icon = 'medicalServices';
-    }
-
-    return <Icon icon={icon} />;
-  };
 
   const breaksDateArray = eachDayOfInterval({
     start: new Date(selectedDates[0]),
@@ -195,7 +183,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
                 ? 'contained'
                 : 'outlined'
             }
-            startIcon={getIcon(label)}
+            startIcon={getBreakTypesIcon(label)}
             onClick={() => {
               setFieldValue(BreaksRequestFields.PROJECT, value);
               setBreakId(value as string);
