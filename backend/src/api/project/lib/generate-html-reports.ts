@@ -35,10 +35,10 @@ export function generateHtmlReports(data: generateHtmlReportsParams) {
   let htmlTrackers = ""
   let totalTime = 0;
   data.trackersGroupDay.forEach((group) => {
-      group.trackers.forEach((tracker) => {
+      group.trackers.forEach((tracker, index) => {
           totalTime += tracker.hoursMinutes;
           htmlTrackers += `<tr>
-              <td class="table-header">${format(group.date, 'MM/dd/yyyy')}</td>
+              ${index === 0 ? `<th rowspan="${group.trackers.length + 1}" class="table-header">${format(group.date, 'MM/dd/yyyy')}</th>` : ''}
               <td><h6 class="table-description">${tracker.userName}</h6></td>
               <td>
                 <h6 class="table-description">${tracker.projectName}</h6>
