@@ -45,7 +45,9 @@ export const TrackerSave = ({ tracker, userId }: TrackerSaveProps) => {
     }
     const seconds = intervalDateSeconds({ endDate: startDate });
     const { hours, minutes } = secondsToHms(seconds);
-    return `${hours}:${minutes}`;
+    return `${hours < 10 ? `0${hours}` : hours}:${
+      minutes < 10 ? `0${minutes}` : minutes
+    }`;
   };
 
   const handelSubmitSaveTracker = (values: TimeEntryValues) => {
@@ -68,11 +70,11 @@ export const TrackerSave = ({ tracker, userId }: TrackerSaveProps) => {
         titleForm="New live time entry"
         userId={userId}
         initialValuesForm={{
-          [TIME_ENTRY_FIELDS.DATE]: new Date(),
+          [TIME_ENTRY_FIELDS.DATE]: tracker.attributes?.date ?? new Date(),
           [TIME_ENTRY_FIELDS.DURATION]: duration(),
-          [TIME_ENTRY_FIELDS.DESCRIPTION]: tracker.attributes.description,
+          [TIME_ENTRY_FIELDS.DESCRIPTION]: tracker.attributes?.description,
           [TIME_ENTRY_FIELDS.PROJECT]:
-            tracker.attributes.project?.data?.id ?? '',
+            tracker.attributes?.project?.data?.id ?? '',
         }}
       />
 

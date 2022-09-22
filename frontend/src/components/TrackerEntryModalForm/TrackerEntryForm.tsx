@@ -126,7 +126,11 @@ export const TrackerEntryForm = ({
               <Select
                 label="Project"
                 items={projectsChoices}
-                value={values[TIME_ENTRY_FIELDS.PROJECT]}
+                value={
+                  projectsChoices.length > 0
+                    ? values[TIME_ENTRY_FIELDS.PROJECT]
+                    : ''
+                }
                 name={TIME_ENTRY_FIELDS.PROJECT}
                 {...formikPropsErrors(TIME_ENTRY_FIELDS.PROJECT, formik)}
                 variant="outlined"

@@ -26,7 +26,6 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const { trackers, refetch } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
     date: { between: [startMonth, endMonth] },
-    live: { eq: false },
   });
 
   return (
