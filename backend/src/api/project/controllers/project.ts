@@ -141,6 +141,7 @@ export default factories.createCoreController('api::project.project', ({
                     }
                 })
             });
+            setTimeout(()=>{}, 300);
             const pdfBuffer = await pdf;
             ctx.body = pdfBuffer;
         } catch (err) {
