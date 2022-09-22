@@ -45,7 +45,11 @@ export const AddTracker = ({ userId }: AddTrackerProps) => {
         userId={userId}
         buttonSubmitTitle="Start"
       />
-      <Paper>
+      <Paper
+        sx={{
+          boxShadow: '0px 0px 23px 1px rgba(120,120,120,0.75)',
+        }}
+      >
         <IconButtonTracker onClick={toggleOpenModal}>
           <AddIcon color="primary" />
         </IconButtonTracker>

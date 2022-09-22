@@ -5,12 +5,14 @@ import {
   Popper,
   Typography,
   ClickAwayListener,
+  Grid,
   Stack,
+  Box,
+  LinearProgress,
 } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 
 import { TimeContext } from './TrackerDayView';
-import { useCreateTracker } from 'modules';
 import { Icon } from 'legos';
 import TimePicker from 'components/TimePicker';
 import {
@@ -20,6 +22,9 @@ import {
 import { parseTrackerTime } from 'helpers';
 import { useAuthUser } from 'hooks';
 import { TrackerEntity } from 'types/GraphqlTypes';
+import { useStartTracker } from 'modules/LiveTracker/hooks';
+import { BreaksDay } from 'components';
+import { breaksTitles } from 'constant';
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
@@ -28,17 +33,13 @@ type TrackerItemProps = {
 export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   const { user } = useAuthUser();
   const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
-  const { createTracker } = useCreateTracker();
+  const { startTracker } = useStartTracker();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
-  const [time, setTime] = useState(
-    parseTrackerTime(tracker.attributes?.duration ?? '')
-  );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleChange = (value: string, submit?: boolean) => {
-    setTime(parseTrackerTime(value, 'HH:mm'));
     if (submit) {
       onUpdateTracker(tracker.id, {
         duration: parseTrackerTime(value, 'HH:mm'),
@@ -76,12 +77,10 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   };
 
   const handleStartTracker = () => {
-    createTracker(user.id, initialValuesForm);
+    startTracker(tracker);
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
-    setTime(parseTrackerTime(values.duration, 'HH:mm'));
-
     onUpdateTracker(tracker.id, {
       date: format(values.date, 'yyyy-MM-dd'),
       description: values.description,
@@ -93,78 +92,116 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   };
 
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      gap={3}
-      borderBottom={1}
-      borderColor="gray"
-      py={4}
-    >
-      <Stack>
-        <Typography variant="h6">
-          {tracker.attributes?.project?.data?.attributes?.name ?? ''}
-        </Typography>
-        <Typography>{tracker.attributes?.description}</Typography>
-      </Stack>
-      <Stack direction="row" alignItems="center" gap={1}>
-        <TimePicker
-          width="110px"
-          value={format(time, 'HH:mm')}
-          onChange={handleChange}
-        />
-        <IconButton color="primary" onClick={toggleOpenModal}>
-          <Icon icon="edit" size="small" />
-        </IconButton>
-        <IconButton
-          size="large"
-          color="primary"
-          sx={{ border: '1px solid' }}
-          onClick={handleStartTracker}
-        >
-          <Icon icon="playArrow" size="inherit" />
-        </IconButton>
-        <IconButton
-          color="error"
-          onClick={(e) => handleClickDeleteButton(e.currentTarget)}
-        >
-          <Icon icon="deleteOutline" />
-        </IconButton>
-        {isPopperOpen && (
-          <ClickAwayListener onClickAway={handleClickAway}>
-            <Popper open={isPopperOpen} anchorEl={anchorEl}>
-              <Stack
-                bgcolor="background.paper"
-                border="1px solid"
-                borderRadius={1}
-                p={2}
-              >
-                <Typography marginBottom={2}>
-                  Are you sure to delete this timesheet?
-                </Typography>
-                <Stack direction="row" justifyContent="flex-end" gap={2}>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    onClick={handleClickAway}
+    <Grid alignItems="center" borderBottom={1} borderColor="gray" py={4}>
+      {breaksTitles.includes(
+        tracker.attributes?.project?.data?.attributes?.name as string
+      ) ? (
+        <Grid container spacing={2}>
+          <Grid item xs={7}>
+            <BreaksDay
+              breaks={tracker.attributes?.project?.data?.attributes?.name}
+              description={tracker.attributes?.description}
+            />
+          </Grid>
+          <Grid item xs={5}>
+            <TimePicker
+              disabled={true}
+              width="110px"
+              value={format(
+                parseTrackerTime(tracker.attributes?.duration ?? ''),
+                'HH:mm'
+              )}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
+      ) : (
+        <>
+          <Grid container spacing={2}>
+            <Grid item xs={7}>
+              <Typography variant="h6">
+                {tracker.attributes?.project?.data?.attributes?.name ?? ''}
+              </Typography>
+              <Typography>{tracker.attributes?.description}</Typography>
+            </Grid>
+            <Grid item container xs={5} gap={1}>
+              {tracker.attributes?.live_status === 'start' ? (
+                <>
+                  <Typography variant="caption">live tracking ... </Typography>
+                  <Box sx={{ width: '100%' }}>
+                    <LinearProgress />
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <TimePicker
+                    width="110px"
+                    value={format(
+                      parseTrackerTime(tracker.attributes?.duration ?? ''),
+                      'HH:mm'
+                    )}
+                    onChange={handleChange}
+                  />
+                  <IconButton
+                    sx={{ width: '56px' }}
+                    color="primary"
+                    onClick={toggleOpenModal}
                   >
-                    No
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outlined"
+                    <Icon icon="edit" size="small" />
+                  </IconButton>
+                  <IconButton
+                    size="large"
+                    color="primary"
+                    sx={{ border: '1px solid' }}
+                    onClick={handleStartTracker}
+                  >
+                    <Icon icon="playArrow" size="inherit" />
+                  </IconButton>
+                  <IconButton
+                    sx={{ width: '56px' }}
                     color="error"
-                    onClick={handleDelete}
+                    onClick={(e) => handleClickDeleteButton(e.currentTarget)}
                   >
-                    Yes
-                  </Button>
+                    <Icon icon="deleteOutline" />
+                  </IconButton>
+                </>
+              )}
+            </Grid>
+          </Grid>
+
+          {isPopperOpen && (
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <Popper open={isPopperOpen} anchorEl={anchorEl}>
+                <Stack
+                  bgcolor="background.paper"
+                  border="1px solid"
+                  borderRadius={1}
+                  p={2}
+                >
+                  <Typography marginBottom={2}>Are you sure?</Typography>
+                  <Stack direction="row" justifyContent="flex-end" gap={2}>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={handleClickAway}
+                    >
+                      No
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="error"
+                      onClick={handleDelete}
+                    >
+                      Yes
+                    </Button>
+                  </Stack>
                 </Stack>
-              </Stack>
-            </Popper>
-          </ClickAwayListener>
-        )}
-      </Stack>
+              </Popper>
+            </ClickAwayListener>
+          )}
+        </>
+      )}
       <TrackerEntryModalForm
         open={isOpenModal}
         onClose={toggleOpenModal}
@@ -174,6 +211,6 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
         buttonSubmitTitle="Update"
         userId={user.id}
       />
-    </Stack>
+    </Grid>
   );
 };

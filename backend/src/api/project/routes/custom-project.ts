@@ -4,12 +4,14 @@
  * project router.
  */
 
-module.exports = {
-    routes: [
-      {
+export default {
+    routes: [{
         method: 'GET',
-        path: '/report/pdf', 
+        path: '/report/pdf',
         handler: 'project.generatePdf',
-      }
-    ]
-  }
+        config: {
+            policies: [],
+            middlewares: [],
+        }
+    }]
+}

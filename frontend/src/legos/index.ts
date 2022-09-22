@@ -9,3 +9,4 @@ export { Input } from './Input';
 export { MultipleSelect } from './MultipleSelect';
 export { RangeCalendar } from './RangeCalendar';
 export { PulseDot } from './PulseDot';
+export { Toggle } from './Toggle';

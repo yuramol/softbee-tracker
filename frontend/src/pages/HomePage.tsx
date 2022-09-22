@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 
 import {
-  BreaksRequest,
   MainWrapper,
   TimeInspector,
   TrackerCalendar,
@@ -27,7 +26,6 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const { trackers, refetch } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
     date: { between: [startMonth, endMonth] },
-    live: { eq: false },
   });
 
   return (
@@ -42,7 +40,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
             trackers={trackers}
             setStartMonth={setStartMonth}
             setEndMonth={setEndMonth}
-          />{' '}
+          />
         </>
       }
     >

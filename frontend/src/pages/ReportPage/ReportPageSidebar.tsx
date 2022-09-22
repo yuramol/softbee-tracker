@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack } from '@mui/material';
 
-import { Button, MultipleSelect, RangeCalendar } from 'legos';
+import { Button, MultipleSelect, RangeCalendar, Toggle } from 'legos';
 import {
   useAuthUser,
   useNormalizedUsers,
@@ -11,6 +11,8 @@ import {
 import { reportRangeDates } from 'helpers';
 
 type Props = {
+  checked: boolean;
+  setChecked: (checked: boolean) => void;
   selectedDates: string[];
   selectedEmployees: string[];
   selectedProjects: string[];
@@ -20,6 +22,8 @@ type Props = {
 };
 
 export const ReportPageSidebar: React.FC<Props> = ({
+  checked,
+  setChecked,
   selectedDates,
   selectedEmployees,
   selectedProjects,
@@ -31,7 +35,6 @@ export const ReportPageSidebar: React.FC<Props> = ({
   const { usersChoices } = useNormalizedUsers();
   const { projectsChoices } = useProjects();
   const { downloadPDF } = useReportPDF();
-
   const handleDownload = () => {
     let usersIds;
     let projectsIds;
@@ -90,6 +93,11 @@ export const ReportPageSidebar: React.FC<Props> = ({
         items={projectsChoices}
         value={selectedProjects}
         setValue={setSelectedProjects}
+      />
+      <Toggle
+        checked={checked}
+        setChecked={setChecked}
+        label={'Show vacation and sickness'}
       />
       <Stack alignItems="center">
         <Button
