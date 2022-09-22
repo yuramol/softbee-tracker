@@ -4,7 +4,7 @@ import { Breaks } from 'constant';
 import { Icon, IconsNames } from 'legos/Icon';
 import { toUpperCaseFirst } from '../../helpers/toUpperCaseFirst';
 
-export const getBreakTypesIcon = (value?: string) => {
+export const getBreakIcon = (value?: string) => {
   let icon: IconsNames = 'moneyOff';
 
   if (toUpperCaseFirst(Breaks.Vacation) === value) {

@@ -25,7 +25,7 @@ import { useSnackbar } from 'notistack';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 import { GraphQLError } from 'graphql';
 import { useCreateTracker } from 'hooks/useCreateTracker';
-import { getBreakTypesIcon } from 'components/BreaksDay/getBreakTypesIcon';
+import { getBreakIcon } from 'components/BreaksDay/getBreakIcon';
 
 const modalStyle = {
   position: 'absolute',
@@ -183,7 +183,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
                 ? 'contained'
                 : 'outlined'
             }
-            startIcon={getBreakTypesIcon(label)}
+            startIcon={getBreakIcon(label)}
             onClick={() => {
               setFieldValue(BreaksRequestFields.PROJECT, value);
               setBreakId(value as string);
