@@ -58,6 +58,16 @@
     "liveDurationMinutes": {
       "type": "biginteger",
       "default": "0"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "new",
+        "approved",
+        "rejected"
+      ],
+      "required": false,
+      "default": "new"
     }
 
   }
