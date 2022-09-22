@@ -1,15 +1,37 @@
-import React, { Fragment } from 'react';
-import { Link, Stack, Typography } from '@mui/material';
+import React from 'react';
+import { Stack, Typography } from '@mui/material';
 
-import { Avatar, NavLink } from 'legos';
+import {
+  Enum_Tracker_Live_Status,
+  UsersPermissionsUserEntity,
+} from 'types/GraphqlTypes';
+import { Avatar, NavLink, PulseDot } from 'legos';
+
 import { UsersListAction } from './UsersListAction';
-import { UsersPermissionsUserEntity } from 'types/GraphqlTypes';
+import { useNormalizedTrackers } from 'hooks';
 
 type Props = {
   usersList?: UsersPermissionsUserEntity[];
 };
 
 export const UsersList = ({ usersList }: Props) => {
+  const { trackers } = useNormalizedTrackers({
+    live_status: { eq: Enum_Tracker_Live_Status.Finish },
+  });
+
+  const isUserRequestVacation = (id: string | undefined) => {
+    let isUserHasRequest;
+    trackers.forEach(({ trackersByProject }) => {
+      trackersByProject.forEach(({ trackers }) => {
+        isUserHasRequest = trackers.some(
+          (item) => item.attributes?.user?.data?.id === id
+        );
+      });
+    });
+
+    return isUserHasRequest || null;
+  };
+
   return (
     <>
       {usersList?.map(({ id, attributes }) => (
@@ -26,27 +48,27 @@ export const UsersList = ({ usersList }: Props) => {
             spacing={1}
             width="300px"
           >
-            <Avatar
-              firstName={attributes?.firstName}
-              lastName={attributes?.lastName}
-              avatar={
-                attributes?.avatar?.data?.attributes?.url
-                  ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
-                  : undefined
-              }
-            />
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <Stack>
-                <Link to={`/profile/${id}`} component={NavLink}>
-                  {`${attributes?.firstName} ${attributes?.lastName?.charAt(
-                    0
-                  )}.`}
-                </Link>
-                <Typography fontSize="10px">
-                  {`${attributes?.role?.data?.attributes?.name} | ${attributes?.position}`}
-                </Typography>
-              </Stack>
+            <Stack position="relative">
+              <Avatar
+                firstName={attributes?.firstName}
+                lastName={attributes?.lastName}
+                avatar={
+                  attributes?.avatar?.data?.attributes?.url
+                    ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
+                    : undefined
+                }
+              />
+              {isUserRequestVacation(`${id}`) && <PulseDot />}
             </Stack>
+            <div>
+              <NavLink to={`/profile/${id}`} state={{ edit: false }}>
+                {`${attributes?.firstName} ${attributes?.lastName?.charAt(0)}.`}
+                {id}
+              </NavLink>
+              <Typography fontSize="10px">
+                {`${attributes?.role?.data?.attributes?.name} | ${attributes?.position}`}
+              </Typography>
+            </div>
           </Stack>
           <UsersListAction
             id={id}
