@@ -68,9 +68,9 @@ export default factories.createCoreController('api::project.project', ({
 
             const users: TUser[] = await strapi.entityService.findMany('plugin::users-permissions.user', {
                 filters: {
-                    ...(usersIds ? {user: {
+                    ...(usersIds ? {
                         id: usersIds
-                    }} : {}),
+                    } : {}),
                 },
             });
             const trackers: TTracker[] = await strapi.entityService.findMany('api::tracker.tracker', {
@@ -141,6 +141,7 @@ export default factories.createCoreController('api::project.project', ({
                     }
                 })
             });
+            setTimeout(()=>{}, 300);
             const pdfBuffer = await pdf;
             ctx.body = pdfBuffer;
         } catch (err) {
