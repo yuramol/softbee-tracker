@@ -24,7 +24,11 @@ export const ShowTracker = ({ tracker, userId }: ShowTrackerProps) => {
     tracker.attributes.live_status === Enum_Tracker_Live_Status.Pause;
   return (
     <>
-      <Paper>
+      <Paper
+        sx={{
+          boxShadow: '0px 0px 23px 1px rgba(120,120,120,0.75)',
+        }}
+      >
         <Stack
           spacing={1}
           direction="row"
