@@ -10,6 +10,7 @@ export const TRACKERS_QUERY = gql`
           duration
           description
           live
+          status
           startLiveDate
           liveDurationMinutes
           live_status
