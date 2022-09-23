@@ -20,7 +20,7 @@ export const TrackerAddNewEntry = ({ currentDay }: Props) => {
 
   const initialValuesForm = {
     date: currentDay,
-    duration: '00:00',
+    duration: 0,
   };
 
   const toggleOpenModal = () => {
@@ -33,7 +33,7 @@ export const TrackerAddNewEntry = ({ currentDay }: Props) => {
       description: values.description,
       project: values.project,
       user: user.id,
-      duration: values.duration,
+      durationMinutes: values.duration,
     });
 
     toggleOpenModal();

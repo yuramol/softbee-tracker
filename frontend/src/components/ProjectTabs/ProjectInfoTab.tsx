@@ -57,9 +57,9 @@ export const ProjectInfoTab = ({ id }: Props) => {
     }
   };
 
-  if (projectData?.trackers?.data[0]?.attributes?.duration) {
+  if (projectData?.trackers?.data[0]?.attributes?.durationMinutes) {
     trakedTime = format(
-      parseTrackerTime(projectData?.trackers?.data[0].attributes?.duration),
+      parseTrackerTime(projectData?.trackers?.data[0].attributes?.durationMinutes),
       'HH:mm'
     );
   }
@@ -129,7 +129,7 @@ export const ProjectInfoTab = ({ id }: Props) => {
             <Typography>{projectData?.client}</Typography>
           </Stack>
         </Stack>
-        {projectData?.trackers?.data[0]?.attributes?.duration && (
+        {projectData?.trackers?.data[0]?.attributes?.durationMinutes && (
           <Stack flexDirection="row" alignItems="center" gap={3}>
             <Icon icon="calendarMonth" />
 

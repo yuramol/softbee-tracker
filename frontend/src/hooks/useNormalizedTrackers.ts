@@ -36,13 +36,13 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
     const trackerByProject: TrackerByProject = {
       name: projectName,
       trackers: [tracker],
-      total: getMinutes(tracker.attributes?.duration),
+      total: tracker.attributes?.durationMinutes ?? 0,
     };
 
     const trackerByDay: TrackerByDay = {
       date,
       trackersByProject: [trackerByProject],
-      total: getMinutes(tracker.attributes?.duration),
+      total: tracker.attributes?.durationMinutes ?? 0,
     };
 
     const findTrackerByDay = trackers.find((tracker) => tracker.date === date);
@@ -53,12 +53,12 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
       );
 
       findTrackerByDay.total =
-        findTrackerByDay.total + getMinutes(tracker.attributes?.duration);
+        findTrackerByDay.total + tracker.attributes?.durationMinutes ?? 0;
 
       if (findTrackerByProject) {
         findTrackerByProject.trackers.push(tracker);
         findTrackerByProject.total =
-          findTrackerByProject.total + getMinutes(tracker.attributes?.duration);
+          findTrackerByProject.total + tracker.attributes?.durationMinutes ?? 0;
       } else {
         findTrackerByDay.trackersByProject.push(trackerByProject);
       }

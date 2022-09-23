@@ -14,12 +14,11 @@ import { format, parseISO } from 'date-fns';
 
 import { TimeContext } from './TrackerDayView';
 import { Icon } from 'legos';
-import TimePicker from 'components/TimePicker';
+import { TimeDuration } from 'components';
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
-import { parseTrackerTime } from 'helpers';
 import { useAuthUser } from 'hooks';
 import { TrackerEntity } from 'types/GraphqlTypes';
 import { useStartTracker } from 'modules/LiveTracker/hooks';
@@ -39,10 +38,10 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleChange = (value: string, submit?: boolean) => {
+  const handleChange = (value: number, submit?: boolean) => {
     if (submit) {
       onUpdateTracker(tracker.id, {
-        duration: parseTrackerTime(value, 'HH:mm'),
+        durationMinutes: value,
       });
     }
   };
@@ -68,10 +67,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
 
   const initialValuesForm: TimeEntryValues = {
     date: parseISO(tracker.attributes?.date ?? ''),
-    duration: format(
-      parseTrackerTime(tracker.attributes?.duration ?? ''),
-      'HH:mm'
-    ),
+    duration: tracker.attributes?.durationMinutes ?? 0,
     description: tracker.attributes?.description ?? '',
     project: tracker.attributes?.project?.data?.id ?? '',
   };
@@ -85,7 +81,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
       date: format(values.date, 'yyyy-MM-dd'),
       description: values.description,
       project: values.project,
-      duration: parseTrackerTime(values.duration, 'HH:mm'),
+      durationMinutes: values.duration,
     });
 
     toggleOpenModal();
@@ -104,13 +100,10 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
             />
           </Grid>
           <Grid item xs={5}>
-            <TimePicker
+            <TimeDuration
               disabled={true}
-              width="110px"
-              value={format(
-                parseTrackerTime(tracker.attributes?.duration ?? ''),
-                'HH:mm'
-              )}
+              sx={{ width: '110px' }}
+              value={tracker.attributes?.durationMinutes ?? 0}
               onChange={handleChange}
             />
           </Grid>
@@ -134,12 +127,9 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                 </>
               ) : (
                 <>
-                  <TimePicker
-                    width="110px"
-                    value={format(
-                      parseTrackerTime(tracker.attributes?.duration ?? ''),
-                      'HH:mm'
-                    )}
+                  <TimeDuration
+                    sx={{ width: '110px' }}
+                    value={tracker.attributes?.durationMinutes ?? 0}
                     onChange={handleChange}
                   />
                   <IconButton

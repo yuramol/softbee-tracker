@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { format, subMinutes } from 'date-fns';
+import { subMinutes } from 'date-fns';
 
 import { TRACKERS_QUERY, UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
 import {
@@ -8,16 +8,13 @@ import {
   TrackerEntity,
   TrackerEntityResponse,
 } from 'types/GraphqlTypes';
-import { parseTrackerTime } from 'helpers';
 
 const useStartTracker = () => {
   const [start] = useMutation<TrackerEntityResponse, MutationUpdateTrackerArgs>(
     UPDATE_TRACKER_BY_ID_MUTATION
   );
   const startTracker = (tracker: TrackerEntity) => {
-    const minutes =
-      +format(parseTrackerTime(tracker.attributes?.duration), 'HH') * 60 +
-      +format(parseTrackerTime(tracker.attributes?.duration), 'mm');
+    const minutes = tracker.attributes?.durationMinutes ?? 0;
 
     return start({
       variables: {

@@ -799,7 +799,7 @@ export type Tracker = {
   createdAt?: Maybe<Scalars['DateTime']>;
   date: Scalars['Date'];
   description: Scalars['String'];
-  duration?: Maybe<Scalars['Time']>;
+  durationMinutes?: Maybe<Scalars['Long']>;
   live?: Maybe<Scalars['Boolean']>;
   liveDurationMinutes?: Maybe<Scalars['Long']>;
   live_status?: Maybe<Enum_Tracker_Live_Status>;
@@ -831,7 +831,7 @@ export type TrackerFiltersInput = {
   createdAt?: InputMaybe<DateTimeFilterInput>;
   date?: InputMaybe<DateFilterInput>;
   description?: InputMaybe<StringFilterInput>;
-  duration?: InputMaybe<TimeFilterInput>;
+  durationMinutes?: InputMaybe<LongFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   live?: InputMaybe<BooleanFilterInput>;
   liveDurationMinutes?: InputMaybe<LongFilterInput>;
@@ -847,7 +847,7 @@ export type TrackerFiltersInput = {
 export type TrackerInput = {
   date?: InputMaybe<Scalars['Date']>;
   description?: InputMaybe<Scalars['String']>;
-  duration?: InputMaybe<Scalars['Time']>;
+  durationMinutes?: InputMaybe<Scalars['Long']>;
   live?: InputMaybe<Scalars['Boolean']>;
   liveDurationMinutes?: InputMaybe<Scalars['Long']>;
   live_status?: InputMaybe<Enum_Tracker_Live_Status>;

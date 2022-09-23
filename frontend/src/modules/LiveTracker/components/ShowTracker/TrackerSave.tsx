@@ -44,10 +44,7 @@ export const TrackerSave = ({ tracker, userId }: TrackerSaveProps) => {
       );
     }
     const seconds = intervalDateSeconds({ endDate: startDate });
-    const { hours, minutes } = secondsToHms(seconds);
-    return `${hours < 10 ? `0${hours}` : hours}:${
-      minutes < 10 ? `0${minutes}` : minutes
-    }`;
+    return Math.ceil(seconds / 60);
   };
 
   const handelSubmitSaveTracker = (values: TimeEntryValues) => {

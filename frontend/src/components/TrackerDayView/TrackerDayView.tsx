@@ -78,10 +78,7 @@ export const TrackerDayView = ({
     const data = {
       ...values,
       date: format(values.date, 'yyyy-MM-dd'),
-      duration: format(
-        parseTrackerTime(values.duration, 'HH:mm'),
-        'HH:mm:ss.SSS'
-      ),
+      duration: values.durationMinutes ?? 0,
     };
 
     createTracker({ variables: { data } }).then(() => {
@@ -96,7 +93,7 @@ export const TrackerDayView = ({
   const onUpdateTracker = (id: Maybe<Scalars['ID']>, values: TrackerInput) => {
     const data = {
       ...values,
-      duration: format(values.duration, 'HH:mm:ss.SSS'),
+      duration: values.durationMinutes ?? 0,
     };
 
     updateTracker({ variables: { id, data } }).then(() => {
