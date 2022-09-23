@@ -38,7 +38,7 @@ export function generateHtmlReports(data: generateHtmlReportsParams) {
       group.trackers.forEach((tracker, index) => {
           totalTime += tracker.hoursMinutes;
           htmlTrackers += `<tr>
-              ${index === 0 ? `<th rowspan="${group.trackers.length + 1}" class="table-header">${format(group.date, 'MM/dd/yyyy')}</th>` : ''}
+              ${index === 0 ? `<th rowspan="${group.trackers.length}" class="table-header">${format(group.date, 'MM/dd/yyyy')}</th>` : ''}
               <td><h6 class="table-description">${tracker.userName}</h6></td>
               <td>
                 <h6 class="table-description">${tracker.projectName}</h6>
