@@ -136,6 +136,12 @@ export enum Enum_Tracker_Live_Status {
   Start = 'start',
 }
 
+export enum Enum_Tracker_Status {
+  New = 'new',
+  Approved = 'approved',
+  Rejected = 'rejected',
+}
+
 export enum Enum_Userspermissionsuser_Position {
   Cdo = 'cdo',
   Cto = 'cto',
@@ -803,6 +809,7 @@ export type Tracker = {
   live?: Maybe<Scalars['Boolean']>;
   liveDurationMinutes?: Maybe<Scalars['Long']>;
   live_status?: Maybe<Enum_Tracker_Live_Status>;
+  status?: Maybe<Enum_Tracker_Status>;
   project?: Maybe<ProjectEntityResponse>;
   startLiveDate?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -836,6 +843,7 @@ export type TrackerFiltersInput = {
   live?: InputMaybe<BooleanFilterInput>;
   liveDurationMinutes?: InputMaybe<LongFilterInput>;
   live_status?: InputMaybe<StringFilterInput>;
+  status?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<TrackerFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<TrackerFiltersInput>>>;
   project?: InputMaybe<ProjectFiltersInput>;
@@ -851,9 +859,9 @@ export type TrackerInput = {
   live?: InputMaybe<Scalars['Boolean']>;
   liveDurationMinutes?: InputMaybe<Scalars['Long']>;
   live_status?: InputMaybe<Enum_Tracker_Live_Status>;
+  status?: InputMaybe<Enum_Tracker_Status>;
   project?: InputMaybe<Scalars['ID']>;
   startLiveDate?: InputMaybe<Scalars['DateTime']>;
-  status?: InputMaybe<Scalars['String']>;
   user?: InputMaybe<Scalars['ID']>;
 };
 
