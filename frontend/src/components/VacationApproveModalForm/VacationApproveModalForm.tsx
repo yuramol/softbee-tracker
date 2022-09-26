@@ -10,10 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
-import { useNormalizedTrackers, useUpdateTracker } from 'hooks';
+import { useAuthUser, useNormalizedTrackers, useUpdateTracker } from 'hooks';
 import { Stack } from '@mui/system';
 import { Button, Icon } from 'legos';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import { Enum_Tracker_Status } from 'types/GraphqlTypes';
 
 const modalStyle = {
   position: 'absolute',
@@ -30,21 +31,21 @@ const modalStyle = {
 const vacationModalHead = ['Date', 'Description', 'Status', ''];
 
 export const VacationApproveModalForm = () => {
+  const { user } = useAuthUser();
   const { trackers } = useNormalizedTrackers({
-    user: { id: { in: ['46'] } },
+    user: { id: { in: [user.id] } },
+    status: { eq: Enum_Tracker_Status.New },
   });
 
   const { updateTracker } = useUpdateTracker();
 
-  // TODO change live_status to status
   const handleApprove = (id: Maybe<string>) => {
-    const data = { live_status: 'start' };
+    const data = { status: Enum_Tracker_Status.Approved };
     updateTracker(id, data);
   };
 
-  // TODO change live_status to status
   const handleReject = (id: Maybe<string>) => {
-    const data = { live_status: 'pause' };
+    const data = { status: Enum_Tracker_Status.Rejected };
     updateTracker(id, data);
   };
 
@@ -81,76 +82,74 @@ export const VacationApproveModalForm = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody style={{ verticalAlign: 'top' }}>
-                    {trackers.map(({ date, trackersByProject }) =>
-                      trackersByProject.map(({ trackers }) =>
-                        trackers.map(({ id, attributes }) => {
-                          return (
-                            <TableRow
-                              key={id}
-                              sx={{
-                                '&:last-child td, &:last-child th': {
-                                  border: 0,
-                                },
-                              }}
-                            >
-                              <TableCell
-                                component="th"
-                                scope="row"
-                                sx={{ width: 125 }}
-                              >
-                                {format(new Date(date), 'd MMM y')}
-                              </TableCell>
-                              <TableCell>
-                                <Typography>
-                                  {attributes?.description}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="center">
-                                <Typography>
-                                  {attributes?.live_status === 'start' ? (
-                                    <Icon color="success" icon="checkCircle" />
-                                  ) : attributes?.live_status === 'pause' ? (
-                                    <Icon color="error" icon="highlightOff" />
-                                  ) : (
-                                    <></>
-                                  )}
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Stack direction="row" gap={1}>
-                                  <Button
-                                    color="success"
-                                    variant="contained"
-                                    title="Approve"
-                                    disabled={
-                                      attributes?.live_status === 'start'
-                                    }
-                                    sx={{
-                                      textTransform: 'none',
-                                    }}
-                                    onClick={() => {
-                                      handleApprove(id);
-                                    }}
-                                  />
-                                  <Button
-                                    color="error"
-                                    variant="contained"
-                                    title="Reject"
-                                    disabled={
-                                      attributes?.live_status === 'pause'
-                                    }
-                                    sx={{
-                                      textTransform: 'none',
-                                    }}
-                                    onClick={() => handleReject(id)}
-                                  />
-                                </Stack>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })
-                      )
-                    )}
+                    {trackers?.map(({ id, attributes }) => {
+                      return (
+                        <TableRow
+                          key={id}
+                          sx={{
+                            '&:last-child td, &:last-child th': {
+                              border: 0,
+                            },
+                          }}
+                        >
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ width: 125 }}
+                          >
+                            {format(new Date(attributes?.date), 'd MMM y')}
+                          </TableCell>
+                          <TableCell>
+                            <Typography>{attributes?.description}</Typography>
+                          </TableCell>
+                          <TableCell align="center">
+                            <Typography>
+                              {attributes?.status ===
+                              Enum_Tracker_Status.Approved ? (
+                                <Icon color="success" icon="checkCircle" />
+                              ) : attributes?.status ===
+                                Enum_Tracker_Status.Rejected ? (
+                                <Icon color="error" icon="highlightOff" />
+                              ) : (
+                                <></>
+                              )}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Stack direction="row" gap={1}>
+                              <Button
+                                color="success"
+                                variant="contained"
+                                title="Approve"
+                                disabled={
+                                  attributes?.status ===
+                                  Enum_Tracker_Status.Approved
+                                }
+                                sx={{
+                                  textTransform: 'none',
+                                }}
+                                onClick={() => {
+                                  handleApprove(id);
+                                }}
+                              />
+                              <Button
+                                color="error"
+                                variant="contained"
+                                title="Reject"
+                                disabled={
+                                  attributes?.status ===
+                                  Enum_Tracker_Status.Rejected
+                                }
+                                sx={{
+                                  textTransform: 'none',
+                                }}
+                                onClick={() => handleReject(id)}
+                              />
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>

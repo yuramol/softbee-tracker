@@ -1,3 +1,4 @@
+import { Enum_Tracker_Status } from 'types/GraphqlTypes';
 import { TIME_ENTRY_FIELDS } from './TrackerEntryForm';
 
 export type TimeEntryValues = {
@@ -5,7 +6,7 @@ export type TimeEntryValues = {
   [TIME_ENTRY_FIELDS.DURATION]: string;
   [TIME_ENTRY_FIELDS.DESCRIPTION]?: string;
   [TIME_ENTRY_FIELDS.PROJECT]?: string;
-  [TIME_ENTRY_FIELDS.STATUS]?: string;
+  [TIME_ENTRY_FIELDS.STATUS]?: Enum_Tracker_Status;
   [TIME_ENTRY_FIELDS.USER]?: string;
 };
 

@@ -26,6 +26,7 @@ import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 import { GraphQLError } from 'graphql';
 import { useCreateTracker } from 'hooks/useCreateTracker';
 import { getBreakIcon } from 'components/BreaksDay/getBreakIcon';
+import { Enum_Tracker_Status } from 'types/GraphqlTypes';
 
 const modalStyle = {
   position: 'absolute',
@@ -96,7 +97,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     [BreaksRequestFields.DATE]: new Date(),
     [BreaksRequestFields.DURATION]: '05:00:00.000',
     [BreaksRequestFields.DESCRIPTION]: '',
-    // [BreaksRequestFields.STATUS]: 'New',
+    [BreaksRequestFields.STATUS]: Enum_Tracker_Status.New,
   };
 
   const validationSchema = yup.object({

@@ -7,14 +7,14 @@ import { BreaksRequest } from 'components/BreaksRequest';
 
 export const VacationWidget = () => {
   const { user } = useAuthUser();
-  const { trackers } = useNormalizedTrackers({
+  const { normalizedTrackers } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
   });
 
   let vacationDays = 0;
   let sicknessDays = 0;
 
-  trackers?.forEach((el) => {
+  normalizedTrackers?.forEach((el) => {
     if (el?.trackersByProject[0].name?.toLowerCase() === Breaks.Vacation) {
       vacationDays += 1;
     }
