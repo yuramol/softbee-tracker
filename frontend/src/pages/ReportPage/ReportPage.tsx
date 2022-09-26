@@ -29,14 +29,14 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
         : { eq: selectedDates[0] },
   };
 
-  const { trackers } = useNormalizedTrackers(reportFilter);
+  const { normalizedTrackers } = useNormalizedTrackers(reportFilter);
 
   const reportTotalTime = useMemo(() => {
     let totalTime = 0;
-    trackers.forEach(({ total }) => (totalTime += total));
+    normalizedTrackers.forEach(({ total }) => (totalTime += total));
 
     return getHours(totalTime);
-  }, [trackers]);
+  }, [normalizedTrackers]);
 
   const reportSidebarProps = {
     checked,
@@ -69,7 +69,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
         </Stack>
       </Stack>
       <Stack mt={6}>
-        <ReportTable trackers={trackers} isShowVacation={checked} />
+        <ReportTable trackers={normalizedTrackers} isShowVacation={checked} />
       </Stack>
     </MainWrapper>
   );

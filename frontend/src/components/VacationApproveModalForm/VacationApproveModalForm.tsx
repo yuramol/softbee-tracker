@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
-import { useNormalizedTrackers, useUpdateTracker } from 'hooks';
+import { useAuthUser, useNormalizedTrackers, useUpdateTracker } from 'hooks';
 import { Stack } from '@mui/system';
 import { Button, Icon } from 'legos';
 import { Maybe } from 'graphql/jsutils/Maybe';
@@ -31,11 +31,11 @@ const modalStyle = {
 const vacationModalHead = ['Date', 'Description', 'Status', ''];
 
 export const VacationApproveModalForm = () => {
+  const { user } = useAuthUser();
   const { trackers } = useNormalizedTrackers({
-    user: { id: { in: ['38'] } },
+    user: { id: { in: [user.id] } },
+    status: { eq: Enum_Tracker_Status.New },
   });
-
-  const newVacations = trackers.filter((item) => item.status === 'New');
 
   const { updateTracker } = useUpdateTracker();
 
@@ -82,7 +82,7 @@ export const VacationApproveModalForm = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody style={{ verticalAlign: 'top' }}>
-                    {newVacations.map(({ id, attributes }) => {
+                    {trackers?.map(({ id, attributes }) => {
                       return (
                         <TableRow
                           key={id}
@@ -97,7 +97,7 @@ export const VacationApproveModalForm = () => {
                             scope="row"
                             sx={{ width: 125 }}
                           >
-                            {format(new Date(date), 'd MMM y')}
+                            {format(new Date(attributes?.date), 'd MMM y')}
                           </TableCell>
                           <TableCell>
                             <Typography>{attributes?.description}</Typography>

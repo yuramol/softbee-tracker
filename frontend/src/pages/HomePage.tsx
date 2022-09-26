@@ -23,7 +23,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
 
-  const { trackers, refetch } = useNormalizedTrackers({
+  const { normalizedTrackers, refetch } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
     date: { between: [startMonth, endMonth] },
   });
@@ -37,7 +37,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
           <TrackerCalendar
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
-            trackers={trackers}
+            trackers={normalizedTrackers}
             setStartMonth={setStartMonth}
             setEndMonth={setEndMonth}
           />
@@ -47,7 +47,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
       <Typography variant="h1">{title}</Typography>
       <TrackerDayView
         selectedDay={selectedDay}
-        trackers={trackers}
+        trackers={normalizedTrackers}
         refetchTrackers={refetch}
       />
     </MainWrapper>
