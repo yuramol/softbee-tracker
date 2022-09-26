@@ -32,7 +32,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
       id: selectedEmployees.length !== 0 ? { in: selectedEmployees } : {},
     },
     project: {
-      id: { in: ['2'] },
+      id: { in: [projectId] },
     },
     date:
       selectedDates.length > 1
@@ -46,7 +46,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
     project: projectId,
   };
 
-  const { trackers } = useNormalizedTrackers(reportFilter);
+  const { normalizedTrackers } = useNormalizedTrackers(reportFilter);
 
   const toggleOpenModal = () => {
     setIsOpenModal(!isOpenModal);
@@ -112,7 +112,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
         </Tooltip>
       </Grid>
       <Grid item xs={12}>
-        <ReportTable trackers={trackers} />
+        <ReportTable trackers={normalizedTrackers} />
       </Grid>
     </Grid>
   );

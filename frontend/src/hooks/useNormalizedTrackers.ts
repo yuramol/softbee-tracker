@@ -27,7 +27,7 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
     variables: { filters },
   });
 
-  const trackers: TrackerByDay[] = [];
+  const normalizedTrackers: TrackerByDay[] = [];
 
   data?.trackers.data.forEach((tracker) => {
     const date = tracker.attributes?.date;
@@ -45,7 +45,9 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
       total: getMinutes(tracker.attributes?.duration),
     };
 
-    const findTrackerByDay = trackers.find((tracker) => tracker.date === date);
+    const findTrackerByDay = normalizedTrackers.find(
+      (tracker) => tracker.date === date
+    );
 
     if (findTrackerByDay) {
       const findTrackerByProject = findTrackerByDay.trackersByProject.find(
@@ -63,9 +65,14 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
         findTrackerByDay.trackersByProject.push(trackerByProject);
       }
     } else {
-      trackers.push(trackerByDay);
+      normalizedTrackers.push(trackerByDay);
     }
   });
 
-  return { trackers, loading, refetch };
+  return {
+    trackers: data?.trackers.data,
+    normalizedTrackers,
+    loading,
+    refetch,
+  };
 };
