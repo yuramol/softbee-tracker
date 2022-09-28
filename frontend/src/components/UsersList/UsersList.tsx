@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import {
-  Enum_Tracker_Live_Status,
+  Enum_Tracker_Status,
   UsersPermissionsUserEntity,
 } from 'types/GraphqlTypes';
 import { Avatar, NavLink, PulseDot } from 'legos';
@@ -15,13 +15,13 @@ type Props = {
 };
 
 export const UsersList = ({ usersList }: Props) => {
-  const { trackers } = useNormalizedTrackers({
-    live_status: { eq: Enum_Tracker_Live_Status.Finish },
+  const { normalizedTrackers } = useNormalizedTrackers({
+    status: { eq: Enum_Tracker_Status.New },
   });
 
   const isUserRequestVacation = (id: string | undefined) => {
     let isUserHasRequest;
-    trackers.forEach(({ trackersByProject }) => {
+    normalizedTrackers.forEach(({ trackersByProject }) => {
       trackersByProject.forEach(({ trackers }) => {
         isUserHasRequest = trackers.some(
           (item) => item.attributes?.user?.data?.id === id
