@@ -9,7 +9,7 @@ import { getFormattedDate, getHours } from 'helpers';
 import { ReportPageSidebar } from './ReportPageSidebar';
 
 const ReportPage: React.FC<PageProps> = ({ title }) => {
-  const [selectedDates, setSelectedDates] = useState<string[]>([
+  const [selectedDates, setSelectedDates] = useState([
     getFormattedDate(new Date()),
   ]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
