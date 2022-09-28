@@ -59,7 +59,9 @@ export const ProjectInfoTab = ({ id }: Props) => {
 
   if (projectData?.trackers?.data[0]?.attributes?.durationMinutes) {
     trakedTime = format(
-      parseTrackerTime(projectData?.trackers?.data[0].attributes?.durationMinutes),
+      parseTrackerTime(
+        projectData?.trackers?.data[0].attributes?.durationMinutes
+      ),
       'HH:mm'
     );
   }

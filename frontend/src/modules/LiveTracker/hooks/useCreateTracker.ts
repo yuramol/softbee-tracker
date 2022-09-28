@@ -26,7 +26,6 @@ const useCreateTracker = () => {
           live: true,
           live_status: Enum_Tracker_Live_Status.Start,
           startLiveDate: formatISO(new Date()),
-          durationMinutes: 0,
         },
       },
       refetchQueries: [TRACKERS_QUERY],
