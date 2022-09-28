@@ -25,4 +25,4 @@ export { BreaksRequest } from './BreaksRequest';
 export { VacationWidget } from './VacationWidget';
 export { BreaksDay } from 'components/BreaksDay/BreaksDay';
 export { VacationApproveModalForm } from './VacationApproveModalForm';
-export { TimeDuration } from './TimeDuration';
+export { TimePicker } from './TimePicker';

@@ -9,11 +9,7 @@ import { TrackerEntryModalForm } from 'components';
 import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 import { useSaveTracker } from '../../hooks';
-import {
-  intervalDateSeconds,
-  secondsToHms,
-  IconButtonTracker,
-} from '../../helpers';
+import { intervalDateSeconds, IconButtonTracker } from '../../helpers';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 
 type TrackerSaveProps = {

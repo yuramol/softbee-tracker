@@ -14,7 +14,7 @@ import { format, parseISO } from 'date-fns';
 
 import { TimeContext } from './TrackerDayView';
 import { Icon } from 'legos';
-import { TimeDuration } from 'components';
+import { TimePicker } from 'components';
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
@@ -100,7 +100,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
             />
           </Grid>
           <Grid item xs={5}>
-            <TimeDuration
+            <TimePicker
               disabled={true}
               sx={{ width: '110px' }}
               value={tracker.attributes?.durationMinutes ?? 0}
@@ -127,7 +127,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                 </>
               ) : (
                 <>
-                  <TimeDuration
+                  <TimePicker
                     sx={{ width: '110px' }}
                     value={tracker.attributes?.durationMinutes ?? 0}
                     onChange={handleChange}

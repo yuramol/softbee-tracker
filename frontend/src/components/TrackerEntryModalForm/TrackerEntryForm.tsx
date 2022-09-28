@@ -5,7 +5,7 @@ import { startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
-import { TimeDuration } from 'components';
+import { TimePicker } from 'components';
 import { useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
@@ -100,7 +100,7 @@ export const TrackerEntryForm = ({
                   disableFuture
                   views={['day']}
                 />
-                <TimeDuration
+                <TimePicker
                   value={values[TIME_ENTRY_FIELDS.DURATION]}
                   onChange={(value) => {
                     setFieldValue(`${TIME_ENTRY_FIELDS.DURATION}`, value);
