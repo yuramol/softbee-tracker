@@ -28,7 +28,7 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
   const { user, logout } = useAuthUser();
   const { userData } = useUser(user.id);
   const pathAvatar = userData?.avatar?.data?.attributes?.url
-    ? `https://dev.strapi.track.softbee.io${userData?.avatar?.data?.attributes?.url}`
+    ? `${process.env.REACT_APP_URI}${userData?.avatar?.data?.attributes?.url}`
     : '';
 
   return (
