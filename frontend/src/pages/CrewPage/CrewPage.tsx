@@ -9,6 +9,9 @@ const CrewPage = () => {
   const { users } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
 
+  const onCreate = () => {
+    setIsCreateUser(!isCreateUser);
+  };
   return (
     <MainWrapper
       sidebar={
@@ -20,7 +23,7 @@ const CrewPage = () => {
               variant="contained"
               title="Add new user"
               size="large"
-              onClick={() => setIsCreateUser(!isCreateUser)}
+              onClick={onCreate}
             />
           )}
 
@@ -29,7 +32,7 @@ const CrewPage = () => {
       }
     >
       {isCreateUser ? (
-        <NewUser setIsCreateUser={setIsCreateUser} />
+        <NewUser onCreate={onCreate} />
       ) : (
         <>
           <Typography variant="h1">My crew</Typography>
