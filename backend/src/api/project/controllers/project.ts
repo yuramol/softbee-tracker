@@ -11,7 +11,6 @@ import {
     format,
     isEqual,
     parse,
-    differenceInMinutes,
     startOfDay,
     endOfDay,
     parseISO
@@ -31,7 +30,7 @@ type TTracker = {
     id: number,
     description: string,
     date: string,
-    duration: string,
+    durationMinutes: number,
     createdAt: string,
     project: {
         id: number,
@@ -90,7 +89,7 @@ export default factories.createCoreController('api::project.project', ({
             });
             const trackersGroupDay = trackers.reduce((acc: TTrackerGroup[], tracker) => {
                 const trackerDate = parse(tracker.date, 'yyyy-MM-dd', new Date());
-                const trackerDuration = parse(tracker.duration, 'HH:mm:ss', new Date());
+                const trackerDuration = tracker.durationMinutes;
                 const findTracker = acc.find(trackerGroupDay => isEqual(trackerGroupDay.date, trackerDate));
                 if (findTracker) {
                     findTracker.trackers.push({
@@ -98,7 +97,7 @@ export default factories.createCoreController('api::project.project', ({
                         createdAt: parseISO(tracker.createdAt),
                         projectName: tracker.project.name,
                         userName: `${tracker.user.firstName ?? ''} ${tracker.user.lastName ?? ''}`,
-                        hoursMinutes: differenceInMinutes(trackerDuration, startOfDay(new Date())) ?? 0,
+                        hoursMinutes: trackerDuration ?? 0,
                     })
                 } else {
                     acc.push({
@@ -108,7 +107,7 @@ export default factories.createCoreController('api::project.project', ({
                             createdAt: parseISO(tracker.createdAt),
                             projectName: tracker.project.name,
                             userName: `${tracker.user.firstName ?? ''} ${tracker.user.lastName ?? ''}`,
-                            hoursMinutes: differenceInMinutes(trackerDuration, startOfDay(new Date())) ?? 0,
+                            hoursMinutes: trackerDuration ?? 0,
                         }]
                     })
                 }
