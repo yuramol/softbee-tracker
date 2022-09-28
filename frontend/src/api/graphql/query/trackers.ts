@@ -7,7 +7,7 @@ export const TRACKERS_QUERY = gql`
         id
         attributes {
           date
-          duration
+          durationMinutes
           description
           live
           status

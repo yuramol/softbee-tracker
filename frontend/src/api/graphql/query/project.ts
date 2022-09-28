@@ -43,7 +43,7 @@ export const PROJECT_QUERY = gql`
           trackers {
             data {
               attributes {
-                duration
+                durationMinutes
               }
             }
           }

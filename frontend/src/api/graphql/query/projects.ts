@@ -36,7 +36,7 @@ export const PROJECTS_QUERY = gql`
             data {
               id
               attributes {
-                duration
+                durationMinutes
               }
             }
           }
