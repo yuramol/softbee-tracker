@@ -25,7 +25,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     setSearchManagers,
     setSearchStatus,
   };
-  const onCreate = () => {
+  const onToggleForm = () => {
     setIsCreateProject(!isCreateProject);
   };
   const filteredProjects = projects
@@ -60,7 +60,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
               variant="contained"
               title="Add new project"
               size="large"
-              onClick={() => onCreate()}
+              onClick={onToggleForm}
             />
           )}
           <SideBars />
@@ -68,7 +68,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
       }
     >
       {isCreateProject ? (
-        <AddNewProject onCreate={onCreate} />
+        <AddNewProject onToggleForm={onToggleForm} />
       ) : (
         <>
           <Typography variant="h1">{title}</Typography>
