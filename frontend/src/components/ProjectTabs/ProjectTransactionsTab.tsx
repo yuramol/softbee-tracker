@@ -5,11 +5,6 @@ import { ReportTable } from '..';
 import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
 import { MultipleSelect, RangeCalendar } from 'legos';
-import { useSnackbar } from 'notistack';
-import { useCreateTracker } from 'hooks/useCreateTracker';
-import { GraphQLError } from 'graphql';
-import { format } from 'date-fns';
-import { TransactionEntryValues } from 'components/TransactionEntryModalForm';
 import { AddNewTransaction } from 'components/AddNewTransaction';
 
 type Props = {
@@ -17,9 +12,6 @@ type Props = {
 };
 
 export const ProjectTransactionsTab = ({ projectId }: Props) => {
-  const { enqueueSnackbar } = useSnackbar();
-  const { createTracker } = useCreateTracker();
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedDates, setSelectedDates] = useState([
     getFormattedDate(new Date()),
   ]);
@@ -41,10 +33,6 @@ export const ProjectTransactionsTab = ({ projectId }: Props) => {
   };
 
   const { normalizedTrackers } = useNormalizedTrackers(reportFilter);
-
-  const toggleOpenModal = () => {
-    setIsOpenModal(!isOpenModal);
-  };
 
   return (
     <Grid
