@@ -1,5 +1,4 @@
-import { format, hoursToMinutes, minutesToHours } from 'date-fns';
-import { parseTrackerTime } from '../helpers';
+import { minutesToHours } from 'date-fns';
 import { TrackerEntity } from '../types/GraphqlTypes';
 
 export const getTotalTime = (times: TrackerEntity[] | undefined) => {
@@ -7,10 +6,7 @@ export const getTotalTime = (times: TrackerEntity[] | undefined) => {
 
   if (times) {
     times.forEach(({ attributes }) => {
-      const trackerTime = parseTrackerTime(attributes?.duration);
-
-      currentDuration +=
-        hoursToMinutes(+format(trackerTime, 'HH')) + +format(trackerTime, 'mm');
+      currentDuration += attributes?.durationMinutes ?? 0;
     });
   }
 

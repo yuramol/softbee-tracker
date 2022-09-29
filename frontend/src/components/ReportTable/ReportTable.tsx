@@ -78,12 +78,7 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                           </>
                         )}
                       </TableCell>
-                      <TableCell>
-                        {format(
-                          parseTrackerTime(attributes?.duration),
-                          'HH:mm'
-                        )}
-                      </TableCell>
+                      <TableCell>{attributes?.durationMinutes ?? 0}</TableCell>
                     </TableRow>
                   );
                 })

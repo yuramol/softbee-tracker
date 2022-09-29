@@ -5,7 +5,7 @@ import { startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
-import TimePicker from 'components/TimePicker';
+import { TimePicker } from 'components';
 import { useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
@@ -71,7 +71,7 @@ export const TrackerEntryForm = ({
   const initialValues: TimeEntryValues = {
     [TIME_ENTRY_FIELDS.USER]: initialValuesForm?.user ?? userId,
     [TIME_ENTRY_FIELDS.DATE]: initialValuesForm?.date ?? new Date(),
-    [TIME_ENTRY_FIELDS.DURATION]: initialValuesForm?.duration ?? '00:00',
+    [TIME_ENTRY_FIELDS.DURATION]: initialValuesForm?.duration ?? 0,
     [TIME_ENTRY_FIELDS.DESCRIPTION]: initialValuesForm?.description ?? '',
     [TIME_ENTRY_FIELDS.PROJECT]: initialValuesForm?.project ?? '',
   };

@@ -7,7 +7,7 @@ export const UPDATE_TRACKER_BY_ID_MUTATION = gql`
         id
         attributes {
           date
-          duration
+          durationMinutes
           live
           startLiveDate
           liveDurationMinutes

@@ -9,11 +9,7 @@ import { TrackerEntryModalForm } from 'components';
 import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 import { useSaveTracker } from '../../hooks';
-import {
-  intervalDateSeconds,
-  secondsToHms,
-  IconButtonTracker,
-} from '../../helpers';
+import { intervalDateSeconds, IconButtonTracker } from '../../helpers';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 
 type TrackerSaveProps = {
@@ -44,10 +40,7 @@ export const TrackerSave = ({ tracker, userId }: TrackerSaveProps) => {
       );
     }
     const seconds = intervalDateSeconds({ endDate: startDate });
-    const { hours, minutes } = secondsToHms(seconds);
-    return `${hours < 10 ? `0${hours}` : hours}:${
-      minutes < 10 ? `0${minutes}` : minutes
-    }`;
+    return Math.ceil(seconds / 60);
   };
 
   const handelSubmitSaveTracker = (values: TimeEntryValues) => {

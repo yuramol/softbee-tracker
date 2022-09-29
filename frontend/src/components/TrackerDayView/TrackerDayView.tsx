@@ -32,7 +32,6 @@ import {
   TrackerEntityResponseCollection,
   TrackerInput,
 } from 'types/GraphqlTypes';
-import { parseTrackerTime } from 'helpers';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 
 export type TrackerContext = {
@@ -78,10 +77,6 @@ export const TrackerDayView = ({
     const data = {
       ...values,
       date: format(values.date, 'yyyy-MM-dd'),
-      duration: format(
-        parseTrackerTime(values.duration, 'HH:mm'),
-        'HH:mm:ss.SSS'
-      ),
     };
 
     createTracker({ variables: { data } }).then(() => {
@@ -96,7 +91,6 @@ export const TrackerDayView = ({
   const onUpdateTracker = (id: Maybe<Scalars['ID']>, values: TrackerInput) => {
     const data = {
       ...values,
-      duration: format(values.duration, 'HH:mm:ss.SSS'),
     };
 
     updateTracker({ variables: { id, data } }).then(() => {

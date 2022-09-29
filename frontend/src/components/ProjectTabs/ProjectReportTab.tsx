@@ -42,7 +42,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
 
   const initialValuesForm: TimeEntryValues = {
     date: new Date(),
-    duration: '00:00',
+    duration: 0,
     project: projectId,
   };
 
@@ -55,10 +55,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
   const handelSubmit = (values: TimeEntryValues) => {
     const data = {
       ...values,
-      duration: format(
-        parseTrackerTime(values.duration, 'HH:mm'),
-        'HH:mm:ss.SSS'
-      ),
+      duration: values.duration,
       date: format(values.date, 'yyyy-MM-dd'),
     };
     createTracker(data)

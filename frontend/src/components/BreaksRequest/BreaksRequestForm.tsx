@@ -95,7 +95,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     [BreaksRequestFields.USER]: user.id,
     [BreaksRequestFields.PROJECT]: '',
     [BreaksRequestFields.DATE]: new Date(),
-    [BreaksRequestFields.DURATION]: '05:00:00.000',
+    [BreaksRequestFields.DURATION]: 0,
     [BreaksRequestFields.DESCRIPTION]: '',
     [BreaksRequestFields.STATUS]: Enum_Tracker_Status.New,
   };

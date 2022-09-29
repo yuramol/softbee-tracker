@@ -11,6 +11,7 @@ import { FormikValues, useFormikContext } from 'formik';
 import { CalendarPickerFormik } from 'legos';
 import { CreateProjectFields, ProjectType } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
+import { formikPropsErrors } from 'helpers';
 
 export const projectTypes: ProjectType[] = [
   {
@@ -28,7 +29,7 @@ export const projectTypes: ProjectType[] = [
 ];
 
 export const NewProjectStep = () => {
-  const { values, touched, errors, handleChange, setFieldValue } =
+  const { values, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
 
   return (
@@ -58,28 +59,14 @@ export const NewProjectStep = () => {
           name={CreateProjectFields.Name}
           value={values[CreateProjectFields.Name]}
           multiline
-          error={
-            touched[CreateProjectFields.Name] &&
-            !!errors[CreateProjectFields.Name]
-          }
-          helperText={
-            touched[CreateProjectFields.Name] &&
-            (errors[CreateProjectFields.Name] as string)
-          }
+          {...formikPropsErrors(CreateProjectFields.Name)}
           onChange={handleChange}
         />
         <TextField
           label="Client"
           name={CreateProjectFields.Client}
           value={values[CreateProjectFields.Client]}
-          error={
-            touched[CreateProjectFields.Client] &&
-            !!errors[CreateProjectFields.Client]
-          }
-          helperText={
-            touched[CreateProjectFields.Client] &&
-            (errors[CreateProjectFields.Client] as string)
-          }
+          {...formikPropsErrors(CreateProjectFields.Client)}
           onChange={handleChange}
         />
         <Stack direction="row" spacing={2}>
