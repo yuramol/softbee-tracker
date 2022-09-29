@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Icon } from 'legos';
 import { useMutation } from '@apollo/client';
 import { DELETE_USERS_PERMISSIONS_USER } from 'api';
@@ -15,6 +15,7 @@ import {
   ClickAwayListener,
   Button,
 } from '@mui/material';
+import { Box } from '@mui/system';
 
 type UsersListActionProps = {
   id?: Maybe<Scalars['ID']>;
@@ -27,7 +28,8 @@ export const UsersListAction = ({
   firstName,
   lastName,
 }: UsersListActionProps) => {
-  const { isManager } = useAuthUser();
+  const navigate = useNavigate();
+  const { isManager, user } = useAuthUser();
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const notification = useNotification();
@@ -45,6 +47,14 @@ export const UsersListAction = ({
 
   const deleteUser = () => {
     try {
+      if (user.id === id) {
+        handleClickAway();
+        return notification({
+          message: `It’s not possible to delete your account`,
+          variant: 'warning',
+        });
+      }
+
       deleteUsersPermissionsUser({ variables: { id } });
       handleClickAway();
       notification({
@@ -56,17 +66,19 @@ export const UsersListAction = ({
     }
   };
 
+  const goToProfile = () => {
+    navigate(`/profile/${id}`, { state: { edit: isManager } });
+  };
+
   return (
     <Fragment key={id}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         {isManager ? (
           <Stack direction="row">
             <Tooltip title="Edit">
-              <Link to={`/profile/${id}`}>
-                <IconButton>
-                  <Icon icon="editOutlined" />
-                </IconButton>
-              </Link>
+              <IconButton onClick={goToProfile}>
+                <Icon icon="editOutlined" />
+              </IconButton>
             </Tooltip>
             <Tooltip title="Delete this user">
               <IconButton
@@ -79,11 +91,9 @@ export const UsersListAction = ({
         ) : (
           <Stack direction="row">
             <Tooltip title="Watch profile">
-              <Link to={`/profile/${id}`}>
-                <IconButton>
-                  <Icon icon="watch" />
-                </IconButton>
-              </Link>
+              <IconButton onClick={goToProfile}>
+                <Icon icon="watch" />
+              </IconButton>
             </Tooltip>
           </Stack>
         )}
@@ -91,7 +101,7 @@ export const UsersListAction = ({
       {isPopperOpen && (
         <ClickAwayListener onClickAway={handleClickAway}>
           <Popper open={isPopperOpen} anchorEl={anchorEl}>
-            <Stack
+            <Box
               bgcolor="background.paper"
               border="1px solid"
               borderRadius={1}
@@ -119,7 +129,7 @@ export const UsersListAction = ({
                   Yes
                 </Button>
               </Stack>
-            </Stack>
+            </Box>
           </Popper>
         </ClickAwayListener>
       )}

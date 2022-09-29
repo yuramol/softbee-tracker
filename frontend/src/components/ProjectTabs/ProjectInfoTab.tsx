@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useProject } from '../../hooks/useProject';
 import { Enum_Project_Type, Scalars } from 'types/GraphqlTypes';
-import { Link, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { Avatar, Icon, NavLink } from 'legos';
 import { parseTrackerTime } from 'helpers';
 import { format } from 'date-fns';
@@ -88,12 +88,12 @@ export const ProjectInfoTab = ({ id }: Props) => {
             <Typography fontSize="15px" color="GrayText">
               Project manager
             </Typography>
-            <Link
+            <NavLink
               to={`/profile/${projectData?.managers?.data[0].id}`}
-              component={NavLink}
+              state={{ edit: false }}
             >
               {`${projectData?.managers?.data[0].attributes?.firstName} ${projectData?.managers?.data[0].attributes?.lastName}`}
-            </Link>
+            </NavLink>
           </Stack>
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={3}>
