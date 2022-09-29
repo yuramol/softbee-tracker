@@ -10,7 +10,6 @@ import { useCreateTracker } from 'hooks/useCreateTracker';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
 import { GraphQLError } from 'graphql';
 import { format } from 'date-fns';
-import { parseTrackerTime } from 'helpers';
 
 type Props = {
   projectId: string;
