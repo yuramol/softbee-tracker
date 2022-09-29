@@ -75,8 +75,8 @@ const LoginPage: React.FC<PageProps> = ({ title }) => {
     <MainWrapper>
       <Stack direction="row" alignItems="center">
         <Stack
-          flexBasis="50%"
-          height={1000}
+          flexBasis="60%"
+          height={'85vh'}
           sx={{
             backgroundImage: 'url(https://source.unsplash.com/random)',
             backgroundRepeat: 'no-repeat',

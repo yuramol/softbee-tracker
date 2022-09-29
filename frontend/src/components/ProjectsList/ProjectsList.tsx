@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { IconButton, Link, Stack, Typography } from '@mui/material';
 
 import { Avatar, Icon, NavLink } from 'legos';
@@ -36,7 +35,7 @@ export const ProjectsList = ({ projectsList }: ProjectsListProps) => {
             <Stack>{getProjectIcon(project.attributes?.type)}</Stack>
 
             <Stack>
-              <Link component={NavLink} to="*">
+              <Link to={`/project/${project.id}`} component={NavLink}>
                 {project.attributes?.name}
               </Link>
               <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.start}`}</Typography>
@@ -54,16 +53,16 @@ export const ProjectsList = ({ projectsList }: ProjectsListProps) => {
               >
                 <Avatar
                   avatar={
-                    attributes?.avatar.data?.attributes?.url
+                    attributes?.avatar?.data?.attributes?.url
                       ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
                       : undefined
                   }
                   firstName={attributes?.firstName}
                   lastName={attributes?.lastName}
                 />
-                <Link to={`/profile/view/${id}`} component={NavLink}>
+                <NavLink to={`/profile/${id}`} state={{ edit: false }}>
                   {`${attributes?.firstName} ${attributes?.lastName}`}
-                </Link>
+                </NavLink>
               </Stack>
             ))}
           </Stack>

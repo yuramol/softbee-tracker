@@ -22,7 +22,15 @@ export type IconsNames =
   | 'arrowDropDown'
   | 'upWork'
   | 'watch'
-  | 'download';
+  | 'download'
+  | 'clear'
+  | 'sailing'
+  | 'medicalServices'
+  | 'info'
+  | 'houseboat'
+  | 'medication'
+  | 'checkCircle'
+  | 'highlightOff';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;

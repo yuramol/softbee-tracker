@@ -8,3 +8,9 @@ export enum Role {
   Employee = 'employee',
   Manager = 'manager',
 }
+
+export enum Breaks {
+  Sickness = 'sickness',
+  Vacation = 'vacation',
+  Unpaid = 'unpaid',
+}

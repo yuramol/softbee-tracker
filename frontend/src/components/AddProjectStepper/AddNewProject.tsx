@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { FormikContext, useFormik } from 'formik';
-import { addYears, format } from 'date-fns';
+import { addYears } from 'date-fns';
 import * as yup from 'yup';
 
 import { useNotification } from 'hooks';
@@ -17,6 +17,7 @@ import { CREATE_PROJECT_MUTATION } from 'api';
 import { Loader, NewProjectStep, SummaryStep, TeamStep } from 'components';
 import { CreateProjectFields, CreateProjectStep, ProjectProps } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
+import { getFormattedDate } from 'helpers';
 
 const steps: CreateProjectStep[] = [
   {
@@ -33,9 +34,7 @@ const steps: CreateProjectStep[] = [
   },
 ];
 
-export const AddNewProject: React.FC<ProjectProps> = ({
-  setIsCreateProject,
-}) => {
+export const AddNewProject: React.FC<ProjectProps> = ({ onToggleForm }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [createProject] = useMutation(CREATE_PROJECT_MUTATION);
   const notification = useNotification();
@@ -76,7 +75,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({
     [CreateProjectFields.Managers]: yup
       .string()
       .required('Should not be empty'),
-    [CreateProjectFields.Users]: yup.array().min(1, 'Minimum of 1 employee'),
+    [CreateProjectFields.Users]: yup.array().min(1, 'Minimum one employee'),
   });
 
   const formik = useFormik({
@@ -85,13 +84,11 @@ export const AddNewProject: React.FC<ProjectProps> = ({
     onSubmit: (values) => {
       const data = {
         ...values,
-        [CreateProjectFields.Start]: format(
-          values[CreateProjectFields.Start],
-          'yyyy-MM-dd'
+        [CreateProjectFields.Start]: getFormattedDate(
+          values[CreateProjectFields.Start]
         ),
-        [CreateProjectFields.End]: format(
-          values[CreateProjectFields.End],
-          'yyyy-MM-dd'
+        [CreateProjectFields.End]: getFormattedDate(
+          values[CreateProjectFields.End]
         ),
       };
 
@@ -103,7 +100,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({
             }, was successfully created`,
             variant: 'success',
           });
-          setIsCreateProject(false);
+          onToggleForm();
         })
         .catch(() => {
           notification({
@@ -179,7 +176,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({
               ) : (
                 <Button
                   variant="outlined"
-                  onClick={() => setIsCreateProject(false)}
+                  onClick={onToggleForm}
                   sx={{ width: 150 }}
                 >
                   Cancel

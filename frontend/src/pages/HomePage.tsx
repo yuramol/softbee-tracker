@@ -6,6 +6,7 @@ import {
   TimeInspector,
   TrackerCalendar,
   TrackerDayView,
+  VacationWidget,
 } from '../components';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
@@ -13,7 +14,7 @@ import { PageProps } from './types';
 
 const HomePage: React.FC<PageProps> = ({ title }) => {
   const { user } = useAuthUser();
-  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
+  const [selectedDay, setSelectedDay] = useState(new Date());
 
   const [startMonth, setStartMonth] = useState(
     format(startOfMonth(new Date()), 'YYY-MM-dd')
@@ -22,21 +23,21 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
 
-  const { trackers, refetch } = useNormalizedTrackers({
+  const { normalizedTrackers, refetch } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
     date: { between: [startMonth, endMonth] },
-    live: { eq: false },
   });
 
   return (
     <MainWrapper
       sidebar={
         <>
+          <VacationWidget />
           <TimeInspector />
           <TrackerCalendar
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
-            trackers={trackers}
+            trackers={normalizedTrackers}
             setStartMonth={setStartMonth}
             setEndMonth={setEndMonth}
           />
@@ -46,7 +47,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
       <Typography variant="h1">{title}</Typography>
       <TrackerDayView
         selectedDay={selectedDay}
-        trackers={trackers}
+        trackers={normalizedTrackers}
         refetchTrackers={refetch}
       />
     </MainWrapper>

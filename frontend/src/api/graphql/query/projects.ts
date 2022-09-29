@@ -1,8 +1,11 @@
 import { gql } from '@apollo/client';
 
 export const PROJECTS_QUERY = gql`
-  query ProjectsByUserId($filters: ProjectFiltersInput!) {
-    projects(filters: $filters, pagination: { limit: -1 }) {
+  query ProjectsByUserId(
+    $projectFilters: ProjectFiltersInput!
+    $trackerFilters: TrackerFiltersInput!
+  ) {
+    projects(filters: $projectFilters, pagination: { limit: -1 }, sort: "id") {
       data {
         id
         attributes {
@@ -26,6 +29,14 @@ export const PROJECTS_QUERY = gql`
                     }
                   }
                 }
+              }
+            }
+          }
+          trackers(filters: $trackerFilters, sort: "date") {
+            data {
+              id
+              attributes {
+                durationMinutes
               }
             }
           }

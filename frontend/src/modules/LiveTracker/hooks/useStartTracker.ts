@@ -13,8 +13,9 @@ const useStartTracker = () => {
   const [start] = useMutation<TrackerEntityResponse, MutationUpdateTrackerArgs>(
     UPDATE_TRACKER_BY_ID_MUTATION
   );
-
   const startTracker = (tracker: TrackerEntity) => {
+    const minutes = tracker.attributes?.durationMinutes ?? 0;
+
     return start({
       variables: {
         id: tracker.id as string,
@@ -23,7 +24,9 @@ const useStartTracker = () => {
           live_status: Enum_Tracker_Live_Status.Start,
           startLiveDate: subMinutes(
             new Date(),
-            tracker.attributes?.liveDurationMinutes
+            tracker.attributes?.live
+              ? tracker.attributes?.liveDurationMinutes
+              : tracker.attributes?.liveDurationMinutes + minutes
           ),
           liveDurationMinutes: null,
         },

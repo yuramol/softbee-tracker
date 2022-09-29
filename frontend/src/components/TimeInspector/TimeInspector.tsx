@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import React, { useState } from 'react';
 import {
   endOfMonth,
   startOfMonth,
@@ -16,14 +15,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuthUser, useCurrentWeek } from 'hooks';
-import { getFormattedDate, getTotalTime } from 'helpers';
-import { PROJECTS_TRACKERS_BY_USER_ID_QUERY } from 'api';
-import {
-  ProjectEntity,
-  ProjectEntityResponseCollection,
-  TrackerEntity,
-} from 'types/GraphqlTypes';
+import { useAuthUser, useCurrentWeek, useProjects } from 'hooks';
+import { getFormattedDate } from 'helpers';
 
 export const TimeInspector = () => {
   const { user } = useAuthUser();
@@ -58,31 +51,17 @@ export const TimeInspector = () => {
     },
   ];
 
-  const projectsData = useRef<ProjectEntity[] | undefined>([]);
   const [inspectBy, setInspectBy] = useState(inspectionTypes[0]);
-  const [projects, setProjects] = useState<ProjectEntity[] | undefined>([]);
 
-  const [loadProjects, { data }] = useLazyQuery<{
-    projects: ProjectEntityResponseCollection;
-  }>(PROJECTS_TRACKERS_BY_USER_ID_QUERY, {
-    variables: {
-      userId: user.id,
-      startDate: inspectBy.filter[0],
-      endDate: inspectBy.filter[1],
+  const { totalByProjects, total } = useProjects(
+    {
+      users: { id: { eq: user.id } },
     },
-  });
-
-  useEffect(() => {
-    loadProjects().then(({ data }) => {
-      projectsData.current = data?.projects.data;
-      setProjects([...(projectsData.current as ProjectEntity[])]);
-    });
-  }, [data]);
-
-  const trackers = projects
-    ?.map(({ attributes }) => attributes?.trackers?.data)
-    .flat();
-  const totalTime = getTotalTime(trackers as TrackerEntity[]);
+    {
+      user: { id: { eq: user.id } },
+      date: { between: inspectBy.filter },
+    }
+  );
 
   const handleClickButton = (index: number) => {
     setInspectBy(inspectionTypes[index]);
@@ -102,13 +81,13 @@ export const TimeInspector = () => {
         ))}
       </ButtonGroup>
       <List disablePadding sx={{ my: 4 }}>
-        {(projectsData.current?.length as number) > 0 ? (
-          projectsData.current?.map(({ id, attributes }) => (
-            <ListItem key={id} disableGutters disablePadding>
-              <ListItemText primary={attributes?.name} />
+        {(totalByProjects?.length as number) > 0 ? (
+          totalByProjects?.map(({ name, total }) => (
+            <ListItem key={name} disableGutters disablePadding>
+              <ListItemText primary={name} />
               <ListItemText
                 sx={{ ml: 2, display: 'contents' }}
-                primary={getTotalTime(attributes?.trackers?.data)}
+                primary={total}
               />
             </ListItem>
           ))
@@ -127,7 +106,7 @@ export const TimeInspector = () => {
             primary={
               <Typography
                 fontWeight={600}
-              >{`${totalTime} / ${inspectBy.limit}`}</Typography>
+              >{`${total} / ${inspectBy.limit}`}</Typography>
             }
           />
         </ListItem>

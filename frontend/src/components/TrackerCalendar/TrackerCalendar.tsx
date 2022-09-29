@@ -44,7 +44,7 @@ export const TrackerCalendar = ({
   setStartMonth,
   setEndMonth,
 }: TrackerCalendarProps) => {
-  const [curDay, setCurDay] = useState<Date | null>(selectedDay);
+  const [curDay, setCurDay] = useState(selectedDay);
   const [curMonth, setCurMonth] = useState(selectedDay?.getMonth());
 
   return (
@@ -93,6 +93,7 @@ export const TrackerCalendar = ({
                 }}
                 sx={{
                   '& 	.MuiBadge-badge': {
+                    pointerEvents: 'none !important',
                     width: '100%',
                     justifyContent: 'left',
                     paddingLeft: '2px',

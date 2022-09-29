@@ -9,10 +9,19 @@ import {
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
 
-export const TrackerAddNewEntry = () => {
+type Props = {
+  currentDay: Date;
+};
+
+export const TrackerAddNewEntry = ({ currentDay }: Props) => {
   const { user } = useAuthUser();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { onCreateTracker } = useContext(TimeContext);
+
+  const initialValuesForm = {
+    date: currentDay,
+    duration: 0,
+  };
 
   const toggleOpenModal = () => {
     setIsOpenModal(!isOpenModal);
@@ -20,11 +29,11 @@ export const TrackerAddNewEntry = () => {
 
   const handelSubmit = (values: TimeEntryValues) => {
     onCreateTracker({
-      date: values.DATE,
-      description: values.DESCRIPTION,
-      project: values.PROJECT,
+      date: values.date,
+      description: values.description,
+      project: values.project,
       user: user.id,
-      duration: values.DURATION,
+      durationMinutes: values.duration,
     });
 
     toggleOpenModal();
@@ -38,6 +47,7 @@ export const TrackerAddNewEntry = () => {
         onSubmit={(values) => handelSubmit(values)}
         titleForm="New time entry"
         userId={user.id}
+        initialValuesForm={initialValuesForm}
       />
       <Tooltip title="Add New Entry">
         <Button variant="contained" onClick={toggleOpenModal}>

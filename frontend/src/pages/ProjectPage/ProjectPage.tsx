@@ -11,7 +11,6 @@ import { PageProps } from 'pages/types';
 const ProjectPage: React.FC<PageProps> = ({ title }) => {
   const { projects } = useProjects();
   const { managersChoices } = useNormalizedUsers();
-
   const [isCreateProject, setIsCreateProject] = useState(false);
   const [searchProject, setSearchProject] = useState('');
   const [searchManagers, setSearchManagers] = useState<string[]>([]);
@@ -26,7 +25,9 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     setSearchManagers,
     setSearchStatus,
   };
-
+  const onToggleForm = () => {
+    setIsCreateProject(!isCreateProject);
+  };
   const filteredProjects = projects
     ?.filter(({ attributes }) =>
       searchStatus.includes(attributes?.status as string)
@@ -52,20 +53,22 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     <MainWrapper
       sidebar={
         <>
-          <Button
-            sx={{ mb: 2 }}
-            fullWidth
-            variant="contained"
-            title="Add new project"
-            size="large"
-            onClick={() => setIsCreateProject(!isCreateProject)}
-          />
+          {!isCreateProject && (
+            <Button
+              sx={{ mb: 2 }}
+              fullWidth
+              variant="contained"
+              title="Add new project"
+              size="large"
+              onClick={onToggleForm}
+            />
+          )}
           <SideBars />
         </>
       }
     >
       {isCreateProject ? (
-        <AddNewProject setIsCreateProject={setIsCreateProject} />
+        <AddNewProject onToggleForm={onToggleForm} />
       ) : (
         <>
           <Typography variant="h1">{title}</Typography>

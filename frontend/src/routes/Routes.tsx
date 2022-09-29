@@ -23,6 +23,12 @@ export const AppRouter = () => {
           path="*"
           element={isAuth ? <NotFoundPage /> : <Navigate to="/login" replace />}
         />
+        {isAuth && (
+          <>
+            <Route path="/login" element={<Navigate to="/" replace />} />
+            <Route path="/register" element={<Navigate to="/" replace />} />
+          </>
+        )}
         {currentPages.map(({ index, name, href, Component }) => (
           <Route
             index={index}
@@ -30,7 +36,7 @@ export const AppRouter = () => {
             path={href}
             element={
               <Suspense fallback={<div />}>
-                <Component />
+                <Component title={name} />
                 {isAuth && <LiveTracker />}
               </Suspense>
             }

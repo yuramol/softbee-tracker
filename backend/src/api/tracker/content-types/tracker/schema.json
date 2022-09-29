@@ -28,9 +28,9 @@
       "target": "api::project.project",
       "inversedBy": "trackers"
     },
-    "duration": {
-      "type": "time",
-      "required": false
+    "durationMinutes": {
+      "type": "biginteger",
+      "default": "0"
     },
     "user": {
       "type": "relation",
@@ -69,6 +69,5 @@
       "required": false,
       "default": "new"
     }
-
   }
 }

@@ -38,6 +38,7 @@ export const USER_QUERY = gql`
           }
           phone
           linkedIn
+          upwork
           dateEmployment
           salaryInfo
           position

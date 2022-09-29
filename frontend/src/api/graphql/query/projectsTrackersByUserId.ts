@@ -22,7 +22,7 @@ export const PROJECTS_TRACKERS_BY_USER_ID_QUERY = gql`
             data {
               id
               attributes {
-                duration
+                durationMinutes
               }
             }
           }
