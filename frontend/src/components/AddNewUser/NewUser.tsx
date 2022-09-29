@@ -11,7 +11,7 @@ import { CreateUserFields, UserProps } from './types';
 import { useNotification, useRoles } from 'hooks';
 import { employeePositionChoices, Role } from 'constant';
 
-export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
+export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
   const { roles, rolesChoices } = useRoles();
   const [createUser] = useMutation(CREATE_USER_MUTATION);
   const showNotification = useNotification();
@@ -67,7 +67,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
             message: 'User created!',
             variant: 'success',
           });
-          setIsCreateUser(false);
+          onToggleForm();
         })
         .catch((error) => {
           showNotification({ error });
@@ -172,7 +172,7 @@ export const NewUser: React.FC<UserProps> = ({ setIsCreateUser }) => {
           />
         </Stack>
         <Stack direction="row" justifyContent="flex-end" gap={2} mt={1}>
-          <Button variant="outlined" onClick={() => setIsCreateUser(false)}>
+          <Button variant="outlined" onClick={onToggleForm}>
             Cancel
           </Button>
           <Button variant="contained" type="submit">

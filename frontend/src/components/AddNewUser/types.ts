@@ -13,5 +13,5 @@ export enum CreateUserFields {
 }
 
 export type UserProps = {
-  setIsCreateUser: React.Dispatch<React.SetStateAction<boolean>>;
+  onToggleForm: () => void;
 };
