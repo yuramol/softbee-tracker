@@ -14,7 +14,7 @@ import { PageProps } from './types';
 
 const HomePage: React.FC<PageProps> = ({ title }) => {
   const { user } = useAuthUser();
-  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
+  const [selectedDay, setSelectedDay] = useState(new Date());
 
   const [startMonth, setStartMonth] = useState(
     format(startOfMonth(new Date()), 'YYY-MM-dd')

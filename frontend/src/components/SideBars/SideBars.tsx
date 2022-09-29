@@ -4,7 +4,7 @@ import { TimeInspector } from 'components/TimeInspector';
 import { TrackerCalendar } from 'components/TrackerCalendar';
 
 export const SideBars = () => {
-  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
+  const [selectedDay, setSelectedDay] = useState(new Date());
 
   return (
     <>

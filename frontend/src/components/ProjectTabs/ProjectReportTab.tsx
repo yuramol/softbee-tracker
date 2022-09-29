@@ -20,7 +20,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
   const { enqueueSnackbar } = useSnackbar();
   const { createTracker } = useCreateTracker();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [selectedDates, setSelectedDates] = useState<string[]>([
+  const [selectedDates, setSelectedDates] = useState([
     getFormattedDate(new Date()),
   ]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
