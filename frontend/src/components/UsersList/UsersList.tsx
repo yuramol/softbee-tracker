@@ -58,12 +58,13 @@ export const UsersList = ({ usersList }: Props) => {
                     : undefined
                 }
               />
-              {isUserRequestVacation(`${id}`) && <PulseDot />}
+              {isUserRequestVacation(`${id}`) && (
+                <PulseDot top={-2} right={-2} />
+              )}
             </Stack>
             <div>
               <NavLink to={`/profile/${id}`} state={{ edit: false }}>
                 {`${attributes?.firstName} ${attributes?.lastName?.charAt(0)}.`}
-                {id}
               </NavLink>
               <Typography fontSize="10px">
                 {`${attributes?.role?.data?.attributes?.name} | ${attributes?.position}`}
