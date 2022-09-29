@@ -1,26 +1,36 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Tooltip } from '@mui/material';
+import { useSnackbar } from 'notistack';
+import { GraphQLError } from 'graphql';
 
 import { useAuthUser } from 'hooks';
-import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
 import { Icon } from 'legos';
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
+import { format } from 'date-fns';
+import { useCreateTracker } from 'hooks';
+import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 type Props = {
-  currentDay: Date;
+  currentDay?: Date;
+  projectId?: string;
 };
 
-export const TrackerAddNewEntry = ({ currentDay }: Props) => {
+export const TrackerAddNewEntry = ({
+  currentDay = new Date(),
+  projectId = '',
+}: Props) => {
   const { user } = useAuthUser();
+  const { enqueueSnackbar } = useSnackbar();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const { onCreateTracker } = useContext(TimeContext);
+  const { createTracker } = useCreateTracker();
 
   const initialValuesForm = {
-    date: currentDay,
-    duration: 0,
+    [TIME_ENTRY_FIELDS.DATE]: currentDay,
+    [TIME_ENTRY_FIELDS.DURATION]: 0,
+    [TIME_ENTRY_FIELDS.PROJECT]: projectId,
   };
 
   const toggleOpenModal = () => {
@@ -28,13 +38,18 @@ export const TrackerAddNewEntry = ({ currentDay }: Props) => {
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
-    onCreateTracker({
-      date: values.date,
-      description: values.description,
-      project: values.project,
-      user: user.id,
-      durationMinutes: values.duration,
-    });
+    const data = {
+      ...values,
+      date: format(values.date, 'yyyy-MM-dd'),
+    };
+
+    createTracker(data)
+      .then(() => {
+        enqueueSnackbar(`Track added`, { variant: 'success' });
+      })
+      .catch((error: GraphQLError) => {
+        enqueueSnackbar(error.message, { variant: 'error' });
+      });
 
     toggleOpenModal();
   };

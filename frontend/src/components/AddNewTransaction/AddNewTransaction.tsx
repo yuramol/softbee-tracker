@@ -4,14 +4,14 @@ import { Button, Tooltip } from '@mui/material';
 import { useAuthUser } from 'hooks';
 import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
 import { Icon } from 'legos';
-import { TimeEntryValues } from 'components/TrackerEntryModalForm';
+import { TransactionEntryValues } from 'components/TransactionEntryModalForm';
 import { TransactionEntryModalForm } from 'components/TransactionEntryModalForm';
 
 type Props = {
-  currentDay: Date;
+  currentDay?: Date;
 };
 
-export const AddNewTransaction = ({ currentDay }: Props) => {
+export const AddNewTransaction = ({ currentDay = new Date() }: Props) => {
   const { user } = useAuthUser();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { onCreateTracker } = useContext(TimeContext);
@@ -25,7 +25,7 @@ export const AddNewTransaction = ({ currentDay }: Props) => {
     setIsOpenModal(!isOpenModal);
   };
 
-  const handelSubmit = (values: TimeEntryValues) => {
+  const handelSubmit = (values: TransactionEntryValues) => {
     onCreateTracker({
       date: values.date,
       description: values.description,
