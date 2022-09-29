@@ -34,7 +34,7 @@ const steps: CreateProjectStep[] = [
   },
 ];
 
-export const AddNewProject: React.FC<ProjectProps> = ({ onCreate }) => {
+export const AddNewProject: React.FC<ProjectProps> = ({ onToggleForm }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [createProject] = useMutation(CREATE_PROJECT_MUTATION);
   const notification = useNotification();
@@ -100,7 +100,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({ onCreate }) => {
             }, was successfully created`,
             variant: 'success',
           });
-          onCreate();
+          onToggleForm();
         })
         .catch(() => {
           notification({
@@ -176,7 +176,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({ onCreate }) => {
               ) : (
                 <Button
                   variant="outlined"
-                  onClick={() => onCreate()}
+                  onClick={onToggleForm}
                   sx={{ width: 150 }}
                 >
                   Cancel

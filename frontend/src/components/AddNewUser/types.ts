@@ -13,5 +13,5 @@ export enum CreateUserFields {
 }
 
 export type UserProps = {
-  onCreate: () => void;
+  onToggleForm: () => void;
 };

@@ -9,7 +9,7 @@ const CrewPage = () => {
   const { users } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
 
-  const onCreate = () => {
+  const onToggleForm = () => {
     setIsCreateUser(!isCreateUser);
   };
   return (
@@ -23,7 +23,7 @@ const CrewPage = () => {
               variant="contained"
               title="Add new user"
               size="large"
-              onClick={onCreate}
+              onClick={onToggleForm}
             />
           )}
 
@@ -32,7 +32,7 @@ const CrewPage = () => {
       }
     >
       {isCreateUser ? (
-        <NewUser onCreate={onCreate} />
+        <NewUser onToggleForm={onToggleForm} />
       ) : (
         <>
           <Typography variant="h1">My crew</Typography>

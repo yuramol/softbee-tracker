@@ -13,7 +13,7 @@ export enum CreateProjectFields {
 }
 
 export type ProjectProps = {
-  onCreate: () => void;
+  onToggleForm: () => void;
 };
 
 export type CreateProjectStep = {
