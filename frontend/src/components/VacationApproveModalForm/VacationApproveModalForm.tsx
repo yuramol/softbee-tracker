@@ -13,7 +13,6 @@ import { format } from 'date-fns';
 import { useAuthUser, useNormalizedTrackers, useUpdateTracker } from 'hooks';
 import { Stack } from '@mui/system';
 import { Button, Icon } from 'legos';
-import { Maybe } from 'graphql/jsutils/Maybe';
 import { Enum_Tracker_Status } from 'types/GraphqlTypes';
 
 const modalStyle = {
@@ -39,12 +38,12 @@ export const VacationApproveModalForm = () => {
 
   const { updateTracker } = useUpdateTracker();
 
-  const handleApprove = (id: Maybe<string>) => {
+  const handleApprove = (id: string) => {
     const data = { status: Enum_Tracker_Status.Approved };
     updateTracker(id, data);
   };
 
-  const handleReject = (id: Maybe<string>) => {
+  const handleReject = (id: string) => {
     const data = { status: Enum_Tracker_Status.Rejected };
     updateTracker(id, data);
   };
@@ -129,7 +128,7 @@ export const VacationApproveModalForm = () => {
                                   textTransform: 'none',
                                 }}
                                 onClick={() => {
-                                  handleApprove(id);
+                                  handleApprove(id!);
                                 }}
                               />
                               <Button
@@ -143,7 +142,7 @@ export const VacationApproveModalForm = () => {
                                 sx={{
                                   textTransform: 'none',
                                 }}
-                                onClick={() => handleReject(id)}
+                                onClick={() => handleReject(id!)}
                               />
                             </Stack>
                           </TableCell>
