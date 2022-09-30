@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Tooltip } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import { GraphQLError } from 'graphql';
 
-import { useAuthUser, useCreateTracker } from 'hooks';
+import { useAuthUser, useCreateTracker, useNotification } from 'hooks';
 import { Icon } from 'legos';
 import {
   TimeEntryValues,
@@ -22,7 +21,7 @@ export const TrackerAddNewEntry = ({
   projectId = '',
 }: Props) => {
   const { user } = useAuthUser();
-  const { enqueueSnackbar } = useSnackbar();
+  const notification = useNotification();
   const { createTracker } = useCreateTracker();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -44,10 +43,10 @@ export const TrackerAddNewEntry = ({
 
     createTracker(data)
       .then(() => {
-        enqueueSnackbar(`Track added`, { variant: 'success' });
+        notification({ message: `Track added`, variant: 'success' });
       })
       .catch((error: GraphQLError) => {
-        enqueueSnackbar(error.message, { variant: 'error' });
+        notification({ error: error.message });
       });
 
     toggleOpenModal();

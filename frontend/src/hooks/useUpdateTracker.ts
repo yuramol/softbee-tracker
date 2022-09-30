@@ -11,18 +11,18 @@ export const useUpdateTracker = () => {
     update({
       variables: { id, data },
       refetchQueries: [TRACKERS_QUERY],
-    })
-      .then(() => {
-        notification({
-          message: 'The tracker was successfully updated',
-          variant: 'info',
-        });
-      })
-      .catch(() => {
-        notification({
-          message: 'A problem occurred when updating a tracker',
-          variant: 'error',
-        });
-      });
+    });
+  // .then(() => {
+  //   notification({
+  //     message: 'The tracker was successfully updated',
+  //     variant: 'info',
+  //   });
+  // })
+  // .catch(() => {
+  //   notification({
+  //     message: 'A problem occurred when updating a tracker',
+  //     variant: 'error',
+  //   });
+  // });
   return { updateTracker };
 };

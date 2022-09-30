@@ -1,10 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Tooltip } from '@mui/material';
 
 import { useAuthUser } from 'hooks';
-import { TimeContext } from 'components/TrackerDayView/TrackerDayView';
 import { Icon } from 'legos';
-import { TransactionEntryValues } from 'components/TransactionEntryModalForm';
 import { TransactionEntryModalForm } from 'components/TransactionEntryModalForm';
 
 type Props = {
@@ -14,7 +12,6 @@ type Props = {
 export const AddNewTransaction = ({ currentDay = new Date() }: Props) => {
   const { user } = useAuthUser();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const { onCreateTracker } = useContext(TimeContext);
 
   const initialValuesForm = {
     date: currentDay,
@@ -25,15 +22,7 @@ export const AddNewTransaction = ({ currentDay = new Date() }: Props) => {
     setIsOpenModal(!isOpenModal);
   };
 
-  const handelSubmit = (values: TransactionEntryValues) => {
-    onCreateTracker({
-      date: values.date,
-      description: values.description,
-      project: values.project,
-      user: user.id,
-      durationMinutes: values.duration,
-    });
-
+  const handelSubmit = () => {
     toggleOpenModal();
   };
 
@@ -42,7 +31,7 @@ export const AddNewTransaction = ({ currentDay = new Date() }: Props) => {
       <TransactionEntryModalForm
         open={isOpenModal}
         onClose={toggleOpenModal}
-        onSubmit={(values) => handelSubmit(values)}
+        onSubmit={() => handelSubmit()}
         titleForm="New transaction"
         userId={user.id}
         initialValuesForm={initialValuesForm}
