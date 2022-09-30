@@ -3,14 +3,13 @@ import { Button, Tooltip } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { GraphQLError } from 'graphql';
 
-import { useAuthUser } from 'hooks';
+import { useAuthUser, useCreateTracker } from 'hooks';
 import { Icon } from 'legos';
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
 import { format } from 'date-fns';
-import { useCreateTracker } from 'hooks';
 import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 type Props = {
@@ -24,8 +23,8 @@ export const TrackerAddNewEntry = ({
 }: Props) => {
   const { user } = useAuthUser();
   const { enqueueSnackbar } = useSnackbar();
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const { createTracker } = useCreateTracker();
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const initialValuesForm = {
     [TIME_ENTRY_FIELDS.DATE]: currentDay,
