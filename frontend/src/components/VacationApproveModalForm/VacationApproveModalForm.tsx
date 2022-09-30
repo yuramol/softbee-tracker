@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
-import { useAuthUser, useNormalizedTrackers, useUpdateTracker } from 'hooks';
+import { useNormalizedTrackers, useUpdateTracker } from 'hooks';
 import { Stack } from '@mui/system';
 import { Button, Icon } from 'legos';
 import { Enum_Tracker_Status } from 'types/GraphqlTypes';
@@ -29,10 +29,15 @@ const modalStyle = {
 
 const vacationModalHead = ['Date', 'Description', 'Status', ''];
 
-export const VacationApproveModalForm = () => {
-  const { user } = useAuthUser();
+type VacationApproveModalFormProps = {
+  userId: string;
+};
+
+export const VacationApproveModalForm = ({
+  userId,
+}: VacationApproveModalFormProps) => {
   const { trackers } = useNormalizedTrackers({
-    user: { id: { in: [user.id] } },
+    user: { id: { in: [userId] } },
     status: { eq: Enum_Tracker_Status.New },
   });
 
@@ -128,7 +133,7 @@ export const VacationApproveModalForm = () => {
                                   textTransform: 'none',
                                 }}
                                 onClick={() => {
-                                  handleApprove(id!);
+                                  handleApprove(id || '');
                                 }}
                               />
                               <Button
@@ -142,7 +147,7 @@ export const VacationApproveModalForm = () => {
                                 sx={{
                                   textTransform: 'none',
                                 }}
-                                onClick={() => handleReject(id!)}
+                                onClick={() => handleReject(id || '')}
                               />
                             </Stack>
                           </TableCell>
