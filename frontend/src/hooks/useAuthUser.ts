@@ -18,7 +18,7 @@ export const useAuthUser = () => {
   const navigate = useNavigate();
   const [jwt, setJwt] = useLocalStorage('jwt', null);
   const [meQuery, { data, client }] = useLazyQuery<{ me: AuthUser }>(ME_QUERY, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
   });
 
   const user = data?.me ?? {
