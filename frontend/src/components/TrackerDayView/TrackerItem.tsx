@@ -24,6 +24,7 @@ import { TrackerEntity } from 'types/GraphqlTypes';
 import { useStartTracker } from 'modules/LiveTracker/hooks';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
+import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
@@ -66,10 +67,10 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   };
 
   const initialValuesForm: TimeEntryValues = {
-    date: parseISO(tracker.attributes?.date ?? ''),
-    duration: tracker.attributes?.durationMinutes ?? 0,
-    description: tracker.attributes?.description ?? '',
-    project: tracker.attributes?.project?.data?.id ?? '',
+    [TIME_ENTRY_FIELDS.DATE]: parseISO(tracker.attributes?.date ?? ''),
+    [TIME_ENTRY_FIELDS.DURATION]: tracker.attributes?.durationMinutes ?? 0,
+    [TIME_ENTRY_FIELDS.DESCRIPTION]: tracker.attributes?.description ?? '',
+    [TIME_ENTRY_FIELDS.PROJECT]: tracker.attributes?.project?.data?.id ?? '',
   };
 
   const handleStartTracker = () => {
@@ -78,10 +79,10 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
 
   const handelSubmit = (values: TimeEntryValues) => {
     onUpdateTracker(tracker.id, {
-      date: format(values.date, 'yyyy-MM-dd'),
-      description: values.description,
-      project: values.project,
-      durationMinutes: values.duration,
+      date: format(values[TIME_ENTRY_FIELDS.DATE], 'yyyy-MM-dd'),
+      description: values[TIME_ENTRY_FIELDS.DESCRIPTION],
+      project: values[TIME_ENTRY_FIELDS.PROJECT],
+      durationMinutes: values[TIME_ENTRY_FIELDS.DURATION],
     });
 
     toggleOpenModal();
