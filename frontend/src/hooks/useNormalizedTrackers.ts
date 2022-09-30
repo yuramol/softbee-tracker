@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
 
 import { TRACKERS_QUERY } from 'api';
-import { getMinutes } from 'helpers';
 import {
   TrackerEntity,
   TrackerEntityResponseCollection,

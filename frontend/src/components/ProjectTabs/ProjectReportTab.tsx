@@ -6,6 +6,7 @@ import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
 import { MultipleSelect, RangeCalendar } from 'legos';
 import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
+import { MultipleSelect, RangeCalendar } from 'legos';
 
 type Props = {
   projectId: string;
