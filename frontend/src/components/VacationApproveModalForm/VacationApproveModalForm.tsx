@@ -36,10 +36,13 @@ type VacationApproveModalFormProps = {
 export const VacationApproveModalForm = ({
   userId,
 }: VacationApproveModalFormProps) => {
-  const { trackers } = useNormalizedTrackers({
-    user: { id: { in: [userId] } },
-    status: { eq: Enum_Tracker_Status.New },
-  });
+  const { trackers } = useNormalizedTrackers(
+    {
+      user: { id: { in: [userId] } },
+      status: { eq: Enum_Tracker_Status.New },
+    },
+    userId
+  );
 
   const { updateTracker } = useUpdateTracker();
 

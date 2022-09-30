@@ -22,11 +22,13 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const [endMonth, setEndMonth] = useState(
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
-
-  const { normalizedTrackers } = useNormalizedTrackers({
-    user: { id: { in: [user.id] } },
-    date: { between: [startMonth, endMonth] },
-  });
+  const { normalizedTrackers } = useNormalizedTrackers(
+    {
+      user: { id: { in: [user.id] } },
+      date: { between: [startMonth, endMonth] },
+    },
+    user.id
+  );
 
   return (
     <MainWrapper

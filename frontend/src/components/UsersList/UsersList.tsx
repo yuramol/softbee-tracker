@@ -17,9 +17,12 @@ type Props = {
 };
 
 export const UsersList = ({ usersList, isManager, meId }: Props) => {
-  const { normalizedTrackers } = useNormalizedTrackers({
-    status: { eq: Enum_Tracker_Status.New },
-  });
+  const { normalizedTrackers } = useNormalizedTrackers(
+    {
+      status: { eq: Enum_Tracker_Status.New },
+    },
+    true
+  );
 
   const isUserRequestVacation = (id: string | undefined) => {
     let isUserHasRequest;
