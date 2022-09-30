@@ -66,8 +66,7 @@
         "approved",
         "rejected"
       ],
-      "required": false,
-      "default": "new"
+      "required": false
     }
 
   }
