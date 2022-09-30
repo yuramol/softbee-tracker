@@ -13,7 +13,11 @@ export enum CreateProjectFields {
 }
 
 export type ProjectProps = {
-  onToggleForm: () => void;
+  setIsCreateProject: React.Dispatch<React.SetStateAction<boolean>>;
+  projectStatus: {
+    status: string;
+    name: string;
+  };
 };
 
 export type CreateProjectStep = {

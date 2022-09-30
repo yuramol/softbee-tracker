@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import {
   Button,
   Stack,
@@ -12,8 +11,7 @@ import { FormikContext, useFormik } from 'formik';
 import { addYears } from 'date-fns';
 import * as yup from 'yup';
 
-import { useNotification } from 'hooks';
-import { CREATE_PROJECT_MUTATION } from 'api';
+import { useCreateProject } from 'hooks';
 import { Loader, NewProjectStep, SummaryStep, TeamStep } from 'components';
 import { CreateProjectFields, CreateProjectStep, ProjectProps } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
@@ -34,10 +32,12 @@ const steps: CreateProjectStep[] = [
   },
 ];
 
-export const AddNewProject: React.FC<ProjectProps> = ({ onToggleForm }) => {
+export const AddNewProject: React.FC<ProjectProps> = ({
+  setIsCreateProject,
+  projectStatus = { status: 'Add New Project', name: 'New project' },
+}) => {
   const [activeStep, setActiveStep] = useState(0);
-  const [createProject] = useMutation(CREATE_PROJECT_MUTATION);
-  const notification = useNotification();
+  const { createProject } = useCreateProject();
 
   const getStepContent = (step: number) => {
     switch (step) {
@@ -92,22 +92,9 @@ export const AddNewProject: React.FC<ProjectProps> = ({ onToggleForm }) => {
         ),
       };
 
-      createProject({ variables: { data } })
-        .then(() => {
-          notification({
-            message: `A new project named: ${
-              values[CreateProjectFields.Name]
-            }, was successfully created`,
-            variant: 'success',
-          });
-          onToggleForm();
-        })
-        .catch(() => {
-          notification({
-            message: 'A problem occurred when creating a new project',
-            variant: 'error',
-          });
-        });
+      createProject(data, values[CreateProjectFields.Name]).then(() => {
+        setIsCreateProject(false);
+      });
     },
   });
 
@@ -144,7 +131,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({ onToggleForm }) => {
   return (
     <FormikContext.Provider value={formik}>
       <Stack height="100%">
-        <Typography variant="h1">Add new project</Typography>
+        <Typography variant="h1">{projectStatus.status}</Typography>
         <Stack
           component="form"
           onSubmit={formik.handleSubmit}
@@ -176,7 +163,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({ onToggleForm }) => {
               ) : (
                 <Button
                   variant="outlined"
-                  onClick={onToggleForm}
+                  onClick={() => setIsCreateProject(false)}
                   sx={{ width: 150 }}
                 >
                   Cancel

@@ -18,6 +18,11 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     statusItem.map(({ value }) => value)
   );
 
+  const [projectStatus, setProjectStatus] = useState({
+    status: 'Add New Project',
+    name: 'New project',
+  });
+
   const projectFilters = {
     searchProject,
     searchManagers,
@@ -60,7 +65,13 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
               variant="contained"
               title="Add new project"
               size="large"
-              onClick={onToggleForm}
+              onClick={() => {
+                setIsCreateProject(!isCreateProject);
+                setProjectStatus({
+                  status: 'Add New Project',
+                  name: 'New project',
+                });
+              }}
             />
           )}
           <SideBars />
@@ -68,7 +79,10 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
       }
     >
       {isCreateProject ? (
-        <AddNewProject onToggleForm={onToggleForm} />
+        <AddNewProject
+          setIsCreateProject={setIsCreateProject}
+          projectStatus={projectStatus}
+        />
       ) : (
         <>
           <Typography variant="h1">{title}</Typography>
@@ -76,7 +90,11 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
             <Stack direction="row" spacing={2} mb={4}>
               <ProjectFilters {...projectFilters} />
             </Stack>
-            <ProjectsList projectsList={filteredProjects} />
+            <ProjectsList
+              projectsList={filteredProjects}
+              setIsCreateProject={setIsCreateProject}
+              setProjectStatus={setProjectStatus}
+            />
           </Stack>
         </>
       )}
