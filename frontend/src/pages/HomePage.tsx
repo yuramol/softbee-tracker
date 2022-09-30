@@ -33,7 +33,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
       sidebar={
         <>
           <VacationWidget />
-          <TimeInspector />
+          <TimeInspector userId={user.id} />
           <TrackerCalendar
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
