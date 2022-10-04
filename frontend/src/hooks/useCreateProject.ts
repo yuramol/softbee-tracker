@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 
-import { CREATE_PROJECT_MUTATION, TRACKERS_QUERY } from 'api';
+import { CREATE_PROJECT_MUTATION, PROJECTS_QUERY } from 'api';
 import { useNotification } from 'hooks';
 
 export const useCreateProject = () => {
@@ -9,7 +9,7 @@ export const useCreateProject = () => {
   const notification = useNotification();
 
   const createProject = (data: object, name?: string) =>
-    create({ variables: { data }, refetchQueries: [TRACKERS_QUERY] })
+    create({ variables: { data }, refetchQueries: [PROJECTS_QUERY] })
       .then(() => {
         notification({
           message: `A new project named: ${name}, was successfully created`,
