@@ -19,11 +19,15 @@ export type TrackerByDay = {
   total: number;
 };
 
-export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
+export const useNormalizedTrackers = (
+  filters: TrackerFiltersInput,
+  id?: string | boolean
+) => {
   const { data, loading, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
   }>(TRACKERS_QUERY, {
     variables: { filters },
+    skip: !id,
   });
 
   const normalizedTrackers: TrackerByDay[] = [];

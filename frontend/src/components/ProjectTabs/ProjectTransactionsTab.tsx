@@ -21,7 +21,7 @@ export const ProjectTransactionsTab = ({ projectId }: Props) => {
 
   const reportFilter = {
     user: {
-      id: selectedEmployees.length !== 0 ? { in: selectedEmployees } : {},
+      id: { in: selectedEmployees },
     },
     project: {
       id: { in: [projectId] },
@@ -32,7 +32,10 @@ export const ProjectTransactionsTab = ({ projectId }: Props) => {
         : { eq: selectedDates[0] },
   };
 
-  const { normalizedTrackers } = useNormalizedTrackers(reportFilter);
+  const { normalizedTrackers } = useNormalizedTrackers(
+    reportFilter,
+    selectedEmployees.length > 0
+  );
 
   return (
     <Grid

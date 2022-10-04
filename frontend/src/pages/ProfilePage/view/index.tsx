@@ -21,7 +21,7 @@ const ProfileViewPage = () => {
     <MainWrapper
       sidebar={
         <Stack gap={2}>
-          <VacationApproveModalForm />
+          <VacationApproveModalForm userId={userId || ''} />
           <VacationWidget />
         </Stack>
       }

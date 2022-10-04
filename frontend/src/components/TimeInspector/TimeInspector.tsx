@@ -15,11 +15,14 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuthUser, useCurrentWeek, useProjects } from 'hooks';
+import { useCurrentWeek, useProjects } from 'hooks';
 import { getFormattedDate } from 'helpers';
 
-export const TimeInspector = () => {
-  const { user } = useAuthUser();
+type TimeInspectorProps = {
+  userId?: string;
+};
+
+export const TimeInspector = ({ userId }: TimeInspectorProps) => {
   const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(new Date());
 
   const HOURS_PER_DAY = 5;
@@ -55,10 +58,10 @@ export const TimeInspector = () => {
 
   const { totalByProjects, total } = useProjects(
     {
-      users: { id: { eq: user.id } },
+      users: { id: { eq: userId } },
     },
     {
-      user: { id: { eq: user.id } },
+      user: { id: { eq: userId } },
       date: { between: inspectBy.filter },
     }
   );

@@ -4,12 +4,24 @@ import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { Icon } from 'legos';
 import { Breaks } from 'constant';
 import { BreaksRequest } from 'components/BreaksRequest';
+import { endOfYear, format, startOfYear } from 'date-fns';
 
 export const VacationWidget = () => {
   const { user } = useAuthUser();
-  const { normalizedTrackers } = useNormalizedTrackers({
-    user: { id: { in: [user.id] } },
-  });
+
+  const startYear = format(startOfYear(new Date()), 'YYY-MM-dd');
+  const endYear = format(endOfYear(new Date()), 'YYY-MM-dd');
+  const vacationProjects = ['14', '16', '15'];
+  const { normalizedTrackers } = useNormalizedTrackers(
+    {
+      user: { id: { in: [user.id] } },
+      date: { between: [startYear, endYear] },
+      project: {
+        id: { in: vacationProjects },
+      },
+    },
+    user.id
+  );
 
   let vacationDays = 0;
   let sicknessDays = 0;
