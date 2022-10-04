@@ -18,10 +18,8 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     statusItem.map(({ value }) => value)
   );
 
-  const [projectStatus, setProjectStatus] = useState({
-    status: 'Add New Project',
-    name: 'New project',
-  });
+  const [projectStatus, setProjectStatus] = useState('Add New Project');
+  const [projectId, setProjectId] = useState('');
 
   const projectFilters = {
     searchProject,
@@ -32,6 +30,8 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
   };
   const onToggleForm = () => {
     setIsCreateProject(!isCreateProject);
+    setProjectStatus('Add New Project');
+    setProjectId('');
   };
   const filteredProjects = projects
     ?.filter(({ attributes }) =>
@@ -65,13 +65,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
               variant="contained"
               title="Add new project"
               size="large"
-              onClick={() => {
-                setIsCreateProject(!isCreateProject);
-                setProjectStatus({
-                  status: 'Add New Project',
-                  name: 'New project',
-                });
-              }}
+              onClick={onToggleForm}
             />
           )}
           <SideBars />
@@ -82,6 +76,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
         <AddNewProject
           setIsCreateProject={setIsCreateProject}
           projectStatus={projectStatus}
+          projectId={projectId}
         />
       ) : (
         <>
@@ -94,6 +89,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
               projectsList={filteredProjects}
               setIsCreateProject={setIsCreateProject}
               setProjectStatus={setProjectStatus}
+              setProjectId={setProjectId}
             />
           </Stack>
         </>

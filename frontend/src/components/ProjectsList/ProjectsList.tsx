@@ -3,19 +3,12 @@ import { IconButton, Link, Stack, Typography } from '@mui/material';
 
 import { Avatar, Icon, NavLink } from 'legos';
 import { ProjectEntity, Enum_Project_Type } from 'types/GraphqlTypes';
-import { useQuery } from '@apollo/client';
-import { PROJECT_QUERY } from 'api/graphql/query/project';
-import { TRACKERS_QUERY } from 'api';
 
 type ProjectsListProps = {
   projectsList?: ProjectEntity[];
   setIsCreateProject: React.Dispatch<React.SetStateAction<boolean>>;
-  setProjectStatus: React.Dispatch<
-    React.SetStateAction<{
-      status: string;
-      name: string;
-    }>
-  >;
+  setProjectStatus: React.Dispatch<React.SetStateAction<string>>;
+  setProjectId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const getProjectIcon: (type?: string) => JSX.Element | null = (type) => {
@@ -35,12 +28,13 @@ export const ProjectsList = ({
   projectsList,
   setIsCreateProject,
   setProjectStatus,
+  setProjectId,
 }: ProjectsListProps) => {
-  // const { data } = useQuery(PROJECT_QUERY, {
-  //   variables: {
-  //     id: '21',
-  //   },
-  // });
+  const handlerEditProject = (id: string) => {
+    setIsCreateProject(true);
+    setProjectStatus('Edit Project');
+    setProjectId(id);
+  };
 
   return (
     <>
@@ -90,13 +84,7 @@ export const ProjectsList = ({
 
             <Stack direction="row">
               <IconButton
-                onClick={() => {
-                  setIsCreateProject(true);
-                  setProjectStatus({
-                    status: 'Edit Project',
-                    name: 'Soft-Bee project',
-                  });
-                }}
+                onClick={() => handlerEditProject(project.id as string)}
                 aria-label="edit"
               >
                 <Icon icon="editOutlined" />

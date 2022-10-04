@@ -14,3 +14,4 @@ export { useUpdateTracker } from './useUpdateTracker';
 export { useCreateTracker } from './useCreateTracker';
 export { useCreateProject } from './useCreateProject';
 export { useUpdateProject } from './useUpdateProject';
+export { useProject } from './useProject';

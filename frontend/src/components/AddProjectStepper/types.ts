@@ -14,10 +14,8 @@ export enum CreateProjectFields {
 
 export type ProjectProps = {
   setIsCreateProject: React.Dispatch<React.SetStateAction<boolean>>;
-  projectStatus: {
-    status: string;
-    name: string;
-  };
+  projectStatus: string;
+  projectId: string;
 };
 
 export type CreateProjectStep = {

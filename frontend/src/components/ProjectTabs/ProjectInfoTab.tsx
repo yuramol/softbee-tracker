@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useProject } from '../../hooks/useProject';
+import { useProject } from 'hooks';
 import { Enum_Project_Type, Scalars } from 'types/GraphqlTypes';
 import { Stack, Typography } from '@mui/material';
 import { Avatar, Icon, NavLink } from 'legos';

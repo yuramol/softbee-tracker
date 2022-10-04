@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -12,6 +12,10 @@ import { CalendarPickerFormik } from 'legos';
 import { CreateProjectFields, ProjectType } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
 import { formikPropsErrors } from 'helpers';
+
+type NewProjectStepProps = {
+  projectName: string;
+};
 
 export const projectTypes: ProjectType[] = [
   {
@@ -28,13 +32,13 @@ export const projectTypes: ProjectType[] = [
   },
 ];
 
-export const NewProjectStep = () => {
+export const NewProjectStep: FC<NewProjectStepProps> = ({ projectName }) => {
   const { values, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
 
   return (
     <>
-      <Typography variant="h5">New project</Typography>
+      <Typography variant="h5">{projectName}</Typography>
       <Stack gap={4}>
         <ButtonGroup size="small" fullWidth>
           {projectTypes.map(({ label, value }) => (
@@ -57,7 +61,11 @@ export const NewProjectStep = () => {
         <TextField
           label="Project title"
           name={CreateProjectFields.Name}
-          value={values[CreateProjectFields.Name]}
+          value={
+            values[CreateProjectFields.Name]
+              ? values[CreateProjectFields.Name]
+              : ''
+          }
           multiline
           {...formikPropsErrors(CreateProjectFields.Name)}
           onChange={handleChange}
@@ -65,7 +73,11 @@ export const NewProjectStep = () => {
         <TextField
           label="Client"
           name={CreateProjectFields.Client}
-          value={values[CreateProjectFields.Client]}
+          value={
+            values[CreateProjectFields.Client]
+              ? values[CreateProjectFields.Client]
+              : ''
+          }
           {...formikPropsErrors(CreateProjectFields.Client)}
           onChange={handleChange}
         />
