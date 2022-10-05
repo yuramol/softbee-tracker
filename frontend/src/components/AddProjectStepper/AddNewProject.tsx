@@ -24,7 +24,7 @@ import { getFormattedDate } from 'helpers';
 
 const steps: CreateProjectStep[] = [
   {
-    name: 'New project',
+    name: 'Info',
     fields: [CreateProjectFields.Name, CreateProjectFields.Client],
   },
   {
@@ -37,11 +37,11 @@ const steps: CreateProjectStep[] = [
   },
 ];
 
-export const AddNewProject: React.FC<ProjectProps> = ({
+export const AddNewProject = ({
   setIsCreateProject,
   projectStatus = 'Add New Project',
   projectId,
-}) => {
+}: ProjectProps) => {
   const [activeStep, setActiveStep] = useState(0);
   const { createProject } = useCreateProject();
   const { updateProject } = useUpdateProject();
@@ -49,12 +49,10 @@ export const AddNewProject: React.FC<ProjectProps> = ({
   const { projectData } = useProject(projectId);
   const { users } = useNormalizedUsers();
 
-  const projectName = projectId ? (projectData?.name as string) : 'New project';
-
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <NewProjectStep projectName={projectName} />;
+        return <NewProjectStep />;
       case 1:
         return <TeamStep />;
       case 2:
@@ -64,44 +62,38 @@ export const AddNewProject: React.FC<ProjectProps> = ({
     }
   };
 
-  const initialValues = {
-    [CreateProjectFields.Type]: projectId
-      ? projectData?.type
-      : Enum_Project_Type.TimeMaterial,
-    [CreateProjectFields.Name]: projectId ? projectData?.name : '',
-    [CreateProjectFields.Client]: projectId ? projectData?.client : '',
-    [CreateProjectFields.Start]: projectId
-      ? new Date(projectData?.start)
-      : new Date(),
-    [CreateProjectFields.End]: projectId
-      ? new Date(projectData?.end)
-      : addYears(new Date(), 1),
-    [CreateProjectFields.Managers]: projectId
-      ? projectData?.managers?.data[0].id
-      : '',
-    [CreateProjectFields.Salary]: projectId
-      ? projectData?.salary?.map((el) => {
-          const user = users?.find(
-            (user) =>
-              user.attributes?.lastName ===
-              el?.users?.data?.attributes?.lastName
-          );
+  const initialValues =
+    projectId && projectData
+      ? {
+          [CreateProjectFields.Type]: projectData?.type,
+          [CreateProjectFields.Name]: projectData?.name,
+          [CreateProjectFields.Client]: projectData?.client,
+          [CreateProjectFields.Start]: new Date(projectData?.start),
+          [CreateProjectFields.End]: new Date(projectData?.end),
+          [CreateProjectFields.Managers]: projectData?.managers?.data[0].id,
+          [CreateProjectFields.Salary]: projectData?.salary?.map((el) => {
+            const user = users?.find(
+              (user) =>
+                user.attributes?.lastName ===
+                el?.users?.data?.attributes?.lastName
+            );
 
-          return { users: user?.id, rate: el?.rate };
-        })
-      : [],
-    [CreateProjectFields.Users]: projectId
-      ? projectData?.salary?.map((el) => {
-          const user = users?.find(
-            (user) =>
-              user.attributes?.lastName ===
-              el?.users?.data?.attributes?.lastName
-          );
-
-          return user?.id;
-        })
-      : [],
-  };
+            return { users: user?.id, rate: el?.rate };
+          }),
+          [CreateProjectFields.Users]: projectData?.salary?.map(
+            (el) => el?.users?.data?.id
+          ),
+        }
+      : {
+          [CreateProjectFields.Type]: Enum_Project_Type.TimeMaterial,
+          [CreateProjectFields.Name]: '',
+          [CreateProjectFields.Client]: '',
+          [CreateProjectFields.Start]: new Date(),
+          [CreateProjectFields.End]: addYears(new Date(), 1),
+          [CreateProjectFields.Managers]: '',
+          [CreateProjectFields.Salary]: [],
+          [CreateProjectFields.Users]: [],
+        };
 
   const validationSchema = yup.object({
     [CreateProjectFields.Name]: yup
@@ -121,7 +113,7 @@ export const AddNewProject: React.FC<ProjectProps> = ({
   const formik = useFormik({
     initialValues,
     validationSchema,
-    enableReinitialize: projectId ? true : false,
+    enableReinitialize: !!projectId,
     onSubmit: (values) => {
       const data = {
         ...values,
@@ -132,18 +124,13 @@ export const AddNewProject: React.FC<ProjectProps> = ({
           values[CreateProjectFields.End]
         ),
       };
-      if (projectId) {
-        updateProject(projectId, data, values[CreateProjectFields.Name]).then(
-          () => {
+      projectId
+        ? updateProject(projectId, data).then(() => {
             setIsCreateProject(false);
-          }
-        );
-      }
-      if (!projectId) {
-        createProject(data, values[CreateProjectFields.Name]).then(() => {
-          setIsCreateProject(false);
-        });
-      }
+          })
+        : createProject(data).then(() => {
+            setIsCreateProject(false);
+          });
     },
   });
 

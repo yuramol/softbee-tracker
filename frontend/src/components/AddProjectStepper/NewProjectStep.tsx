@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import {
   Button,
   ButtonGroup,
@@ -12,10 +12,6 @@ import { CalendarPickerFormik } from 'legos';
 import { CreateProjectFields, ProjectType } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
 import { formikPropsErrors } from 'helpers';
-
-type NewProjectStepProps = {
-  projectName: string;
-};
 
 export const projectTypes: ProjectType[] = [
   {
@@ -32,13 +28,17 @@ export const projectTypes: ProjectType[] = [
   },
 ];
 
-export const NewProjectStep: FC<NewProjectStepProps> = ({ projectName }) => {
+export const NewProjectStep = () => {
   const { values, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
 
   return (
     <>
-      <Typography variant="h5">{projectName}</Typography>
+      <Typography variant="h5">
+        {values[CreateProjectFields.Name] === ''
+          ? 'New project'
+          : values[CreateProjectFields.Name]}
+      </Typography>
       <Stack gap={4}>
         <ButtonGroup size="small" fullWidth>
           {projectTypes.map(({ label, value }) => (

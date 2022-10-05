@@ -16,6 +16,7 @@ export const PROJECT_QUERY = gql`
             rate
             users {
               data {
+                id
                 attributes {
                   firstName
                   lastName
