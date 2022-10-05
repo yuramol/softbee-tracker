@@ -64,11 +64,11 @@
     "start": {
       "type": "date"
     },
-    "manager": {
+    "managers": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "manager_projects"
+      "mappedBy": "manager_projects"
     },
     "end": {
       "type": "date"
