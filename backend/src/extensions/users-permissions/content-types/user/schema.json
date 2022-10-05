@@ -134,9 +134,9 @@
     },
     "manager_projects": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "oneToMany",
       "target": "api::project.project",
-      "inversedBy": "managers"
+      "mappedBy": "manager"
     }
   }
 }
