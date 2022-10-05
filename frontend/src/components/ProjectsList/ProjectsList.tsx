@@ -58,28 +58,33 @@ export const ProjectsList = ({
             </Stack>
 
             <Stack gap={2}>
-              {project.attributes?.managers?.data.map(({ id, attributes }) => (
-                <Stack
-                  key={id}
-                  direction="row"
-                  alignItems="center"
-                  spacing={1}
-                  width="300px"
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                width="300px"
+              >
+                <Avatar
+                  avatar={
+                    project.attributes?.manager?.data?.attributes?.avatar?.data
+                      ?.attributes?.url
+                      ? `${process.env.REACT_APP_URI}${project.attributes?.manager?.data?.attributes?.avatar.data?.attributes?.url}`
+                      : undefined
+                  }
+                  firstName={
+                    project.attributes?.manager?.data?.attributes?.firstName
+                  }
+                  lastName={
+                    project.attributes?.manager?.data?.attributes?.lastName
+                  }
+                />
+                <NavLink
+                  to={`/profile/${project.attributes?.manager?.data?.id}`}
+                  state={{ edit: false }}
                 >
-                  <Avatar
-                    avatar={
-                      attributes?.avatar?.data?.attributes?.url
-                        ? `${process.env.REACT_APP_URI}${attributes?.avatar.data?.attributes?.url}`
-                        : undefined
-                    }
-                    firstName={attributes?.firstName}
-                    lastName={attributes?.lastName}
-                  />
-                  <NavLink to={`/profile/${id}`} state={{ edit: false }}>
-                    {`${attributes?.firstName} ${attributes?.lastName}`}
-                  </NavLink>
-                </Stack>
-              ))}
+                  {`${project.attributes?.manager?.data?.attributes?.firstName} ${project.attributes?.manager?.data?.attributes?.lastName}`}
+                </NavLink>
+              </Stack>
             </Stack>
 
             <Stack direction="row">

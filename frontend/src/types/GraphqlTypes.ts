@@ -590,7 +590,7 @@ export type Project = {
   client: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
   end?: Maybe<Scalars['Date']>;
-  managers?: Maybe<UsersPermissionsUserRelationResponseCollection>;
+  manager?: Maybe<UsersPermissionsUserEntityResponse>;
   name: Scalars['String'];
   note?: Maybe<Scalars['String']>;
   notes?: Maybe<NoteRelationResponseCollection>;
@@ -602,12 +602,6 @@ export type Project = {
   type: Enum_Project_Type;
   updatedAt?: Maybe<Scalars['DateTime']>;
   users?: Maybe<UsersPermissionsUserRelationResponseCollection>;
-};
-
-export type ProjectManagersArgs = {
-  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ProjectNotesArgs = {
@@ -657,7 +651,7 @@ export type ProjectFiltersInput = {
   createdAt?: InputMaybe<DateTimeFilterInput>;
   end?: InputMaybe<DateFilterInput>;
   id?: InputMaybe<IdFilterInput>;
-  managers?: InputMaybe<UsersPermissionsUserFiltersInput>;
+  manager?: InputMaybe<UsersPermissionsUserFiltersInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<ProjectFiltersInput>;
   note?: InputMaybe<StringFilterInput>;
@@ -675,7 +669,7 @@ export type ProjectFiltersInput = {
 export type ProjectInput = {
   client?: InputMaybe<Scalars['String']>;
   end?: InputMaybe<Scalars['Date']>;
-  managers?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  manager?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
   note?: InputMaybe<Scalars['String']>;
   notes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;

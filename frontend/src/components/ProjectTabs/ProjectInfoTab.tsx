@@ -78,23 +78,23 @@ export const ProjectInfoTab = ({ id }: Props) => {
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <Avatar
             avatar={
-              projectData?.managers?.data[0].attributes?.avatar?.data
-                ?.attributes?.url
-                ? `${process.env.REACT_APP_URI}${projectData?.managers?.data[0].attributes?.avatar.data?.attributes?.url}`
+              projectData?.manager?.data?.attributes?.avatar?.data?.attributes
+                ?.url
+                ? `${process.env.REACT_APP_URI}${projectData?.manager?.data?.attributes?.avatar.data?.attributes?.url}`
                 : undefined
             }
-            firstName={projectData?.managers?.data[0].attributes?.firstName}
-            lastName={projectData?.managers?.data[0].attributes?.lastName}
+            firstName={projectData?.manager?.data?.attributes?.firstName}
+            lastName={projectData?.manager?.data?.attributes?.lastName}
           />
           <Stack flexGrow="1">
             <Typography fontSize="15px" color="GrayText">
               Project manager
             </Typography>
             <NavLink
-              to={`/profile/${projectData?.managers?.data[0].id}`}
+              to={`/profile/${projectData?.manager?.data?.id}`}
               state={{ edit: false }}
             >
-              {`${projectData?.managers?.data[0].attributes?.firstName} ${projectData?.managers?.data[0].attributes?.lastName}`}
+              {`${projectData?.manager?.data?.attributes?.firstName} ${projectData?.manager?.data?.attributes?.lastName}`}
             </NavLink>
           </Stack>
         </Stack>
@@ -131,7 +131,7 @@ export const ProjectInfoTab = ({ id }: Props) => {
             <Typography>{projectData?.client}</Typography>
           </Stack>
         </Stack>
-        {projectData?.trackers?.data[0]?.attributes?.durationMinutes && (
+        {!!trakedTime && (
           <Stack flexDirection="row" alignItems="center" gap={3}>
             <Icon icon="calendarMonth" />
 

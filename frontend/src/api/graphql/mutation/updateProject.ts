@@ -9,7 +9,7 @@ export const UPDATE_PROJECT_MUTATION = gql`
           name
           start
           end
-          managers {
+          manager {
             data {
               id
             }

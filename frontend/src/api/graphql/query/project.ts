@@ -24,7 +24,7 @@ export const PROJECT_QUERY = gql`
               }
             }
           }
-          managers {
+          manager {
             data {
               id
               attributes {

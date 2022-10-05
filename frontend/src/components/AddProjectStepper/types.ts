@@ -8,7 +8,7 @@ export enum CreateProjectFields {
   End = 'end',
   Status = 'status',
   Salary = 'salary',
-  Managers = 'managers',
+  Manager = 'manager',
   Users = 'users',
 }
 

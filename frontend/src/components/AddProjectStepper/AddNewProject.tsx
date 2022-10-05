@@ -29,7 +29,7 @@ const steps: CreateProjectStep[] = [
   },
   {
     name: 'Team',
-    fields: [CreateProjectFields.Managers, CreateProjectFields.Users],
+    fields: [CreateProjectFields.Manager, CreateProjectFields.Users],
   },
   {
     name: 'Summary',
@@ -70,7 +70,7 @@ export const AddNewProject = ({
           [CreateProjectFields.Client]: projectData?.client,
           [CreateProjectFields.Start]: new Date(projectData?.start),
           [CreateProjectFields.End]: new Date(projectData?.end),
-          [CreateProjectFields.Managers]: projectData?.managers?.data[0].id,
+          [CreateProjectFields.Manager]: projectData?.manager?.data?.id,
           [CreateProjectFields.Salary]: projectData?.salary?.map((el) => {
             const user = users?.find(
               (user) =>
@@ -81,7 +81,7 @@ export const AddNewProject = ({
             return { users: user?.id, rate: el?.rate };
           }),
           [CreateProjectFields.Users]: projectData?.salary?.map(
-            (el) => el?.users?.data?.id
+            (el) => el?.users?.data?.id ?? null
           ),
         }
       : {
@@ -90,7 +90,7 @@ export const AddNewProject = ({
           [CreateProjectFields.Client]: '',
           [CreateProjectFields.Start]: new Date(),
           [CreateProjectFields.End]: addYears(new Date(), 1),
-          [CreateProjectFields.Managers]: '',
+          [CreateProjectFields.Manager]: '',
           [CreateProjectFields.Salary]: [],
           [CreateProjectFields.Users]: [],
         };
@@ -104,9 +104,7 @@ export const AddNewProject = ({
       .string()
       .min(5, 'Client name must be at least 5 characters')
       .required('Should not be empty'),
-    [CreateProjectFields.Managers]: yup
-      .string()
-      .required('Should not be empty'),
+    [CreateProjectFields.Manager]: yup.string().required('Should not be empty'),
     [CreateProjectFields.Users]: yup.array().min(1, 'Minimum one employee'),
   });
 
