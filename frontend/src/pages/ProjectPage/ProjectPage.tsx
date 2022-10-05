@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { ProjectsList } from 'components/ProjectsList/ProjectsList';
-import { MainWrapper, SideBars, AddNewProject } from 'components';
 import { ProjectFilters } from './ProjectFilters';
+import { MainWrapper, AddNewProject, TimeInspector } from 'components';
 import { Button } from 'legos';
 import { useProjects } from 'hooks';
 import { PageProps } from 'pages/types';
@@ -47,7 +47,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
               onClick={onToggleForm}
             />
           )}
-          <SideBars />
+          <TimeInspector />
         </>
       }
     >

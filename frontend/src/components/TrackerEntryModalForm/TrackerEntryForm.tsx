@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
 import { TimePicker } from 'components';
-import { useNormalizedUsers, useProjects } from 'hooks';
+import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
 
@@ -43,8 +43,10 @@ export const TrackerEntryForm = ({
   buttonCloseTitle = 'Cancel',
   buttonSubmitTitle = 'Save Time',
 }: TrackerEntryFormProps) => {
+  const { user } = useAuthUser();
+
   const { projectsChoices } = useProjects({
-    users: { id: { eq: userId } },
+    users: { id: { eq: user.id } },
   });
 
   const { usersChoices } = useNormalizedUsers({
