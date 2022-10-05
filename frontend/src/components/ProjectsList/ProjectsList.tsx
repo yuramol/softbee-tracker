@@ -7,7 +7,6 @@ import { ProjectEntity, Enum_Project_Type } from 'types/GraphqlTypes';
 type ProjectsListProps = {
   projectsList?: ProjectEntity[];
   setIsCreateProject: React.Dispatch<React.SetStateAction<boolean>>;
-  setProjectStatus: React.Dispatch<React.SetStateAction<string>>;
   setProjectId: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -27,12 +26,10 @@ const getProjectIcon: (type?: string) => JSX.Element | null = (type) => {
 export const ProjectsList = ({
   projectsList,
   setIsCreateProject,
-  setProjectStatus,
   setProjectId,
 }: ProjectsListProps) => {
   const handlerEditProject = (id: string) => {
     setIsCreateProject(true);
-    setProjectStatus('Edit Project');
     setProjectId(id);
   };
 

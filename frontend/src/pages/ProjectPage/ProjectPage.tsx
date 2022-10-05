@@ -14,13 +14,10 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
   const [searchFilter, setSearchFilter] = useState('');
   const [managerFilter, setManagerFilter] = useState<string[]>([]);
   const [statusFilter, setStatusFilter] = useState('active');
-
-  const [projectStatus, setProjectStatus] = useState('Add New Project');
   const [projectId, setProjectId] = useState('');
 
   const onToggleForm = () => {
     setIsCreateProject(!isCreateProject);
-    setProjectStatus('Add New Project');
     setProjectId('');
   };
   const filteredProjects = projects?.filter(({ attributes }) => {
@@ -57,7 +54,6 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
       {isCreateProject ? (
         <AddNewProject
           setIsCreateProject={setIsCreateProject}
-          projectStatus={projectStatus}
           projectId={projectId}
         />
       ) : (
@@ -77,7 +73,6 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
             <ProjectsList
               projectsList={filteredProjects}
               setIsCreateProject={setIsCreateProject}
-              setProjectStatus={setProjectStatus}
               setProjectId={setProjectId}
             />
           </Stack>

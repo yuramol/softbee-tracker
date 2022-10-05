@@ -39,7 +39,6 @@ const steps: CreateProjectStep[] = [
 
 export const AddNewProject = ({
   setIsCreateProject,
-  projectStatus = 'Add New Project',
   projectId,
 }: ProjectProps) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -165,7 +164,9 @@ export const AddNewProject = ({
   return (
     <FormikContext.Provider value={formik}>
       <Stack height="100%">
-        <Typography variant="h1">{projectStatus}</Typography>
+        <Typography variant="h1">
+          {projectId ? 'Edit project' : 'Add new project'}
+        </Typography>
         <Stack
           component="form"
           onSubmit={formik.handleSubmit}
