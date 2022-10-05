@@ -64,7 +64,7 @@
     "start": {
       "type": "date"
     },
-    "managers": {
+    "manager": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user",
