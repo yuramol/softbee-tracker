@@ -66,9 +66,9 @@
     },
     "manager": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
-      "mappedBy": "manager_projects"
+      "inversedBy": "manager_projects"
     },
     "end": {
       "type": "date"
