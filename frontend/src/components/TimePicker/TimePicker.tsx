@@ -24,7 +24,7 @@ import { TimePickerBlock } from './TimePickerBlock';
 interface TimePickerProps {
   disabled?: boolean;
   minutesPerStep?: number;
-  value: number;
+  value?: number;
   from?: number;
   to?: number;
   width?: string;

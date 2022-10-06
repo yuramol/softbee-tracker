@@ -7,7 +7,7 @@ import {
   TrackerInput,
 } from 'types/GraphqlTypes';
 
-const useCreateTracker = () => {
+export const useCreateTracker = () => {
   const [create] = useMutation<
     TrackerEntityResponse,
     MutationCreateTrackerArgs
@@ -22,5 +22,3 @@ const useCreateTracker = () => {
     });
   return { createTracker };
 };
-
-export { useCreateTracker };

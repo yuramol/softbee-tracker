@@ -5,13 +5,13 @@ import { ReportTable } from '..';
 import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
 import { MultipleSelect, RangeCalendar } from 'legos';
-import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
+import { AddNewTransaction } from 'components/AddNewTransaction';
 
 type Props = {
   projectId: string;
 };
 
-export const ProjectReportTab = ({ projectId }: Props) => {
+export const ProjectTransactionsTab = ({ projectId }: Props) => {
   const [selectedDates, setSelectedDates] = useState([
     getFormattedDate(new Date()),
   ]);
@@ -62,7 +62,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
         />
       </Grid>
       <Grid item xs={2}>
-        <TrackerAddNewEntry projectId={projectId} />
+        <AddNewTransaction />
       </Grid>
       <Grid item xs={12}>
         <ReportTable trackers={normalizedTrackers} />

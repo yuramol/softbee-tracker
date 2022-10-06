@@ -7,6 +7,7 @@ import { FC, useState } from 'react';
 import { ProjectInfoTab } from 'components/ProjectTabs/ProjectInfoTab';
 import { Scalars } from 'types/GraphqlTypes';
 import { ProjectReportTab } from 'components/ProjectTabs/ProjectReportTab';
+import { ProjectTransactionsTab } from './ProjectTransactionsTab';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -59,11 +60,9 @@ export const ProjectTabs: FC<ProjectTabsProps> = ({ id }) => {
             },
           }}
         >
-          <Tab
-            label="Project info"
-            sx={{ fontWeight: '600', textAlign: 'top' }}
-          />
+          <Tab label="Project info" sx={{ fontWeight: '600' }} />
           <Tab label="Report" sx={{ fontWeight: '600' }} />
+          <Tab label="Profit&Loss" sx={{ fontWeight: '600' }} />
         </Tabs>
       </Grid>
       <Grid item xs={9}>
@@ -72,6 +71,9 @@ export const ProjectTabs: FC<ProjectTabsProps> = ({ id }) => {
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ProjectReportTab projectId={id} />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <ProjectTransactionsTab projectId={id} />
         </TabPanel>
       </Grid>
     </Grid>

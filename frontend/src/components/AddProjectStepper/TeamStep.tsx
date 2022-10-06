@@ -83,16 +83,16 @@ export const TeamStep = () => {
         <Select
           label="Project manager"
           variant="outlined"
-          name={CreateProjectFields.Managers}
+          name={CreateProjectFields.Manager}
           items={managersChoices}
-          value={values[CreateProjectFields.Managers]}
+          value={values[CreateProjectFields.Manager]}
           error={
-            touched[CreateProjectFields.Managers] &&
-            !!errors[CreateProjectFields.Managers]
+            touched[CreateProjectFields.Manager] &&
+            !!errors[CreateProjectFields.Manager]
           }
           helperText={
-            touched[CreateProjectFields.Managers] &&
-            (errors[CreateProjectFields.Managers] as string)
+            touched[CreateProjectFields.Manager] &&
+            (errors[CreateProjectFields.Manager] as string)
           }
           onChange={handleChange}
         />

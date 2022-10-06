@@ -27,6 +27,7 @@ import { GraphQLError } from 'graphql';
 import { useCreateTracker } from 'hooks/useCreateTracker';
 import { getBreakIcon } from 'components/BreaksDay/getBreakIcon';
 import { Enum_Tracker_Status } from 'types/GraphqlTypes';
+import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 const modalStyle = {
   position: 'absolute',
@@ -95,7 +96,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     [BreaksRequestFields.USER]: user.id,
     [BreaksRequestFields.PROJECT]: '',
     [BreaksRequestFields.DATE]: new Date(),
-    [BreaksRequestFields.DURATION]: 0,
+    [BreaksRequestFields.DURATION]: 300,
     [BreaksRequestFields.DESCRIPTION]: '',
     [BreaksRequestFields.STATUS]: Enum_Tracker_Status.New,
   };
@@ -111,7 +112,11 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      const data = { ...values, date: format(values.date, 'yyyy-MM-dd') };
+      const data = {
+        ...values,
+        date: format(values[TIME_ENTRY_FIELDS.DATE], 'yyyy-MM-dd'),
+      };
+
       createTracker(data)
         .then(() => {
           enqueueSnackbar(`Request sent`, { variant: 'success' });

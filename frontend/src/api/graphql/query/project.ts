@@ -16,6 +16,7 @@ export const PROJECT_QUERY = gql`
             rate
             users {
               data {
+                id
                 attributes {
                   firstName
                   lastName
@@ -23,7 +24,7 @@ export const PROJECT_QUERY = gql`
               }
             }
           }
-          managers {
+          manager {
             data {
               id
               attributes {

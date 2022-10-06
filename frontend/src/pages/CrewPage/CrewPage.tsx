@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { Button } from 'legos';
 import { useAuthUser, useNormalizedUsers } from 'hooks';
 import { Stack, Typography } from '@mui/material';
-import { MainWrapper, SideBars, UsersList, NewUser } from 'components';
+import { MainWrapper, UsersList, NewUser, TimeInspector } from 'components';
 
 const CrewPage = () => {
-  const { isManager } = useAuthUser();
+  const { isManager, user } = useAuthUser();
   const { users } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
 
   const onToggleForm = () => {
     setIsCreateUser(!isCreateUser);
   };
+
   return (
     <MainWrapper
       sidebar={
@@ -26,8 +27,7 @@ const CrewPage = () => {
               onClick={onToggleForm}
             />
           )}
-
-          <SideBars />
+          <TimeInspector />
         </>
       }
     >
@@ -37,7 +37,7 @@ const CrewPage = () => {
         <>
           <Typography variant="h1">My crew</Typography>
           <Stack mt={4} spacing={2}>
-            <UsersList usersList={users} />
+            <UsersList usersList={users} isManager={isManager} meId={user.id} />
           </Stack>
         </>
       )}

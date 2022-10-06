@@ -15,7 +15,7 @@ export const PROJECTS_QUERY = gql`
           start
           end
           status
-          managers {
+          manager {
             data {
               id
               attributes {

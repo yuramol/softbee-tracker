@@ -18,10 +18,10 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
 
   const reportFilter = {
     user: {
-      id: selectedEmployees.length !== 0 ? { in: selectedEmployees } : {},
+      id: { in: selectedEmployees },
     },
     project: {
-      id: selectedProjects.length !== 0 ? { in: selectedProjects } : {},
+      id: { in: selectedProjects },
     },
     date:
       selectedDates.length > 1
@@ -29,7 +29,10 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
         : { eq: selectedDates[0] },
   };
 
-  const { normalizedTrackers } = useNormalizedTrackers(reportFilter);
+  const { normalizedTrackers } = useNormalizedTrackers(
+    reportFilter,
+    selectedEmployees.length > 0
+  );
 
   const reportTotalTime = useMemo(() => {
     let totalTime = 0;
