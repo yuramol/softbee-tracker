@@ -110,9 +110,11 @@ export const ProjectsList = ({
               >
                 <Icon icon="editOutlined" />
               </IconButton>
-              <IconButton aria-label="archive">
-                <Icon icon="archiveOutlined" />
-              </IconButton>
+              <Link to={`/project/${project.id}`} component={NavLink}>
+                <IconButton aria-label="archive">
+                  <Icon icon="archiveOutlined" />
+                </IconButton>
+              </Link>
             </Grid>
           </Grid>
         );
