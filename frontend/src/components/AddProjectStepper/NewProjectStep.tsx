@@ -34,7 +34,12 @@ export const NewProjectStep = () => {
 
   return (
     <>
-      <Typography variant="h5">
+      <Typography
+        variant="h5"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+      >
         {values[CreateProjectFields.Name] === ''
           ? 'New project'
           : values[CreateProjectFields.Name]}
