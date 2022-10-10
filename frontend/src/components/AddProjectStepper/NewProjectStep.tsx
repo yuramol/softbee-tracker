@@ -11,6 +11,7 @@ import { FormikValues, useFormikContext } from 'formik';
 import { CalendarPickerFormik } from 'legos';
 import { CreateProjectFields, ProjectType } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
+import { formikPropsErrors } from 'helpers';
 
 export const projectTypes: ProjectType[] = [
   {
@@ -28,12 +29,16 @@ export const projectTypes: ProjectType[] = [
 ];
 
 export const NewProjectStep = () => {
-  const { values, touched, errors, handleChange, setFieldValue } =
+  const { values, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
 
   return (
     <>
-      <Typography variant="h5">New project</Typography>
+      <Typography variant="h5">
+        {values[CreateProjectFields.Name] === ''
+          ? 'New project'
+          : values[CreateProjectFields.Name]}
+      </Typography>
       <Stack gap={4}>
         <ButtonGroup size="small" fullWidth>
           {projectTypes.map(({ label, value }) => (
@@ -56,30 +61,24 @@ export const NewProjectStep = () => {
         <TextField
           label="Project title"
           name={CreateProjectFields.Name}
-          value={values[CreateProjectFields.Name]}
+          value={
+            values[CreateProjectFields.Name]
+              ? values[CreateProjectFields.Name]
+              : ''
+          }
           multiline
-          error={
-            touched[CreateProjectFields.Name] &&
-            !!errors[CreateProjectFields.Name]
-          }
-          helperText={
-            touched[CreateProjectFields.Name] &&
-            (errors[CreateProjectFields.Name] as string)
-          }
+          {...formikPropsErrors(CreateProjectFields.Name)}
           onChange={handleChange}
         />
         <TextField
           label="Client"
           name={CreateProjectFields.Client}
-          value={values[CreateProjectFields.Client]}
-          error={
-            touched[CreateProjectFields.Client] &&
-            !!errors[CreateProjectFields.Client]
+          value={
+            values[CreateProjectFields.Client]
+              ? values[CreateProjectFields.Client]
+              : ''
           }
-          helperText={
-            touched[CreateProjectFields.Client] &&
-            (errors[CreateProjectFields.Client] as string)
-          }
+          {...formikPropsErrors(CreateProjectFields.Client)}
           onChange={handleChange}
         />
         <Stack direction="row" spacing={2}>

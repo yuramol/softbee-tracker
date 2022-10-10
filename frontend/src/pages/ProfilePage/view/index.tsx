@@ -1,14 +1,32 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { MainWrapper } from 'components';
+import { useParams, useLocation } from 'react-router-dom';
+import {
+  MainWrapper,
+  VacationApproveModalForm,
+  VacationWidget,
+} from 'components';
 import { ProfileEditView } from '../ProfileEditView';
+import { useAuthUser } from 'hooks';
+import { Stack } from '@mui/system';
 
 const ProfileViewPage = () => {
+  const { isManager } = useAuthUser();
   const { userId } = useParams();
+  const { state } = useLocation();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { edit } = state as any;
 
   return (
-    <MainWrapper>
-      <ProfileEditView id={`${userId}`} />
+    <MainWrapper
+      sidebar={
+        <Stack gap={2}>
+          <VacationApproveModalForm userId={userId || ''} />
+          <VacationWidget />
+        </Stack>
+      }
+    >
+      <ProfileEditView id={`${userId}`} enableEdit={edit && isManager} />
     </MainWrapper>
   );
 };

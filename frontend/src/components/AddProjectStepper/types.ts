@@ -8,12 +8,13 @@ export enum CreateProjectFields {
   End = 'end',
   Status = 'status',
   Salary = 'salary',
-  Managers = 'managers',
+  Manager = 'manager',
   Users = 'users',
 }
 
 export type ProjectProps = {
   setIsCreateProject: React.Dispatch<React.SetStateAction<boolean>>;
+  projectId: string;
 };
 
 export type CreateProjectStep = {

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal } from '@mui/material';
 
-import { TrackerEntryForm, TrackerEntryFormProps } from './TrackerEntryForm';
+import { TrackerEntryForm } from './TrackerEntryForm';
+import { TrackerEntryFormProps } from './types';
 
 type TrackerEntryModalFormProps = TrackerEntryFormProps & {
   open: boolean;

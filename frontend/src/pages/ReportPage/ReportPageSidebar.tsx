@@ -1,11 +1,18 @@
 import React from 'react';
-import { IconButton, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
-import { Icon, MultipleSelect, RangeCalendar } from 'legos';
-import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
-import { reportRangeDates } from 'helpers';
+import { Button, MultipleSelect, RangeCalendar, Toggle } from 'legos';
+import {
+  useAuthUser,
+  useNormalizedUsers,
+  useProjects,
+  useReportPDF,
+} from 'hooks';
+import { reportRangeDates } from './helpers';
 
 type Props = {
+  checked: boolean;
+  setChecked: (checked: boolean) => void;
   selectedDates: string[];
   selectedEmployees: string[];
   selectedProjects: string[];
@@ -15,6 +22,8 @@ type Props = {
 };
 
 export const ReportPageSidebar: React.FC<Props> = ({
+  checked,
+  setChecked,
   selectedDates,
   selectedEmployees,
   selectedProjects,
@@ -25,6 +34,40 @@ export const ReportPageSidebar: React.FC<Props> = ({
   const { isManager } = useAuthUser();
   const { usersChoices } = useNormalizedUsers();
   const { projectsChoices } = useProjects();
+  const { downloadPDF } = useReportPDF();
+  const handleDownload = () => {
+    let usersIds;
+    let projectsIds;
+    if (selectedEmployees.length > 0) {
+      usersIds = selectedEmployees.join('&usersIds=');
+    } else {
+      usersIds = usersChoices.map((item) => item.value).join('&usersIds=');
+    }
+    if (selectedProjects.length > 0) {
+      projectsIds = selectedProjects.join('&projectsIds=');
+    } else {
+      projectsIds = projectsChoices
+        .map((item) => item.value)
+        .join('&projectsIds=');
+    }
+
+    const range = selectedDates.join('&end=');
+    downloadPDF({
+      variables: {
+        query: `usersIds=${usersIds}&projectsIds=${projectsIds}&start=${range}`,
+      },
+    }).then(({ data }) => {
+      if (data) {
+        const blob = new Blob([data.reportPDF.blob], {
+          type: 'application/pdf',
+        });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'Tracking-Report';
+        link.click();
+      }
+    });
+  };
 
   return (
     <Stack gap={3}>
@@ -38,25 +81,31 @@ export const ReportPageSidebar: React.FC<Props> = ({
           label="Employees"
           size="small"
           variant="outlined"
-          IconComponent={() => <Icon icon="add" />}
           items={usersChoices}
           value={selectedEmployees}
-          onChange={(e) => setSelectedEmployees(e.target.value as string[])}
+          setValue={setSelectedEmployees}
         />
       )}
       <MultipleSelect
         label="Projects"
         size="small"
         variant="outlined"
-        IconComponent={() => <Icon icon="add" />}
         items={projectsChoices}
         value={selectedProjects}
-        onChange={(e) => setSelectedProjects(e.target.value as string[])}
+        setValue={setSelectedProjects}
+      />
+      <Toggle
+        checked={checked}
+        setChecked={setChecked}
+        label={'Show vacation and sickness'}
       />
       <Stack alignItems="center">
-        <IconButton color="primary">
-          <Icon icon="download" />
-        </IconButton>
+        <Button
+          variant="contained"
+          title="Download PDF"
+          icon="download"
+          onClick={handleDownload}
+        />
       </Stack>
     </Stack>
   );

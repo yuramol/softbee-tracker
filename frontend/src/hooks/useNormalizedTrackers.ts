@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
 
 import { TRACKERS_QUERY } from 'api';
-import { getMinutes } from 'helpers';
 import {
   TrackerEntity,
   TrackerEntityResponseCollection,
@@ -20,14 +19,18 @@ export type TrackerByDay = {
   total: number;
 };
 
-export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
+export const useNormalizedTrackers = (
+  filters: TrackerFiltersInput,
+  id?: string | boolean
+) => {
   const { data, loading, refetch } = useQuery<{
     trackers: TrackerEntityResponseCollection;
   }>(TRACKERS_QUERY, {
     variables: { filters },
+    skip: !id,
   });
 
-  const trackers: TrackerByDay[] = [];
+  const normalizedTrackers: TrackerByDay[] = [];
 
   data?.trackers.data.forEach((tracker) => {
     const date = tracker.attributes?.date;
@@ -36,16 +39,18 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
     const trackerByProject: TrackerByProject = {
       name: projectName,
       trackers: [tracker],
-      total: getMinutes(tracker.attributes?.duration),
+      total: tracker.attributes?.durationMinutes ?? 0,
     };
 
     const trackerByDay: TrackerByDay = {
       date,
       trackersByProject: [trackerByProject],
-      total: getMinutes(tracker.attributes?.duration),
+      total: tracker.attributes?.durationMinutes ?? 0,
     };
 
-    const findTrackerByDay = trackers.find((tracker) => tracker.date === date);
+    const findTrackerByDay = normalizedTrackers.find(
+      (tracker) => tracker.date === date
+    );
 
     if (findTrackerByDay) {
       const findTrackerByProject = findTrackerByDay.trackersByProject.find(
@@ -53,19 +58,24 @@ export const useNormalizedTrackers = (filters: TrackerFiltersInput) => {
       );
 
       findTrackerByDay.total =
-        findTrackerByDay.total + getMinutes(tracker.attributes?.duration);
+        findTrackerByDay.total + tracker.attributes?.durationMinutes ?? 0;
 
       if (findTrackerByProject) {
         findTrackerByProject.trackers.push(tracker);
         findTrackerByProject.total =
-          findTrackerByProject.total + getMinutes(tracker.attributes?.duration);
+          findTrackerByProject.total + tracker.attributes?.durationMinutes ?? 0;
       } else {
         findTrackerByDay.trackersByProject.push(trackerByProject);
       }
     } else {
-      trackers.push(trackerByDay);
+      normalizedTrackers.push(trackerByDay);
     }
   });
 
-  return { trackers, loading, refetch };
+  return {
+    trackers: data?.trackers.data,
+    normalizedTrackers,
+    loading,
+    refetch,
+  };
 };

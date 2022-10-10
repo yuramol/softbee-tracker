@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ButtonGroup } from '@mui/material';
 import { Button, MultipleSelect } from 'legos';
 import { SearchInput } from 'legos/SearchInput';
 import { useNormalizedUsers } from 'hooks';
 
 type ProjectFiltersProps = {
-  searchProject: string;
-  searchManagers: string[];
-  setSearchProject: React.Dispatch<React.SetStateAction<string>>;
-  setSearchManagers: React.Dispatch<React.SetStateAction<string[]>>;
-  setSearchStatus: React.Dispatch<React.SetStateAction<string[]>>;
+  searchFilter: string;
+  managerFilter: string[];
+  statusFilter: string;
+  onSearchFilterChange: (value: string) => void;
+  onManagerFilterChange: (value: string[]) => void;
+  onStatusFilterChange: (value: string) => void;
 };
 
 export const statusItem = [
@@ -19,30 +20,23 @@ export const statusItem = [
 ];
 
 export const ProjectFilters = ({
-  searchProject,
-  searchManagers,
-  setSearchProject,
-  setSearchManagers,
-  setSearchStatus,
+  searchFilter,
+  managerFilter,
+  statusFilter,
+  onSearchFilterChange,
+  onManagerFilterChange,
+  onStatusFilterChange,
 }: ProjectFiltersProps) => {
   const { managersChoices } = useNormalizedUsers();
-  const [activeStatus, setActiveStatus] = useState(statusItem[0]);
-
-  const handleClickStatusButton = (index: number) => {
-    setActiveStatus(statusItem[index]);
-    index === 0
-      ? setSearchStatus(statusItem.map(({ value }) => value))
-      : setSearchStatus([statusItem[index].value]);
-  };
 
   return (
     <>
       <SearchInput
         sx={{ flexGrow: '1' }}
-        value={searchProject}
+        value={searchFilter}
         size="small"
         label="Search..."
-        onChange={(value) => setSearchProject(value as string)}
+        onChange={(value) => onSearchFilterChange(value as string)}
       />
       <MultipleSelect
         label="Project manager"
@@ -50,17 +44,17 @@ export const ProjectFilters = ({
         size="small"
         sx={{ width: 200 }}
         items={managersChoices}
-        value={searchManagers}
-        onChange={(e) => setSearchManagers(e.target.value as string[])}
+        value={managerFilter}
+        setValue={(value) => onManagerFilterChange(value as string[])}
       />
       <ButtonGroup size="small" variant="outlined" sx={{ height: '40px' }}>
-        {statusItem.map(({ label, value }, index) => (
+        {statusItem.map(({ label, value }) => (
           <Button
             sx={{ width: '90px' }}
             title={label}
             key={value}
-            onClick={() => handleClickStatusButton(index)}
-            variant={activeStatus.value === value ? 'contained' : 'outlined'}
+            onClick={() => onStatusFilterChange(value)}
+            variant={statusFilter === value ? 'contained' : 'outlined'}
           />
         ))}
       </ButtonGroup>

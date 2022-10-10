@@ -26,6 +26,7 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
   selectedDates,
   setSelectedDates,
   defaultRangeDates,
+  ...rest
 }) => {
   const isSetDefaultRangeDates = !!defaultRangeDates;
   const rangeCalendarRef = useRef(null);
@@ -89,7 +90,11 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
       </Stack>
       {isPopperOpen && (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <Popper open={isPopperOpen} anchorEl={anchorEl} style={{ zIndex: 1 }}>
+          <Popper
+            open={isPopperOpen}
+            anchorEl={anchorEl}
+            style={{ zIndex: 2000 }}
+          >
             <Stack
               flexDirection="row"
               bgcolor="background.paper"
@@ -105,6 +110,7 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
                 dateAdapter={AdapterDateFns}
               >
                 <StaticDatePicker
+                  {...rest}
                   displayStaticWrapperAs="desktop"
                   openTo="day"
                   views={['day']}

@@ -1,4 +1,4 @@
-const MINUTES_PER_DAY = 24 * 60;
+const MAX_MINUTES = 30 * 24 * 60; //minutes during the month
 
 const inRange: (from: number, to: number, totalMinutes: number) => boolean = (
   from,
@@ -14,7 +14,6 @@ const inRange: (from: number, to: number, totalMinutes: number) => boolean = (
 
 const normalizeHours = (hours: number) => {
   if (hours < 0) return 0;
-  if (hours > 23) return 23;
   return hours;
 };
 
@@ -26,8 +25,8 @@ const normalizeMinutes = (minutes: number) => {
 
 const normalizeTotalMinutes = (totalMinutes: number) =>
   totalMinutes < 0
-    ? MINUTES_PER_DAY + (totalMinutes % MINUTES_PER_DAY)
-    : totalMinutes % MINUTES_PER_DAY;
+    ? MAX_MINUTES + (totalMinutes % MAX_MINUTES)
+    : totalMinutes % MAX_MINUTES;
 
 export const formatNumber = (number: string) => {
   const parsedNumber = Math.abs(parseInt(number) || 0);
@@ -65,10 +64,10 @@ const minutesToHoursAndMinutes = (minutes: number) => {
   };
 };
 
-const hoursAndMinutesToMinutes: (hours: number, minutes: number) => number = (
-  hours,
-  minutes
-) => 60 * hours + minutes;
+export const hoursAndMinutesToMinutes: (
+  hours: number,
+  minutes: number
+) => number = (hours, minutes) => 60 * hours + minutes;
 
 const totalMinutesFromRange: (
   from: number,
@@ -87,7 +86,7 @@ const totalMinutesFromRange: (
   const rangeInMinutes =
     fromMinutes <= toMinutes
       ? toMinutes - fromMinutes
-      : MINUTES_PER_DAY - fromMinutes + toMinutes;
+      : MAX_MINUTES - fromMinutes + toMinutes;
 
   return {
     fromMinutes,
@@ -144,3 +143,14 @@ export const addOrSubtractMinutes: (
 
   return formatTime(minutesToHoursAndMinutes(nextMinutes));
 };
+
+export function toHoursAndMinutes(totalMinutes: number) {
+  const minutes = totalMinutes % 60;
+  const hours = Math.floor(totalMinutes / 60);
+
+  return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}`;
+}
+
+function padTo2Digits(num: number) {
+  return num.toString().padStart(2, '0');
+}

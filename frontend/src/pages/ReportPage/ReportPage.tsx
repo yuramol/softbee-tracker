@@ -1,37 +1,27 @@
 import React, { useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import {
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
-import { MainWrapper } from '../../components';
+import { MainWrapper, ReportTable } from '../../components';
 import { PageProps } from '../types';
 import { useNormalizedTrackers } from 'hooks';
-import { getFormattedDate, getHours, parseTrackerTime } from 'helpers';
+import { getFormattedDate, getHours } from 'helpers';
 import { ReportPageSidebar } from './ReportPageSidebar';
 
-const reportTableHead = ['Date', 'Description', 'Time'];
-
 const ReportPage: React.FC<PageProps> = ({ title }) => {
-  const [selectedDates, setSelectedDates] = useState<string[]>([
+  const [selectedDates, setSelectedDates] = useState([
     getFormattedDate(new Date()),
   ]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const [checked, setChecked] = useState(true);
 
   const reportFilter = {
     user: {
-      id: selectedEmployees.length !== 0 ? { in: selectedEmployees } : {},
+      id: { in: selectedEmployees },
     },
     project: {
-      id: selectedProjects.length !== 0 ? { in: selectedProjects } : {},
+      id: { in: selectedProjects },
     },
     date:
       selectedDates.length > 1
@@ -39,15 +29,21 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
         : { eq: selectedDates[0] },
   };
 
-  const { trackers } = useNormalizedTrackers(reportFilter);
+  const { normalizedTrackers } = useNormalizedTrackers(
+    reportFilter,
+    selectedEmployees.length > 0
+  );
+
   const reportTotalTime = useMemo(() => {
     let totalTime = 0;
-    trackers.forEach(({ total }) => (totalTime += total));
+    normalizedTrackers.forEach(({ total }) => (totalTime += total));
 
     return getHours(totalTime);
-  }, [trackers]);
+  }, [normalizedTrackers]);
 
   const reportSidebarProps = {
+    checked,
+    setChecked,
     selectedDates,
     selectedEmployees,
     selectedProjects,
@@ -76,63 +72,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
         </Stack>
       </Stack>
       <Stack mt={6}>
-        {trackers.length > 0 ? (
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {reportTableHead.map((item, i) => (
-                    <TableCell key={i}>{item}</TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody style={{ verticalAlign: 'top' }}>
-                {trackers.map(({ date, trackersByProject }) =>
-                  trackersByProject.map(({ name, trackers }) =>
-                    trackers.map(({ id, attributes }) => (
-                      <TableRow
-                        key={id}
-                        sx={{
-                          '&:last-child td, &:last-child th': { border: 0 },
-                        }}
-                      >
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          sx={{ width: 125 }}
-                        >
-                          {format(new Date(date), 'd MMM y')}
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle1" fontWeight="600">
-                            {name}
-                          </Typography>
-                          <Typography>{attributes?.description}</Typography>
-                          <Typography variant="body2" mt={2}>
-                            {`${attributes?.user?.data?.attributes?.firstName}
-                            ${attributes?.user?.data?.attributes?.lastName}
-                            (${attributes?.user?.data?.attributes?.username})
-                            `}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          {format(
-                            parseTrackerTime(attributes?.duration),
-                            'HH:mm'
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          <Typography variant="h6">
-            There&apos;s nothing to report on — yet. Get tracking first!
-          </Typography>
-        )}
+        <ReportTable trackers={normalizedTrackers} isShowVacation={checked} />
       </Stack>
     </MainWrapper>
   );

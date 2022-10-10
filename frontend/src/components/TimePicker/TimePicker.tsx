@@ -4,32 +4,42 @@ import {
   FormControl,
   FormHelperText,
   InputAdornment,
+  SxProps,
+  Theme,
 } from '@mui/material';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 import { Input } from 'legos';
 
-import { addOrSubtractMinutes, parseTime } from './utils';
+import {
+  addOrSubtractMinutes,
+  hoursAndMinutesToMinutes,
+  parseTime,
+  toHoursAndMinutes,
+} from './utils';
 import { useScrollBlock } from 'helpers/useScrollBlock';
 import TimePickerDialog from './TimePickerDialog';
 import { TimePickerBlock } from './TimePickerBlock';
 
 interface TimePickerProps {
+  disabled?: boolean;
   minutesPerStep?: number;
-  value: string;
+  value?: number;
   from?: number;
   to?: number;
   width?: string;
-  onChange: (value: string, submit?: boolean) => void;
+  onChange: (value: number, submit?: boolean) => void;
   onClick?: () => void;
   error?: boolean;
   name?: string;
   helperText?: string;
+  sx?: SxProps<Theme>;
 }
 
-const TimePicker = ({
+export const TimePicker = ({
+  disabled,
   minutesPerStep = 5,
-  value = '00:00',
+  value = 0,
   from,
   to,
   width,
@@ -38,8 +48,9 @@ const TimePicker = ({
   error = false,
   name,
   helperText,
+  sx,
 }: TimePickerProps) => {
-  const [durationValue, setDurationValue] = useState(value);
+  const [durationValue, setDurationValue] = useState(toHoursAndMinutes(value));
   const [dialogOpen, setDialogOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
 
@@ -53,7 +64,7 @@ const TimePicker = ({
   }, []);
 
   useEffect(() => {
-    setDurationValue(value);
+    setDurationValue(toHoursAndMinutes(value));
   }, [value]);
 
   useEffect(() => {
@@ -63,7 +74,7 @@ const TimePicker = ({
   }, [dialogOpen]);
 
   const closeDialog = () => {
-    onChange(durationValue, true);
+    onChange(hoursAndMinutesToMinutes(hours, minutes), true);
     if (!dialogOpen) {
       return;
     }
@@ -106,11 +117,17 @@ const TimePicker = ({
     }
   };
 
+  const handleOnChange = (value: string) => {
+    const { hours, minutes } = parseTime(value);
+    onChange(hoursAndMinutesToMinutes(hours, minutes));
+  };
+
   return (
-    <Box width={width ?? '100%'} position="relative">
+    <Box width={width ?? '100%'} sx={sx} position="relative">
       <FormControl fullWidth error={error}>
         <Input
-          onChange={(value) => onChange(`${value}`)}
+          disabled={disabled}
+          onChange={(value) => handleOnChange(`${value}`)}
           onFocus={handleFocus}
           value={durationValue}
           name={name}
@@ -126,7 +143,6 @@ const TimePicker = ({
         />
         {error && <FormHelperText>{helperText}</FormHelperText>}
       </FormControl>
-
       {dialogOpen && (
         <TimePickerDialog ref={dialogRef} onBlur={closeDialog}>
           <TimePickerBlock
@@ -148,5 +164,3 @@ const TimePicker = ({
     </Box>
   );
 };
-
-export default TimePicker;

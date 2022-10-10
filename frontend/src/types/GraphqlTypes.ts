@@ -21,7 +21,6 @@ export type Scalars = {
   DateTime: any;
   JSON: any;
   Long: any;
-  Time: any;
   Upload: any;
 };
 
@@ -32,6 +31,7 @@ export type BooleanFilterInput = {
   containsi?: InputMaybe<Scalars['Boolean']>;
   endsWith?: InputMaybe<Scalars['Boolean']>;
   eq?: InputMaybe<Scalars['Boolean']>;
+  eqi?: InputMaybe<Scalars['Boolean']>;
   gt?: InputMaybe<Scalars['Boolean']>;
   gte?: InputMaybe<Scalars['Boolean']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
@@ -76,6 +76,7 @@ export type DateFilterInput = {
   containsi?: InputMaybe<Scalars['Date']>;
   endsWith?: InputMaybe<Scalars['Date']>;
   eq?: InputMaybe<Scalars['Date']>;
+  eqi?: InputMaybe<Scalars['Date']>;
   gt?: InputMaybe<Scalars['Date']>;
   gte?: InputMaybe<Scalars['Date']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
@@ -99,6 +100,7 @@ export type DateTimeFilterInput = {
   containsi?: InputMaybe<Scalars['DateTime']>;
   endsWith?: InputMaybe<Scalars['DateTime']>;
   eq?: InputMaybe<Scalars['DateTime']>;
+  eqi?: InputMaybe<Scalars['DateTime']>;
   gt?: InputMaybe<Scalars['DateTime']>;
   gte?: InputMaybe<Scalars['DateTime']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
@@ -137,6 +139,12 @@ export enum Enum_Tracker_Live_Status {
   Start = 'start',
 }
 
+export enum Enum_Tracker_Status {
+  Approved = 'approved',
+  New = 'new',
+  Rejected = 'rejected',
+}
+
 export enum Enum_Userspermissionsuser_Position {
   Cdo = 'cdo',
   Cto = 'cto',
@@ -157,6 +165,7 @@ export type FloatFilterInput = {
   containsi?: InputMaybe<Scalars['Float']>;
   endsWith?: InputMaybe<Scalars['Float']>;
   eq?: InputMaybe<Scalars['Float']>;
+  eqi?: InputMaybe<Scalars['Float']>;
   gt?: InputMaybe<Scalars['Float']>;
   gte?: InputMaybe<Scalars['Float']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
@@ -180,6 +189,7 @@ export type GenericMorph =
   | Project
   | Tracker
   | UploadFile
+  | UploadFolder
   | UsersPermissionsPermission
   | UsersPermissionsRole
   | UsersPermissionsUser;
@@ -227,6 +237,7 @@ export type IdFilterInput = {
   containsi?: InputMaybe<Scalars['ID']>;
   endsWith?: InputMaybe<Scalars['ID']>;
   eq?: InputMaybe<Scalars['ID']>;
+  eqi?: InputMaybe<Scalars['ID']>;
   gt?: InputMaybe<Scalars['ID']>;
   gte?: InputMaybe<Scalars['ID']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -250,6 +261,7 @@ export type IntFilterInput = {
   containsi?: InputMaybe<Scalars['Int']>;
   endsWith?: InputMaybe<Scalars['Int']>;
   eq?: InputMaybe<Scalars['Int']>;
+  eqi?: InputMaybe<Scalars['Int']>;
   gt?: InputMaybe<Scalars['Int']>;
   gte?: InputMaybe<Scalars['Int']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
@@ -273,6 +285,7 @@ export type JsonFilterInput = {
   containsi?: InputMaybe<Scalars['JSON']>;
   endsWith?: InputMaybe<Scalars['JSON']>;
   eq?: InputMaybe<Scalars['JSON']>;
+  eqi?: InputMaybe<Scalars['JSON']>;
   gt?: InputMaybe<Scalars['JSON']>;
   gte?: InputMaybe<Scalars['JSON']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
@@ -296,6 +309,7 @@ export type LongFilterInput = {
   containsi?: InputMaybe<Scalars['Long']>;
   endsWith?: InputMaybe<Scalars['Long']>;
   eq?: InputMaybe<Scalars['Long']>;
+  eqi?: InputMaybe<Scalars['Long']>;
   gt?: InputMaybe<Scalars['Long']>;
   gte?: InputMaybe<Scalars['Long']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
@@ -314,10 +328,13 @@ export type LongFilterInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Change user password. Confirm with the current password. */
+  changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createNote?: Maybe<NoteEntityResponse>;
   createProject?: Maybe<ProjectEntityResponse>;
   createTracker?: Maybe<TrackerEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
+  createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
@@ -326,6 +343,7 @@ export type Mutation = {
   deleteProject?: Maybe<ProjectEntityResponse>;
   deleteTracker?: Maybe<TrackerEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
+  deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
   /** Delete an existing user */
@@ -346,11 +364,18 @@ export type Mutation = {
   updateProject?: Maybe<ProjectEntityResponse>;
   updateTracker?: Maybe<TrackerEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
+  updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
+};
+
+export type MutationChangePasswordArgs = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
 };
 
 export type MutationCreateNoteArgs = {
@@ -367,6 +392,10 @@ export type MutationCreateTrackerArgs = {
 
 export type MutationCreateUploadFileArgs = {
   data: UploadFileInput;
+};
+
+export type MutationCreateUploadFolderArgs = {
+  data: UploadFolderInput;
 };
 
 export type MutationCreateUsersPermissionsRoleArgs = {
@@ -390,6 +419,10 @@ export type MutationDeleteTrackerArgs = {
 };
 
 export type MutationDeleteUploadFileArgs = {
+  id: Scalars['ID'];
+};
+
+export type MutationDeleteUploadFolderArgs = {
   id: Scalars['ID'];
 };
 
@@ -456,6 +489,11 @@ export type MutationUpdateTrackerArgs = {
 
 export type MutationUpdateUploadFileArgs = {
   data: UploadFileInput;
+  id: Scalars['ID'];
+};
+
+export type MutationUpdateUploadFolderArgs = {
+  data: UploadFolderInput;
   id: Scalars['ID'];
 };
 
@@ -552,7 +590,7 @@ export type Project = {
   client: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
   end?: Maybe<Scalars['Date']>;
-  managers?: Maybe<UsersPermissionsUserRelationResponseCollection>;
+  manager?: Maybe<UsersPermissionsUserEntityResponse>;
   name: Scalars['String'];
   note?: Maybe<Scalars['String']>;
   notes?: Maybe<NoteRelationResponseCollection>;
@@ -564,12 +602,6 @@ export type Project = {
   type: Enum_Project_Type;
   updatedAt?: Maybe<Scalars['DateTime']>;
   users?: Maybe<UsersPermissionsUserRelationResponseCollection>;
-};
-
-export type ProjectManagersArgs = {
-  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ProjectNotesArgs = {
@@ -619,7 +651,7 @@ export type ProjectFiltersInput = {
   createdAt?: InputMaybe<DateTimeFilterInput>;
   end?: InputMaybe<DateFilterInput>;
   id?: InputMaybe<IdFilterInput>;
-  managers?: InputMaybe<UsersPermissionsUserFiltersInput>;
+  manager?: InputMaybe<UsersPermissionsUserFiltersInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<ProjectFiltersInput>;
   note?: InputMaybe<StringFilterInput>;
@@ -637,7 +669,7 @@ export type ProjectFiltersInput = {
 export type ProjectInput = {
   client?: InputMaybe<Scalars['String']>;
   end?: InputMaybe<Scalars['Date']>;
-  managers?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  manager?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
   note?: InputMaybe<Scalars['String']>;
   notes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -668,6 +700,8 @@ export type Query = {
   trackers?: Maybe<TrackerEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
+  uploadFolder?: Maybe<UploadFolderEntityResponse>;
+  uploadFolders?: Maybe<UploadFolderEntityResponseCollection>;
   usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
@@ -724,6 +758,16 @@ export type QueryUploadFilesArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type QueryUploadFolderArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryUploadFoldersArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type QueryUsersPermissionsRoleArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -756,6 +800,7 @@ export type StringFilterInput = {
   containsi?: InputMaybe<Scalars['String']>;
   endsWith?: InputMaybe<Scalars['String']>;
   eq?: InputMaybe<Scalars['String']>;
+  eqi?: InputMaybe<Scalars['String']>;
   gt?: InputMaybe<Scalars['String']>;
   gte?: InputMaybe<Scalars['String']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -772,40 +817,18 @@ export type StringFilterInput = {
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
-export type TimeFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<Scalars['Time']>>>;
-  between?: InputMaybe<Array<InputMaybe<Scalars['Time']>>>;
-  contains?: InputMaybe<Scalars['Time']>;
-  containsi?: InputMaybe<Scalars['Time']>;
-  endsWith?: InputMaybe<Scalars['Time']>;
-  eq?: InputMaybe<Scalars['Time']>;
-  gt?: InputMaybe<Scalars['Time']>;
-  gte?: InputMaybe<Scalars['Time']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Time']>>>;
-  lt?: InputMaybe<Scalars['Time']>;
-  lte?: InputMaybe<Scalars['Time']>;
-  ne?: InputMaybe<Scalars['Time']>;
-  not?: InputMaybe<TimeFilterInput>;
-  notContains?: InputMaybe<Scalars['Time']>;
-  notContainsi?: InputMaybe<Scalars['Time']>;
-  notIn?: InputMaybe<Array<InputMaybe<Scalars['Time']>>>;
-  notNull?: InputMaybe<Scalars['Boolean']>;
-  null?: InputMaybe<Scalars['Boolean']>;
-  or?: InputMaybe<Array<InputMaybe<Scalars['Time']>>>;
-  startsWith?: InputMaybe<Scalars['Time']>;
-};
-
 export type Tracker = {
   __typename?: 'Tracker';
   createdAt?: Maybe<Scalars['DateTime']>;
   date: Scalars['Date'];
   description: Scalars['String'];
-  duration?: Maybe<Scalars['Time']>;
+  durationMinutes?: Maybe<Scalars['Long']>;
   live?: Maybe<Scalars['Boolean']>;
   liveDurationMinutes?: Maybe<Scalars['Long']>;
   live_status?: Maybe<Enum_Tracker_Live_Status>;
   project?: Maybe<ProjectEntityResponse>;
   startLiveDate?: Maybe<Scalars['DateTime']>;
+  status?: Maybe<Enum_Tracker_Status>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   user?: Maybe<UsersPermissionsUserEntityResponse>;
 };
@@ -832,7 +855,7 @@ export type TrackerFiltersInput = {
   createdAt?: InputMaybe<DateTimeFilterInput>;
   date?: InputMaybe<DateFilterInput>;
   description?: InputMaybe<StringFilterInput>;
-  duration?: InputMaybe<TimeFilterInput>;
+  durationMinutes?: InputMaybe<LongFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   live?: InputMaybe<BooleanFilterInput>;
   liveDurationMinutes?: InputMaybe<LongFilterInput>;
@@ -841,6 +864,7 @@ export type TrackerFiltersInput = {
   or?: InputMaybe<Array<InputMaybe<TrackerFiltersInput>>>;
   project?: InputMaybe<ProjectFiltersInput>;
   startLiveDate?: InputMaybe<DateTimeFilterInput>;
+  status?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   user?: InputMaybe<UsersPermissionsUserFiltersInput>;
 };
@@ -848,12 +872,13 @@ export type TrackerFiltersInput = {
 export type TrackerInput = {
   date?: InputMaybe<Scalars['Date']>;
   description?: InputMaybe<Scalars['String']>;
-  duration?: InputMaybe<Scalars['Time']>;
+  durationMinutes?: InputMaybe<Scalars['Long']>;
   live?: InputMaybe<Scalars['Boolean']>;
   liveDurationMinutes?: InputMaybe<Scalars['Long']>;
   live_status?: InputMaybe<Enum_Tracker_Live_Status>;
   project?: InputMaybe<Scalars['ID']>;
   startLiveDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<Enum_Tracker_Status>;
   user?: InputMaybe<Scalars['ID']>;
 };
 
@@ -906,6 +931,8 @@ export type UploadFileFiltersInput = {
   caption?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   ext?: InputMaybe<StringFilterInput>;
+  folder?: InputMaybe<UploadFolderFiltersInput>;
+  folderPath?: InputMaybe<StringFilterInput>;
   formats?: InputMaybe<JsonFilterInput>;
   hash?: InputMaybe<StringFilterInput>;
   height?: InputMaybe<IntFilterInput>;
@@ -927,6 +954,8 @@ export type UploadFileInput = {
   alternativeText?: InputMaybe<Scalars['String']>;
   caption?: InputMaybe<Scalars['String']>;
   ext?: InputMaybe<Scalars['String']>;
+  folder?: InputMaybe<Scalars['ID']>;
+  folderPath?: InputMaybe<Scalars['String']>;
   formats?: InputMaybe<Scalars['JSON']>;
   hash?: InputMaybe<Scalars['String']>;
   height?: InputMaybe<Scalars['Int']>;
@@ -938,6 +967,81 @@ export type UploadFileInput = {
   size?: InputMaybe<Scalars['Float']>;
   url?: InputMaybe<Scalars['String']>;
   width?: InputMaybe<Scalars['Int']>;
+};
+
+export type UploadFileRelationResponseCollection = {
+  __typename?: 'UploadFileRelationResponseCollection';
+  data: Array<UploadFileEntity>;
+};
+
+export type UploadFolder = {
+  __typename?: 'UploadFolder';
+  children?: Maybe<UploadFolderRelationResponseCollection>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  files?: Maybe<UploadFileRelationResponseCollection>;
+  name: Scalars['String'];
+  parent?: Maybe<UploadFolderEntityResponse>;
+  path: Scalars['String'];
+  pathId: Scalars['Int'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type UploadFolderChildrenArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type UploadFolderFilesArgs = {
+  filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type UploadFolderEntity = {
+  __typename?: 'UploadFolderEntity';
+  attributes?: Maybe<UploadFolder>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type UploadFolderEntityResponse = {
+  __typename?: 'UploadFolderEntityResponse';
+  data?: Maybe<UploadFolderEntity>;
+};
+
+export type UploadFolderEntityResponseCollection = {
+  __typename?: 'UploadFolderEntityResponseCollection';
+  data: Array<UploadFolderEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type UploadFolderFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+  children?: InputMaybe<UploadFolderFiltersInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  files?: InputMaybe<UploadFileFiltersInput>;
+  id?: InputMaybe<IdFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<UploadFolderFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+  parent?: InputMaybe<UploadFolderFiltersInput>;
+  path?: InputMaybe<StringFilterInput>;
+  pathId?: InputMaybe<IntFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type UploadFolderInput = {
+  children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  files?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  name?: InputMaybe<Scalars['String']>;
+  parent?: InputMaybe<Scalars['ID']>;
+  path?: InputMaybe<Scalars['String']>;
+  pathId?: InputMaybe<Scalars['Int']>;
+};
+
+export type UploadFolderRelationResponseCollection = {
+  __typename?: 'UploadFolderRelationResponseCollection';
+  data: Array<UploadFolderEntity>;
 };
 
 export type UsersPermissionsCreateRolePayload = {
@@ -1090,7 +1194,7 @@ export type UsersPermissionsUpdateRolePayload = {
 
 export type UsersPermissionsUser = {
   __typename?: 'UsersPermissionsUser';
-  avatar: UploadFileEntityResponse;
+  avatar?: Maybe<UploadFileEntityResponse>;
   blocked?: Maybe<Scalars['Boolean']>;
   confirmed?: Maybe<Scalars['Boolean']>;
   create_notes?: Maybe<NoteRelationResponseCollection>;
@@ -1107,9 +1211,10 @@ export type UsersPermissionsUser = {
   projects?: Maybe<ProjectRelationResponseCollection>;
   provider?: Maybe<Scalars['String']>;
   role?: Maybe<UsersPermissionsRoleEntityResponse>;
-  salaryInfo: Scalars['String'];
+  salaryInfo?: Maybe<Scalars['String']>;
   trackers?: Maybe<TrackerRelationResponseCollection>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+  upwork?: Maybe<Scalars['String']>;
   username: Scalars['String'];
 };
 
@@ -1187,6 +1292,7 @@ export type UsersPermissionsUserFiltersInput = {
   salaryInfo?: InputMaybe<StringFilterInput>;
   trackers?: InputMaybe<TrackerFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
+  upwork?: InputMaybe<StringFilterInput>;
   username?: InputMaybe<StringFilterInput>;
 };
 
@@ -1212,6 +1318,7 @@ export type UsersPermissionsUserInput = {
   role?: InputMaybe<Scalars['ID']>;
   salaryInfo?: InputMaybe<Scalars['String']>;
   trackers?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  upwork?: InputMaybe<Scalars['String']>;
   username?: InputMaybe<Scalars['String']>;
 };
 

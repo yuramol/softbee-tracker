@@ -5,10 +5,10 @@ import { startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
-import TimePicker from 'components/TimePicker';
-import { useProjects } from 'hooks';
+import { TimePicker } from 'components';
+import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
-import { Maybe, Scalars } from 'types/GraphqlTypes';
+import { TimeEntryValues, TrackerEntryFormProps } from './types';
 
 const modalStyle = {
   position: 'absolute',
@@ -22,67 +22,65 @@ const modalStyle = {
   p: 4,
 };
 
-export const FIELD_TIME_ENTRY = {
-  DATE: 'DATE',
-  DURATION: 'DURATION',
-  DESCRIPTION: 'DESCRIPTION',
-  PROJECT: 'PROJECT',
+export const TIME_ENTRY_FIELDS = {
+  DATE: 'date',
+  DESCRIPTION: 'description',
+  DURATION: 'durationMinutes',
+  PROJECT: 'project',
+  STATUS: 'status',
+  USER: 'user',
 } as const;
-
-export type TimeEntryValues = {
-  [FIELD_TIME_ENTRY.DATE]: Date;
-  [FIELD_TIME_ENTRY.DURATION]: string;
-  [FIELD_TIME_ENTRY.DESCRIPTION]?: string;
-  [FIELD_TIME_ENTRY.PROJECT]?: Maybe<Scalars['ID']>;
-};
-
-export type TrackerEntryFormProps = {
-  titleForm: string;
-  isLive?: boolean;
-  userId: string;
-  onSubmit: (values: TimeEntryValues) => void;
-  onClose: () => void;
-  initialValuesForm?: TimeEntryValues;
-  buttonCloseTitle?: string;
-  buttonSubmitTitle?: string;
-};
 
 export const TrackerEntryForm = ({
   titleForm,
+  withEmployee = false,
   isLive = false,
   userId,
+  projectId,
   onSubmit,
   onClose,
   initialValuesForm,
   buttonCloseTitle = 'Cancel',
   buttonSubmitTitle = 'Save Time',
 }: TrackerEntryFormProps) => {
-  const { projectsChoices, loading } = useProjects({
-    users: { id: { eq: userId } },
+  const { user } = useAuthUser();
+
+  const { projectsChoices } = useProjects({
+    users: { id: { eq: user.id } },
   });
 
+  const { usersChoices } = useNormalizedUsers({
+    projects: { id: { eq: projectId } },
+  });
   const validationSchema = yup.object({
     ...(!isLive
       ? {
-          [FIELD_TIME_ENTRY.DATE]: yup.date().required('Should not be empty'),
-          [FIELD_TIME_ENTRY.DURATION]: yup
+          [TIME_ENTRY_FIELDS.DATE]: yup.date().required('Should not be empty'),
+          [TIME_ENTRY_FIELDS.DURATION]: yup
             .string()
             .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
             .required('Should not be empty'),
         }
       : {}),
-    [FIELD_TIME_ENTRY.PROJECT]: yup.string().required('Should not be empty'),
-    [FIELD_TIME_ENTRY.DESCRIPTION]: yup
+    [TIME_ENTRY_FIELDS.PROJECT]: yup.string().required('Should not be empty'),
+    [TIME_ENTRY_FIELDS.USER]: yup.string().required('Should not be empty'),
+    [TIME_ENTRY_FIELDS.DESCRIPTION]: yup
       .string()
       .min(5, 'Description must be at least 5 characters')
       .required('Should not be empty'),
   });
 
   const initialValues: TimeEntryValues = {
-    [FIELD_TIME_ENTRY.DATE]: initialValuesForm?.DATE ?? new Date(),
-    [FIELD_TIME_ENTRY.DURATION]: initialValuesForm?.DURATION ?? '00:00',
-    [FIELD_TIME_ENTRY.DESCRIPTION]: initialValuesForm?.DESCRIPTION ?? '',
-    [FIELD_TIME_ENTRY.PROJECT]: initialValuesForm?.PROJECT ?? '',
+    [TIME_ENTRY_FIELDS.USER]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.USER] ?? userId,
+    [TIME_ENTRY_FIELDS.DATE]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.DATE] ?? new Date(),
+    [TIME_ENTRY_FIELDS.DURATION]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.DURATION] ?? 0,
+    [TIME_ENTRY_FIELDS.DESCRIPTION]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.DESCRIPTION] ?? '',
+    [TIME_ENTRY_FIELDS.PROJECT]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.PROJECT] ?? '',
   };
 
   const formik = useFormik<TimeEntryValues>({
@@ -104,28 +102,44 @@ export const TrackerEntryForm = ({
             {!isLive && (
               <Stack direction="row" gap={3}>
                 <CalendarPickerFormik
-                  field={FIELD_TIME_ENTRY.DATE}
+                  field={TIME_ENTRY_FIELDS.DATE}
                   minDate={startOfMonth(subMonths(new Date(), 1))}
                   disableFuture
                   views={['day']}
                 />
                 <TimePicker
-                  value={values[FIELD_TIME_ENTRY.DURATION]}
+                  value={values[TIME_ENTRY_FIELDS.DURATION]}
                   onChange={(value) => {
-                    setFieldValue(`${FIELD_TIME_ENTRY.DURATION}`, value);
+                    setFieldValue(`${TIME_ENTRY_FIELDS.DURATION}`, value);
                   }}
-                  name={FIELD_TIME_ENTRY.DURATION}
-                  {...formikPropsErrors(FIELD_TIME_ENTRY.DURATION, formik)}
+                  name={TIME_ENTRY_FIELDS.DURATION}
+                  {...formikPropsErrors(TIME_ENTRY_FIELDS.DURATION, formik)}
                 />
               </Stack>
             )}
-            {!loading && (
+
+            {withEmployee && (
+              <Select
+                label="Employee"
+                items={usersChoices}
+                value={values[TIME_ENTRY_FIELDS.USER]}
+                name={TIME_ENTRY_FIELDS.USER}
+                {...formikPropsErrors(TIME_ENTRY_FIELDS.PROJECT, formik)}
+                variant="outlined"
+                onChange={handleChange}
+              />
+            )}
+            {!withEmployee && (
               <Select
                 label="Project"
                 items={projectsChoices}
-                value={values[FIELD_TIME_ENTRY.PROJECT]}
-                name={FIELD_TIME_ENTRY.PROJECT}
-                {...formikPropsErrors(FIELD_TIME_ENTRY.PROJECT, formik)}
+                value={
+                  projectsChoices.length > 0
+                    ? values[TIME_ENTRY_FIELDS.PROJECT]
+                    : ''
+                }
+                name={TIME_ENTRY_FIELDS.PROJECT}
+                {...formikPropsErrors(TIME_ENTRY_FIELDS.PROJECT, formik)}
                 variant="outlined"
                 onChange={handleChange}
               />
@@ -135,9 +149,9 @@ export const TrackerEntryForm = ({
               fullWidth
               multiline
               rows={4}
-              value={values[FIELD_TIME_ENTRY.DESCRIPTION]}
-              name={FIELD_TIME_ENTRY.DESCRIPTION}
-              {...formikPropsErrors(FIELD_TIME_ENTRY.DESCRIPTION, formik)}
+              value={values[TIME_ENTRY_FIELDS.DESCRIPTION]}
+              name={TIME_ENTRY_FIELDS.DESCRIPTION}
+              {...formikPropsErrors(TIME_ENTRY_FIELDS.DESCRIPTION, formik)}
               onChange={handleChange}
             />
           </Stack>

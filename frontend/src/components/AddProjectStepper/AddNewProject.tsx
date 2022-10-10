@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import {
   Button,
   Stack,
@@ -9,23 +8,28 @@ import {
   Typography,
 } from '@mui/material';
 import { FormikContext, useFormik } from 'formik';
-import { addYears, format } from 'date-fns';
+import { addYears } from 'date-fns';
 import * as yup from 'yup';
 
-import { useNotification } from 'hooks';
-import { CREATE_PROJECT_MUTATION } from 'api';
+import {
+  useCreateProject,
+  useNormalizedUsers,
+  useUpdateProject,
+  useProject,
+} from 'hooks';
 import { Loader, NewProjectStep, SummaryStep, TeamStep } from 'components';
 import { CreateProjectFields, CreateProjectStep, ProjectProps } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
+import { getFormattedDate } from 'helpers';
 
 const steps: CreateProjectStep[] = [
   {
-    name: 'New project',
+    name: 'Info',
     fields: [CreateProjectFields.Name, CreateProjectFields.Client],
   },
   {
     name: 'Team',
-    fields: [CreateProjectFields.Managers, CreateProjectFields.Users],
+    fields: [CreateProjectFields.Manager, CreateProjectFields.Users],
   },
   {
     name: 'Summary',
@@ -33,12 +37,16 @@ const steps: CreateProjectStep[] = [
   },
 ];
 
-export const AddNewProject: React.FC<ProjectProps> = ({
+export const AddNewProject = ({
   setIsCreateProject,
-}) => {
+  projectId,
+}: ProjectProps) => {
   const [activeStep, setActiveStep] = useState(0);
-  const [createProject] = useMutation(CREATE_PROJECT_MUTATION);
-  const notification = useNotification();
+  const { createProject } = useCreateProject();
+  const { updateProject } = useUpdateProject();
+
+  const { projectData } = useProject(projectId);
+  const { users } = useNormalizedUsers();
 
   const getStepContent = (step: number) => {
     switch (step) {
@@ -53,16 +61,38 @@ export const AddNewProject: React.FC<ProjectProps> = ({
     }
   };
 
-  const initialValues = {
-    [CreateProjectFields.Type]: Enum_Project_Type.TimeMaterial,
-    [CreateProjectFields.Name]: '',
-    [CreateProjectFields.Client]: '',
-    [CreateProjectFields.Start]: new Date(),
-    [CreateProjectFields.End]: addYears(new Date(), 1),
-    [CreateProjectFields.Managers]: '',
-    [CreateProjectFields.Salary]: [],
-    [CreateProjectFields.Users]: [],
-  };
+  const initialValues =
+    projectId && projectData
+      ? {
+          [CreateProjectFields.Type]: projectData?.type,
+          [CreateProjectFields.Name]: projectData?.name,
+          [CreateProjectFields.Client]: projectData?.client,
+          [CreateProjectFields.Start]: new Date(projectData?.start),
+          [CreateProjectFields.End]: new Date(projectData?.end),
+          [CreateProjectFields.Manager]: projectData?.manager?.data?.id,
+          [CreateProjectFields.Salary]: projectData?.salary?.map((el) => {
+            const user = users?.find(
+              (user) =>
+                user.attributes?.lastName ===
+                el?.users?.data?.attributes?.lastName
+            );
+
+            return { users: user?.id, rate: el?.rate };
+          }),
+          [CreateProjectFields.Users]: projectData?.salary?.map(
+            (el) => el?.users?.data?.id ?? null
+          ),
+        }
+      : {
+          [CreateProjectFields.Type]: Enum_Project_Type.TimeMaterial,
+          [CreateProjectFields.Name]: '',
+          [CreateProjectFields.Client]: '',
+          [CreateProjectFields.Start]: new Date(),
+          [CreateProjectFields.End]: addYears(new Date(), 1),
+          [CreateProjectFields.Manager]: '',
+          [CreateProjectFields.Salary]: [],
+          [CreateProjectFields.Users]: [],
+        };
 
   const validationSchema = yup.object({
     [CreateProjectFields.Name]: yup
@@ -73,44 +103,31 @@ export const AddNewProject: React.FC<ProjectProps> = ({
       .string()
       .min(5, 'Client name must be at least 5 characters')
       .required('Should not be empty'),
-    [CreateProjectFields.Managers]: yup
-      .string()
-      .required('Should not be empty'),
-    [CreateProjectFields.Users]: yup.array().min(1, 'Minimum of 1 employee'),
+    [CreateProjectFields.Manager]: yup.string().required('Should not be empty'),
+    [CreateProjectFields.Users]: yup.array().min(1, 'Minimum one employee'),
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
+    enableReinitialize: !!projectId,
     onSubmit: (values) => {
       const data = {
         ...values,
-        [CreateProjectFields.Start]: format(
-          values[CreateProjectFields.Start],
-          'yyyy-MM-dd'
+        [CreateProjectFields.Start]: getFormattedDate(
+          values[CreateProjectFields.Start]
         ),
-        [CreateProjectFields.End]: format(
-          values[CreateProjectFields.End],
-          'yyyy-MM-dd'
+        [CreateProjectFields.End]: getFormattedDate(
+          values[CreateProjectFields.End]
         ),
       };
-
-      createProject({ variables: { data } })
-        .then(() => {
-          notification({
-            message: `A new project named: ${
-              values[CreateProjectFields.Name]
-            }, was successfully created`,
-            variant: 'success',
+      projectId
+        ? updateProject(projectId, data).then(() => {
+            setIsCreateProject(false);
+          })
+        : createProject(data).then(() => {
+            setIsCreateProject(false);
           });
-          setIsCreateProject(false);
-        })
-        .catch(() => {
-          notification({
-            message: 'A problem occurred when creating a new project',
-            variant: 'error',
-          });
-        });
     },
   });
 
@@ -147,7 +164,9 @@ export const AddNewProject: React.FC<ProjectProps> = ({
   return (
     <FormikContext.Provider value={formik}>
       <Stack height="100%">
-        <Typography variant="h1">Add new project</Typography>
+        <Typography variant="h1">
+          {projectId ? 'Edit project' : 'Add new project'}
+        </Typography>
         <Stack
           component="form"
           onSubmit={formik.handleSubmit}
@@ -193,7 +212,11 @@ export const AddNewProject: React.FC<ProjectProps> = ({
               onClick={handleNext}
               sx={{ width: 150 }}
             >
-              {activeStep >= steps.length - 1 ? 'Create' : 'Next'}
+              {activeStep >= steps.length - 1
+                ? projectId
+                  ? 'Update'
+                  : 'Create'
+                : 'Next'}
             </Button>
           </Stack>
         </Stack>

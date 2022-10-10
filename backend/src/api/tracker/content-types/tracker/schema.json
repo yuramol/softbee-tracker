@@ -28,9 +28,9 @@
       "target": "api::project.project",
       "inversedBy": "trackers"
     },
-    "duration": {
-      "type": "time",
-      "required": false
+    "durationMinutes": {
+      "type": "biginteger",
+      "default": "0"
     },
     "user": {
       "type": "relation",
@@ -67,7 +67,12 @@
         "rejected"
       ],
       "required": false
+    },
+    "transaction": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::transaction.transaction",
+      "inversedBy": "tracker"
     }
-
   }
 }

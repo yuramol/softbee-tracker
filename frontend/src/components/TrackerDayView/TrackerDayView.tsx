@@ -1,9 +1,5 @@
-import React, { createContext, useEffect, useState } from 'react';
-import {
-  useMutation,
-  OperationVariables,
-  ApolloQueryResult,
-} from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+
 import {
   addDays,
   format,
@@ -19,46 +15,20 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { DayTabs } from './DayTabs';
-import { TrackerAddNewEntry } from '../TrackerAddNewEntry';
-import { useCurrentWeek, useNotification } from 'hooks';
-import {
-  UPDATE_TRACKER_BY_ID_MUTATION,
-  DELETE_TRACKER_BY_ID_MUTATION,
-  CREATE_TRACKER_BY_USER_ID_MUTATION,
-} from 'api';
-import {
-  Maybe,
-  Scalars,
-  TrackerEntityResponseCollection,
-  TrackerInput,
-} from 'types/GraphqlTypes';
-import { parseTrackerTime } from 'helpers';
-import { TrackerByDay } from 'hooks/useNormalizedTrackers';
+import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
 
-export type TrackerContext = {
-  onCreateTracker: (values: TrackerInput) => void;
-  onUpdateTracker: (id?: Maybe<string>, values?: TrackerInput) => void;
-  onDeleteTracker: (id?: Maybe<string>) => void;
-};
+import { TrackerByDay } from 'hooks/useNormalizedTrackers';
+import { useCurrentWeek } from 'hooks';
 
 type TrackerDayViewProps = {
   selectedDay: Date;
   trackers: TrackerByDay[];
-  refetchTrackers: (variables?: Partial<OperationVariables>) => Promise<
-    ApolloQueryResult<{
-      trackers: TrackerEntityResponseCollection;
-    }>
-  >;
 };
-
-export const TimeContext = createContext<TrackerContext>({} as TrackerContext);
 
 export const TrackerDayView = ({
   selectedDay,
   trackers,
-  refetchTrackers,
 }: TrackerDayViewProps) => {
-  const notification = useNotification();
   const [currentWeekDay, setCurrentWeekDay] = useState(selectedDay);
   const { weekStart, weekEnd, days, currentDay } =
     useCurrentWeek(currentWeekDay);
@@ -69,54 +39,6 @@ export const TrackerDayView = ({
     setCurrentWeekDay(selectedDay);
     setTabsValue(currentDay);
   }, [selectedDay]);
-
-  const [createTracker] = useMutation(CREATE_TRACKER_BY_USER_ID_MUTATION);
-  const [updateTracker] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
-  const [deleteTracker] = useMutation(DELETE_TRACKER_BY_ID_MUTATION);
-
-  const onCreateTracker = (values: TrackerInput) => {
-    const data = {
-      ...values,
-      date: format(values.date, 'yyyy-MM-dd'),
-      duration: format(
-        parseTrackerTime(values.duration, 'HH:mm'),
-        'HH:mm:ss.SSS'
-      ),
-    };
-
-    createTracker({ variables: { data } }).then(() => {
-      refetchTrackers();
-      notification({
-        message: 'The tracker was successfully created',
-        variant: 'success',
-      });
-    });
-  };
-
-  const onUpdateTracker = (id: Maybe<Scalars['ID']>, values: TrackerInput) => {
-    const data = {
-      ...values,
-      duration: format(values.duration, 'HH:mm:ss.SSS'),
-    };
-
-    updateTracker({ variables: { id, data } }).then(() => {
-      refetchTrackers();
-      notification({
-        message: 'The tracker was successfully updated',
-        variant: 'info',
-      });
-    });
-  };
-
-  const onDeleteTracker = (id: Maybe<Scalars['ID']>) => {
-    deleteTracker({ variables: { id } }).then(() => {
-      refetchTrackers();
-      notification({
-        message: 'The tracker was successfully deleted',
-        variant: 'warning',
-      });
-    });
-  };
 
   const handleCurrentDate = () => {
     setCurrentWeekDay(new Date());
@@ -156,11 +78,7 @@ export const TrackerDayView = ({
   const isEndEdit = isFuture(addDays(new Date(days[tabsValue].fullDate), 1));
 
   return (
-    <TimeContext.Provider
-      value={
-        { onCreateTracker, onUpdateTracker, onDeleteTracker } as TrackerContext
-      }
-    >
+    <>
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -198,7 +116,7 @@ export const TrackerDayView = ({
         tabsValue={tabsValue}
         setTabsValue={setTabsValue}
       />
-      <TrackerAddNewEntry />
-    </TimeContext.Provider>
+      <TrackerAddNewEntry currentDay={new Date(days[tabsValue].fullDate)} />
+    </>
   );
 };

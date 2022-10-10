@@ -23,6 +23,14 @@ import {
   WorkHistory,
   VisibilityRounded,
   Download,
+  Clear,
+  Sailing,
+  MedicalServices,
+  Info,
+  Houseboat,
+  Medication,
+  CheckCircleOutline,
+  HighlightOff,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -52,4 +60,12 @@ export const IconsMap: IconsNamesMapType = {
   upWork: WorkHistory,
   watch: VisibilityRounded,
   download: Download,
+  clear: Clear,
+  sailing: Sailing,
+  medicalServices: MedicalServices,
+  info: Info,
+  houseboat: Houseboat,
+  medication: Medication,
+  checkCircle: CheckCircleOutline,
+  highlightOff: HighlightOff,
 };
