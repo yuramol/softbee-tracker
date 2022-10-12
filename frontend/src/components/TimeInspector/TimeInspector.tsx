@@ -87,7 +87,17 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
         {(totalByProjects?.length as number) > 0 ? (
           totalByProjects?.map(({ name, total }) => (
             <ListItem key={name} disableGutters disablePadding>
-              <ListItemText primary={name} />
+              <ListItemText
+                primaryTypographyProps={{
+                  style: {
+                    paddingRight: '100px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  },
+                }}
+                primary={name}
+              />
               <ListItemText
                 sx={{ ml: 2, display: 'contents' }}
                 primary={total}

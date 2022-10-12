@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Link, Stack, Typography } from '@mui/material';
+import { Grid, IconButton, Link, Stack, Typography } from '@mui/material';
 
 import { Avatar, Icon, NavLink } from 'legos';
 import { ProjectEntity, Enum_Project_Type } from 'types/GraphqlTypes';
@@ -37,65 +37,86 @@ export const ProjectsList = ({
     <>
       {projectsList?.map((project) => {
         return (
-          <Stack
+          <Grid
             key={project.id}
-            direction="row"
+            container
             justifyContent="space-between"
-            alignItems="flex-start"
+            alignItems="center"
           >
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <Stack>{getProjectIcon(project.attributes?.type)}</Stack>
+            <Grid
+              item
+              xs={5}
+              container
+              direction="row"
+              alignItems="center"
+              flexWrap="nowrap"
+              spacing={1}
+            >
+              <Grid item>{getProjectIcon(project.attributes?.type)}</Grid>
 
-              <Stack>
+              <Grid
+                item
+                xs={6}
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+              >
                 <Link to={`/project/${project.id}`} component={NavLink}>
                   {project.attributes?.name}
                 </Link>
                 <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.start}`}</Typography>
-              </Stack>
-            </Stack>
+              </Grid>
+            </Grid>
 
-            <Stack gap={2}>
-              <Stack
+            <Grid item xs={5}>
+              <Grid
+                container
                 direction="row"
                 alignItems="center"
                 spacing={1}
                 width="300px"
               >
-                <Avatar
-                  avatar={
-                    project.attributes?.manager?.data?.attributes?.avatar?.data
-                      ?.attributes?.url
-                      ? `${process.env.REACT_APP_URI}${project.attributes?.manager?.data?.attributes?.avatar.data?.attributes?.url}`
-                      : undefined
-                  }
-                  firstName={
-                    project.attributes?.manager?.data?.attributes?.firstName
-                  }
-                  lastName={
-                    project.attributes?.manager?.data?.attributes?.lastName
-                  }
-                />
-                <NavLink
-                  to={`/profile/${project.attributes?.manager?.data?.id}`}
-                  state={{ edit: false }}
-                >
-                  {`${project.attributes?.manager?.data?.attributes?.firstName} ${project.attributes?.manager?.data?.attributes?.lastName}`}
-                </NavLink>
-              </Stack>
-            </Stack>
+                <Grid item>
+                  <Avatar
+                    avatar={
+                      project.attributes?.manager?.data?.attributes?.avatar
+                        ?.data?.attributes?.url
+                        ? `${process.env.REACT_APP_URI}${project.attributes?.manager?.data?.attributes?.avatar.data?.attributes?.url}`
+                        : undefined
+                    }
+                    firstName={
+                      project.attributes?.manager?.data?.attributes?.firstName
+                    }
+                    lastName={
+                      project.attributes?.manager?.data?.attributes?.lastName
+                    }
+                  />
+                </Grid>
+                <Grid item>
+                  <NavLink
+                    to={`/profile/${project.attributes?.manager?.data?.id}`}
+                    state={{ edit: false }}
+                  >
+                    {`${project.attributes?.manager?.data?.attributes?.firstName} ${project.attributes?.manager?.data?.attributes?.lastName}`}
+                  </NavLink>
+                </Grid>
+              </Grid>
+            </Grid>
 
-            <Stack direction="row">
+            <Grid item xs={2}>
               <IconButton
                 onClick={() => handlerEditProject(project.id as string)}
                 aria-label="edit"
               >
                 <Icon icon="editOutlined" />
               </IconButton>
-              <IconButton aria-label="archive">
-                <Icon icon="archiveOutlined" />
-              </IconButton>
-            </Stack>
-          </Stack>
+              <Link to={`/project/${project.id}`} component={NavLink}>
+                <IconButton aria-label="archive">
+                  <Icon icon="archiveOutlined" />
+                </IconButton>
+              </Link>
+            </Grid>
+          </Grid>
         );
       })}
     </>
