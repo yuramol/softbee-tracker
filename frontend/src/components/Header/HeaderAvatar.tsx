@@ -31,7 +31,7 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
     ? `${process.env.REACT_APP_URI}${userData?.avatar?.data?.attributes?.url}`
     : '';
 
-  return (
+  return userData ? (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip
         title={
@@ -82,5 +82,5 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
         </MenuItem>
       </Menu>
     </Box>
-  );
+  ) : null;
 };
