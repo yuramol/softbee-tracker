@@ -4,8 +4,8 @@ export type DefaultRangeDatesItem = {
 };
 
 export type RangeCalendarProps = {
-  selectedDates: string[];
-  setSelectedDates: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedDates: Date[];
+  setSelectedDates: React.Dispatch<React.SetStateAction<Date[]>>;
   defaultRangeDates?: DefaultRangeDatesItem[];
   disablePast?: boolean;
   disableFuture?: boolean;

@@ -67,17 +67,12 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     }
   );
 
-  const [selectedDates, setSelectedDates] = useState([
-    getFormattedDate(new Date()),
-  ]);
+  const [selectedDates, setSelectedDates] = useState([new Date()]);
   const [breakId, setBreakId] = useState('');
 
   const breaksDateArray = eachDayOfInterval({
-    start: new Date(selectedDates[0]),
-    end:
-      selectedDates.length > 1
-        ? new Date(selectedDates[1])
-        : new Date(selectedDates[0]),
+    start: selectedDates[0],
+    end: selectedDates.length > 1 ? selectedDates[1] : selectedDates[0],
   }).filter((date) => !isWeekend(date));
 
   const selectedBreak = breaks?.find(({ id }) => id === breakId);

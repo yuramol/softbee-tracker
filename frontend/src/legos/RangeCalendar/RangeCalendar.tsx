@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   PickersDay,
   StaticDatePicker,
@@ -32,9 +32,7 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
   const rangeCalendarRef = useRef(null);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [value, setValue] = React.useState<Date | null>(
-    new Date(selectedDates[0])
-  );
+  const [value, setValue] = React.useState<Date | null>(selectedDates[0]);
 
   const handleClickAway = () => {
     setAnchorEl(null);
@@ -58,12 +56,12 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
     }
 
     setSelectedDates(newSelectedDates.sort());
-    setValue(new Date(newSelectedDates[0]));
+    setValue(newSelectedDates[0]);
   };
 
   const handleSetRangeDate = (value: string[]) => {
     setSelectedDates(value);
-    setValue(new Date(value[0]));
+    setValue(value[0]);
   };
 
   return (
@@ -77,9 +75,9 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
       >
         <Stack>
           <Typography fontWeight="600">Period:</Typography>
-          <Typography>{`${format(new Date(selectedDates[0]), 'd MMM yyyy')}${
+          <Typography>{`${format(selectedDates[0], 'd MMM yyyy')}${
             selectedDates[1]
-              ? ` - ${format(new Date(selectedDates[1]), 'd MMM yyyy')}`
+              ? ` - ${format(selectedDates[1], 'd MMM yyyy')}`
               : ''
           }`}</Typography>
         </Stack>
@@ -119,8 +117,8 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
                   renderInput={(params) => <TextField {...params} />}
                   renderDay={(day, selectedDays, pickersDayProps) => {
                     const isBetweenDates =
-                      isAfter(day, subDays(new Date(selectedDates[0]), 1)) &&
-                      isBefore(day, new Date(selectedDates[1]));
+                      isAfter(day, subDays(selectedDates[0], 1)) &&
+                      isBefore(day, selectedDates[1]);
 
                     return (
                       <PickersDay

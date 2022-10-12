@@ -12,9 +12,7 @@ type Props = {
 };
 
 export const ProjectTransactionsTab = ({ projectId }: Props) => {
-  const [selectedDates, setSelectedDates] = useState([
-    getFormattedDate(new Date()),
-  ]);
+  const [selectedDates, setSelectedDates] = useState([new Date()]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
 
   const { usersChoices } = useNormalizedUsers();
@@ -28,8 +26,13 @@ export const ProjectTransactionsTab = ({ projectId }: Props) => {
     },
     date:
       selectedDates.length > 1
-        ? { between: selectedDates }
-        : { eq: selectedDates[0] },
+        ? {
+            between: [
+              getFormattedDate(selectedDates[0]),
+              getFormattedDate(selectedDates[1]),
+            ],
+          }
+        : { eq: getFormattedDate(selectedDates[0]) },
   };
 
   const { normalizedTrackers } = useNormalizedTrackers(

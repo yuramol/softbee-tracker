@@ -6,15 +6,14 @@ import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
 import { MultipleSelect, RangeCalendar } from 'legos';
 import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
+import { reportRangeDates } from 'pages/ReportPage/helpers';
 
 type Props = {
   projectId: string;
 };
 
 export const ProjectReportTab = ({ projectId }: Props) => {
-  const [selectedDates, setSelectedDates] = useState([
-    getFormattedDate(new Date()),
-  ]);
+  const [selectedDates, setSelectedDates] = useState([new Date()]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
 
   const { usersChoices } = useNormalizedUsers();
@@ -28,8 +27,13 @@ export const ProjectReportTab = ({ projectId }: Props) => {
     },
     date:
       selectedDates.length > 1
-        ? { between: selectedDates }
-        : { eq: selectedDates[0] },
+        ? {
+            between: [
+              getFormattedDate(selectedDates[0]),
+              getFormattedDate(selectedDates[1]),
+            ],
+          }
+        : { eq: getFormattedDate(selectedDates[0]) },
   };
 
   const { normalizedTrackers } = useNormalizedTrackers(
@@ -49,6 +53,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
         <RangeCalendar
           selectedDates={selectedDates}
           setSelectedDates={setSelectedDates}
+          defaultRangeDates={reportRangeDates}
         />
       </Grid>
       <Grid item xs={5}>
