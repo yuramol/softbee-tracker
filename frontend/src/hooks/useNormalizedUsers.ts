@@ -34,7 +34,7 @@ export const useNormalizedUsers = (
 ) => {
   const { data, loading, refetch } = useQuery<{
     usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
-  }>(USERS_QUERY, { variables: { filters } });
+  }>(USERS_QUERY, { variables: { filters }, fetchPolicy: 'cache-first' });
 
   const users = data?.usersPermissionsUsers.data;
   const managers: UsersPermissionsUserEntity[] = [];
