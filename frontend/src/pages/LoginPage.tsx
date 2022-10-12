@@ -9,7 +9,6 @@ import { useAuthUser, useNotification } from 'hooks';
 import { MainWrapper } from 'components';
 import { UsersPermissionsLoginPayload } from 'types/GraphqlTypes';
 import { PageProps } from './types';
-import { Container } from '@mui/system';
 
 enum LoginFields {
   Identifier = 'identifier',
