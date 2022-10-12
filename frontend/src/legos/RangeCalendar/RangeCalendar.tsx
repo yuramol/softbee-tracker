@@ -19,7 +19,6 @@ import {
 import { format, isAfter, isBefore, subDays } from 'date-fns';
 
 import { Icon } from 'legos';
-import { getFormattedDate } from 'helpers';
 import { RangeCalendarProps } from './types';
 
 export const RangeCalendar: React.FC<RangeCalendarProps> = ({

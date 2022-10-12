@@ -29,8 +29,6 @@ export const useNormalizedTrackers = (
     trackers: TrackerEntityResponseCollection;
   }>(TRACKERS_QUERY);
 
-  console.log('debug > filters===', filters);
-
   useEffect(() => {
     if (!lazy) {
       fetchTrackers({

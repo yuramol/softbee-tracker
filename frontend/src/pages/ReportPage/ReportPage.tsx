@@ -52,7 +52,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
     fetchTrackers({
       variables: { filters: reportFilter },
     });
-  }, [selectedDates, selectedEmployees, selectedProjects, checked]);
+  }, [selectedDates, selectedEmployees, selectedProjects]);
 
   const reportTotalTime = useMemo(() => {
     let totalTime = 0;
@@ -87,7 +87,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
           </Typography>
         </Stack>
         <Stack flexDirection="row" gap={2}>
-          <Typography fontWeight="600">Total:</Typography>
+          <Typography fontWeight="600">Total tracked:</Typography>
           <Typography>{reportTotalTime}</Typography>
         </Stack>
       </Stack>

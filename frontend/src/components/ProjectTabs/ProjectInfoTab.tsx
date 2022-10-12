@@ -23,7 +23,7 @@ export const ProjectInfoTab = ({ id }: Props) => {
               <Typography fontSize="15px" color="GrayText">
                 Project type
               </Typography>
-              <Typography>Time Material</Typography>
+              <Typography>Time&Material</Typography>
             </Stack>
           </>
         );
@@ -62,11 +62,11 @@ export const ProjectInfoTab = ({ id }: Props) => {
     );
   }
 
-  return (
+  return projectData ? (
     <Stack flexDirection="row" gap={8}>
       <Stack gap={4}>
         <Stack>
-          <Typography variant="h1">{projectData?.name}</Typography>
+          <Typography variant="h1">{projectData.name}</Typography>
           <Typography fontSize="15px" color="GrayText">
             Project details
           </Typography>
@@ -74,28 +74,28 @@ export const ProjectInfoTab = ({ id }: Props) => {
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <Avatar
             avatar={
-              projectData?.manager?.data?.attributes?.avatar?.data?.attributes
+              projectData.manager?.data?.attributes?.avatar?.data?.attributes
                 ?.url
-                ? `${process.env.REACT_APP_URI}${projectData?.manager?.data?.attributes?.avatar.data?.attributes?.url}`
+                ? `${process.env.REACT_APP_URI}${projectData.manager?.data?.attributes?.avatar.data?.attributes?.url}`
                 : undefined
             }
-            firstName={projectData?.manager?.data?.attributes?.firstName}
-            lastName={projectData?.manager?.data?.attributes?.lastName}
+            firstName={projectData.manager?.data?.attributes?.firstName}
+            lastName={projectData.manager?.data?.attributes?.lastName}
           />
           <Stack flexGrow="1">
             <Typography fontSize="15px" color="GrayText">
               Project manager
             </Typography>
             <NavLink
-              to={`/profile/${projectData?.manager?.data?.id}`}
+              to={`/profile/${projectData.manager?.data?.id}`}
               state={{ edit: false }}
             >
-              {`${projectData?.manager?.data?.attributes?.firstName} ${projectData?.manager?.data?.attributes?.lastName}`}
+              {`${projectData.manager?.data?.attributes?.firstName} ${projectData.manager?.data?.attributes?.lastName}`}
             </NavLink>
           </Stack>
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={3}>
-          {getProjectType(projectData?.type)}
+          {getProjectType(projectData.type)}
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={3}>
           <Icon icon="calendarMonth" />
@@ -103,17 +103,17 @@ export const ProjectInfoTab = ({ id }: Props) => {
             <Typography fontSize="15px" color="GrayText">
               Project start
             </Typography>
-            <Typography>{projectData?.start}</Typography>
+            <Typography>{projectData.start}</Typography>
           </Stack>
         </Stack>
-        {projectData?.end && (
+        {projectData.end && (
           <Stack flexDirection="row" alignItems="center" gap={3}>
             <Icon icon="calendarMonth" />
             <Stack flexGrow="1">
               <Typography fontSize="15px" color="GrayText">
                 Project end
               </Typography>
-              <Typography>{projectData?.end}</Typography>
+              <Typography>{projectData.end}</Typography>
             </Stack>
           </Stack>
         )}
@@ -124,7 +124,7 @@ export const ProjectInfoTab = ({ id }: Props) => {
             <Typography fontSize="15px" color="GrayText">
               Client
             </Typography>
-            <Typography>{projectData?.client}</Typography>
+            <Typography>{projectData.client}</Typography>
           </Stack>
         </Stack>
         {!!trakedTime && (
@@ -141,5 +141,5 @@ export const ProjectInfoTab = ({ id }: Props) => {
         )}
       </Stack>
     </Stack>
-  );
+  ) : null;
 };
