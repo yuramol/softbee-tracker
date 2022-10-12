@@ -28,7 +28,7 @@ export const SearchInput = ({
         label={label}
         size={size}
         value={searchValue}
-        onChange={(value) => setSearchValue(value)}
+        onChange={(e) => setSearchValue(e.target.value)}
         type="search"
         InputProps={{
           endAdornment: (

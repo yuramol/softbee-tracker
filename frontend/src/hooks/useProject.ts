@@ -7,6 +7,7 @@ export const useProject = (id: Scalars['ID']) => {
     project: ProjectEntityResponse;
   }>(PROJECT_QUERY, {
     variables: { id },
+    fetchPolicy: 'network-only',
   });
 
   const projectData = data?.project.data?.attributes;

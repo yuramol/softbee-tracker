@@ -22,18 +22,20 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const [endMonth, setEndMonth] = useState(
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
-
-  const { normalizedTrackers, refetch } = useNormalizedTrackers({
-    user: { id: { in: [user.id] } },
-    date: { between: [startMonth, endMonth] },
-  });
+  const { normalizedTrackers } = useNormalizedTrackers(
+    {
+      user: { id: { in: [user.id] } },
+      date: { between: [startMonth, endMonth] },
+    },
+    user.id
+  );
 
   return (
     <MainWrapper
       sidebar={
         <>
           <VacationWidget />
-          <TimeInspector />
+          <TimeInspector userId={user.id} />
           <TrackerCalendar
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
@@ -45,11 +47,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
       }
     >
       <Typography variant="h1">{title}</Typography>
-      <TrackerDayView
-        selectedDay={selectedDay}
-        trackers={normalizedTrackers}
-        refetchTrackers={refetch}
-      />
+      <TrackerDayView selectedDay={selectedDay} trackers={normalizedTrackers} />
     </MainWrapper>
   );
 };

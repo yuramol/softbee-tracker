@@ -134,9 +134,25 @@
     },
     "manager_projects": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "oneToMany",
       "target": "api::project.project",
-      "inversedBy": "managers"
+      "mappedBy": "manager"
+    },
+    "transactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::transaction.transaction",
+      "mappedBy": "userUpdateBy"
+    },
+    "typeSalary": {
+      "type": "enumeration",
+      "enum": [
+        "fixed",
+        "hour"
+      ]
+    },
+    "salary": {
+      "type": "integer"
     }
   }
 }

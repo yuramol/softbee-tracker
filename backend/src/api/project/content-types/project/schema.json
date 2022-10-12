@@ -64,11 +64,11 @@
     "start": {
       "type": "date"
     },
-    "managers": {
+    "manager": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
-      "mappedBy": "manager_projects"
+      "inversedBy": "manager_projects"
     },
     "end": {
       "type": "date"
@@ -87,6 +87,12 @@
       ],
       "required": true,
       "default": "active"
+    },
+    "transactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::transaction.transaction",
+      "mappedBy": "project"
     }
   }
 }

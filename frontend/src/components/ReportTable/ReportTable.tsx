@@ -8,11 +8,11 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { parseTrackerTime } from 'helpers';
 import { format } from 'date-fns';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
+import { toHoursAndMinutes } from 'components/TimePicker/utils';
 
 type ReportTableProps = {
   trackers: TrackerByDay[];
@@ -78,7 +78,9 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                           </>
                         )}
                       </TableCell>
-                      <TableCell>{attributes?.durationMinutes ?? 0}</TableCell>
+                      <TableCell>
+                        {toHoursAndMinutes(attributes?.durationMinutes ?? 0)}
+                      </TableCell>
                     </TableRow>
                   );
                 })

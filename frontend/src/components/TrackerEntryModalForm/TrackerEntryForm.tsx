@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 import { Select, CalendarPickerFormik } from 'legos';
 import { TimePicker } from 'components';
-import { useNormalizedUsers, useProjects } from 'hooks';
+import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
 
@@ -25,7 +25,7 @@ const modalStyle = {
 export const TIME_ENTRY_FIELDS = {
   DATE: 'date',
   DESCRIPTION: 'description',
-  DURATION: 'duration',
+  DURATION: 'durationMinutes',
   PROJECT: 'project',
   STATUS: 'status',
   USER: 'user',
@@ -43,8 +43,10 @@ export const TrackerEntryForm = ({
   buttonCloseTitle = 'Cancel',
   buttonSubmitTitle = 'Save Time',
 }: TrackerEntryFormProps) => {
+  const { user } = useAuthUser();
+
   const { projectsChoices } = useProjects({
-    users: { id: { eq: userId } },
+    users: { id: { eq: user.id } },
   });
 
   const { usersChoices } = useNormalizedUsers({
@@ -69,11 +71,16 @@ export const TrackerEntryForm = ({
   });
 
   const initialValues: TimeEntryValues = {
-    [TIME_ENTRY_FIELDS.USER]: initialValuesForm?.user ?? userId,
-    [TIME_ENTRY_FIELDS.DATE]: initialValuesForm?.date ?? new Date(),
-    [TIME_ENTRY_FIELDS.DURATION]: initialValuesForm?.duration ?? 0,
-    [TIME_ENTRY_FIELDS.DESCRIPTION]: initialValuesForm?.description ?? '',
-    [TIME_ENTRY_FIELDS.PROJECT]: initialValuesForm?.project ?? '',
+    [TIME_ENTRY_FIELDS.USER]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.USER] ?? userId,
+    [TIME_ENTRY_FIELDS.DATE]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.DATE] ?? new Date(),
+    [TIME_ENTRY_FIELDS.DURATION]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.DURATION] ?? 0,
+    [TIME_ENTRY_FIELDS.DESCRIPTION]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.DESCRIPTION] ?? '',
+    [TIME_ENTRY_FIELDS.PROJECT]:
+      initialValuesForm?.[TIME_ENTRY_FIELDS.PROJECT] ?? '',
   };
 
   const formik = useFormik<TimeEntryValues>({

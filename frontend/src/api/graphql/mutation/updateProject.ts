@@ -9,8 +9,15 @@ export const UPDATE_PROJECT_MUTATION = gql`
           name
           start
           end
-          managers
-          salary
+          manager {
+            data {
+              id
+            }
+          }
+          salary {
+            id
+            rate
+          }
           status
           createdAt
         }

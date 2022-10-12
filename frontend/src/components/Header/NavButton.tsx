@@ -14,9 +14,12 @@ export const HeaderButton = styled(Button)(() => ({
 }));
 
 export const NavButton: React.FC<Page> = ({ name, href }) => {
-  const { normalizedTrackers } = useNormalizedTrackers({
-    status: { eq: Enum_Tracker_Status.New },
-  });
+  const { normalizedTrackers } = useNormalizedTrackers(
+    {
+      status: { eq: Enum_Tracker_Status.New },
+    },
+    true
+  );
 
   return (
     <NavLink key={name} to={href} style={{ position: 'relative' }}>

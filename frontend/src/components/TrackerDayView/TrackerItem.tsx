@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   IconButton,
@@ -12,42 +12,46 @@ import {
 } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 
-import { TimeContext } from './TrackerDayView';
 import { Icon } from 'legos';
 import { TimePicker } from 'components';
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
-import { useAuthUser } from 'hooks';
+import { useUpdateTracker, useDeleteTracker, useNotification } from 'hooks';
 import { TrackerEntity } from 'types/GraphqlTypes';
 import { useStartTracker } from 'modules/LiveTracker/hooks';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
+import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
 };
 
 export const TrackerItem = ({ tracker }: TrackerItemProps) => {
-  const { user } = useAuthUser();
-  const { onUpdateTracker, onDeleteTracker } = useContext(TimeContext);
+  const { updateTracker } = useUpdateTracker();
+  const { deleteTracker } = useDeleteTracker();
   const { startTracker } = useStartTracker();
+  const notification = useNotification();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleChange = (value: number, submit?: boolean) => {
-    if (submit) {
-      onUpdateTracker(tracker.id, {
-        durationMinutes: value,
-      });
-    }
+  const initialValuesForm: TimeEntryValues = {
+    [TIME_ENTRY_FIELDS.DATE]: parseISO(tracker.attributes?.date ?? ''),
+    [TIME_ENTRY_FIELDS.DURATION]: tracker.attributes?.durationMinutes ?? 0,
+    [TIME_ENTRY_FIELDS.DESCRIPTION]: tracker.attributes?.description ?? '',
+    [TIME_ENTRY_FIELDS.PROJECT]: tracker.attributes?.project?.data?.id ?? '',
   };
 
   const toggleOpenModal = () => {
     setIsOpenModal(!isOpenModal);
+  };
+
+  const handleStartTracker = () => {
+    startTracker(tracker);
   };
 
   const handleClickDeleteButton = (el: HTMLElement) => {
@@ -62,29 +66,43 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
 
   const handleDelete = () => {
     handleClickAway();
-    onDeleteTracker(tracker.id);
-  };
-
-  const initialValuesForm: TimeEntryValues = {
-    date: parseISO(tracker.attributes?.date ?? ''),
-    duration: tracker.attributes?.durationMinutes ?? 0,
-    description: tracker.attributes?.description ?? '',
-    project: tracker.attributes?.project?.data?.id ?? '',
-  };
-
-  const handleStartTracker = () => {
-    startTracker(tracker);
+    if (tracker?.id) {
+      deleteTracker(tracker.id).then(() => {
+        notification({
+          message: 'The tracker was successfully deleted',
+          variant: 'warning',
+        });
+      });
+    }
   };
 
   const handelSubmit = (values: TimeEntryValues) => {
-    onUpdateTracker(tracker.id, {
+    const data = {
+      ...values,
       date: format(values.date, 'yyyy-MM-dd'),
-      description: values.description,
-      project: values.project,
-      durationMinutes: values.duration,
-    });
-
+    };
+    if (tracker?.id) {
+      updateTracker(tracker.id, data).then(() => {
+        notification({
+          message: 'The tracker was successfully updated',
+          variant: 'success',
+        });
+      });
+    }
     toggleOpenModal();
+  };
+
+  const handleChange = (value: number, submit?: boolean) => {
+    if (submit && tracker?.id) {
+      updateTracker(tracker.id, {
+        durationMinutes: value,
+      }).then(() => {
+        notification({
+          message: 'The tracker was successfully updated',
+          variant: 'success',
+        });
+      });
+    }
   };
 
   return (
@@ -199,7 +217,6 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
         initialValuesForm={initialValuesForm}
         titleForm="Edit time entry"
         buttonSubmitTitle="Update"
-        userId={user.id}
       />
     </Grid>
   );
