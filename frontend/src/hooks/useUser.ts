@@ -8,6 +8,7 @@ export const useUser = (id: string) => {
   }>(USER_QUERY, {
     variables: { id },
     fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-only',
     skip: !id,
   });
 

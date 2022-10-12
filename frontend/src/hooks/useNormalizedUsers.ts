@@ -30,11 +30,14 @@ const getUserChoicesData = (
 });
 
 export const useNormalizedUsers = (
-  filters: UsersPermissionsUserFiltersInput = {}
+  filters?: UsersPermissionsUserFiltersInput
 ) => {
   const { data, loading, refetch } = useQuery<{
     usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
-  }>(USERS_QUERY, { variables: { filters }, fetchPolicy: 'cache-first' });
+  }>(USERS_QUERY, {
+    variables: { filters: filters ?? {} },
+    fetchPolicy: 'cache-first',
+  });
 
   const users = data?.usersPermissionsUsers.data;
   const managers: UsersPermissionsUserEntity[] = [];
