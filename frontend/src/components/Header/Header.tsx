@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Container, Stack } from '@mui/material';
 
-import { useAuthUser } from 'hooks';
 import { MenuAppBar } from './MenuAppBar';
 import { HeaderAvatar } from './HeaderAvatar';
 import { Logo } from './Logo';
@@ -10,7 +9,6 @@ import { HeaderProps } from './types';
 import { MenuType } from 'constant';
 
 export const Header: React.FC<HeaderProps> = ({ pages }) => {
-  const { isAuth } = useAuthUser();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -48,14 +46,12 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
           <Stack width="100%" direction="row" spacing={3} alignItems="center">
             <Logo />
             <NavBar pages={mainMenu} />
-            {isAuth && (
-              <HeaderAvatar
-                pages={secondaryMenu}
-                anchorElUser={anchorElUser}
-                handleOpenUserMenu={handleOpenUserMenu}
-                handleCloseUserMenu={handleCloseUserMenu}
-              />
-            )}
+            <HeaderAvatar
+              pages={secondaryMenu}
+              anchorElUser={anchorElUser}
+              handleOpenUserMenu={handleOpenUserMenu}
+              handleCloseUserMenu={handleCloseUserMenu}
+            />
           </Stack>
         </Toolbar>
       </Container>

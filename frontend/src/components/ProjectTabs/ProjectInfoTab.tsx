@@ -4,8 +4,7 @@ import { useProject } from 'hooks';
 import { Enum_Project_Type, Scalars } from 'types/GraphqlTypes';
 import { Stack, Typography } from '@mui/material';
 import { Avatar, Icon, NavLink } from 'legos';
-import { parseTrackerTime } from 'helpers';
-import { format } from 'date-fns';
+import { toHoursAndMinutes } from 'components/TimePicker/utils';
 
 type Props = {
   id: Scalars['ID'];
@@ -58,11 +57,8 @@ export const ProjectInfoTab = ({ id }: Props) => {
   };
 
   if (projectData?.trackers?.data[0]?.attributes?.durationMinutes) {
-    trakedTime = format(
-      parseTrackerTime(
-        projectData?.trackers?.data[0].attributes?.durationMinutes
-      ),
-      'HH:mm'
+    trakedTime = toHoursAndMinutes(
+      projectData.trackers.data[0].attributes.durationMinutes ?? 0
     );
   }
 

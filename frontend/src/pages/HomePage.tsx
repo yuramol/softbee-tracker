@@ -30,7 +30,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     user.id
   );
 
-  return (
+  return user.id ? (
     <MainWrapper
       sidebar={
         <>
@@ -49,7 +49,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
       <Typography variant="h1">{title}</Typography>
       <TrackerDayView selectedDay={selectedDay} trackers={normalizedTrackers} />
     </MainWrapper>
-  );
+  ) : null;
 };
 
 export default HomePage;
