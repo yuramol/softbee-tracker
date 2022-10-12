@@ -7,6 +7,7 @@ export const useUser = (id: string) => {
     usersPermissionsUser: UsersPermissionsUserEntityResponse;
   }>(USER_QUERY, {
     variables: { id },
+    fetchPolicy: 'cache-first',
     skip: !id,
   });
 

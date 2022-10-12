@@ -25,19 +25,19 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
   handleOpenUserMenu,
   handleCloseUserMenu,
 }) => {
-  const { user, logout } = useAuthUser();
+  const { isAuth, user, logout } = useAuthUser();
   const { userData } = useUser(user.id);
   const pathAvatar = userData?.avatar?.data?.attributes?.url
     ? `${process.env.REACT_APP_URI}${userData?.avatar?.data?.attributes?.url}`
     : '';
 
-  return userData ? (
+  return isAuth && userData ? (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip
         title={
           <Box display="flex" flexDirection="column" textAlign="center">
-            <Typography variant="body2">{`${userData?.firstName} ${userData?.lastName}`}</Typography>
-            <Typography variant="body2">{userData?.email}</Typography>
+            <Typography variant="body2">{`${userData.firstName} ${userData.lastName}`}</Typography>
+            <Typography variant="body2">{userData.email}</Typography>
           </Box>
         }
       >
@@ -45,8 +45,8 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
           <Avatar
             width={40}
             height={40}
-            firstName={userData?.firstName}
-            lastName={userData?.lastName}
+            firstName={userData.firstName}
+            lastName={userData.lastName}
             avatar={pathAvatar}
           />
         </IconButton>
