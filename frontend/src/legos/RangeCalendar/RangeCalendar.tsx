@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   PickersDay,
   StaticDatePicker,
@@ -45,7 +45,7 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
   };
 
   const handleSetDate = (date: Date) => {
-    const selectedDay = getFormattedDate(date);
+    const selectedDay = date;
     const newSelectedDates = [...selectedDates];
 
     if (newSelectedDates.length < 2) {
@@ -59,7 +59,7 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
     setValue(newSelectedDates[0]);
   };
 
-  const handleSetRangeDate = (value: string[]) => {
+  const handleSetRangeDate = (value: Date[]) => {
     setSelectedDates(value);
     setValue(value[0]);
   };

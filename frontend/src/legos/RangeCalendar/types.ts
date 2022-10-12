@@ -1,6 +1,6 @@
 export type DefaultRangeDatesItem = {
   label: string;
-  value: [string, string];
+  value: [Date, Date];
 };
 
 export type RangeCalendarProps = {
