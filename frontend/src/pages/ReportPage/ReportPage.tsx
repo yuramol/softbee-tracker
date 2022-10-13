@@ -7,6 +7,7 @@ import { PageProps } from '../types';
 import { useNormalizedTrackers } from 'hooks';
 import { getFormattedDate, getHours } from 'helpers';
 import { ReportPageSidebar } from './ReportPageSidebar';
+import { breaksTitles } from 'constant';
 
 const ReportPage: React.FC<PageProps> = ({ title }) => {
   const [selectedDates, setSelectedDates] = useState([
@@ -44,7 +45,6 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   };
   const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(
     reportFilter,
-    false,
     true
   );
 
@@ -54,11 +54,26 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
     });
   }, [selectedDates, selectedEmployees, selectedProjects]);
 
-  const reportTotalTime = useMemo(() => {
+  const totalTracked = useMemo(() => {
     let totalTime = 0;
     normalizedTrackers.forEach(({ total }) => (totalTime += total));
 
-    return getHours(totalTime);
+    return totalTime;
+  }, [normalizedTrackers]);
+
+  const totalTrackedWithoutVacations = useMemo(() => {
+    let totalTime = 0;
+    normalizedTrackers.forEach(({ total, trackersByProject }) => {
+      trackersByProject.forEach(({ name }) => {
+        if (breaksTitles.includes(name as string)) {
+          totalTime += total;
+        } else {
+          return;
+        }
+      });
+    });
+
+    return totalTime;
   }, [normalizedTrackers]);
 
   const reportSidebarProps = {
@@ -88,7 +103,13 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
         </Stack>
         <Stack flexDirection="row" gap={2}>
           <Typography fontWeight="600">Total tracked:</Typography>
-          <Typography>{reportTotalTime}</Typography>
+          <Typography>
+            {getHours(
+              checked
+                ? totalTracked
+                : totalTracked - totalTrackedWithoutVacations
+            )}
+          </Typography>
         </Stack>
       </Stack>
       <Stack mt={6}>

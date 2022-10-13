@@ -60,9 +60,9 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                             <Typography>{attributes?.description}</Typography>
                             <Typography variant="body2" mt={2}>
                               {`${attributes?.user?.data?.attributes?.firstName}
-           ${attributes?.user?.data?.attributes?.lastName}
-           (${attributes?.user?.data?.attributes?.username})
-           `}
+                                  ${attributes?.user?.data?.attributes?.lastName}
+                                  (${attributes?.user?.data?.attributes?.username})
+                                  `}
                             </Typography>
                           </>
                         ) : (
@@ -79,9 +79,9 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                             </Typography>
                             <Typography variant={'body2'} mt={2}>
                               {`${attributes?.user?.data?.attributes?.firstName}
-             ${attributes?.user?.data?.attributes?.lastName}
-             (${attributes?.user?.data?.attributes?.username})
-             `}
+                                ${attributes?.user?.data?.attributes?.lastName}
+                                (${attributes?.user?.data?.attributes?.username})
+                                `}
                             </Typography>
                           </>
                         )}

@@ -1,4 +1,4 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 
 import { TRACKERS_QUERY } from 'api';
 import { useEffect } from 'react';
@@ -22,7 +22,6 @@ export type TrackerByDay = {
 
 export const useNormalizedTrackers = (
   filters: TrackerFiltersInput,
-  id?: string | boolean,
   lazy?: boolean
 ) => {
   const [fetchTrackers, { data, loading, refetch }] = useLazyQuery<{

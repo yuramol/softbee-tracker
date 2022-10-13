@@ -35,10 +35,7 @@ export const ProjectTransactionsTab = ({ projectId }: Props) => {
         : { eq: getFormattedDate(selectedDates[0]) },
   };
 
-  const { normalizedTrackers } = useNormalizedTrackers(
-    reportFilter,
-    selectedEmployees.length > 0
-  );
+  const { normalizedTrackers } = useNormalizedTrackers(reportFilter, true);
 
   return (
     <Grid

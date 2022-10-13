@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 
 import {
@@ -22,13 +22,22 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const [endMonth, setEndMonth] = useState(
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
-  const { normalizedTrackers } = useNormalizedTrackers(
-    {
-      user: { id: { in: [user.id] } },
-      date: { between: [startMonth, endMonth] },
-    },
-    user.id
+
+  const filters = {
+    user: { id: { in: [user.id] } },
+    date: { between: [startMonth, endMonth] },
+  };
+
+  const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(
+    filters,
+    false
   );
+
+  useEffect(() => {
+    fetchTrackers({
+      variables: { filters },
+    });
+  }, [user.id]);
 
   return user.id ? (
     <MainWrapper

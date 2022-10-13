@@ -46,7 +46,6 @@ export const ProjectReportTab = ({ projectId }: Props) => {
 
   const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(
     reportFilter,
-    false,
     true
   );
 

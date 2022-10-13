@@ -27,7 +27,7 @@ export const useAuthUser = () => {
       meQuery().then(({ data }) => {
         setUser(data?.me);
       });
-    } else if (user?.id && jwt === null) {
+    } else if (user?.id !== '' && jwt === null) {
       setUser({
         id: '',
         username: '',
