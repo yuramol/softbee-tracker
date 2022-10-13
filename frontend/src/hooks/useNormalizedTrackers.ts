@@ -1,6 +1,7 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 
 import { TRACKERS_QUERY } from 'api';
+import { useEffect } from 'react';
 import {
   TrackerEntity,
   TrackerEntityResponseCollection,
@@ -21,15 +22,20 @@ export type TrackerByDay = {
 
 export const useNormalizedTrackers = (
   filters: TrackerFiltersInput,
-  id?: string | boolean
+  id?: string | boolean,
+  lazy?: boolean
 ) => {
-  const { data, loading, refetch } = useQuery<{
+  const [fetchTrackers, { data, loading, refetch }] = useLazyQuery<{
     trackers: TrackerEntityResponseCollection;
-  }>(TRACKERS_QUERY, {
-    variables: { filters },
-    skip: !id,
-  });
+  }>(TRACKERS_QUERY);
 
+  useEffect(() => {
+    if (!lazy) {
+      fetchTrackers({
+        variables: { filters },
+      });
+    }
+  }, []);
   const normalizedTrackers: TrackerByDay[] = [];
 
   data?.trackers.data.forEach((tracker) => {
@@ -77,5 +83,6 @@ export const useNormalizedTrackers = (
     normalizedTrackers,
     loading,
     refetch,
+    fetchTrackers,
   };
 };

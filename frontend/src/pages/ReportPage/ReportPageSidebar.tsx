@@ -9,14 +9,15 @@ import {
   useReportPDF,
 } from 'hooks';
 import { reportRangeDates } from './helpers';
+import { getFormattedDate } from 'helpers';
 
 type Props = {
   checked: boolean;
   setChecked: (checked: boolean) => void;
-  selectedDates: string[];
+  selectedDates: Date[];
   selectedEmployees: string[];
   selectedProjects: string[];
-  setSelectedDates: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedDates: React.Dispatch<React.SetStateAction<Date[]>>;
   setSelectedEmployees: React.Dispatch<React.SetStateAction<string[]>>;
   setSelectedProjects: React.Dispatch<React.SetStateAction<string[]>>;
 };
@@ -50,11 +51,13 @@ export const ReportPageSidebar: React.FC<Props> = ({
         .map((item) => item.value)
         .join('&projectsIds=');
     }
-
-    const range = selectedDates.join('&end=');
     downloadPDF({
       variables: {
-        query: `usersIds=${usersIds}&projectsIds=${projectsIds}&start=${range}`,
+        query: `usersIds=${usersIds}&projectsIds=${projectsIds}&start=${getFormattedDate(
+          selectedDates[0]
+        )}${
+          selectedDates[1] ? `&end=${getFormattedDate(selectedDates[1])}` : ''
+        }`,
       },
     }).then(({ data }) => {
       if (data) {
