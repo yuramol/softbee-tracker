@@ -11,3 +11,4 @@ export { useRoles } from './useRoles';
 export { useBreaks } from './useBreaks';
 export { useReportPDF } from './useReportPDF';
 export { useUpdateTracker } from './useUpdateTracker';
+export { usePageTitle } from './usePageTitle';

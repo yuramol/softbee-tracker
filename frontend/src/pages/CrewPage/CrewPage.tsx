@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'legos';
-import { useAuthUser, useNormalizedUsers } from 'hooks';
+import { useAuthUser, useNormalizedUsers, usePageTitle } from 'hooks';
 import { Stack, Typography } from '@mui/material';
 import { MainWrapper, SideBars, UsersList, NewUser } from 'components';
+import { PageProps } from 'pages/types';
 
-const CrewPage = () => {
+const CrewPage: React.FC<PageProps> = ({ title }) => {
+  const { setTitle } = usePageTitle(title as string);
+
   const { isManager } = useAuthUser();
-  const { users } = useNormalizedUsers();
+  const { users, refetch } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
 
   const onToggleForm = () => {
     setIsCreateUser(!isCreateUser);
+    refetch();
   };
+
+  useEffect(() => {
+    setTitle();
+  }, []);
   return (
     <MainWrapper
       sidebar={

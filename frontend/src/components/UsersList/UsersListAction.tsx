@@ -5,7 +5,7 @@ import { Icon } from 'legos';
 import { useMutation } from '@apollo/client';
 import { DELETE_USERS_PERMISSIONS_USER } from 'api';
 import { Maybe, Scalars } from 'types/GraphqlTypes';
-import { useAuthUser, useNotification } from 'hooks';
+import { useAuthUser, useNormalizedUsers, useNotification } from 'hooks';
 import {
   IconButton,
   Stack,
@@ -30,6 +30,8 @@ export const UsersListAction = ({
 }: UsersListActionProps) => {
   const navigate = useNavigate();
   const { isManager, user } = useAuthUser();
+  const { refetch } = useNormalizedUsers();
+
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const notification = useNotification();
@@ -57,6 +59,7 @@ export const UsersListAction = ({
 
       deleteUsersPermissionsUser({ variables: { id } });
       handleClickAway();
+      refetch();
       notification({
         message: `${firstName} ${lastName} deleted`,
         variant: 'success',

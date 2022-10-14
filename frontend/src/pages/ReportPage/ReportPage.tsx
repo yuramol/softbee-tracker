@@ -1,21 +1,25 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { Stack, Typography } from '@mui/material';
 
 import { MainWrapper, ReportTable } from '../../components';
 import { PageProps } from '../types';
-import { useNormalizedTrackers } from 'hooks';
+import { useNormalizedTrackers, usePageTitle } from 'hooks';
 import { getFormattedDate, getHours } from 'helpers';
 import { ReportPageSidebar } from './ReportPageSidebar';
 
 const ReportPage: React.FC<PageProps> = ({ title }) => {
+  const { setTitle } = usePageTitle(title as string);
+
   const [selectedDates, setSelectedDates] = useState([
     getFormattedDate(new Date()),
   ]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const [checked, setChecked] = useState(true);
-
+  useEffect(() => {
+    setTitle();
+  }, []);
   const reportFilter = {
     user: {
       id: selectedEmployees.length !== 0 ? { in: selectedEmployees } : {},
