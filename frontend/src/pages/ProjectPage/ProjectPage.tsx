@@ -9,7 +9,7 @@ import { useNormalizedUsers, usePageTitle, useProjects } from 'hooks';
 import { PageProps } from 'pages/types';
 
 const ProjectPage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle(title as string);
+  const { setTitle } = usePageTitle();
 
   const { projects } = useProjects();
   const { managersChoices } = useNormalizedUsers();
@@ -20,7 +20,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     statusItem.map(({ value }) => value)
   );
   useEffect(() => {
-    setTitle();
+    setTitle(title as string);
   }, []);
   const projectFilters = {
     searchProject,

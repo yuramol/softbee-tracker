@@ -29,12 +29,10 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
   const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const showNotification = useNotification();
   const handleChangeAvatar = useChangeAvatar();
-  const { setTitle } = usePageTitle(
-    `${userData?.firstName} ${userData?.lastName}🧍`
-  );
+  const { setTitle } = usePageTitle();
   useEffect(() => {
-    setTitle();
-  }, []);
+    setTitle(`${userData?.firstName} ${userData?.lastName}🧍`);
+  }, [userData?.firstName]);
   useEffect(() => {
     setIsEdit(enableEdit ?? false);
   }, [enableEdit]);

@@ -16,7 +16,7 @@ enum LoginFields {
 }
 
 const LoginPage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle(title as string);
+  const { setTitle } = usePageTitle();
   const { login } = useAuthUser();
   const notification = useNotification();
   const [loginMutation, { loading }] = useMutation<{
@@ -24,7 +24,7 @@ const LoginPage: React.FC<PageProps> = ({ title }) => {
   }>(LOGIN_MUTATION);
 
   useEffect(() => {
-    setTitle();
+    setTitle(title as string);
   }, []);
   const initialValues = {
     [LoginFields.Identifier]: '',

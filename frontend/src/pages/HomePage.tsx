@@ -13,7 +13,7 @@ import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { PageProps } from './types';
 
 const HomePage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle(title as string);
+  const { setTitle } = usePageTitle();
 
   const { user } = useAuthUser();
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -25,7 +25,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
   useEffect(() => {
-    setTitle();
+    setTitle(title as string);
   }, []);
   const { normalizedTrackers, refetch } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },

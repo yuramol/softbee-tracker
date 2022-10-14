@@ -6,7 +6,7 @@ import { MainWrapper, SideBars, UsersList, NewUser } from 'components';
 import { PageProps } from 'pages/types';
 
 const CrewPage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle(title as string);
+  const { setTitle } = usePageTitle();
 
   const { isManager } = useAuthUser();
   const { users, refetch } = useNormalizedUsers();
@@ -18,7 +18,7 @@ const CrewPage: React.FC<PageProps> = ({ title }) => {
   };
 
   useEffect(() => {
-    setTitle();
+    setTitle(title as string);
   }, []);
   return (
     <MainWrapper

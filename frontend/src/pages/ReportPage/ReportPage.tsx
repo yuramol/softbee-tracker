@@ -9,7 +9,7 @@ import { getFormattedDate, getHours } from 'helpers';
 import { ReportPageSidebar } from './ReportPageSidebar';
 
 const ReportPage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle(title as string);
+  const { setTitle } = usePageTitle();
 
   const [selectedDates, setSelectedDates] = useState([
     getFormattedDate(new Date()),
@@ -18,7 +18,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const [checked, setChecked] = useState(true);
   useEffect(() => {
-    setTitle();
+    setTitle(title as string);
   }, []);
   const reportFilter = {
     user: {

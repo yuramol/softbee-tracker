@@ -1,5 +1,5 @@
-export const usePageTitle = (title: string) => {
-  const setTitle = () => {
+export const usePageTitle = () => {
+  const setTitle = (title: string) => {
     document.title = `SoftBee Tracker | ${title}`;
   };
   return { setTitle };
