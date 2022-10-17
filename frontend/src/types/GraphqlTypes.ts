@@ -145,11 +145,9 @@ export enum Enum_Tracker_Status {
   Rejected = 'rejected',
 }
 
-export enum Enum_Userspermissionsuser_Position {
-  Cdo = 'cdo',
-  Cto = 'cto',
-  Designer = 'designer',
-  Developer = 'developer',
+export enum Enum_Userspermissionsuser_Typesalary {
+  Fixed = 'fixed',
+  Hour = 'hour',
 }
 
 export type FileInfoInput = {
@@ -188,6 +186,7 @@ export type GenericMorph =
   | Note
   | Project
   | Tracker
+  | Transaction
   | UploadFile
   | UploadFolder
   | UsersPermissionsPermission
@@ -333,6 +332,7 @@ export type Mutation = {
   createNote?: Maybe<NoteEntityResponse>;
   createProject?: Maybe<ProjectEntityResponse>;
   createTracker?: Maybe<TrackerEntityResponse>;
+  createTransaction?: Maybe<TransactionEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
   createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
@@ -342,6 +342,7 @@ export type Mutation = {
   deleteNote?: Maybe<NoteEntityResponse>;
   deleteProject?: Maybe<ProjectEntityResponse>;
   deleteTracker?: Maybe<TrackerEntityResponse>;
+  deleteTransaction?: Maybe<TransactionEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
@@ -363,6 +364,7 @@ export type Mutation = {
   updateNote?: Maybe<NoteEntityResponse>;
   updateProject?: Maybe<ProjectEntityResponse>;
   updateTracker?: Maybe<TrackerEntityResponse>;
+  updateTransaction?: Maybe<TransactionEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
   updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
@@ -390,6 +392,10 @@ export type MutationCreateTrackerArgs = {
   data: TrackerInput;
 };
 
+export type MutationCreateTransactionArgs = {
+  data: TransactionInput;
+};
+
 export type MutationCreateUploadFileArgs = {
   data: UploadFileInput;
 };
@@ -415,6 +421,10 @@ export type MutationDeleteProjectArgs = {
 };
 
 export type MutationDeleteTrackerArgs = {
+  id: Scalars['ID'];
+};
+
+export type MutationDeleteTransactionArgs = {
   id: Scalars['ID'];
 };
 
@@ -484,6 +494,11 @@ export type MutationUpdateProjectArgs = {
 
 export type MutationUpdateTrackerArgs = {
   data: TrackerInput;
+  id: Scalars['ID'];
+};
+
+export type MutationUpdateTransactionArgs = {
+  data: TransactionInput;
   id: Scalars['ID'];
 };
 
@@ -599,6 +614,7 @@ export type Project = {
   start?: Maybe<Scalars['Date']>;
   status: Enum_Project_Status;
   trackers?: Maybe<TrackerRelationResponseCollection>;
+  transactions?: Maybe<TransactionRelationResponseCollection>;
   type: Enum_Project_Type;
   updatedAt?: Maybe<Scalars['DateTime']>;
   users?: Maybe<UsersPermissionsUserRelationResponseCollection>;
@@ -618,6 +634,12 @@ export type ProjectSalaryArgs = {
 
 export type ProjectTrackersArgs = {
   filters?: InputMaybe<TrackerFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ProjectTransactionsArgs = {
+  filters?: InputMaybe<TransactionFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -661,6 +683,7 @@ export type ProjectFiltersInput = {
   start?: InputMaybe<DateFilterInput>;
   status?: InputMaybe<StringFilterInput>;
   trackers?: InputMaybe<TrackerFiltersInput>;
+  transactions?: InputMaybe<TransactionFiltersInput>;
   type?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   users?: InputMaybe<UsersPermissionsUserFiltersInput>;
@@ -678,6 +701,7 @@ export type ProjectInput = {
   start?: InputMaybe<Scalars['Date']>;
   status?: InputMaybe<Enum_Project_Status>;
   trackers?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  transactions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   type?: InputMaybe<Enum_Project_Type>;
   users?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
 };
@@ -698,6 +722,8 @@ export type Query = {
   projects?: Maybe<ProjectEntityResponseCollection>;
   tracker?: Maybe<TrackerEntityResponse>;
   trackers?: Maybe<TrackerEntityResponseCollection>;
+  transaction?: Maybe<TransactionEntityResponse>;
+  transactions?: Maybe<TransactionEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
   uploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -744,6 +770,16 @@ export type QueryTrackerArgs = {
 
 export type QueryTrackersArgs = {
   filters?: InputMaybe<TrackerFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryTransactionArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryTransactionsArgs = {
+  filters?: InputMaybe<TransactionFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -829,6 +865,7 @@ export type Tracker = {
   project?: Maybe<ProjectEntityResponse>;
   startLiveDate?: Maybe<Scalars['DateTime']>;
   status?: Maybe<Enum_Tracker_Status>;
+  transaction?: Maybe<TransactionEntityResponse>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   user?: Maybe<UsersPermissionsUserEntityResponse>;
 };
@@ -865,6 +902,7 @@ export type TrackerFiltersInput = {
   project?: InputMaybe<ProjectFiltersInput>;
   startLiveDate?: InputMaybe<DateTimeFilterInput>;
   status?: InputMaybe<StringFilterInput>;
+  transaction?: InputMaybe<TransactionFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   user?: InputMaybe<UsersPermissionsUserFiltersInput>;
 };
@@ -879,12 +917,77 @@ export type TrackerInput = {
   project?: InputMaybe<Scalars['ID']>;
   startLiveDate?: InputMaybe<Scalars['DateTime']>;
   status?: InputMaybe<Enum_Tracker_Status>;
+  transaction?: InputMaybe<Scalars['ID']>;
   user?: InputMaybe<Scalars['ID']>;
 };
 
 export type TrackerRelationResponseCollection = {
   __typename?: 'TrackerRelationResponseCollection';
   data: Array<TrackerEntity>;
+};
+
+export type Transaction = {
+  __typename?: 'Transaction';
+  amount: Scalars['Float'];
+  createdAt?: Maybe<Scalars['DateTime']>;
+  date: Scalars['Date'];
+  descriptions?: Maybe<Scalars['String']>;
+  project?: Maybe<ProjectEntityResponse>;
+  tracker?: Maybe<TrackerEntityResponse>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  user?: Maybe<UsersPermissionsUserEntityResponse>;
+  userCreateBy?: Maybe<UsersPermissionsUserEntityResponse>;
+  userUpdateBy?: Maybe<UsersPermissionsUserEntityResponse>;
+};
+
+export type TransactionEntity = {
+  __typename?: 'TransactionEntity';
+  attributes?: Maybe<Transaction>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type TransactionEntityResponse = {
+  __typename?: 'TransactionEntityResponse';
+  data?: Maybe<TransactionEntity>;
+};
+
+export type TransactionEntityResponseCollection = {
+  __typename?: 'TransactionEntityResponseCollection';
+  data: Array<TransactionEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type TransactionFiltersInput = {
+  amount?: InputMaybe<FloatFilterInput>;
+  and?: InputMaybe<Array<InputMaybe<TransactionFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  date?: InputMaybe<DateFilterInput>;
+  descriptions?: InputMaybe<StringFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  not?: InputMaybe<TransactionFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<TransactionFiltersInput>>>;
+  project?: InputMaybe<ProjectFiltersInput>;
+  tracker?: InputMaybe<TrackerFiltersInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+  user?: InputMaybe<UsersPermissionsUserFiltersInput>;
+  userCreateBy?: InputMaybe<UsersPermissionsUserFiltersInput>;
+  userUpdateBy?: InputMaybe<UsersPermissionsUserFiltersInput>;
+};
+
+export type TransactionInput = {
+  amount?: InputMaybe<Scalars['Float']>;
+  date?: InputMaybe<Scalars['Date']>;
+  descriptions?: InputMaybe<Scalars['String']>;
+  project?: InputMaybe<Scalars['ID']>;
+  tracker?: InputMaybe<Scalars['ID']>;
+  user?: InputMaybe<Scalars['ID']>;
+  userCreateBy?: InputMaybe<Scalars['ID']>;
+  userUpdateBy?: InputMaybe<Scalars['ID']>;
+};
+
+export type TransactionRelationResponseCollection = {
+  __typename?: 'TransactionRelationResponseCollection';
+  data: Array<TransactionEntity>;
 };
 
 export type UploadFile = {
@@ -1207,12 +1310,15 @@ export type UsersPermissionsUser = {
   manager_projects?: Maybe<ProjectRelationResponseCollection>;
   notes?: Maybe<NoteRelationResponseCollection>;
   phone?: Maybe<Scalars['String']>;
-  position?: Maybe<Enum_Userspermissionsuser_Position>;
+  positions?: Maybe<Scalars['JSON']>;
   projects?: Maybe<ProjectRelationResponseCollection>;
   provider?: Maybe<Scalars['String']>;
   role?: Maybe<UsersPermissionsRoleEntityResponse>;
+  salary?: Maybe<Scalars['Int']>;
   salaryInfo?: Maybe<Scalars['String']>;
   trackers?: Maybe<TrackerRelationResponseCollection>;
+  transactions?: Maybe<TransactionRelationResponseCollection>;
+  typeSalary?: Maybe<Enum_Userspermissionsuser_Typesalary>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   upwork?: Maybe<Scalars['String']>;
   username: Scalars['String'];
@@ -1244,6 +1350,12 @@ export type UsersPermissionsUserProjectsArgs = {
 
 export type UsersPermissionsUserTrackersArgs = {
   filters?: InputMaybe<TrackerFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type UsersPermissionsUserTransactionsArgs = {
+  filters?: InputMaybe<TransactionFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -1284,13 +1396,16 @@ export type UsersPermissionsUserFiltersInput = {
   or?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
   password?: InputMaybe<StringFilterInput>;
   phone?: InputMaybe<StringFilterInput>;
-  position?: InputMaybe<StringFilterInput>;
+  positions?: InputMaybe<JsonFilterInput>;
   projects?: InputMaybe<ProjectFiltersInput>;
   provider?: InputMaybe<StringFilterInput>;
   resetPasswordToken?: InputMaybe<StringFilterInput>;
   role?: InputMaybe<UsersPermissionsRoleFiltersInput>;
+  salary?: InputMaybe<IntFilterInput>;
   salaryInfo?: InputMaybe<StringFilterInput>;
   trackers?: InputMaybe<TrackerFiltersInput>;
+  transactions?: InputMaybe<TransactionFiltersInput>;
+  typeSalary?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   upwork?: InputMaybe<StringFilterInput>;
   username?: InputMaybe<StringFilterInput>;
@@ -1311,13 +1426,16 @@ export type UsersPermissionsUserInput = {
   notes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   password?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
-  position?: InputMaybe<Enum_Userspermissionsuser_Position>;
+  positions?: InputMaybe<Scalars['JSON']>;
   projects?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   provider?: InputMaybe<Scalars['String']>;
   resetPasswordToken?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<Scalars['ID']>;
+  salary?: InputMaybe<Scalars['Int']>;
   salaryInfo?: InputMaybe<Scalars['String']>;
   trackers?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  transactions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  typeSalary?: InputMaybe<Enum_Userspermissionsuser_Typesalary>;
   upwork?: InputMaybe<Scalars['String']>;
   username?: InputMaybe<Scalars['String']>;
 };
