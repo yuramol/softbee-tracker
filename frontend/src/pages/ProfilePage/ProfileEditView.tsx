@@ -6,16 +6,24 @@ import { FormikContext, useFormik } from 'formik';
 import { UPDATE_USER_MUTATION } from 'api';
 import { AvatarUpload } from 'components';
 import { useAuthUser, useNotification, useUser } from 'hooks';
-import { Button, CalendarPickerFormik, Icon, Input, Select } from 'legos';
-import { formatUserFullName, getFormattedDate } from 'helpers';
+import {
+  Button,
+  CalendarPickerFormik,
+  Icon,
+  Input,
+  MultipleSelect,
+  Select,
+} from 'legos';
+import {
+  formatUserFullName,
+  formikPropsErrors,
+  getFormattedDate,
+} from 'helpers';
 import { validationSchema } from './helpers';
 import { ProfileFields, ProfileInitialValues } from './types';
 import { useChangeAvatar } from './useChangeAvatar';
-import { employeePositionChoices } from 'constant';
-import {
-  Enum_Userspermissionsuser_Position,
-  Scalars,
-} from 'types/GraphqlTypes';
+import { employeePositionChoices, UserPosition } from 'constant';
+import { Scalars } from 'types/GraphqlTypes';
 
 type Props = {
   id: Scalars['ID'];
@@ -38,8 +46,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
     [ProfileFields.UserName]: userData?.username ?? '',
     [ProfileFields.FirstName]: userData?.firstName ?? '',
     [ProfileFields.LastName]: userData?.lastName ?? '',
-    [ProfileFields.Position]:
-      userData?.position ?? Enum_Userspermissionsuser_Position.Developer,
+    [ProfileFields.Positions]: userData?.positions ?? [UserPosition.Developer],
     [ProfileFields.Email]: userData?.email ?? '',
     [ProfileFields.LinkedIn]: userData?.linkedIn ?? '',
     [ProfileFields.UpWork]: userData?.upwork ?? '',
@@ -79,8 +86,15 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
 
   const canEdit = id === user.id || isManager;
   const isDisabled = isManager ? !isEdit : !isManager;
-  const { values, errors, touched, resetForm, handleChange, handleSubmit } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    resetForm,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+  } = formik;
 
   return (
     <FormikContext.Provider value={formik}>
@@ -194,17 +208,43 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
             <Stack flexDirection="row" alignItems="center" gap={3}>
               <Icon icon="work" />
               <Stack flexGrow="1">
-                <Select
-                  label={isEdit ? 'Position' : null}
-                  name={ProfileFields.Position}
-                  value={values[ProfileFields.Position]}
-                  items={employeePositionChoices}
-                  IconComponent={() => null}
-                  disabled={isDisabled}
-                  readOnly={isDisabled}
-                  disableUnderline={isDisabled}
-                  onChange={handleChange}
-                />
+                {isEdit ? (
+                  <MultipleSelect
+                    label="Position"
+                    variant="outlined"
+                    disabled={isDisabled}
+                    readOnly={isDisabled}
+                    items={employeePositionChoices}
+                    name={ProfileFields.Positions}
+                    handleClear={() => {
+                      setFieldValue(`${ProfileFields.Positions}`, []);
+                    }}
+                    handleClearItem={(item: string) =>
+                      setFieldValue(
+                        `${ProfileFields.Positions}`,
+                        values[ProfileFields.Positions].filter(
+                          (value) => value !== item
+                        )
+                      )
+                    }
+                    value={values[ProfileFields.Positions]}
+                    onChange={handleChange}
+                    {...formikPropsErrors(ProfileFields.Positions, formik)}
+                  />
+                ) : (
+                  <Select
+                    label={null}
+                    name={ProfileFields.Positions}
+                    value={values[ProfileFields.Positions]}
+                    items={employeePositionChoices}
+                    multiple
+                    IconComponent={() => null}
+                    disabled={isDisabled}
+                    readOnly={isDisabled}
+                    disableUnderline={isDisabled}
+                    onChange={handleChange}
+                  />
+                )}
               </Stack>
             </Stack>
             <Stack flexDirection="row" alignItems="center" gap={3}>
