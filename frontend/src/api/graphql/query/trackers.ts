@@ -22,7 +22,7 @@ export const TRACKERS_QUERY = gql`
                 firstName
                 lastName
                 salaryInfo
-                position
+                positions
               }
             }
           }

@@ -78,7 +78,7 @@ export const UsersList = ({ usersList, isManager, meId }: Props) => {
                 {`${attributes?.firstName} ${attributes?.lastName?.charAt(0)}.`}
               </NavLink>
               <Typography fontSize="10px">
-                {`${attributes?.role?.data?.attributes?.name} | ${attributes?.position}`}
+                {`${attributes?.role?.data?.attributes?.name} | ${attributes?.positions}`}
               </Typography>
             </div>
           </Stack>

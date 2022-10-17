@@ -41,7 +41,7 @@ export const USER_QUERY = gql`
           upwork
           dateEmployment
           salaryInfo
-          position
+          positions
         }
       }
     }
