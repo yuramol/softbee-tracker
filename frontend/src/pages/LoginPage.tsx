@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import { Stack, Typography, TextField, Button } from '@mui/material';
 import * as yup from 'yup';
 
 import { LOGIN_MUTATION } from 'api';
-import { useAuthUser, useNotification, usePageTitle } from 'hooks';
+import { useAuthUser, useNotification } from 'hooks';
 import { MainWrapper } from 'components';
 import { UsersPermissionsLoginPayload } from 'types/GraphqlTypes';
 import { PageProps } from './types';
@@ -16,16 +16,12 @@ enum LoginFields {
 }
 
 const LoginPage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle();
   const { login } = useAuthUser();
   const notification = useNotification();
   const [loginMutation, { loading }] = useMutation<{
     login: UsersPermissionsLoginPayload;
   }>(LOGIN_MUTATION);
 
-  useEffect(() => {
-    setTitle(title as string);
-  }, []);
   const initialValues = {
     [LoginFields.Identifier]: '',
     [LoginFields.Password]: '',

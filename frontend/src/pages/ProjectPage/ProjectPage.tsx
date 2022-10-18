@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { ProjectsList } from 'components/ProjectsList/ProjectsList';
 import { MainWrapper, SideBars, AddNewProject } from 'components';
 import { statusItem, ProjectFilters } from './ProjectFilters';
 import { Button } from 'legos';
-import { useNormalizedUsers, usePageTitle, useProjects } from 'hooks';
+import { useNormalizedUsers, useProjects } from 'hooks';
 import { PageProps } from 'pages/types';
 
 const ProjectPage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle();
-
   const { projects } = useProjects();
   const { managersChoices } = useNormalizedUsers();
   const [isCreateProject, setIsCreateProject] = useState(false);
@@ -19,9 +17,7 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
   const [searchStatus, setSearchStatus] = useState(
     statusItem.map(({ value }) => value)
   );
-  useEffect(() => {
-    setTitle(title as string);
-  }, []);
+
   const projectFilters = {
     searchProject,
     searchManagers,

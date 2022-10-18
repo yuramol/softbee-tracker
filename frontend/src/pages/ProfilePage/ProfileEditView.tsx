@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { Link, Stack, Typography } from '@mui/material';
 import { FormikContext, useFormik } from 'formik';
 
 import { UPDATE_USER_MUTATION } from 'api';
 import { AvatarUpload } from 'components';
-import { useAuthUser, useNotification, usePageTitle, useUser } from 'hooks';
+import { useAuthUser, useNotification, useUser } from 'hooks';
 import { Button, CalendarPickerFormik, Icon, Input, Select } from 'legos';
 import { formatUserFullName, getFormattedDate } from 'helpers';
 import { validationSchema } from './helpers';
@@ -29,13 +29,6 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
   const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const showNotification = useNotification();
   const handleChangeAvatar = useChangeAvatar();
-  const { setTitle } = usePageTitle();
-  useEffect(() => {
-    setTitle(`${userData?.firstName} ${userData?.lastName}🧍`);
-  }, [userData?.firstName]);
-  useEffect(() => {
-    setIsEdit(enableEdit ?? false);
-  }, [enableEdit]);
 
   const initialValues: ProfileInitialValues = {
     [ProfileFields.UserName]: userData?.username ?? '',

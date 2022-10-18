@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Typography } from '@mui/material';
 
 import {
@@ -8,13 +8,11 @@ import {
   TrackerDayView,
   VacationWidget,
 } from '../components';
-import { useAuthUser, useNormalizedTrackers, usePageTitle } from 'hooks';
+import { useAuthUser, useNormalizedTrackers } from 'hooks';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { PageProps } from './types';
 
 const HomePage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle();
-
   const { user } = useAuthUser();
   const [selectedDay, setSelectedDay] = useState(new Date());
 
@@ -24,9 +22,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const [endMonth, setEndMonth] = useState(
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
-  useEffect(() => {
-    setTitle(title as string);
-  }, []);
+
   const { normalizedTrackers, refetch } = useNormalizedTrackers({
     user: { id: { in: [user.id] } },
     date: { between: [startMonth, endMonth] },

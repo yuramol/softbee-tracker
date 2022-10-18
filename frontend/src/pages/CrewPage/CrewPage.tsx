@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'legos';
-import { useAuthUser, useNormalizedUsers, usePageTitle } from 'hooks';
+import { useAuthUser, useNormalizedUsers } from 'hooks';
 import { Stack, Typography } from '@mui/material';
 import { MainWrapper, SideBars, UsersList, NewUser } from 'components';
 import { PageProps } from 'pages/types';
 
-const CrewPage: React.FC<PageProps> = ({ title }) => {
-  const { setTitle } = usePageTitle();
-
+const CrewPage: React.FC<PageProps> = () => {
   const { isManager } = useAuthUser();
   const { users, refetch } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
@@ -17,9 +15,6 @@ const CrewPage: React.FC<PageProps> = ({ title }) => {
     refetch();
   };
 
-  useEffect(() => {
-    setTitle(title as string);
-  }, []);
   return (
     <MainWrapper
       sidebar={
