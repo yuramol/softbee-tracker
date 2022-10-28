@@ -3,14 +3,16 @@ import { Button } from 'legos';
 import { useAuthUser, useNormalizedUsers } from 'hooks';
 import { Stack, Typography } from '@mui/material';
 import { MainWrapper, UsersList, NewUser, TimeInspector } from 'components';
+import { PageProps } from 'pages/types';
 
-const CrewPage = () => {
-  const { isManager, user } = useAuthUser();
-  const { users } = useNormalizedUsers();
+const CrewPage: React.FC<PageProps> = () => {
+  const { isManager } = useAuthUser();
+  const { users, refetch } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
 
   const onToggleForm = () => {
     setIsCreateUser(!isCreateUser);
+    refetch();
   };
 
   return (

@@ -6,6 +6,7 @@ import { Loader, Layout } from 'components';
 import { NotFoundPage } from 'pages';
 import { pages, Role } from 'constant';
 import { LiveTracker } from 'modules';
+import { PageTitle } from 'components/Layout';
 
 export const AppRouter = () => {
   const [jwt] = useLocalStorage('jwt');
@@ -43,8 +44,12 @@ export const AppRouter = () => {
             path={href}
             element={
               <Suspense fallback={<div />}>
-                <Component title={name} />
-                {isAuth && <LiveTracker />}
+                <PageTitle title={name}>
+                  <div>
+                    <Component title={name} />
+                    {isAuth && <LiveTracker />}
+                  </div>
+                </PageTitle>
               </Suspense>
             }
           />
