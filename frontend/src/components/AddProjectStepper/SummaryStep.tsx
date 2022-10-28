@@ -88,8 +88,7 @@ export const SummaryStep = () => {
             <ListItemText sx={{ ml: 2 }}>
               {
                 managersChoices.find(
-                  ({ value }) =>
-                    values[CreateProjectFields.Managers][0] === value
+                  ({ value }) => values[CreateProjectFields.Manager] === value
                 )?.label
               }
             </ListItemText>

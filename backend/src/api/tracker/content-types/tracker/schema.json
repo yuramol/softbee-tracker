@@ -58,6 +58,21 @@
     "liveDurationMinutes": {
       "type": "biginteger",
       "default": "0"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "new",
+        "approved",
+        "rejected"
+      ],
+      "required": false
+    },
+    "transaction": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::transaction.transaction",
+      "inversedBy": "tracker"
     }
   }
 }

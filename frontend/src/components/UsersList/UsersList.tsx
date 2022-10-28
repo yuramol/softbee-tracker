@@ -12,12 +12,17 @@ import { useNormalizedTrackers } from 'hooks';
 
 type Props = {
   usersList?: UsersPermissionsUserEntity[];
+  isManager?: boolean;
+  meId?: string;
 };
 
-export const UsersList = ({ usersList }: Props) => {
-  const { normalizedTrackers } = useNormalizedTrackers({
-    status: { eq: Enum_Tracker_Status.New },
-  });
+export const UsersList = ({ usersList, isManager, meId }: Props) => {
+  const { normalizedTrackers } = useNormalizedTrackers(
+    {
+      status: { eq: Enum_Tracker_Status.New },
+    },
+    true
+  );
 
   const isUserRequestVacation = (id: string | undefined) => {
     let isUserHasRequest;
@@ -75,6 +80,8 @@ export const UsersList = ({ usersList }: Props) => {
             id={id}
             firstName={attributes?.firstName}
             lastName={attributes?.lastName}
+            isManager={isManager}
+            meId={meId}
           />
         </Stack>
       ))}

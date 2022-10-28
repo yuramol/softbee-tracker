@@ -27,6 +27,7 @@ import { GraphQLError } from 'graphql';
 import { useCreateTracker } from 'hooks/useCreateTracker';
 import { getBreakIcon } from 'components/BreaksDay/getBreakIcon';
 import { Enum_Tracker_Status } from 'types/GraphqlTypes';
+import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 const modalStyle = {
   position: 'absolute',
@@ -66,17 +67,12 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     }
   );
 
-  const [selectedDates, setSelectedDates] = useState([
-    getFormattedDate(new Date()),
-  ]);
+  const [selectedDates, setSelectedDates] = useState([new Date()]);
   const [breakId, setBreakId] = useState('');
 
   const breaksDateArray = eachDayOfInterval({
-    start: new Date(selectedDates[0]),
-    end:
-      selectedDates.length > 1
-        ? new Date(selectedDates[1])
-        : new Date(selectedDates[0]),
+    start: selectedDates[0],
+    end: selectedDates.length > 1 ? selectedDates[1] : selectedDates[0],
   }).filter((date) => !isWeekend(date));
 
   const selectedBreak = breaks?.find(({ id }) => id === breakId);
@@ -95,7 +91,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     [BreaksRequestFields.USER]: user.id,
     [BreaksRequestFields.PROJECT]: '',
     [BreaksRequestFields.DATE]: new Date(),
-    [BreaksRequestFields.DURATION]: 0,
+    [BreaksRequestFields.DURATION]: 300,
     [BreaksRequestFields.DESCRIPTION]: '',
     [BreaksRequestFields.STATUS]: Enum_Tracker_Status.New,
   };
@@ -111,7 +107,11 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      const data = { ...values, date: format(values.date, 'yyyy-MM-dd') };
+      const data = {
+        ...values,
+        date: format(values[TIME_ENTRY_FIELDS.DATE], 'yyyy-MM-dd'),
+      };
+
       createTracker(data)
         .then(() => {
           enqueueSnackbar(`Request sent`, { variant: 'success' });

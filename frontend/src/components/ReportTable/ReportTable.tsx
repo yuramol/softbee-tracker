@@ -8,14 +8,15 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { parseTrackerTime } from 'helpers';
 import { format } from 'date-fns';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
+import { toHoursAndMinutes } from 'components/TimePicker/utils';
 
 type ReportTableProps = {
   trackers: TrackerByDay[];
+  projectView?: boolean;
   isShowVacation?: boolean;
 };
 
@@ -23,6 +24,7 @@ const reportTableHead = ['Date', 'Description', 'Time'];
 export const ReportTable: React.FC<ReportTableProps> = ({
   trackers,
   isShowVacation,
+  projectView,
 }) => (
   <>
     {trackers.length > 0 ? (
@@ -58,27 +60,35 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                             <Typography>{attributes?.description}</Typography>
                             <Typography variant="body2" mt={2}>
                               {`${attributes?.user?.data?.attributes?.firstName}
-           ${attributes?.user?.data?.attributes?.lastName}
-           (${attributes?.user?.data?.attributes?.username})
-           `}
+                                  ${attributes?.user?.data?.attributes?.lastName}
+                                  (${attributes?.user?.data?.attributes?.username})
+                                  `}
                             </Typography>
                           </>
                         ) : (
                           <>
-                            <Typography variant="subtitle1" fontWeight="600">
-                              {name}
+                            {!projectView && (
+                              <Typography variant="subtitle1" fontWeight="600">
+                                {name}
+                              </Typography>
+                            )}
+                            <Typography
+                              fontWeight={projectView ? '600' : '400'}
+                            >
+                              {attributes?.description}
                             </Typography>
-                            <Typography>{attributes?.description}</Typography>
-                            <Typography variant="body2" mt={2}>
+                            <Typography variant={'body2'} mt={2}>
                               {`${attributes?.user?.data?.attributes?.firstName}
-             ${attributes?.user?.data?.attributes?.lastName}
-             (${attributes?.user?.data?.attributes?.username})
-             `}
+                                ${attributes?.user?.data?.attributes?.lastName}
+                                (${attributes?.user?.data?.attributes?.username})
+                                `}
                             </Typography>
                           </>
                         )}
                       </TableCell>
-                      <TableCell>{attributes?.durationMinutes ?? 0}</TableCell>
+                      <TableCell>
+                        {toHoursAndMinutes(attributes?.durationMinutes ?? 0)}
+                      </TableCell>
                     </TableRow>
                   );
                 })

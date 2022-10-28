@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 
 import {
@@ -23,17 +23,28 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     format(endOfMonth(new Date()), 'YYY-MM-dd')
   );
 
-  const { normalizedTrackers, refetch } = useNormalizedTrackers({
+  const filters = {
     user: { id: { in: [user.id] } },
     date: { between: [startMonth, endMonth] },
-  });
+  };
 
-  return (
+  const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(
+    filters,
+    false
+  );
+
+  useEffect(() => {
+    fetchTrackers({
+      variables: { filters },
+    });
+  }, [user.id]);
+
+  return user.id ? (
     <MainWrapper
       sidebar={
         <>
           <VacationWidget />
-          <TimeInspector />
+          <TimeInspector userId={user.id} />
           <TrackerCalendar
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
@@ -45,13 +56,9 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
       }
     >
       <Typography variant="h1">{title}</Typography>
-      <TrackerDayView
-        selectedDay={selectedDay}
-        trackers={normalizedTrackers}
-        refetchTrackers={refetch}
-      />
+      <TrackerDayView selectedDay={selectedDay} trackers={normalizedTrackers} />
     </MainWrapper>
-  );
+  ) : null;
 };
 
 export default HomePage;

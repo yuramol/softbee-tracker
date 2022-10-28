@@ -1,72 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Button, Grid, Tooltip } from '@mui/material';
-import { ReportTable, TrackerEntryModalForm } from '..';
+import { Grid } from '@mui/material';
+import { ReportTable } from '..';
 import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
-import { Icon, MultipleSelect, RangeCalendar } from 'legos';
-import { useSnackbar } from 'notistack';
-import { useCreateTracker } from 'hooks/useCreateTracker';
-import { TimeEntryValues } from 'components/TrackerEntryModalForm';
-import { GraphQLError } from 'graphql';
-import { format } from 'date-fns';
-import { parseTrackerTime } from 'helpers';
+import { MultipleSelect, RangeCalendar } from 'legos';
+import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
+import { reportRangeDates } from 'pages/ReportPage/helpers';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 type Props = {
   projectId: string;
 };
 
 export const ProjectReportTab = ({ projectId }: Props) => {
-  const { enqueueSnackbar } = useSnackbar();
-  const { createTracker } = useCreateTracker();
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedDates, setSelectedDates] = useState([
-    getFormattedDate(new Date()),
+    startOfMonth(new Date()),
+    endOfMonth(new Date()),
   ]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
 
   const { usersChoices } = useNormalizedUsers();
 
   const reportFilter = {
-    user: {
-      id: selectedEmployees.length !== 0 ? { in: selectedEmployees } : {},
-    },
+    ...(selectedEmployees.length > 0
+      ? {
+          user: {
+            id: { in: selectedEmployees },
+          },
+        }
+      : {}),
     project: {
       id: { in: [projectId] },
     },
     date:
       selectedDates.length > 1
-        ? { between: selectedDates }
-        : { eq: selectedDates[0] },
+        ? {
+            between: [
+              getFormattedDate(selectedDates[0]),
+              getFormattedDate(selectedDates[1]),
+            ],
+          }
+        : { eq: getFormattedDate(selectedDates[0]) },
   };
 
-  const initialValuesForm: TimeEntryValues = {
-    date: new Date(),
-    duration: 0,
-    project: projectId,
-  };
+  const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(
+    reportFilter,
+    true
+  );
 
-  const { normalizedTrackers } = useNormalizedTrackers(reportFilter);
-
-  const toggleOpenModal = () => {
-    setIsOpenModal(!isOpenModal);
-  };
-
-  const handelSubmit = (values: TimeEntryValues) => {
-    const data = {
-      ...values,
-      duration: values.duration,
-      date: format(values.date, 'yyyy-MM-dd'),
-    };
-    createTracker(data)
-      .then(() => {
-        enqueueSnackbar(`Track added`, { variant: 'success' });
-        toggleOpenModal();
-      })
-      .catch((error: GraphQLError) => {
-        enqueueSnackbar(error.message, { variant: 'error' });
-      });
-  };
+  useEffect(() => {
+    fetchTrackers({
+      variables: { filters: reportFilter },
+    });
+  }, [selectedDates, selectedEmployees]);
 
   return (
     <Grid
@@ -80,6 +67,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
         <RangeCalendar
           selectedDates={selectedDates}
           setSelectedDates={setSelectedDates}
+          defaultRangeDates={reportRangeDates}
         />
       </Grid>
       <Grid item xs={5}>
@@ -93,23 +81,10 @@ export const ProjectReportTab = ({ projectId }: Props) => {
         />
       </Grid>
       <Grid item xs={2}>
-        <TrackerEntryModalForm
-          open={isOpenModal}
-          onClose={toggleOpenModal}
-          onSubmit={(values) => handelSubmit(values)}
-          titleForm="New time entry"
-          withEmployee={true}
-          projectId={projectId}
-          initialValuesForm={initialValuesForm}
-        />
-        <Tooltip title="Add New Entry">
-          <Button variant="contained" onClick={toggleOpenModal}>
-            <Icon icon="add" />
-          </Button>
-        </Tooltip>
+        <TrackerAddNewEntry projectId={projectId} />
       </Grid>
       <Grid item xs={12}>
-        <ReportTable trackers={normalizedTrackers} />
+        <ReportTable trackers={normalizedTrackers} projectView />
       </Grid>
     </Grid>
   );

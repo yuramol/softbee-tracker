@@ -34,7 +34,16 @@ export const NewProjectStep = () => {
 
   return (
     <>
-      <Typography variant="h5">New project</Typography>
+      <Typography
+        variant="h5"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+      >
+        {values[CreateProjectFields.Name] === ''
+          ? 'New project'
+          : values[CreateProjectFields.Name]}
+      </Typography>
       <Stack gap={4}>
         <ButtonGroup size="small" fullWidth>
           {projectTypes.map(({ label, value }) => (
@@ -57,7 +66,11 @@ export const NewProjectStep = () => {
         <TextField
           label="Project title"
           name={CreateProjectFields.Name}
-          value={values[CreateProjectFields.Name]}
+          value={
+            values[CreateProjectFields.Name]
+              ? values[CreateProjectFields.Name]
+              : ''
+          }
           multiline
           {...formikPropsErrors(CreateProjectFields.Name)}
           onChange={handleChange}
@@ -65,7 +78,11 @@ export const NewProjectStep = () => {
         <TextField
           label="Client"
           name={CreateProjectFields.Client}
-          value={values[CreateProjectFields.Client]}
+          value={
+            values[CreateProjectFields.Client]
+              ? values[CreateProjectFields.Client]
+              : ''
+          }
           {...formikPropsErrors(CreateProjectFields.Client)}
           onChange={handleChange}
         />

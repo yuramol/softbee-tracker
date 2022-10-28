@@ -29,6 +29,7 @@ export const ShowTrackers = ({ userId }: ShowTrackersProps) => {
         live_status: { not: { eq: Enum_Tracker_Live_Status.Finish } },
       },
     },
+    skip: !userId,
   });
   const trackers = data?.trackers.data;
 

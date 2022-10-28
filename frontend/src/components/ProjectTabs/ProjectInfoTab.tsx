@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { useProject } from '../../hooks/useProject';
+import { useProject } from 'hooks';
 import { Enum_Project_Type, Scalars } from 'types/GraphqlTypes';
 import { Stack, Typography } from '@mui/material';
 import { Avatar, Icon, NavLink } from 'legos';
-import { parseTrackerTime } from 'helpers';
-import { format } from 'date-fns';
+import { toHoursAndMinutes } from 'components/TimePicker/utils';
 
 type Props = {
   id: Scalars['ID'];
@@ -24,7 +23,7 @@ export const ProjectInfoTab = ({ id }: Props) => {
               <Typography fontSize="15px" color="GrayText">
                 Project type
               </Typography>
-              <Typography>Time Material</Typography>
+              <Typography>Time&Material</Typography>
             </Stack>
           </>
         );
@@ -58,19 +57,16 @@ export const ProjectInfoTab = ({ id }: Props) => {
   };
 
   if (projectData?.trackers?.data[0]?.attributes?.durationMinutes) {
-    trakedTime = format(
-      parseTrackerTime(
-        projectData?.trackers?.data[0].attributes?.durationMinutes
-      ),
-      'HH:mm'
+    trakedTime = toHoursAndMinutes(
+      projectData.trackers.data[0].attributes.durationMinutes ?? 0
     );
   }
 
-  return (
+  return projectData ? (
     <Stack flexDirection="row" gap={8}>
       <Stack gap={4}>
         <Stack>
-          <Typography variant="h1">{projectData?.name}</Typography>
+          <Typography variant="h1">{projectData.name}</Typography>
           <Typography fontSize="15px" color="GrayText">
             Project details
           </Typography>
@@ -78,28 +74,28 @@ export const ProjectInfoTab = ({ id }: Props) => {
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <Avatar
             avatar={
-              projectData?.managers?.data[0].attributes?.avatar?.data
-                ?.attributes?.url
-                ? `${process.env.REACT_APP_URI}${projectData?.managers?.data[0].attributes?.avatar.data?.attributes?.url}`
+              projectData.manager?.data?.attributes?.avatar?.data?.attributes
+                ?.url
+                ? `${process.env.REACT_APP_URI}${projectData.manager?.data?.attributes?.avatar.data?.attributes?.url}`
                 : undefined
             }
-            firstName={projectData?.managers?.data[0].attributes?.firstName}
-            lastName={projectData?.managers?.data[0].attributes?.lastName}
+            firstName={projectData.manager?.data?.attributes?.firstName}
+            lastName={projectData.manager?.data?.attributes?.lastName}
           />
           <Stack flexGrow="1">
             <Typography fontSize="15px" color="GrayText">
               Project manager
             </Typography>
             <NavLink
-              to={`/profile/${projectData?.managers?.data[0].id}`}
+              to={`/profile/${projectData.manager?.data?.id}`}
               state={{ edit: false }}
             >
-              {`${projectData?.managers?.data[0].attributes?.firstName} ${projectData?.managers?.data[0].attributes?.lastName}`}
+              {`${projectData.manager?.data?.attributes?.firstName} ${projectData.manager?.data?.attributes?.lastName}`}
             </NavLink>
           </Stack>
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={3}>
-          {getProjectType(projectData?.type)}
+          {getProjectType(projectData.type)}
         </Stack>
         <Stack flexDirection="row" alignItems="center" gap={3}>
           <Icon icon="calendarMonth" />
@@ -107,17 +103,17 @@ export const ProjectInfoTab = ({ id }: Props) => {
             <Typography fontSize="15px" color="GrayText">
               Project start
             </Typography>
-            <Typography>{projectData?.start}</Typography>
+            <Typography>{projectData.start}</Typography>
           </Stack>
         </Stack>
-        {projectData?.end && (
+        {projectData.end && (
           <Stack flexDirection="row" alignItems="center" gap={3}>
             <Icon icon="calendarMonth" />
             <Stack flexGrow="1">
               <Typography fontSize="15px" color="GrayText">
                 Project end
               </Typography>
-              <Typography>{projectData?.end}</Typography>
+              <Typography>{projectData.end}</Typography>
             </Stack>
           </Stack>
         )}
@@ -128,10 +124,10 @@ export const ProjectInfoTab = ({ id }: Props) => {
             <Typography fontSize="15px" color="GrayText">
               Client
             </Typography>
-            <Typography>{projectData?.client}</Typography>
+            <Typography>{projectData.client}</Typography>
           </Stack>
         </Stack>
-        {projectData?.trackers?.data[0]?.attributes?.durationMinutes && (
+        {!!trakedTime && (
           <Stack flexDirection="row" alignItems="center" gap={3}>
             <Icon icon="calendarMonth" />
 
@@ -145,5 +141,5 @@ export const ProjectInfoTab = ({ id }: Props) => {
         )}
       </Stack>
     </Stack>
-  );
+  ) : null;
 };

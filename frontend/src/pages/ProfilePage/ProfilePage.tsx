@@ -17,7 +17,7 @@ const ProfilePage = () => {
       sidebar={
         <>
           <VacationWidget />
-          <TimeInspector />
+          <TimeInspector userId={user.id} />
           <TrackerCalendar
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}

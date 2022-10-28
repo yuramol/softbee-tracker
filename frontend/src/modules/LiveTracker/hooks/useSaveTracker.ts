@@ -8,6 +8,7 @@ import {
 } from 'types/GraphqlTypes';
 
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
+import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 const useSaveTracker = () => {
   const [save] = useMutation<TrackerEntityResponse, MutationUpdateTrackerArgs>(
@@ -23,9 +24,9 @@ const useSaveTracker = () => {
           live_status: Enum_Tracker_Live_Status.Finish,
           startLiveDate: null,
           liveDurationMinutes: null,
-          date: values.date,
-          durationMinutes: values.duration,
-          description: values.description,
+          date: values[TIME_ENTRY_FIELDS.DATE],
+          durationMinutes: values[TIME_ENTRY_FIELDS.DURATION],
+          description: values[TIME_ENTRY_FIELDS.DESCRIPTION],
         },
       },
       refetchQueries: [TRACKERS_QUERY],
