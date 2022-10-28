@@ -32,7 +32,7 @@ const getUserChoicesData = (
 export const useNormalizedUsers = (
   filters?: UsersPermissionsUserFiltersInput
 ) => {
-  const { data, loading } = useQuery<{
+  const { data, loading, refetch } = useQuery<{
     usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
   }>(USERS_QUERY, {
     ...(filters ? { variables: { filters } } : {}),
@@ -71,5 +71,6 @@ export const useNormalizedUsers = (
     managersChoices,
     employeesChoices,
     loading,
+    refetch,
   };
 };

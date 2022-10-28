@@ -6,7 +6,7 @@ import { MainWrapper, UsersList, NewUser, TimeInspector } from 'components';
 import { PageProps } from 'pages/types';
 
 const CrewPage: React.FC<PageProps> = () => {
-  const { isManager } = useAuthUser();
+  const { isManager, user } = useAuthUser();
   const { users, refetch } = useNormalizedUsers();
   const [isCreateUser, setIsCreateUser] = useState(false);
 

@@ -11,7 +11,7 @@ export const useProject = (id: Scalars['ID']) => {
   });
 
   const projectData = data?.project.data?.attributes;
-  const manager = projectData.manager?.data?.attributes;
+  const manager = projectData?.manager?.data?.attributes;
   return {
     projectData,
     manager,
