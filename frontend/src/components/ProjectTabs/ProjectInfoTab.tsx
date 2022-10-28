@@ -10,7 +10,7 @@ type Props = {
   id: Scalars['ID'];
 };
 export const ProjectInfoTab = ({ id }: Props) => {
-  const { projectData } = useProject(id);
+  const { projectData, manager } = useProject(id);
   let trakedTime = '';
 
   const getProjectType: (type?: string) => JSX.Element | null = (type) => {
@@ -74,13 +74,12 @@ export const ProjectInfoTab = ({ id }: Props) => {
         <Stack flexDirection="row" alignItems="center" gap={1}>
           <Avatar
             avatar={
-              projectData.manager?.data?.attributes?.avatar?.data?.attributes
-                ?.url
-                ? `${process.env.REACT_APP_URI}${projectData.manager?.data?.attributes?.avatar.data?.attributes?.url}`
+              manager?.avatar?.data?.attributes?.url
+                ? `${process.env.REACT_APP_URI}${manager?.avatar.data?.attributes?.url}`
                 : undefined
             }
-            firstName={projectData.manager?.data?.attributes?.firstName}
-            lastName={projectData.manager?.data?.attributes?.lastName}
+            firstName={manager?.firstName}
+            lastName={manager?.lastName}
           />
           <Stack flexGrow="1">
             <Typography fontSize="15px" color="GrayText">
@@ -90,7 +89,7 @@ export const ProjectInfoTab = ({ id }: Props) => {
               to={`/profile/${projectData.manager?.data?.id}`}
               state={{ edit: false }}
             >
-              {`${projectData.manager?.data?.attributes?.firstName} ${projectData.manager?.data?.attributes?.lastName}`}
+              {`${manager?.firstName} ${manager?.lastName}`}
             </NavLink>
           </Stack>
         </Stack>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, IconButton, Link, Stack, Typography } from '@mui/material';
+import { Grid, IconButton, Link, Typography } from '@mui/material';
 
 import { Avatar, Icon, NavLink } from 'legos';
 import { ProjectEntity, Enum_Project_Type } from 'types/GraphqlTypes';
@@ -36,6 +36,7 @@ export const ProjectsList = ({
   return (
     <>
       {projectsList?.map((project) => {
+        const manager = project.attributes?.manager?.data?.attributes;
         return (
           <Grid
             key={project.id}
@@ -79,17 +80,12 @@ export const ProjectsList = ({
                 <Grid item>
                   <Avatar
                     avatar={
-                      project.attributes?.manager?.data?.attributes?.avatar
-                        ?.data?.attributes?.url
-                        ? `${process.env.REACT_APP_URI}${project.attributes?.manager?.data?.attributes?.avatar.data?.attributes?.url}`
+                      manager?.avatar?.data?.attributes?.url
+                        ? `${process.env.REACT_APP_URI}${manager?.avatar.data?.attributes?.url}`
                         : undefined
                     }
-                    firstName={
-                      project.attributes?.manager?.data?.attributes?.firstName
-                    }
-                    lastName={
-                      project.attributes?.manager?.data?.attributes?.lastName
-                    }
+                    firstName={manager?.firstName}
+                    lastName={manager?.lastName}
                   />
                 </Grid>
                 <Grid item>
@@ -97,7 +93,7 @@ export const ProjectsList = ({
                     to={`/profile/${project.attributes?.manager?.data?.id}`}
                     state={{ edit: false }}
                   >
-                    {`${project.attributes?.manager?.data?.attributes?.firstName} ${project.attributes?.manager?.data?.attributes?.lastName}`}
+                    {`${manager?.firstName} ${manager?.lastName}`}
                   </NavLink>
                 </Grid>
               </Grid>
