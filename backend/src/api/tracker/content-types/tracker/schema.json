@@ -1,0 +1,78 @@
+{
+  "kind": "collectionType",
+  "collectionName": "trackers",
+  "info": {
+    "singularName": "tracker",
+    "pluralName": "trackers",
+    "displayName": "Tracker",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "description": {
+      "type": "string",
+      "required": true,
+      "minLength": 5,
+      "maxLength": 100
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project",
+      "inversedBy": "trackers"
+    },
+    "durationMinutes": {
+      "type": "biginteger",
+      "default": "0"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "trackers"
+    },
+    "live": {
+      "type": "boolean",
+      "default": false,
+      "required": false
+    },
+    "startLiveDate": {
+      "type": "datetime"
+    },
+    "live_status": {
+      "type": "enumeration",
+      "enum": [
+        "start",
+        "pause",
+        "finish"
+      ],
+      "default": "finish"
+    },
+    "liveDurationMinutes": {
+      "type": "biginteger",
+      "default": "0"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "new",
+        "approved",
+        "rejected"
+      ],
+      "required": false
+    },
+    "transaction": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::transaction.transaction",
+      "inversedBy": "tracker"
+    }
+  }
+}
