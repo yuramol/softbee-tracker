@@ -30,11 +30,14 @@ const getUserChoicesData = (
 });
 
 export const useNormalizedUsers = (
-  filters: UsersPermissionsUserFiltersInput = {}
+  filters?: UsersPermissionsUserFiltersInput
 ) => {
   const { data, loading, refetch } = useQuery<{
     usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
-  }>(USERS_QUERY, { variables: { filters } });
+  }>(USERS_QUERY, {
+    ...(filters ? { variables: { filters } } : {}),
+    fetchPolicy: 'cache-first',
+  });
 
   const users = data?.usersPermissionsUsers.data;
   const managers: UsersPermissionsUserEntity[] = [];
@@ -51,7 +54,10 @@ export const useNormalizedUsers = (
       managersChoices.push(getUserChoicesData(id, attributes));
     }
 
-    if (attributes?.role?.data?.attributes?.type === Role.Employee) {
+    if (
+      attributes?.role?.data?.attributes?.type === Role.Employee ||
+      attributes?.role?.data?.attributes?.type === Role.Manager
+    ) {
       employees.push({ id, attributes });
       employeesChoices.push(getUserChoicesData(id, attributes));
     }

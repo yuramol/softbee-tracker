@@ -1,27 +1,35 @@
 import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { useAuthUser } from 'hooks';
+import { useAuthUser, useLocalStorage } from 'hooks';
 import { Loader, Layout } from 'components';
 import { NotFoundPage } from 'pages';
-import { pages } from 'constant';
+import { pages, Role } from 'constant';
 import { LiveTracker } from 'modules';
+import { PageTitle } from 'components/Layout';
 
 export const AppRouter = () => {
-  const { jwt, user, isAuth } = useAuthUser();
+  const [jwt] = useLocalStorage('jwt');
+  const { user, isAuth } = useAuthUser();
 
   if (jwt !== null && !isAuth) return <Loader />;
-
-  const currentPages = pages.filter(({ role }) =>
-    role.includes(user.role.type)
-  );
+  const currentPages =
+    jwt !== null
+      ? pages.filter(({ role }) => role.includes(user.role.type))
+      : pages.filter(({ role }) => role.includes(Role.Public));
 
   return (
     <Routes>
       <Route element={<Layout pages={currentPages} />}>
         <Route
           path="*"
-          element={isAuth ? <NotFoundPage /> : <Navigate to="/login" replace />}
+          element={
+            isAuth && jwt !== null ? (
+              <NotFoundPage />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
         />
         {isAuth && (
           <>
@@ -36,8 +44,12 @@ export const AppRouter = () => {
             path={href}
             element={
               <Suspense fallback={<div />}>
-                <Component title={name} />
-                {isAuth && <LiveTracker />}
+                <PageTitle title={name}>
+                  <div>
+                    <Component title={name} />
+                    {isAuth && <LiveTracker />}
+                  </div>
+                </PageTitle>
               </Suspense>
             }
           />

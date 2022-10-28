@@ -41,7 +41,7 @@ export const VacationApproveModalForm = ({
       user: { id: { in: [userId] } },
       status: { eq: Enum_Tracker_Status.New },
     },
-    userId
+    true
   );
 
   const { updateTracker } = useUpdateTracker();

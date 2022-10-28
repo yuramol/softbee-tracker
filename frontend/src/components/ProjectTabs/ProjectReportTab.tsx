@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Grid } from '@mui/material';
 import { ReportTable } from '..';
@@ -6,6 +6,8 @@ import { getFormattedDate } from 'helpers';
 import { useNormalizedTrackers, useNormalizedUsers } from 'hooks';
 import { MultipleSelect, RangeCalendar } from 'legos';
 import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
+import { reportRangeDates } from 'pages/ReportPage/helpers';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 type Props = {
   projectId: string;
@@ -13,29 +15,45 @@ type Props = {
 
 export const ProjectReportTab = ({ projectId }: Props) => {
   const [selectedDates, setSelectedDates] = useState([
-    getFormattedDate(new Date()),
+    startOfMonth(new Date()),
+    endOfMonth(new Date()),
   ]);
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
 
   const { usersChoices } = useNormalizedUsers();
 
   const reportFilter = {
-    user: {
-      id: { in: selectedEmployees },
-    },
+    ...(selectedEmployees.length > 0
+      ? {
+          user: {
+            id: { in: selectedEmployees },
+          },
+        }
+      : {}),
     project: {
       id: { in: [projectId] },
     },
     date:
       selectedDates.length > 1
-        ? { between: selectedDates }
-        : { eq: selectedDates[0] },
+        ? {
+            between: [
+              getFormattedDate(selectedDates[0]),
+              getFormattedDate(selectedDates[1]),
+            ],
+          }
+        : { eq: getFormattedDate(selectedDates[0]) },
   };
 
-  const { normalizedTrackers } = useNormalizedTrackers(
+  const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(
     reportFilter,
-    selectedEmployees.length > 0
+    true
   );
+
+  useEffect(() => {
+    fetchTrackers({
+      variables: { filters: reportFilter },
+    });
+  }, [selectedDates, selectedEmployees]);
 
   return (
     <Grid
@@ -49,6 +67,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
         <RangeCalendar
           selectedDates={selectedDates}
           setSelectedDates={setSelectedDates}
+          defaultRangeDates={reportRangeDates}
         />
       </Grid>
       <Grid item xs={5}>
@@ -65,7 +84,7 @@ export const ProjectReportTab = ({ projectId }: Props) => {
         <TrackerAddNewEntry projectId={projectId} />
       </Grid>
       <Grid item xs={12}>
-        <ReportTable trackers={normalizedTrackers} />
+        <ReportTable trackers={normalizedTrackers} projectView />
       </Grid>
     </Grid>
   );

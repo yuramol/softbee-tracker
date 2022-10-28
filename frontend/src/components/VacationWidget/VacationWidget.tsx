@@ -20,7 +20,7 @@ export const VacationWidget = () => {
         id: { in: vacationProjects },
       },
     },
-    user.id
+    true
   );
 
   let vacationDays = 0;
