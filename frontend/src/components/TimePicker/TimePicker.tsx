@@ -58,6 +58,12 @@ export const TimePicker = ({
 
   const dialogRef = useRef<HTMLDivElement>(null);
 
+  const hourglassBottomIconStyles = disabled
+    ? {
+        pointerEvents: 'none !important',
+      }
+    : {};
+
   useEffect(() => {
     blockScroll();
     return () => allowScroll();
@@ -136,7 +142,7 @@ export const TimePicker = ({
             readOnly: true,
             endAdornment: (
               <InputAdornment position="end" onClick={openDialog}>
-                <HourglassBottomIcon />
+                <HourglassBottomIcon sx={hourglassBottomIconStyles} />
               </InputAdornment>
             ),
           }}
