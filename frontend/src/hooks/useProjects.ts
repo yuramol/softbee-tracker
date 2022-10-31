@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 
 import { PROJECTS_QUERY } from 'api';
-import { breaksSlugs } from 'constant';
 import {
   Maybe,
   ProjectEntity,
@@ -12,7 +11,7 @@ import {
   TrackerEntity,
   TrackerFiltersInput,
 } from 'types/GraphqlTypes';
-import { getTotalTime, toUpperCaseFirst } from 'helpers';
+import { getTotalTime } from 'helpers';
 
 type TotalByProject = {
   name?: string;
@@ -30,15 +29,15 @@ export const useProjects = (
 ) => {
   const projectsData = useRef<ProjectEntity[] | undefined>([]);
   const [projects, setProjects] = useState<ProjectEntity[] | undefined>([]);
+  const [allProjects, setAllProjects] = useState<ProjectEntity[] | undefined>(
+    []
+  );
 
   const [load, { data }] = useLazyQuery<{
     projects: ProjectEntityResponseCollection;
   }>(PROJECTS_QUERY, {
     variables: {
       projectFilters: {
-        name: {
-          notIn: breaksSlugs.map((s) => toUpperCaseFirst(s)),
-        },
         ...projectFilters,
       },
       trackerFilters: { live: { eq: false }, ...trackerFilters },
@@ -48,7 +47,17 @@ export const useProjects = (
   useEffect(() => {
     load().then(({ data }) => {
       projectsData.current = data?.projects.data;
-      setProjects([...(projectsData.current as ProjectEntity[])]);
+
+      const exceptionProjects = ['Unpaid', 'Vacation', 'Sickness'];
+
+      setAllProjects([...(projectsData.current as ProjectEntity[])]);
+
+      setProjects([
+        ...(projectsData.current?.filter(
+          ({ attributes }) =>
+            !exceptionProjects.includes(attributes?.name as string)
+        ) as ProjectEntity[]),
+      ]);
     });
   }, [data]);
 
@@ -56,18 +65,20 @@ export const useProjects = (
   const projectsChoices: ProjectsChoice[] = [];
   const allTrackers: TrackerEntity[] = [];
 
-  projects?.forEach(({ id, attributes }) => {
+  allProjects?.forEach(({ attributes }) => {
     totalByProjects.push({
       name: attributes?.name,
       total: getTotalTime(attributes?.trackers?.data),
     });
 
+    allTrackers.push(...(attributes?.trackers?.data ?? []));
+  });
+
+  projects?.forEach(({ id, attributes }) => {
     projectsChoices.push({
       value: id,
       label: attributes?.name,
     });
-
-    allTrackers.push(...(attributes?.trackers?.data ?? []));
   });
 
   const total = getTotalTime(allTrackers);
