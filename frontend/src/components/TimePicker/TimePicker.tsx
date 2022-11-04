@@ -10,6 +10,7 @@ import {
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 import { Input } from 'legos';
+import { IMaskInput } from 'react-imask';
 
 import {
   addOrSubtractMinutes,
@@ -35,6 +36,29 @@ interface TimePickerProps {
   helperText?: string;
   sx?: SxProps<Theme>;
 }
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const TextMaskCustom = React.forwardRef<HTMLElement, CustomProps>(
+  function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask="00:00"
+        definitions={{
+          '0': /[0-9]/,
+        }}
+        onAccept={(value: any) =>
+          onChange({ target: { name: props.name, value } })
+        }
+      />
+    );
+  }
+);
 
 export const TimePicker = ({
   disabled,
@@ -68,16 +92,17 @@ export const TimePicker = ({
   }, [value]);
 
   useEffect(() => {
-    if (dialogOpen) {
+    if (!dialogOpen) {
       dialogRef.current?.focus();
     }
   }, [dialogOpen]);
 
   const closeDialog = () => {
-    onChange(hoursAndMinutesToMinutes(hours, minutes), true);
     if (!dialogOpen) {
       return;
     }
+
+    onChange(hoursAndMinutesToMinutes(hours, minutes), true);
     setDialogOpen(false);
   };
 
@@ -119,6 +144,8 @@ export const TimePicker = ({
 
   const handleOnChange = (value: string) => {
     const { hours, minutes } = parseTime(value);
+
+    setDurationValue(value);
     onChange(hoursAndMinutesToMinutes(hours, minutes));
   };
 
@@ -127,13 +154,21 @@ export const TimePicker = ({
       <FormControl fullWidth error={error}>
         <Input
           disabled={disabled}
-          onChange={(value) => handleOnChange(`${value}`)}
+          onChange={(value) => handleOnChange(`${value.target.value}`)}
           onFocus={handleFocus}
+          onBlur={
+            dialogRef.current
+              ? closeDialog
+              : () => {
+                  return;
+                }
+          }
           value={durationValue}
           name={name}
           error={error}
           InputProps={{
-            readOnly: true,
+            readOnly: false,
+            inputComponent: TextMaskCustom as any,
             endAdornment: (
               <InputAdornment position="end" onClick={openDialog}>
                 <HourglassBottomIcon />
@@ -141,26 +176,27 @@ export const TimePicker = ({
             ),
           }}
         />
+
         {error && <FormHelperText>{helperText}</FormHelperText>}
+        {dialogOpen && (
+          <TimePickerDialog ref={dialogRef} onBlur={closeDialog}>
+            <TimePickerBlock
+              number={`${hours}`}
+              type="hours"
+              onWheel={handleHoursScroll}
+              onDownClick={() => handleHoursChange(-1)}
+              onUpClick={() => handleHoursChange(1)}
+            />
+            :
+            <TimePickerBlock
+              number={`${minutes}`}
+              onWheel={handleMinutesScroll}
+              onDownClick={() => handleMinutesChange(-minutesPerStep)}
+              onUpClick={() => handleMinutesChange(+minutesPerStep)}
+            />
+          </TimePickerDialog>
+        )}
       </FormControl>
-      {dialogOpen && (
-        <TimePickerDialog ref={dialogRef} onBlur={closeDialog}>
-          <TimePickerBlock
-            number={`${hours}`}
-            type="hours"
-            onWheel={handleHoursScroll}
-            onDownClick={() => handleHoursChange(-1)}
-            onUpClick={() => handleHoursChange(1)}
-          />
-          :
-          <TimePickerBlock
-            number={`${minutes}`}
-            onWheel={handleMinutesScroll}
-            onDownClick={() => handleMinutesChange(-minutesPerStep)}
-            onUpClick={() => handleMinutesChange(+minutesPerStep)}
-          />
-        </TimePickerDialog>
-      )}
     </Box>
   );
 };
