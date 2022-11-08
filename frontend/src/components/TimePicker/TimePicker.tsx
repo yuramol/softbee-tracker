@@ -21,22 +21,6 @@ import {
 import { useScrollBlock } from 'helpers/useScrollBlock';
 import TimePickerDialog from './TimePickerDialog';
 import { TimePickerBlock } from './TimePickerBlock';
-import { isNull } from 'util';
-
-interface TimePickerProps {
-  disabled?: boolean;
-  minutesPerStep?: number;
-  value?: number;
-  from?: number;
-  to?: number;
-  width?: string;
-  onChange: (value: number, submit?: boolean) => void;
-  onClick?: () => void;
-  error?: boolean;
-  name?: string;
-  helperText?: string;
-  sx?: SxProps<Theme>;
-}
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -61,6 +45,21 @@ const TextMaskCustom = React.forwardRef<HTMLElement, CustomProps>(
   }
 );
 
+interface TimePickerProps {
+  disabled?: boolean;
+  minutesPerStep?: number;
+  value?: number;
+  from?: number;
+  to?: number;
+  width?: string;
+  onChange: (value: number, submit?: boolean) => void;
+  onClick?: () => void;
+  error?: boolean;
+  name?: string;
+  helperText?: string;
+  sx?: SxProps<Theme>;
+}
+
 export const TimePicker = ({
   disabled,
   minutesPerStep = 5,
@@ -78,9 +77,11 @@ export const TimePicker = ({
   const [durationValue, setDurationValue] = useState(toHoursAndMinutes(value));
   const [initialDurationValue, setInitialDurationValue] =
     useState(durationValue);
-
   const [dialogOpen, setDialogOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
+  const [click, setClick] = useState(0);
+
+  console.log(click);
 
   const { hours, minutes } = parseTime(durationValue);
 
@@ -95,12 +96,26 @@ export const TimePicker = ({
     setDurationValue(toHoursAndMinutes(value));
   }, [value]);
 
+  useEffect(() => {
+    if (click === 0) {
+      return;
+    }
+    closeDialog();
+  }, [click]);
+
+  useEffect(() => {
+    if (!dialogOpen) {
+      dialogRef.current?.focus();
+    }
+  }, [dialogOpen]);
+
   const closeDialog = () => {
+    onChange(hoursAndMinutesToMinutes(hours, minutes), true);
     if (!dialogOpen) {
       return;
     }
 
-    onChange(hoursAndMinutesToMinutes(hours, minutes), true);
+    setInitialDurationValue(durationValue);
     setDialogOpen(false);
   };
 
@@ -141,26 +156,23 @@ export const TimePicker = ({
   };
 
   const handleOnChange = (value: string) => {
-    const { hours, minutes } = parseTime(value);
-
     setDurationValue(value);
+    const { hours, minutes } = parseTime(value);
     onChange(hoursAndMinutesToMinutes(hours, minutes));
   };
 
-  let isInputFocus = false;
+  let isTimePickerFocus = false;
 
   document.addEventListener('click', (event) => {
     const target = (event.target as HTMLInputElement).id;
 
-    if (target !== 'dialog') {
-      if (isInputFocus) {
-        isInputFocus = false;
-        closeDialog();
-      }
+    if (target !== 'dialog' && isTimePickerFocus) {
+      isTimePickerFocus = false;
+      setClick(click + 1);
     }
 
     if (target === 'dialog') {
-      isInputFocus = true;
+      isTimePickerFocus = true;
     }
   });
 

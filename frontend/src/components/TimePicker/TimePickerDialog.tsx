@@ -15,6 +15,7 @@ export const TimePickerDialog = forwardRef<
   <Box
     id="dialog"
     ref={ref}
+    onBlur={onBlur}
     tabIndex={1}
     display="flex"
     position="absolute"
