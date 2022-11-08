@@ -81,8 +81,6 @@ export const TimePicker = ({
   const [blockScroll, allowScroll] = useScrollBlock();
   const [click, setClick] = useState(0);
 
-  console.log(click);
-
   const { hours, minutes } = parseTime(durationValue);
 
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -124,10 +122,13 @@ export const TimePicker = ({
     setDialogOpen(true);
   };
 
+  console.log(dialogOpen);
+
   const handleFocus = () => {
     if (onClick) {
       onClick();
     }
+
     openDialog();
   };
 
@@ -166,21 +167,21 @@ export const TimePicker = ({
   document.addEventListener('click', (event) => {
     const target = (event.target as HTMLInputElement).id;
 
-    if (target !== 'dialog' && isTimePickerFocus) {
+    if (target !== 'TimePicker' && isTimePickerFocus) {
       isTimePickerFocus = false;
       setClick(click + 1);
     }
 
-    if (target === 'dialog') {
+    if (target === 'TimePicker') {
       isTimePickerFocus = true;
     }
   });
 
   return (
-    <Box width={width ?? '100%'} sx={sx} position="relative">
-      <FormControl fullWidth error={error}>
+    <Box width={width ?? '100%'} sx={sx} position="relative" id="TimePicker">
+      <FormControl fullWidth error={error} id="TimePicker">
         <Input
-          id="dialog"
+          id="TimePicker"
           disabled={disabled}
           onChange={(value) => handleOnChange(`${value.target.value}`)}
           onFocus={handleFocus}
@@ -188,11 +189,16 @@ export const TimePicker = ({
           name={name}
           error={error}
           InputProps={{
+            id: 'TimePicker',
             readOnly: false,
             inputComponent: TextMaskCustom as any,
             endAdornment: (
-              <InputAdornment position="end" onClick={openDialog}>
-                <HourglassBottomIcon />
+              <InputAdornment
+                id="TimePicker"
+                position="end"
+                onClick={openDialog}
+              >
+                <HourglassBottomIcon id="TimePicker" />
               </InputAdornment>
             ),
           }}
