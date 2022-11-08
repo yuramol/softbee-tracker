@@ -4,18 +4,16 @@ import { Box } from '@mui/material';
 import { theme } from 'theme';
 
 type TimePickerBlockProps = {
-  onBlur: () => void;
   children: ReactNode;
 };
 
 export const TimePickerDialog = forwardRef<
   HTMLDivElement,
   TimePickerBlockProps
->(({ onBlur, children }, ref) => (
+>(({ children }, ref) => (
   <Box
     id="TimePicker"
     ref={ref}
-    onBlur={onBlur}
     tabIndex={1}
     display="flex"
     position="absolute"

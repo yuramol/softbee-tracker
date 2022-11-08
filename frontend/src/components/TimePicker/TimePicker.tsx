@@ -79,7 +79,7 @@ export const TimePicker = ({
     useState(durationValue);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
-  const [click, setClick] = useState(0);
+  const [inputClickCount, setInputClickCount] = useState(0);
 
   const { hours, minutes } = parseTime(durationValue);
 
@@ -95,11 +95,11 @@ export const TimePicker = ({
   }, [value]);
 
   useEffect(() => {
-    if (click === 0) {
+    if (inputClickCount === 0) {
       return;
     }
     closeDialog();
-  }, [click]);
+  }, [inputClickCount]);
 
   useEffect(() => {
     if (!dialogOpen) {
@@ -108,6 +108,12 @@ export const TimePicker = ({
   }, [dialogOpen]);
 
   const closeDialog = () => {
+    if (durationValue === initialDurationValue) {
+      setDialogOpen(false);
+      onChange(hoursAndMinutesToMinutes(hours, minutes));
+      return;
+    }
+
     onChange(hoursAndMinutesToMinutes(hours, minutes), true);
     if (!dialogOpen) {
       return;
@@ -121,8 +127,6 @@ export const TimePicker = ({
     if (dialogOpen) return;
     setDialogOpen(true);
   };
-
-  console.log(dialogOpen);
 
   const handleFocus = () => {
     if (onClick) {
@@ -162,26 +166,24 @@ export const TimePicker = ({
     onChange(hoursAndMinutesToMinutes(hours, minutes));
   };
 
-  let isTimePickerFocus = false;
-
   document.addEventListener('click', (event) => {
-    const target = (event.target as HTMLInputElement).id;
+    const isTimePickerFocus = (event.target as HTMLInputElement).closest(
+      'div #TimePicker'
+    );
 
-    if (target !== 'TimePicker' && isTimePickerFocus) {
-      isTimePickerFocus = false;
-      setClick(click + 1);
+    if (!isTimePickerFocus) {
+      setInputClickCount(inputClickCount + 1);
     }
 
-    if (target === 'TimePicker') {
-      isTimePickerFocus = true;
+    if (isTimePickerFocus) {
+      openDialog();
     }
   });
 
   return (
     <Box width={width ?? '100%'} sx={sx} position="relative" id="TimePicker">
-      <FormControl fullWidth error={error} id="TimePicker">
+      <FormControl fullWidth error={error}>
         <Input
-          id="TimePicker"
           disabled={disabled}
           onChange={(value) => handleOnChange(`${value.target.value}`)}
           onFocus={handleFocus}
@@ -189,16 +191,11 @@ export const TimePicker = ({
           name={name}
           error={error}
           InputProps={{
-            id: 'TimePicker',
             readOnly: false,
             inputComponent: TextMaskCustom as any,
             endAdornment: (
-              <InputAdornment
-                id="TimePicker"
-                position="end"
-                onClick={openDialog}
-              >
-                <HourglassBottomIcon id="TimePicker" />
+              <InputAdornment position="end">
+                <HourglassBottomIcon />
               </InputAdornment>
             ),
           }}
@@ -206,7 +203,7 @@ export const TimePicker = ({
 
         {error && <FormHelperText>{helperText}</FormHelperText>}
         {dialogOpen && (
-          <TimePickerDialog ref={dialogRef} onBlur={closeDialog}>
+          <TimePickerDialog ref={dialogRef}>
             <TimePickerBlock
               number={`${hours}`}
               type="hours"
