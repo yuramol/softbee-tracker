@@ -13,9 +13,9 @@ export const TimePickerDialog = forwardRef<
   TimePickerBlockProps
 >(({ onBlur, children }, ref) => (
   <Box
+    id="dialog"
     ref={ref}
     tabIndex={1}
-    onBlur={onBlur}
     display="flex"
     position="absolute"
     top="66px"

@@ -21,6 +21,7 @@ export const TimePickerBlock = ({
   onUpClick,
 }: TimePickerBlockProps) => (
   <Box
+    id="dialog"
     display="flex"
     width="50%"
     alignItems={type === 'hours' ? 'flex-end' : 'flex-start'}
@@ -28,8 +29,8 @@ export const TimePickerBlock = ({
     margin="auto 12px"
     onWheel={onWheel}
   >
-    <ArrowUp onClick={onUpClick} size={36} />
+    <ArrowUp onClick={onUpClick} size={36} id="dialog" />
     {formatNumber(number)}
-    <ArrowDown onClick={onDownClick} size={36} />
+    <ArrowDown onClick={onDownClick} size={36} id="dialog" />
   </Box>
 );

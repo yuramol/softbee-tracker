@@ -21,6 +21,7 @@ import {
 import { useScrollBlock } from 'helpers/useScrollBlock';
 import TimePickerDialog from './TimePickerDialog';
 import { TimePickerBlock } from './TimePickerBlock';
+import { isNull } from 'util';
 
 interface TimePickerProps {
   disabled?: boolean;
@@ -75,6 +76,9 @@ export const TimePicker = ({
   sx,
 }: TimePickerProps) => {
   const [durationValue, setDurationValue] = useState(toHoursAndMinutes(value));
+  const [initialDurationValue, setInitialDurationValue] =
+    useState(durationValue);
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
 
@@ -90,12 +94,6 @@ export const TimePicker = ({
   useEffect(() => {
     setDurationValue(toHoursAndMinutes(value));
   }, [value]);
-
-  useEffect(() => {
-    if (!dialogOpen) {
-      dialogRef.current?.focus();
-    }
-  }, [dialogOpen]);
 
   const closeDialog = () => {
     if (!dialogOpen) {
@@ -149,20 +147,31 @@ export const TimePicker = ({
     onChange(hoursAndMinutesToMinutes(hours, minutes));
   };
 
+  let isInputFocus = false;
+
+  document.addEventListener('click', (event) => {
+    const target = (event.target as HTMLInputElement).id;
+
+    if (target !== 'dialog') {
+      if (isInputFocus) {
+        isInputFocus = false;
+        closeDialog();
+      }
+    }
+
+    if (target === 'dialog') {
+      isInputFocus = true;
+    }
+  });
+
   return (
     <Box width={width ?? '100%'} sx={sx} position="relative">
       <FormControl fullWidth error={error}>
         <Input
+          id="dialog"
           disabled={disabled}
           onChange={(value) => handleOnChange(`${value.target.value}`)}
           onFocus={handleFocus}
-          onBlur={
-            dialogRef.current
-              ? closeDialog
-              : () => {
-                  return;
-                }
-          }
           value={durationValue}
           name={name}
           error={error}
