@@ -22,29 +22,6 @@ import { useScrollBlock } from 'helpers/useScrollBlock';
 import TimePickerDialog from './TimePickerDialog';
 import { TimePickerBlock } from './TimePickerBlock';
 
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
-
-const TextMaskCustom = React.forwardRef<HTMLElement, CustomProps>(
-  function TextMaskCustom(props, ref) {
-    const { onChange, ...other } = props;
-    return (
-      <IMaskInput
-        {...other}
-        mask="00:00"
-        definitions={{
-          '0': /[0-9]/,
-        }}
-        onAccept={(value: any) =>
-          onChange({ target: { name: props.name, value } })
-        }
-      />
-    );
-  }
-);
-
 interface TimePickerProps {
   disabled?: boolean;
   minutesPerStep?: number;
@@ -59,6 +36,31 @@ interface TimePickerProps {
   helperText?: string;
   sx?: SxProps<Theme>;
 }
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const TextMaskCustom = React.forwardRef<HTMLElement, CustomProps>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask="00:00"
+        definitions={{
+          '0': /[0-9]/,
+        }}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onAccept={(value: any) =>
+          onChange({ target: { name: props.name, value } })
+        }
+      />
+    );
+  }
+);
 
 export const TimePicker = ({
   disabled,
@@ -77,9 +79,9 @@ export const TimePicker = ({
   const [durationValue, setDurationValue] = useState(toHoursAndMinutes(value));
   const [initialDurationValue, setInitialDurationValue] =
     useState(durationValue);
+  const [timePickerBlurCount, setTimePickerBlurCount] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
-  const [inputClickCount, setInputClickCount] = useState(0);
 
   const { hours, minutes } = parseTime(durationValue);
 
@@ -95,11 +97,11 @@ export const TimePicker = ({
   }, [value]);
 
   useEffect(() => {
-    if (inputClickCount === 0) {
+    if (timePickerBlurCount === 0) {
       return;
     }
     closeDialog();
-  }, [inputClickCount]);
+  }, [timePickerBlurCount]);
 
   useEffect(() => {
     if (!dialogOpen) {
@@ -166,19 +168,22 @@ export const TimePicker = ({
     onChange(hoursAndMinutesToMinutes(hours, minutes));
   };
 
-  document.addEventListener('click', (event) => {
+  const handlerTimePickerClick = (event: Event) => {
     const isTimePickerFocus = (event.target as HTMLInputElement).closest(
       'div #TimePicker'
     );
 
-    if (!isTimePickerFocus) {
-      setInputClickCount(inputClickCount + 1);
+    if (!isTimePickerFocus && dialogOpen) {
+      setTimePickerBlurCount(timePickerBlurCount + 1);
+      document.removeEventListener('click', handlerTimePickerClick);
     }
 
     if (isTimePickerFocus) {
       openDialog();
     }
-  });
+  };
+
+  document.addEventListener('click', handlerTimePickerClick);
 
   return (
     <Box width={width ?? '100%'} sx={sx} position="relative" id="TimePicker">
@@ -192,6 +197,7 @@ export const TimePicker = ({
           error={error}
           InputProps={{
             readOnly: false,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             inputComponent: TextMaskCustom as any,
             endAdornment: (
               <InputAdornment position="end">
