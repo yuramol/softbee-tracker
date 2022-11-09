@@ -12,7 +12,6 @@ export const TimePickerDialog = forwardRef<
   TimePickerBlockProps
 >(({ children }, ref) => (
   <Box
-    id="TimePicker"
     ref={ref}
     tabIndex={1}
     display="flex"

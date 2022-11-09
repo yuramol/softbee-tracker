@@ -176,7 +176,6 @@ export const TimePicker = ({
 
     if (isTimePickerFocus) {
       blockScroll();
-      openDialog();
     }
   };
 
