@@ -88,11 +88,6 @@ export const TimePicker = ({
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    blockScroll();
-    return () => allowScroll();
-  }, []);
-
-  useEffect(() => {
     setDurationValue(toHoursAndMinutes(value));
   }, [value]);
 
@@ -174,11 +169,13 @@ export const TimePicker = ({
     );
 
     if (!isTimePickerFocus && dialogOpen) {
+      allowScroll();
       setTimePickerBlurCount(timePickerBlurCount + 1);
       document.removeEventListener('click', handlerTimePickerClick);
     }
 
     if (isTimePickerFocus) {
+      blockScroll();
       openDialog();
     }
   };
