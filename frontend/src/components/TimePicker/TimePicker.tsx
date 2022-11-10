@@ -169,13 +169,13 @@ export const TimePicker = ({
     );
 
     if (!isTimePickerFocus && dialogOpen) {
-      allowScroll();
+      document.body.style.overflowY = 'visible';
       setTimePickerBlurCount(timePickerBlurCount + 1);
       document.removeEventListener('click', handlerTimePickerClick);
     }
 
     if (isTimePickerFocus) {
-      blockScroll();
+      document.body.style.overflowY = 'hidden';
     }
   };
 
