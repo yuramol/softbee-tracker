@@ -18,9 +18,9 @@ import {
   parseTime,
   toHoursAndMinutes,
 } from './utils';
-import { useScrollBlock } from 'helpers/useScrollBlock';
 import TimePickerDialog from './TimePickerDialog';
 import { TimePickerBlock } from './TimePickerBlock';
+import { Maybe } from 'types/GraphqlTypes';
 
 interface TimePickerProps {
   disabled?: boolean;
@@ -31,6 +31,8 @@ interface TimePickerProps {
   width?: string;
   onChange: (value: number, submit?: boolean) => void;
   onClick?: () => void;
+
+  id?: Maybe<string>;
   error?: boolean;
   name?: string;
   helperText?: string;
@@ -71,6 +73,8 @@ export const TimePicker = ({
   width,
   onChange,
   onClick,
+
+  id,
   error = false,
   name,
   helperText,
@@ -81,7 +85,6 @@ export const TimePicker = ({
     useState(durationValue);
   const [timePickerBlurCount, setTimePickerBlurCount] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [blockScroll, allowScroll] = useScrollBlock();
 
   const { hours, minutes } = parseTime(durationValue);
 
@@ -107,6 +110,7 @@ export const TimePicker = ({
   const closeDialog = () => {
     if (durationValue === initialDurationValue) {
       setDialogOpen(false);
+
       onChange(hoursAndMinutesToMinutes(hours, minutes));
       return;
     }
@@ -116,8 +120,8 @@ export const TimePicker = ({
       return;
     }
 
-    setInitialDurationValue(durationValue);
     setDialogOpen(false);
+    setInitialDurationValue(durationValue);
   };
 
   const openDialog = () => {
@@ -165,29 +169,45 @@ export const TimePicker = ({
 
   const handlerTimePickerClick = (event: Event) => {
     const isTimePickerFocus = (event.target as HTMLInputElement).closest(
-      'div #TimePicker'
+      `.box-time-picker.MuiBox-root.css-6ncycg`
     );
 
-    if (!isTimePickerFocus && dialogOpen) {
+    const isTimePickerId = (event.target as HTMLInputElement).closest(
+      `#time-picker-${id}`
+    );
+
+    if (!isTimePickerFocus) {
       document.body.style.overflowY = 'visible';
-      setTimePickerBlurCount(timePickerBlurCount + 1);
-      document.removeEventListener('click', handlerTimePickerClick);
     }
 
     if (isTimePickerFocus) {
       document.body.style.overflowY = 'hidden';
+    }
+
+    if (isTimePickerId) {
+      handleFocus();
+    }
+
+    if (!isTimePickerId) {
+      setTimePickerBlurCount(timePickerBlurCount + 1);
+      document.removeEventListener('click', handlerTimePickerClick);
     }
   };
 
   document.addEventListener('click', handlerTimePickerClick);
 
   return (
-    <Box width={width ?? '100%'} sx={sx} position="relative" id="TimePicker">
+    <Box
+      width={width ?? '100%'}
+      sx={sx}
+      position="relative"
+      id={'time-picker-' + id}
+      className="box-time-picker"
+    >
       <FormControl fullWidth error={error}>
         <Input
           disabled={disabled}
           onChange={(value) => handleOnChange(`${value.target.value}`)}
-          onFocus={handleFocus}
           value={durationValue}
           name={name}
           error={error}

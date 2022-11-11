@@ -19,7 +19,7 @@ import {
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
 import { useUpdateTracker, useDeleteTracker, useNotification } from 'hooks';
-import { TrackerEntity } from 'types/GraphqlTypes';
+import { Maybe, TrackerEntity } from 'types/GraphqlTypes';
 import { useStartTracker } from 'modules/LiveTracker/hooks';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
@@ -27,9 +27,10 @@ import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntry
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
+  id?: Maybe<string>;
 };
 
-export const TrackerItem = ({ tracker }: TrackerItemProps) => {
+export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
   const { updateTracker } = useUpdateTracker();
   const { deleteTracker } = useDeleteTracker();
   const { startTracker } = useStartTracker();
@@ -149,6 +150,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                     sx={{ width: '110px' }}
                     value={tracker.attributes?.durationMinutes ?? 0}
                     onChange={handleChange}
+                    id={id}
                   />
                   <IconButton
                     sx={{ width: '56px' }}

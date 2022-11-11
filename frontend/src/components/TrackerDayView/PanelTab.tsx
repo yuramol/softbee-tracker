@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { TrackerItem } from './TrackerItem';
@@ -22,7 +22,7 @@ export const PanelTab: React.FC<PanelTabProps> = ({
         <Stack>
           {trackersByDay.trackersByProject.map(({ trackers }) =>
             trackers.map((tracker) => (
-              <TrackerItem key={tracker.id} tracker={tracker} />
+              <TrackerItem key={tracker.id} tracker={tracker} id={tracker.id} />
             ))
           )}
           <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
