@@ -54,7 +54,9 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
       newSelectedDates.push(selectedDay);
     }
 
-    setSelectedDates(newSelectedDates.sort());
+    setSelectedDates(
+      newSelectedDates.sort((d1, d2) => d1.getTime() - d2.getTime())
+    );
     setValue(newSelectedDates[0]);
   };
 
