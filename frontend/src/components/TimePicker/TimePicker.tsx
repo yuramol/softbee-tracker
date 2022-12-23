@@ -65,9 +65,12 @@ export const TimePicker = ({
     : {};
 
   useEffect(() => {
-    blockScroll();
-    return () => allowScroll();
-  }, []);
+    if (dialogOpen) {
+      blockScroll();
+    } else {
+      allowScroll();
+    }
+  }, [dialogOpen]);
 
   useEffect(() => {
     setDurationValue(toHoursAndMinutes(value));

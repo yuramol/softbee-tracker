@@ -4,12 +4,14 @@ import { Stack, Typography } from '@mui/material';
 
 import { MainWrapper, ReportTable } from '../../components';
 import { PageProps } from '../types';
-import { useNormalizedTrackers } from 'hooks';
+import { useNormalizedTrackers, useAuthUser } from 'hooks';
 import { getFormattedDate, getHours } from 'helpers';
 import { ReportPageSidebar } from './ReportPageSidebar';
 import { breaksTitles } from 'constant';
 
 const ReportPage: React.FC<PageProps> = ({ title }) => {
+  const { user, isManager } = useAuthUser();
+
   const [selectedDates, setSelectedDates] = useState([
     startOfMonth(new Date()),
     endOfMonth(new Date()),
@@ -18,31 +20,39 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const [checked, setChecked] = useState(true);
 
-  const reportFilter = {
-    ...(selectedEmployees.length > 0
-      ? {
-          user: {
-            id: { in: selectedEmployees },
-          },
-        }
-      : {}),
-    ...(selectedProjects.length > 0
-      ? {
-          project: {
-            id: { in: selectedProjects },
-          },
-        }
-      : {}),
-    date:
-      selectedDates.length > 1
+  let reportFilter = {};
+  if (isManager) {
+    reportFilter = {
+      user: { id: { in: [user.id] } },
+      ...(selectedEmployees.length > 0
         ? {
-            between: [
-              getFormattedDate(selectedDates[0]),
-              getFormattedDate(selectedDates[1]),
-            ],
+            user: {
+              id: { in: selectedEmployees },
+            },
           }
-        : { eq: getFormattedDate(selectedDates[0]) },
-  };
+        : {}),
+      ...(selectedProjects.length > 0
+        ? {
+            project: {
+              id: { in: selectedProjects },
+            },
+          }
+        : {}),
+      date:
+        selectedDates.length > 1
+          ? {
+              between: [
+                getFormattedDate(selectedDates[0]),
+                getFormattedDate(selectedDates[1]),
+              ],
+            }
+          : { eq: getFormattedDate(selectedDates[0]) },
+    };
+  } else {
+    reportFilter = {
+      user: { id: { in: [user.id] } },
+    };
+  }
   const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(
     reportFilter,
     true
@@ -52,7 +62,7 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
     fetchTrackers({
       variables: { filters: reportFilter },
     });
-  }, [selectedDates, selectedEmployees, selectedProjects]);
+  }, [selectedDates, selectedEmployees, selectedProjects, user.id]);
 
   const totalTracked = useMemo(() => {
     let totalTime = 0;
