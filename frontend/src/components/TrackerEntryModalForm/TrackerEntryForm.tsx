@@ -55,12 +55,12 @@ export const TrackerEntryForm = ({
   const validationSchema = yup.object({
     ...(!isLive
       ? {
-          [TIME_ENTRY_FIELDS.DATE]: yup.date().required('Should not be empty'),
-          [TIME_ENTRY_FIELDS.DURATION]: yup
-            .string()
-            .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
-            .required('Should not be empty'),
-        }
+        [TIME_ENTRY_FIELDS.DATE]: yup.date().required('Should not be empty'),
+        [TIME_ENTRY_FIELDS.DURATION]: yup
+          .string()
+          .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
+          .required('Should not be empty'),
+      }
       : {}),
     [TIME_ENTRY_FIELDS.PROJECT]: yup.string().required('Should not be empty'),
     [TIME_ENTRY_FIELDS.USER]: yup.string().required('Should not be empty'),
@@ -103,7 +103,7 @@ export const TrackerEntryForm = ({
               <Stack direction="row" gap={3}>
                 <CalendarPickerFormik
                   field={TIME_ENTRY_FIELDS.DATE}
-                  minDate={startOfMonth(subMonths(new Date(), 1))}
+                  minDate={startOfMonth(subMonths(new Date(), 0))}
                   disableFuture
                   views={['day']}
                 />
