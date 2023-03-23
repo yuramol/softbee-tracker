@@ -21,9 +21,12 @@ export const PanelTab: React.FC<PanelTabProps> = ({
       return (
         <Stack>
           {trackersByDay.trackersByProject.map(({ trackers }) =>
-            trackers.map((tracker) => (
-              <TrackerItem key={tracker.id} tracker={tracker} />
-            ))
+            trackers.map(
+              (tracker) =>
+                tracker.attributes?.status !== 'new' && (
+                  <TrackerItem key={tracker.id} tracker={tracker} />
+                )
+            )
           )}
           <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>
             Total: {getHours(trackersByDay.total)}
