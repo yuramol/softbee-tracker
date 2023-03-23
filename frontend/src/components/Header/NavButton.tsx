@@ -33,7 +33,6 @@ export const NavButton: React.FC<Page> = ({ name, href }) => {
       disabled={name === 'Register' ? true : false}
     >
       {name}
-      {/* <NavLink key={name} to={href} style={{ position: 'relative' }} /> */}
 
       {name === 'Crew' && normalizedTrackers.length > 0 ? <PulseDot /> : null}
     </Button>
