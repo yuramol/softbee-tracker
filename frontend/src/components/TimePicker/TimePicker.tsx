@@ -222,11 +222,7 @@ export const TimePicker = ({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             inputComponent: TextMaskCustom as any,
             endAdornment: disabled ? undefined : (
-              <InputAdornment
-                position="end"
-                onClick={openDialog}
-                disabled={disabled}
-              >
+              <InputAdornment position="end" onClick={openDialog}>
                 <HourglassBottomIcon sx={hourglassBottomIconStyles} />
               </InputAdornment>
             ),
