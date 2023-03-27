@@ -21,6 +21,7 @@ import {
 import TimePickerDialog from './TimePickerDialog';
 import { TimePickerBlock } from './TimePickerBlock';
 import { Maybe } from 'types/GraphqlTypes';
+import { useScrollBlock } from 'helpers/useScrollBlock';
 
 interface TimePickerProps {
   disabled?: boolean;
@@ -85,6 +86,7 @@ export const TimePicker = ({
     useState(durationValue);
   const [timePickerBlurCount, setTimePickerBlurCount] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [blockScroll, allowScroll] = useScrollBlock();
 
   const { hours, minutes } = parseTime(durationValue);
 
@@ -99,6 +101,14 @@ export const TimePicker = ({
   useEffect(() => {
     setDurationValue(toHoursAndMinutes(value));
   }, [value]);
+
+  useEffect(() => {
+    if (dialogOpen) {
+      blockScroll();
+    } else {
+      allowScroll();
+    }
+  }, [dialogOpen]);
 
   useEffect(() => {
     if (timePickerBlurCount === 0) {
@@ -182,15 +192,7 @@ export const TimePicker = ({
       `#time-picker-${id}`
     );
 
-    if (!isTimePickerFocus) {
-      document.body.style.overflowY = 'visible';
-    }
-
-    if (isTimePickerFocus) {
-      document.body.style.overflowY = 'hidden';
-    }
-
-    if (isTimePickerId) {
+    if (isTimePickerId && !disabled) {
       handleFocus();
     }
 
