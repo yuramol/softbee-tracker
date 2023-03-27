@@ -18,7 +18,12 @@ import {
   TimeEntryValues,
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
-import { useUpdateTracker, useDeleteTracker, useNotification } from 'hooks';
+import {
+  useUpdateTracker,
+  useDeleteTracker,
+  useNotification,
+  useAuthUser,
+} from 'hooks';
 import { Maybe, TrackerEntity } from 'types/GraphqlTypes';
 import { useStartTracker } from 'modules/LiveTracker/hooks';
 import { BreaksDay } from 'components';
@@ -31,6 +36,7 @@ type TrackerItemProps = {
 };
 
 export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
+  const { user } = useAuthUser();
   const { updateTracker } = useUpdateTracker();
   const { deleteTracker } = useDeleteTracker();
   const { startTracker } = useStartTracker();
@@ -217,6 +223,7 @@ export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
         onClose={toggleOpenModal}
         onSubmit={(values) => handelSubmit(values)}
         initialValuesForm={initialValuesForm}
+        userId={user.id}
         titleForm="Edit time entry"
         buttonSubmitTitle="Update"
       />

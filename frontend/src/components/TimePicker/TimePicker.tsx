@@ -90,6 +90,20 @@ export const TimePicker = ({
 
   const dialogRef = useRef<HTMLDivElement>(null);
 
+  const hourglassBottomIconStyles = disabled
+    ? {
+        pointerEvents: 'none !important',
+      }
+    : {};
+
+  useEffect(() => {
+    if (dialogOpen) {
+      blockScroll();
+    } else {
+      allowScroll();
+    }
+  }, [dialogOpen]);
+
   useEffect(() => {
     setDurationValue(toHoursAndMinutes(value));
   }, [value]);
@@ -216,8 +230,8 @@ export const TimePicker = ({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             inputComponent: TextMaskCustom as any,
             endAdornment: (
-              <InputAdornment position="end">
-                <HourglassBottomIcon />
+              <InputAdornment position="end" onClick={openDialog}>
+                <HourglassBottomIcon sx={hourglassBottomIconStyles} />
               </InputAdornment>
             ),
           }}
