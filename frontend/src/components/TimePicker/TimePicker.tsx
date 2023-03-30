@@ -32,8 +32,6 @@ interface TimePickerProps {
   to?: number;
   width?: string;
   onChange: (value: number, submit?: boolean) => void;
-  onClick?: () => void;
-
   id?: Maybe<string>;
   error?: boolean;
   name?: string;
@@ -74,7 +72,6 @@ export const TimePicker = ({
   to,
   width,
   onChange,
-  onClick,
   id,
   error = false,
   name,

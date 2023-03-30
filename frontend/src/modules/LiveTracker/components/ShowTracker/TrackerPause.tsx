@@ -7,7 +7,6 @@ import { Enum_Tracker_Live_Status, TrackerEntity } from 'types/GraphqlTypes';
 import { useDurationTimer, usePauseTracker } from '../../hooks';
 import { IconButtonTracker } from '../../helpers';
 import { parseISO } from 'date-fns';
-import { boolean } from 'yargs';
 
 type TrackerPauseProps = {
   tracker: TrackerEntity;

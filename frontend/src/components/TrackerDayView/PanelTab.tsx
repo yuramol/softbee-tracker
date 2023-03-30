@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { TrackerItem } from './TrackerItem';

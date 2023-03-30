@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Typography,
-  TextField,
-  Stack,
-  Modal,
-  Box,
-  Dialog,
-  DialogContent,
-} from '@mui/material';
+import { Button, Typography, TextField, Stack } from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
 import { startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
@@ -18,7 +9,6 @@ import { TimePicker } from 'components';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
-import { parseTime } from 'components/TimePicker/utils';
 
 const modalStyle = {
   position: 'absolute',

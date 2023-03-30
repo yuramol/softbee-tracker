@@ -23,20 +23,18 @@ import {
   useNotification,
   useAuthUser,
 } from 'hooks';
-import { Maybe, TrackerEntity } from 'types/GraphqlTypes';
+import { TrackerEntity } from 'types/GraphqlTypes';
 import { useStartTracker } from 'modules/LiveTracker/hooks';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
 import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 import { toHoursAndMinutes } from 'components/TimePicker/utils';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
-  id?: Maybe<string>;
 };
 
-export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
+export const TrackerItem = ({ tracker }: TrackerItemProps) => {
   const { user } = useAuthUser();
   const { updateTracker } = useUpdateTracker();
   const { deleteTracker } = useDeleteTracker();
@@ -98,19 +96,6 @@ export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
       });
     }
     toggleOpenModal();
-  };
-
-  const handleChange = (value: number, submit?: boolean) => {
-    if (submit && tracker?.id) {
-      updateTracker(tracker.id, {
-        durationMinutes: value,
-      }).then(() => {
-        notification({
-          message: 'The tracker was successfully updated',
-          variant: 'success',
-        });
-      });
-    }
   };
 
   return (
