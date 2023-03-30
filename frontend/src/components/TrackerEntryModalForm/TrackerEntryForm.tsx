@@ -101,11 +101,6 @@ export const TrackerEntryForm = ({
 
   const { setFieldValue, handleChange, handleSubmit, values } = formik;
 
-  console.log(
-    '%c Check! ',
-    'background: #222; color: #bada55',
-    values[TIME_ENTRY_FIELDS.DURATION]
-  );
   return (
     <FormikContext.Provider value={formik}>
       <form onSubmit={handleSubmit}>
