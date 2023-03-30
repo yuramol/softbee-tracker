@@ -1,6 +1,10 @@
 import { useMutation } from '@apollo/client';
 
-import { CREATE_TRACKER_BY_USER_ID_MUTATION, TRACKERS_QUERY } from 'api';
+import {
+  CREATE_TRACKER_BY_USER_ID_MUTATION,
+  PROJECTS_QUERY,
+  TRACKERS_QUERY,
+} from 'api';
 import {
   MutationCreateTrackerArgs,
   TrackerEntityResponse,
@@ -18,7 +22,7 @@ export const useCreateTracker = () => {
       variables: {
         data,
       },
-      refetchQueries: [TRACKERS_QUERY],
+      refetchQueries: [TRACKERS_QUERY, PROJECTS_QUERY],
     });
   return { createTracker };
 };

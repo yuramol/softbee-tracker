@@ -63,6 +63,11 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
     {
       user: { id: { eq: userId } },
       date: { between: inspectBy.filter },
+      or: [
+        { status: { eq: null } },
+        { status: { eq: 'rejected' } },
+        { status: { eq: 'approved' } },
+      ],
     }
   );
 

@@ -1,6 +1,10 @@
 import { useMutation } from '@apollo/client';
 
-import { TRACKERS_QUERY, DELETE_TRACKER_BY_ID_MUTATION } from 'api';
+import {
+  TRACKERS_QUERY,
+  DELETE_TRACKER_BY_ID_MUTATION,
+  PROJECTS_QUERY,
+} from 'api';
 import {
   MutationDeleteTrackerArgs,
   TrackerEntityResponse,
@@ -17,7 +21,7 @@ export const useDeleteTracker = () => {
       variables: {
         id: trackerId,
       },
-      refetchQueries: [TRACKERS_QUERY],
+      refetchQueries: [TRACKERS_QUERY, PROJECTS_QUERY],
     });
   };
   return { deleteTracker };

@@ -12,12 +12,14 @@ type TrackerByProject = {
   name: string | undefined;
   trackers: TrackerEntity[];
   total: number;
+  status: string;
 };
 
 export type TrackerByDay = {
   date: string;
   trackersByProject: TrackerByProject[];
   total: number;
+  status: string;
 };
 
 export const useNormalizedTrackers = (
@@ -36,7 +38,6 @@ export const useNormalizedTrackers = (
     }
   }, []);
   const normalizedTrackers: TrackerByDay[] = [];
-
   data?.trackers.data.forEach((tracker) => {
     const date = tracker.attributes?.date;
     const projectName = tracker.attributes?.project?.data?.attributes?.name;
@@ -45,12 +46,14 @@ export const useNormalizedTrackers = (
       name: projectName,
       trackers: [tracker],
       total: tracker.attributes?.durationMinutes ?? 0,
+      status: tracker.attributes?.status ?? '',
     };
 
     const trackerByDay: TrackerByDay = {
       date,
       trackersByProject: [trackerByProject],
       total: tracker.attributes?.durationMinutes ?? 0,
+      status: tracker.attributes?.status ?? '',
     };
 
     const findTrackerByDay = normalizedTrackers.find(

@@ -16,6 +16,7 @@ import { getTotalTime } from 'helpers';
 type TotalByProject = {
   name?: string;
   total: string;
+  status?: string;
 };
 
 type ProjectsChoice = {
@@ -69,6 +70,7 @@ export const useProjects = (
     totalByProjects.push({
       name: attributes?.name,
       total: getTotalTime(attributes?.trackers?.data),
+      status: attributes?.status,
     });
 
     allTrackers.push(...(attributes?.trackers?.data ?? []));

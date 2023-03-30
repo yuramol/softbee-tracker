@@ -1,5 +1,14 @@
 import React from 'react';
-import { Button, Typography, TextField, Stack } from '@mui/material';
+import {
+  Button,
+  Typography,
+  TextField,
+  Stack,
+  Modal,
+  Box,
+  Dialog,
+  DialogContent,
+} from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
 import { startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
@@ -9,6 +18,7 @@ import { TimePicker } from 'components';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
+import { parseTime } from 'components/TimePicker/utils';
 
 const modalStyle = {
   position: 'absolute',
@@ -91,6 +101,11 @@ export const TrackerEntryForm = ({
 
   const { setFieldValue, handleChange, handleSubmit, values } = formik;
 
+  console.log(
+    '%c Check! ',
+    'background: #222; color: #bada55',
+    values[TIME_ENTRY_FIELDS.DURATION]
+  );
   return (
     <FormikContext.Provider value={formik}>
       <form onSubmit={handleSubmit}>
@@ -107,6 +122,7 @@ export const TrackerEntryForm = ({
                   disableFuture
                   views={['day']}
                 />
+
                 <TimePicker
                   value={values[TIME_ENTRY_FIELDS.DURATION]}
                   onChange={(value) => {
@@ -115,6 +131,15 @@ export const TrackerEntryForm = ({
                   name={TIME_ENTRY_FIELDS.DURATION}
                   {...formikPropsErrors(TIME_ENTRY_FIELDS.DURATION, formik)}
                 />
+
+                {/* <TimePicker
+                  value={values[TIME_ENTRY_FIELDS.DURATION]}
+                  onChange={(value) => {
+                    setFieldValue(`${TIME_ENTRY_FIELDS.DURATION}`, value);
+                  }}
+                  name={TIME_ENTRY_FIELDS.DURATION}
+                  {...formikPropsErrors(TIME_ENTRY_FIELDS.DURATION, formik)}
+                /> */}
               </Stack>
             )}
 

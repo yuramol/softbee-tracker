@@ -13,7 +13,6 @@ import {
 import { format, parseISO } from 'date-fns';
 
 import { Icon } from 'legos';
-import { TimePicker } from 'components';
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
@@ -124,12 +123,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
             />
           </Grid>
           <Grid item xs={5}>
-            <TimePicker
-              disabled={true}
-              sx={{ width: '110px' }}
-              value={tracker.attributes?.durationMinutes ?? 0}
-              onChange={handleChange}
-            />
+            {tracker.attributes?.durationMinutes ?? 0}
           </Grid>
         </Grid>
       ) : (
@@ -151,11 +145,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                 </>
               ) : (
                 <>
-                  <TimePicker
-                    sx={{ width: '110px' }}
-                    value={tracker.attributes?.durationMinutes ?? 0}
-                    onChange={handleChange}
-                  />
+                  {tracker.attributes?.durationMinutes ?? 0}
                   <IconButton
                     sx={{ width: '56px' }}
                     color="primary"
