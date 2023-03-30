@@ -66,12 +66,19 @@ export const useNormalizedTrackers = (
       );
 
       findTrackerByDay.total =
-        findTrackerByDay.total + tracker.attributes?.durationMinutes ?? 0;
+        tracker.attributes?.status !== 'new' &&
+        tracker.attributes?.status !== 'rejected'
+          ? findTrackerByDay.total + tracker.attributes?.durationMinutes ?? 0
+          : findTrackerByDay.total;
 
       if (findTrackerByProject) {
         findTrackerByProject.trackers.push(tracker);
         findTrackerByProject.total =
-          findTrackerByProject.total + tracker.attributes?.durationMinutes ?? 0;
+          tracker.attributes?.status !== 'new' &&
+          tracker.attributes?.status !== 'rejected'
+            ? findTrackerByProject.total +
+                tracker.attributes?.durationMinutes ?? 0
+            : findTrackerByProject.total;
       } else {
         findTrackerByDay.trackersByProject.push(trackerByProject);
       }

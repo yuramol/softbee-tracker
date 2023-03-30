@@ -26,11 +26,6 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const filters = {
     user: { id: { in: [user.id] } },
     date: { between: [startMonth, endMonth] },
-    or: [
-      { status: { eq: null } },
-      { status: { eq: 'rejected' } },
-      { status: { eq: 'approved' } },
-    ],
   };
 
   const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(

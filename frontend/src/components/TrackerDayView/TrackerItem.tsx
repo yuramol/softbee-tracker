@@ -123,6 +123,7 @@ export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
             <BreaksDay
               breaks={tracker.attributes?.project?.data?.attributes?.name}
               description={tracker.attributes?.description}
+              status={tracker.attributes?.status}
             />
           </Grid>
           <Grid item xs={5}>
