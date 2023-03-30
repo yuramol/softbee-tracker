@@ -128,18 +128,12 @@ export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
           <Grid item xs={5}>
             <Typography
               sx={{
-                border: '1px solid',
-                borderRadius: '4px',
                 display: 'flex',
                 padding: '5px',
                 alignItems: 'center',
               }}
             >
               {toHoursAndMinutes(tracker.attributes?.durationMinutes ?? 0)}
-              <HourglassBottomIcon
-                fontSize="small"
-                sx={{ marginLeft: '5px' }}
-              />
             </Typography>
           </Grid>
         </Grid>
@@ -164,8 +158,6 @@ export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
                 <>
                   <Typography
                     sx={{
-                      border: '1px solid',
-                      borderRadius: '4px',
                       display: 'flex',
                       padding: '5px',
                       alignItems: 'center',
@@ -174,10 +166,6 @@ export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
                     {toHoursAndMinutes(
                       tracker.attributes?.durationMinutes ?? 0
                     )}
-                    <HourglassBottomIcon
-                      fontSize="small"
-                      sx={{ marginLeft: '5px' }}
-                    />
                   </Typography>
                   <IconButton
                     sx={{ width: '56px' }}

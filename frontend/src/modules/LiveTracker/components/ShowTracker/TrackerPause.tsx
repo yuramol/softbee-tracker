@@ -4,8 +4,10 @@ import { useSnackbar } from 'notistack';
 import { GraphQLError } from 'graphql';
 
 import { Enum_Tracker_Live_Status, TrackerEntity } from 'types/GraphqlTypes';
-import { usePauseTracker } from '../../hooks';
+import { useDurationTimer, usePauseTracker } from '../../hooks';
 import { IconButtonTracker } from '../../helpers';
+import { parseISO } from 'date-fns';
+import { boolean } from 'yargs';
 
 type TrackerPauseProps = {
   tracker: TrackerEntity;
@@ -28,11 +30,22 @@ export const TrackerPause = ({ tracker }: TrackerPauseProps) => {
         enqueueSnackbar(error.message, { variant: 'error' });
       });
   };
+  const duration = useDurationTimer(
+    parseISO(tracker.attributes?.startLiveDate)
+  );
+  const [hours, minutes, seconds] = duration
+    .split(/\D+/)
+    .map((part) => parseInt(part));
+  const durationMs = hours * 3600000 + minutes * 60000 + seconds * 1000;
+  let pausedButton = false;
+  if (durationMs < 60000) {
+    pausedButton = true;
+  }
   return (
     <>
       {isLiveStatusStart && (
-        <IconButtonTracker onClick={handelPauseTracker}>
-          <PauseIcon color="primary" />
+        <IconButtonTracker onClick={handelPauseTracker} disabled={pausedButton}>
+          <PauseIcon color={!pausedButton ? 'primary' : 'disabled'} />
         </IconButtonTracker>
       )}
     </>
