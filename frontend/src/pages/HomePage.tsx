@@ -9,7 +9,7 @@ import {
   VacationWidget,
 } from '../components';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
-import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { addDays, endOfMonth, format, startOfMonth, subDays } from 'date-fns';
 import { PageProps } from './types';
 
 const HomePage: React.FC<PageProps> = ({ title }) => {
@@ -17,10 +17,10 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
   const [selectedDay, setSelectedDay] = useState(new Date());
 
   const [startMonth, setStartMonth] = useState(
-    format(startOfMonth(new Date()), 'YYY-MM-dd')
+    format(subDays(startOfMonth(new Date()), 7), 'YYY-MM-dd')
   );
   const [endMonth, setEndMonth] = useState(
-    format(endOfMonth(new Date()), 'YYY-MM-dd')
+    format(addDays(endOfMonth(new Date()), 7), 'YYY-MM-dd')
   );
 
   const filters = {

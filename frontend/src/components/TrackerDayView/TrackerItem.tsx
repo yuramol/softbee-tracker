@@ -23,17 +23,20 @@ import {
   useNotification,
   useAuthUser,
 } from 'hooks';
-import { TrackerEntity } from 'types/GraphqlTypes';
+import { Maybe, TrackerEntity } from 'types/GraphqlTypes';
 import { useStartTracker } from 'modules/LiveTracker/hooks';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
 import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
+import { toHoursAndMinutes } from 'components/TimePicker/utils';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
+  id?: Maybe<string>;
 };
 
-export const TrackerItem = ({ tracker }: TrackerItemProps) => {
+export const TrackerItem = ({ tracker, id }: TrackerItemProps) => {
   const { user } = useAuthUser();
   const { updateTracker } = useUpdateTracker();
   const { deleteTracker } = useDeleteTracker();
@@ -115,7 +118,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
       {breaksTitles.includes(
         tracker.attributes?.project?.data?.attributes?.name as string
       ) ? (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={7}>
             <BreaksDay
               breaks={tracker.attributes?.project?.data?.attributes?.name}
@@ -123,7 +126,21 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
             />
           </Grid>
           <Grid item xs={5}>
-            {tracker.attributes?.durationMinutes ?? 0}
+            <Typography
+              sx={{
+                border: '1px solid',
+                borderRadius: '4px',
+                display: 'flex',
+                padding: '5px',
+                alignItems: 'center',
+              }}
+            >
+              {toHoursAndMinutes(tracker.attributes?.durationMinutes ?? 0)}
+              <HourglassBottomIcon
+                fontSize="small"
+                sx={{ marginLeft: '5px' }}
+              />
+            </Typography>
           </Grid>
         </Grid>
       ) : (
@@ -135,7 +152,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
               </Typography>
               <Typography>{tracker.attributes?.description}</Typography>
             </Grid>
-            <Grid item container xs={5} gap={1}>
+            <Grid item container xs={5} gap={1} alignItems="center">
               {tracker.attributes?.live_status === 'start' ? (
                 <>
                   <Typography variant="caption">live tracking ... </Typography>
@@ -145,7 +162,23 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                 </>
               ) : (
                 <>
-                  {tracker.attributes?.durationMinutes ?? 0}
+                  <Typography
+                    sx={{
+                      border: '1px solid',
+                      borderRadius: '4px',
+                      display: 'flex',
+                      padding: '5px',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {toHoursAndMinutes(
+                      tracker.attributes?.durationMinutes ?? 0
+                    )}
+                    <HourglassBottomIcon
+                      fontSize="small"
+                      sx={{ marginLeft: '5px' }}
+                    />
+                  </Typography>
                   <IconButton
                     sx={{ width: '56px' }}
                     color="primary"

@@ -68,7 +68,7 @@ export const TrackerEntryForm = ({
           [TIME_ENTRY_FIELDS.DATE]: yup.date().required('Should not be empty'),
           [TIME_ENTRY_FIELDS.DURATION]: yup
             .string()
-            .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
+            .test('duration', 'Duration min 00:05', (val) => val !== '0')
             .required('Should not be empty'),
         }
       : {}),
@@ -131,15 +131,6 @@ export const TrackerEntryForm = ({
                   name={TIME_ENTRY_FIELDS.DURATION}
                   {...formikPropsErrors(TIME_ENTRY_FIELDS.DURATION, formik)}
                 />
-
-                {/* <TimePicker
-                  value={values[TIME_ENTRY_FIELDS.DURATION]}
-                  onChange={(value) => {
-                    setFieldValue(`${TIME_ENTRY_FIELDS.DURATION}`, value);
-                  }}
-                  name={TIME_ENTRY_FIELDS.DURATION}
-                  {...formikPropsErrors(TIME_ENTRY_FIELDS.DURATION, formik)}
-                /> */}
               </Stack>
             )}
 
