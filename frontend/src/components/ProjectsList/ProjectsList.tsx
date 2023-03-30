@@ -68,36 +68,37 @@ export const ProjectsList = ({
                 <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.start}`}</Typography>
               </Grid>
             </Grid>
-
-            <Grid item xs={5}>
-              <Grid
-                container
-                direction="row"
-                alignItems="center"
-                spacing={1}
-                width="300px"
-              >
-                <Grid item>
-                  <Avatar
-                    avatar={
-                      manager?.avatar?.data?.attributes?.url
-                        ? `${process.env.REACT_APP_URI}${manager?.avatar.data?.attributes?.url}`
-                        : undefined
-                    }
-                    firstName={manager?.firstName}
-                    lastName={manager?.lastName}
-                  />
-                </Grid>
-                <Grid item>
-                  <NavLink
-                    to={`/profile/${project.attributes?.manager?.data?.id}`}
-                    state={{ edit: false }}
-                  >
-                    {`${manager?.firstName} ${manager?.lastName}`}
-                  </NavLink>
+            {manager && (
+              <Grid item xs={5}>
+                <Grid
+                  container
+                  direction="row"
+                  alignItems="center"
+                  spacing={1}
+                  width="300px"
+                >
+                  <Grid item>
+                    <Avatar
+                      avatar={
+                        manager?.avatar?.data?.attributes?.url
+                          ? `${process.env.REACT_APP_URI}${manager?.avatar.data?.attributes?.url}`
+                          : undefined
+                      }
+                      firstName={manager?.firstName}
+                      lastName={manager?.lastName}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <NavLink
+                      to={`/profile/${project.attributes?.manager?.data?.id}`}
+                      state={{ edit: false }}
+                    >
+                      {`${manager?.firstName} ${manager?.lastName}`}
+                    </NavLink>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            )}
 
             <Grid item xs={2}>
               <IconButton

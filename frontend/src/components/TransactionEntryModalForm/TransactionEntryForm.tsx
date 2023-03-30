@@ -58,7 +58,11 @@ export const TransactionEntryForm = ({
             .required('Should not be empty'),
           [TRANSACTION_ENTRY_FIELDS.DURATION]: yup
             .string()
-            .test('duration', 'Duration min 00:05', (val) => val !== '00:00')
+            .test(
+              'duration',
+              'Duration should be bigger than zero',
+              (val) => val !== '0'
+            )
             .required('Should not be empty'),
         }
       : {}),

@@ -81,6 +81,7 @@ export const DayTabs: React.FC<Props> = ({
       </Stack>
       {days.map(({ fullDate }, i) => {
         const trackersByDay = trackers.find(({ date }) => date === fullDate);
+
         return (
           <PanelTab
             key={fullDate}

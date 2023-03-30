@@ -39,6 +39,7 @@ export const TrackerAddNewEntry = ({
     const data = {
       ...values,
       date: format(values.date, 'yyyy-MM-dd'),
+      description: values.description,
     };
 
     createTracker(data)
