@@ -13,23 +13,29 @@ import {
 import { format, parseISO } from 'date-fns';
 
 import { Icon } from 'legos';
-import { TimePicker } from 'components';
 import {
   TimeEntryValues,
   TrackerEntryModalForm,
 } from 'components/TrackerEntryModalForm';
-import { useUpdateTracker, useDeleteTracker, useNotification } from 'hooks';
+import {
+  useUpdateTracker,
+  useDeleteTracker,
+  useNotification,
+  useAuthUser,
+} from 'hooks';
 import { TrackerEntity } from 'types/GraphqlTypes';
 import { useStartTracker } from 'modules/LiveTracker/hooks';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
 import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
+import { toHoursAndMinutes } from 'components/TimePicker/utils';
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
 };
 
 export const TrackerItem = ({ tracker }: TrackerItemProps) => {
+  const { user } = useAuthUser();
   const { updateTracker } = useUpdateTracker();
   const { deleteTracker } = useDeleteTracker();
   const { startTracker } = useStartTracker();
@@ -92,38 +98,29 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
     toggleOpenModal();
   };
 
-  const handleChange = (value: number, submit?: boolean) => {
-    if (submit && tracker?.id) {
-      updateTracker(tracker.id, {
-        durationMinutes: value,
-      }).then(() => {
-        notification({
-          message: 'The tracker was successfully updated',
-          variant: 'success',
-        });
-      });
-    }
-  };
-
   return (
     <Grid alignItems="center" borderBottom={1} borderColor="gray" py={4}>
       {breaksTitles.includes(
         tracker.attributes?.project?.data?.attributes?.name as string
       ) ? (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={7}>
             <BreaksDay
               breaks={tracker.attributes?.project?.data?.attributes?.name}
               description={tracker.attributes?.description}
+              status={tracker.attributes?.status}
             />
           </Grid>
           <Grid item xs={5}>
-            <TimePicker
-              disabled={true}
-              sx={{ width: '110px' }}
-              value={tracker.attributes?.durationMinutes ?? 0}
-              onChange={handleChange}
-            />
+            <Typography
+              sx={{
+                display: 'flex',
+                padding: '5px',
+                alignItems: 'center',
+              }}
+            >
+              {toHoursAndMinutes(tracker.attributes?.durationMinutes ?? 0)}
+            </Typography>
           </Grid>
         </Grid>
       ) : (
@@ -135,7 +132,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
               </Typography>
               <Typography>{tracker.attributes?.description}</Typography>
             </Grid>
-            <Grid item container xs={5} gap={1}>
+            <Grid item container xs={5} gap={1} alignItems="center">
               {tracker.attributes?.live_status === 'start' ? (
                 <>
                   <Typography variant="caption">live tracking ... </Typography>
@@ -145,11 +142,17 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                 </>
               ) : (
                 <>
-                  <TimePicker
-                    sx={{ width: '110px' }}
-                    value={tracker.attributes?.durationMinutes ?? 0}
-                    onChange={handleChange}
-                  />
+                  <Typography
+                    sx={{
+                      display: 'flex',
+                      padding: '5px',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {toHoursAndMinutes(
+                      tracker.attributes?.durationMinutes ?? 0
+                    )}
+                  </Typography>
                   <IconButton
                     sx={{ width: '56px' }}
                     color="primary"
@@ -215,6 +218,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
         onClose={toggleOpenModal}
         onSubmit={(values) => handelSubmit(values)}
         initialValuesForm={initialValuesForm}
+        userId={user.id}
         titleForm="Edit time entry"
         buttonSubmitTitle="Update"
       />

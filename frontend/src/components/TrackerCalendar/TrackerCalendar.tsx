@@ -70,13 +70,14 @@ export const TrackerCalendar = ({
             const isWeekend = day.getDay() === 0 || day.getDay() === 6;
             let isWorkDay;
             let isEnoughHours;
-
             trackers?.find(({ date, total }) => {
               if (
                 day.getTime() === new Date(new Date(date).setHours(0)).getTime()
               ) {
                 isWorkDay = true;
+
                 const time = getHours(total).split(':');
+
                 +time[0] >= 5
                   ? (isEnoughHours = true)
                   : (isEnoughHours = false);
@@ -108,7 +109,9 @@ export const TrackerCalendar = ({
                     ) : (
                       <div style={lessHourStyles}></div>
                     )
-                  ) : null
+                  ) : (
+                    <div style={lessHourStyles}></div>
+                  )
                 }
               >
                 <PickersDay {...DayComponentProps} />
