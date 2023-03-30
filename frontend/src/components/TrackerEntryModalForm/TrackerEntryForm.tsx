@@ -58,7 +58,11 @@ export const TrackerEntryForm = ({
           [TIME_ENTRY_FIELDS.DATE]: yup.date().required('Should not be empty'),
           [TIME_ENTRY_FIELDS.DURATION]: yup
             .string()
-            .test('duration', 'Duration min 00:05', (val) => val !== '0')
+            .test(
+              'duration',
+              'Duration should be bigger than zero',
+              (val) => val !== '0'
+            )
             .required('Should not be empty'),
         }
       : {}),
