@@ -22,7 +22,7 @@ export const PanelTab: React.FC<PanelTabProps> = ({
         <Stack>
           {trackersByDay.trackersByProject.map(({ trackers }) =>
             trackers.map((tracker) => (
-              <TrackerItem key={tracker.id} tracker={tracker} id={tracker.id} />
+              <TrackerItem key={tracker.id} tracker={tracker} />
             ))
           )}
           <Typography variant="h6" borderTop={1} borderColor="gray" py={4}>

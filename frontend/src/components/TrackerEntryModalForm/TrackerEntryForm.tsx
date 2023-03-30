@@ -1,5 +1,14 @@
 import React from 'react';
-import { Button, Typography, TextField, Stack } from '@mui/material';
+import {
+  Button,
+  Typography,
+  TextField,
+  Stack,
+  Modal,
+  Box,
+  Dialog,
+  DialogContent,
+} from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
 import { startOfMonth, subMonths } from 'date-fns';
 import * as yup from 'yup';
@@ -9,6 +18,7 @@ import { TimePicker } from 'components';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
+import { parseTime } from 'components/TimePicker/utils';
 
 const modalStyle = {
   position: 'absolute',
@@ -55,12 +65,12 @@ export const TrackerEntryForm = ({
   const validationSchema = yup.object({
     ...(!isLive
       ? {
-        [TIME_ENTRY_FIELDS.DATE]: yup.date().required('Should not be empty'),
-        [TIME_ENTRY_FIELDS.DURATION]: yup
-          .string()
-          .test('duration', 'Duration min 00:05', (val) => val !== '0')
-          .required('Should not be empty'),
-      }
+          [TIME_ENTRY_FIELDS.DATE]: yup.date().required('Should not be empty'),
+          [TIME_ENTRY_FIELDS.DURATION]: yup
+            .string()
+            .test('duration', 'Duration min 00:05', (val) => val !== '0')
+            .required('Should not be empty'),
+        }
       : {}),
     [TIME_ENTRY_FIELDS.PROJECT]: yup.string().required('Should not be empty'),
     [TIME_ENTRY_FIELDS.USER]: yup.string().required('Should not be empty'),
@@ -107,6 +117,7 @@ export const TrackerEntryForm = ({
                   disableFuture
                   views={['day']}
                 />
+
                 <TimePicker
                   value={values[TIME_ENTRY_FIELDS.DURATION]}
                   onChange={(value) => {

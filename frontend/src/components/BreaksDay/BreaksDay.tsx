@@ -5,8 +5,13 @@ import { getBreakIcon } from './getBreakIcon';
 type VacationDayProps = {
   description?: string;
   breaks?: string;
+  status?: string | null;
 };
-export const BreaksDay = ({ description, breaks }: VacationDayProps) => {
+export const BreaksDay = ({
+  description,
+  breaks,
+  status,
+}: VacationDayProps) => {
   return (
     <Stack>
       <Stack direction="row" spacing={2}>
@@ -14,6 +19,11 @@ export const BreaksDay = ({ description, breaks }: VacationDayProps) => {
         <Typography ml={0.5} fontWeight={600}>
           {breaks}
         </Typography>
+        {(status === 'new' || status === 'rejected') && (
+          <Typography ml={0.5} fontStyle="italic">
+            {`(${status}, not tracked)`}
+          </Typography>
+        )}
       </Stack>
 
       {description && (

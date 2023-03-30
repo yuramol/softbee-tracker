@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef, WheelEvent } from 'react';
+import React, { useState, useEffect, WheelEvent } from 'react';
 import {
   Box,
+  Dialog,
+  DialogContent,
   FormControl,
   FormHelperText,
   InputAdornment,
@@ -18,10 +20,9 @@ import {
   parseTime,
   toHoursAndMinutes,
 } from './utils';
-import TimePickerDialog from './TimePickerDialog';
 import { TimePickerBlock } from './TimePickerBlock';
 import { Maybe } from 'types/GraphqlTypes';
-import { useScrollBlock } from 'helpers/useScrollBlock';
+import { Stack } from '@mui/system';
 
 interface TimePickerProps {
   disabled?: boolean;
@@ -74,7 +75,6 @@ export const TimePicker = ({
   width,
   onChange,
   onClick,
-
   id,
   error = false,
   name,
@@ -84,14 +84,10 @@ export const TimePicker = ({
   const [durationValue, setDurationValue] = useState(toHoursAndMinutes(value));
   const [initialDurationValue, setInitialDurationValue] =
     useState(durationValue);
-  const [timePickerBlurCount, setTimePickerBlurCount] = useState(0);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [blockScroll, allowScroll] = useScrollBlock();
 
   const { hours, minutes } = parseTime(durationValue);
 
-  const dialogRef = useRef<HTMLDivElement>(null);
-
+  const [open, setOpen] = React.useState(false);
   const hourglassBottomIconStyles = disabled
     ? {
         pointerEvents: 'none !important',
@@ -102,55 +98,25 @@ export const TimePicker = ({
     setDurationValue(toHoursAndMinutes(value));
   }, [value]);
 
-  useEffect(() => {
-    if (dialogOpen) {
-      blockScroll();
-    } else {
-      allowScroll();
-    }
-  }, [dialogOpen]);
-
-  useEffect(() => {
-    if (timePickerBlurCount === 0) {
-      return;
-    }
-    closeDialog();
-  }, [timePickerBlurCount]);
-
-  useEffect(() => {
-    if (!dialogOpen) {
-      dialogRef.current?.focus();
-    }
-  }, [dialogOpen]);
-
   const closeDialog = () => {
     if (durationValue === initialDurationValue) {
-      setDialogOpen(false);
+      setOpen(false);
 
       onChange(hoursAndMinutesToMinutes(hours, minutes));
       return;
     }
 
     onChange(hoursAndMinutesToMinutes(hours, minutes), true);
-    if (!dialogOpen) {
+    if (!open) {
       return;
     }
 
-    setDialogOpen(false);
+    setOpen(false);
     setInitialDurationValue(durationValue);
   };
 
   const openDialog = () => {
-    if (dialogOpen) return;
-    setDialogOpen(true);
-  };
-
-  const handleFocus = () => {
-    if (onClick) {
-      onClick();
-    }
-
-    openDialog();
+    setOpen(true);
   };
 
   const handleHoursChange: (delta: number) => void = (delta) =>
@@ -183,27 +149,6 @@ export const TimePicker = ({
     onChange(hoursAndMinutesToMinutes(hours, minutes));
   };
 
-  const handlerTimePickerClick = (event: Event) => {
-    const isTimePickerFocus = (event.target as HTMLInputElement).closest(
-      `.box-time-picker.MuiBox-root.css-6ncycg`
-    );
-
-    const isTimePickerId = (event.target as HTMLInputElement).closest(
-      `#time-picker-${id}`
-    );
-
-    if (isTimePickerId && !disabled) {
-      handleFocus();
-    }
-
-    if (!isTimePickerId) {
-      setTimePickerBlurCount(timePickerBlurCount + 1);
-      document.removeEventListener('click', handlerTimePickerClick);
-    }
-  };
-
-  document.addEventListener('click', handlerTimePickerClick);
-
   return (
     <Box
       width={width ?? '100%'}
@@ -224,7 +169,11 @@ export const TimePicker = ({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             inputComponent: TextMaskCustom as any,
             endAdornment: disabled ? undefined : (
-              <InputAdornment position="end" onClick={openDialog}>
+              <InputAdornment
+                position="end"
+                onClick={openDialog}
+                sx={{ cursor: 'pointer' }}
+              >
                 <HourglassBottomIcon sx={hourglassBottomIconStyles} />
               </InputAdornment>
             ),
@@ -232,24 +181,36 @@ export const TimePicker = ({
         />
 
         {error && <FormHelperText>{helperText}</FormHelperText>}
-        {dialogOpen && (
-          <TimePickerDialog ref={dialogRef}>
-            <TimePickerBlock
-              number={`${hours}`}
-              type="hours"
-              onWheel={handleHoursScroll}
-              onDownClick={() => handleHoursChange(-1)}
-              onUpClick={() => handleHoursChange(1)}
-            />
-            :
-            <TimePickerBlock
-              number={`${minutes}`}
-              onWheel={handleMinutesScroll}
-              onDownClick={() => handleMinutesChange(-minutesPerStep)}
-              onUpClick={() => handleMinutesChange(+minutesPerStep)}
-            />
-          </TimePickerDialog>
-        )}
+        <Dialog
+          open={open}
+          onClose={closeDialog}
+          hideBackdrop={true}
+          sx={{
+            left: 170,
+            bottom: 60,
+          }}
+        >
+          <DialogContent>
+            <Box width={width ?? '100%'} sx={sx} position="relative">
+              <Stack direction="row" alignItems="center">
+                <TimePickerBlock
+                  number={`${hours}`}
+                  type="hours"
+                  onWheel={handleHoursScroll}
+                  onDownClick={() => handleHoursChange(-1)}
+                  onUpClick={() => handleHoursChange(1)}
+                />
+                :
+                <TimePickerBlock
+                  number={`${minutes}`}
+                  onWheel={handleMinutesScroll}
+                  onDownClick={() => handleMinutesChange(-minutesPerStep)}
+                  onUpClick={() => handleMinutesChange(+minutesPerStep)}
+                />
+              </Stack>
+            </Box>
+          </DialogContent>
+        </Dialog>
       </FormControl>
     </Box>
   );
