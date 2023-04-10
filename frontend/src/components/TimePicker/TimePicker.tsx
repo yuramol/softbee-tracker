@@ -116,8 +116,9 @@ export const TimePicker = ({
     setOpen(true);
   };
 
-  const handleHoursChange: (delta: number) => void = (delta) =>
+  const handleHoursChange: (delta: number) => void = (delta) => {
     handleMinutesChange(60 * delta);
+  };
 
   const handleMinutesChange: (delta: number) => void = (delta) => {
     const nextValue = addOrSubtractMinutes(durationValue, delta, from, to);

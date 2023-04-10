@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import {
@@ -17,11 +17,13 @@ type Props = {
 };
 
 export const UsersList = ({ usersList, isManager, meId }: Props) => {
-  const { normalizedTrackers } = useNormalizedTrackers(
-    {
-      status: { eq: Enum_Tracker_Status.New },
-    },
-    true
+  const filters = {
+    status: { eq: Enum_Tracker_Status.New },
+  };
+
+  const { fetchTrackers, normalizedTrackers } = useNormalizedTrackers(
+    filters,
+    false
   );
 
   const isUserRequestVacation = (id: string | undefined) => {
@@ -36,7 +38,11 @@ export const UsersList = ({ usersList, isManager, meId }: Props) => {
 
     return isUserHasRequest || null;
   };
-
+  useEffect(() => {
+    fetchTrackers({
+      variables: { filters },
+    });
+  }, [usersList]);
   return (
     <>
       {usersList?.map(({ id, attributes }) => (

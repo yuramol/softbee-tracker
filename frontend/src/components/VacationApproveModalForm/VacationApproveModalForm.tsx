@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   Table,
@@ -36,13 +36,12 @@ type VacationApproveModalFormProps = {
 export const VacationApproveModalForm = ({
   userId,
 }: VacationApproveModalFormProps) => {
-  const { trackers } = useNormalizedTrackers(
-    {
-      user: { id: { in: [userId] } },
-      status: { eq: Enum_Tracker_Status.New },
-    },
-    true
-  );
+  const filters = {
+    user: { id: { in: [userId] } },
+    status: { eq: Enum_Tracker_Status.New },
+  };
+
+  const { fetchTrackers, trackers } = useNormalizedTrackers(filters, false);
 
   const { updateTracker } = useUpdateTracker();
 
@@ -61,7 +60,11 @@ export const VacationApproveModalForm = ({
   const toggleOpenModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-
+  useEffect(() => {
+    fetchTrackers({
+      variables: { filters },
+    });
+  }, [userId]);
   return (
     <>
       <Button
