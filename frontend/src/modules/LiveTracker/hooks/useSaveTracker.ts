@@ -1,6 +1,10 @@
 import { useMutation } from '@apollo/client';
 
-import { TRACKERS_QUERY, UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
+import {
+  PROJECTS_QUERY,
+  TRACKERS_QUERY,
+  UPDATE_TRACKER_BY_ID_MUTATION,
+} from 'api';
 import {
   Enum_Tracker_Live_Status,
   MutationUpdateTrackerArgs,
@@ -29,7 +33,7 @@ const useSaveTracker = () => {
           description: values[TIME_ENTRY_FIELDS.DESCRIPTION],
         },
       },
-      refetchQueries: [TRACKERS_QUERY],
+      refetchQueries: [TRACKERS_QUERY, PROJECTS_QUERY],
     });
   };
   return { saveTracker };
