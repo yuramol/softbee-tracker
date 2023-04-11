@@ -29,7 +29,7 @@ const CrewPage: React.FC<PageProps> = () => {
               onClick={onToggleForm}
             />
           )}
-          <TimeInspector />
+          <TimeInspector userId={isManager ? undefined : user.id} />
         </>
       }
     >
