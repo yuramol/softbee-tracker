@@ -6,6 +6,7 @@ export type DefaultRangeDatesItem = {
 export type RangeCalendarProps = {
   selectedDates: Date[];
   setSelectedDates: React.Dispatch<React.SetStateAction<Date[]>>;
+  shouldDisableDate?: ((day: Date) => boolean) | undefined;
   defaultRangeDates?: DefaultRangeDatesItem[];
   disablePast?: boolean;
   disableFuture?: boolean;

@@ -1237,6 +1237,29 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "ENUM_USERSPERMISSIONSUSER_TYPESALARY",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "fixed",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hour",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
         "name": "FileInfoInput",
         "description": null,
@@ -1608,6 +1631,11 @@
           {
             "kind": "OBJECT",
             "name": "Tracker",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Transaction",
             "ofType": null
           },
           {
@@ -3246,6 +3274,35 @@
             "deprecationReason": null
           },
           {
+            "name": "createTransaction",
+            "description": null,
+            "args": [
+              {
+                "name": "data",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "TransactionInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createUploadFile",
             "description": null,
             "args": [
@@ -3447,6 +3504,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "TrackerEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deleteTransaction",
+            "description": null,
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionEntityResponse",
               "ofType": null
             },
             "isDeprecated": false,
@@ -4038,6 +4124,51 @@
             "type": {
               "kind": "OBJECT",
               "name": "TrackerEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updateTransaction",
+            "description": null,
+            "args": [
+              {
+                "name": "data",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "TransactionInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionEntityResponse",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5206,6 +5337,59 @@
             "deprecationReason": null
           },
           {
+            "name": "transactions",
+            "description": null,
+            "args": [
+              {
+                "name": "filters",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "TransactionFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "pagination",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "PaginationArg",
+                  "ofType": null
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "sort",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionRelationResponseCollection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "type",
             "description": null,
             "args": [],
@@ -5596,6 +5780,18 @@
             "deprecationReason": null
           },
           {
+            "name": "transactions",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TransactionFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "type",
             "description": null,
             "type": {
@@ -5772,6 +5968,22 @@
           },
           {
             "name": "trackers",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "transactions",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -6178,6 +6390,84 @@
             "type": {
               "kind": "OBJECT",
               "name": "TrackerEntityResponseCollection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "transaction",
+            "description": null,
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "transactions",
+            "description": null,
+            "args": [
+              {
+                "name": "filters",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "TransactionFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "pagination",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "PaginationArg",
+                  "ofType": null
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "sort",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionEntityResponseCollection",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6955,6 +7245,18 @@
             "deprecationReason": null
           },
           {
+            "name": "transaction",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedAt",
             "description": null,
             "args": [],
@@ -7276,6 +7578,18 @@
             "deprecationReason": null
           },
           {
+            "name": "transaction",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TransactionFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedAt",
             "description": null,
             "type": {
@@ -7419,6 +7733,18 @@
             "deprecationReason": null
           },
           {
+            "name": "transaction",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "user",
             "description": null,
             "type": {
@@ -7456,6 +7782,583 @@
                   "ofType": {
                     "kind": "OBJECT",
                     "name": "TrackerEntity",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Transaction",
+        "description": null,
+        "fields": [
+          {
+            "name": "amount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "date",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Date",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "descriptions",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProjectEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tracker",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TrackerEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UsersPermissionsUserEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userCreateBy",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UsersPermissionsUserEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userUpdateBy",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "UsersPermissionsUserEntityResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TransactionEntity",
+        "description": null,
+        "fields": [
+          {
+            "name": "attributes",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Transaction",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TransactionEntityResponse",
+        "description": null,
+        "fields": [
+          {
+            "name": "data",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionEntity",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TransactionEntityResponseCollection",
+        "description": null,
+        "fields": [
+          {
+            "name": "data",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "TransactionEntity",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "meta",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ResponseCollectionMeta",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "TransactionFiltersInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "amount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "FloatFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "and",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "TransactionFiltersInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "createdAt",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "DateTimeFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "date",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "DateFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "descriptions",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IDFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "not",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TransactionFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "or",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "TransactionFiltersInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ProjectFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tracker",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TrackerFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "updatedAt",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "DateTimeFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UsersPermissionsUserFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userCreateBy",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UsersPermissionsUserFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userUpdateBy",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "UsersPermissionsUserFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "TransactionInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "amount",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "date",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "descriptions",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "project",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tracker",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userCreateBy",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userUpdateBy",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TransactionRelationResponseCollection",
+        "description": null,
+        "fields": [
+          {
+            "name": "data",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "TransactionEntity",
                     "ofType": null
                   }
                 }
@@ -10529,6 +11432,18 @@
             "deprecationReason": null
           },
           {
+            "name": "salary",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "salaryInfo",
             "description": null,
             "args": [],
@@ -10588,6 +11503,71 @@
             "type": {
               "kind": "OBJECT",
               "name": "TrackerRelationResponseCollection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "transactions",
+            "description": null,
+            "args": [
+              {
+                "name": "filters",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "TransactionFiltersInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "pagination",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "PaginationArg",
+                  "ofType": null
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "sort",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "[]",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionRelationResponseCollection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "typeSalary",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "ENUM_USERSPERMISSIONSUSER_TYPESALARY",
               "ofType": null
             },
             "isDeprecated": false,
@@ -11039,6 +12019,18 @@
             "deprecationReason": null
           },
           {
+            "name": "salary",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IntFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "salaryInfo",
             "description": null,
             "type": {
@@ -11056,6 +12048,30 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "TrackerFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "transactions",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TransactionFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "typeSalary",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringFilterInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -11354,6 +12370,18 @@
             "deprecationReason": null
           },
           {
+            "name": "salary",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "salaryInfo",
             "description": null,
             "type": {
@@ -11376,6 +12404,34 @@
                 "name": "ID",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "transactions",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "typeSalary",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "ENUM_USERSPERMISSIONSUSER_TYPESALARY",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,

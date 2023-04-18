@@ -141,13 +141,19 @@ export const addOrSubtractMinutes: (
   const { hours, minutes } = parseTime(value);
   const nextMinutes = hoursAndMinutesToMinutes(hours, minutes) + delta;
 
+  if (nextMinutes < 0) {
+    return formatTime(minutesToHoursAndMinutes(minutes + 5940));
+  }
+  if (nextMinutes > 5999) {
+    return formatTime(minutesToHoursAndMinutes(minutes));
+  }
+
   return formatTime(minutesToHoursAndMinutes(nextMinutes));
 };
 
 export function toHoursAndMinutes(totalMinutes: number) {
   const minutes = totalMinutes % 60;
   const hours = Math.floor(totalMinutes / 60);
-
   return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}`;
 }
 

@@ -73,6 +73,7 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
           </MenuItem>
         ))}
         <MenuItem
+          sx={{ justifyContent: 'center' }}
           onClick={(e) => {
             handleCloseUserMenu(e);
             logout();

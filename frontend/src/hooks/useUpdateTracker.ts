@@ -1,6 +1,10 @@
 import { useMutation } from '@apollo/client';
 
-import { TRACKERS_QUERY, UPDATE_TRACKER_BY_ID_MUTATION } from 'api';
+import {
+  PROJECTS_QUERY,
+  TRACKERS_QUERY,
+  UPDATE_TRACKER_BY_ID_MUTATION,
+} from 'api';
 
 export const useUpdateTracker = () => {
   const [update] = useMutation(UPDATE_TRACKER_BY_ID_MUTATION);
@@ -8,7 +12,7 @@ export const useUpdateTracker = () => {
   const updateTracker = (id: string, data: object) =>
     update({
       variables: { id, data },
-      refetchQueries: [TRACKERS_QUERY],
+      refetchQueries: [TRACKERS_QUERY, PROJECTS_QUERY],
     });
   return { updateTracker };
 };
