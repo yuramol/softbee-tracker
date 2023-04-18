@@ -11,7 +11,7 @@ export const PROJECT_QUERY = gql`
           end
           type
           status
-          salary {
+          salary(pagination: { limit: 100000 }) {
             id
             rate
             users {
