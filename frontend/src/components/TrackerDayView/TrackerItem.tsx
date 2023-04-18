@@ -10,7 +10,7 @@ import {
   Box,
   LinearProgress,
 } from '@mui/material';
-import { format, parseISO } from 'date-fns';
+import { format, isThisMonth, parseISO } from 'date-fns';
 
 import { Icon } from 'legos';
 import {
@@ -97,6 +97,12 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
     }
     toggleOpenModal();
   };
+  const isCurrentMonth = () => {
+    const dateStr = tracker.attributes?.date;
+    if (!dateStr) return false;
+    const date = parseISO(dateStr);
+    return isThisMonth(date);
+  };
 
   return (
     <Grid alignItems="center" borderBottom={1} borderColor="gray" py={4}>
@@ -154,6 +160,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                     )}
                   </Typography>
                   <IconButton
+                    disabled={!isCurrentMonth()}
                     sx={{ width: '56px' }}
                     color="primary"
                     onClick={toggleOpenModal}
@@ -161,6 +168,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                     <Icon icon="edit" size="small" />
                   </IconButton>
                   <IconButton
+                    disabled={!isCurrentMonth()}
                     size="large"
                     color="primary"
                     sx={{ border: '1px solid' }}
@@ -169,6 +177,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                     <Icon icon="playArrow" size="inherit" />
                   </IconButton>
                   <IconButton
+                    disabled={!isCurrentMonth()}
                     sx={{ width: '56px' }}
                     color="error"
                     onClick={(e) => handleClickDeleteButton(e.currentTarget)}
