@@ -1,20 +1,25 @@
-import { Enum_Userspermissionsuser_Position } from 'types/GraphqlTypes';
+export enum UserPosition {
+  Developer = 'developer',
+  Designer = 'designer',
+  Cdo = 'cdo',
+  Cto = 'cto',
+}
 
 export const employeePositionChoices = [
   {
     label: 'Developer',
-    value: Enum_Userspermissionsuser_Position.Developer,
+    value: UserPosition.Developer,
   },
   {
     label: 'Designer',
-    value: Enum_Userspermissionsuser_Position.Designer,
+    value: UserPosition.Designer,
   },
   {
     label: 'CDO',
-    value: Enum_Userspermissionsuser_Position.Cdo,
+    value: UserPosition.Cdo,
   },
   {
     label: 'CTO',
-    value: Enum_Userspermissionsuser_Position.Cto,
+    value: UserPosition.Cto,
   },
 ];

@@ -23,7 +23,7 @@ export const TimePickerBlock = ({
   <Box
     display="flex"
     width="50%"
-    alignItems={type === 'hours' ? 'flex-end' : 'flex-start'}
+    alignItems="center"
     flexDirection="column"
     margin="auto 12px"
     onWheel={onWheel}

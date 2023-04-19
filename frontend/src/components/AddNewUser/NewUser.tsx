@@ -4,7 +4,7 @@ import { Button, TextField, Stack, Typography } from '@mui/material';
 import { useFormik, FormikContext } from 'formik';
 import * as yup from 'yup';
 
-import { CalendarPickerFormik, Select } from 'legos';
+import { CalendarPickerFormik, MultipleSelect, Select } from 'legos';
 import { formikPropsErrors, getFormattedDate } from 'helpers';
 import { CREATE_USER_MUTATION } from 'api';
 import { CreateUserFields, UserProps } from './types';
@@ -22,7 +22,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
     [CreateUserFields.LastName]: '',
     [CreateUserFields.Email]: '',
     [CreateUserFields.DateEmployment]: new Date(),
-    [CreateUserFields.Position]: '',
+    [CreateUserFields.Positions]: [],
     [CreateUserFields.Phone]: '',
     [CreateUserFields.Password]: '',
     [CreateUserFields.UserName]: '',
@@ -37,7 +37,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
       .string()
       .min(8, 'Password must be at least 8 characters')
       .required('Should not be empty'),
-    [CreateUserFields.Position]: yup.string().required('Should not be empty'),
+    [CreateUserFields.Positions]: yup.array().min(1, 'Minimum one employee'),
     [CreateUserFields.Role]: yup.string().required('Should not be empty'),
     [CreateUserFields.Phone]: yup
       .string()
@@ -155,14 +155,25 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             variant="outlined"
             onChange={handleChange}
           />
-          <Select
+          <MultipleSelect
             label="Position"
-            items={employeePositionChoices}
-            value={values[CreateUserFields.Position]}
-            name={CreateUserFields.Position}
-            {...formikPropsErrors(CreateUserFields.Position, formik)}
             variant="outlined"
+            items={employeePositionChoices}
+            name={CreateUserFields.Positions}
+            handleClear={() => {
+              setFieldValue(`${CreateUserFields.Positions}`, []);
+            }}
+            handleClearItem={(item: string) =>
+              setFieldValue(
+                `${CreateUserFields.Positions}`,
+                values[CreateUserFields.Positions].filter(
+                  (value) => value !== item
+                )
+              )
+            }
+            value={values[CreateUserFields.Positions]}
             onChange={handleChange}
+            {...formikPropsErrors(CreateUserFields.Positions, formik)}
           />
           <CalendarPickerFormik
             label="Date Employment"

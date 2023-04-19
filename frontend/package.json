@@ -9,7 +9,8 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
-    "codegen": "graphql-codegen --require dotenv/config --config codegen.yml"
+    "codegen": "graphql-codegen --require dotenv/config --config codegen.yml",
+    "postinstall": "yarn codegen"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -36,6 +37,7 @@
     "react": "^18.2.0",
     "react-date-range": "^1.4.0",
     "react-dom": "^18.2.0",
+    "react-imask": "^6.4.3",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",

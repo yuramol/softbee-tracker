@@ -71,28 +71,30 @@ export const ProjectInfoTab = ({ id }: Props) => {
             Project details
           </Typography>
         </Stack>
-        <Stack flexDirection="row" alignItems="center" gap={1}>
-          <Avatar
-            avatar={
-              manager?.avatar?.data?.attributes?.url
-                ? `${process.env.REACT_APP_URI}${manager?.avatar.data?.attributes?.url}`
-                : undefined
-            }
-            firstName={manager?.firstName}
-            lastName={manager?.lastName}
-          />
-          <Stack flexGrow="1">
-            <Typography fontSize="15px" color="GrayText">
-              Project manager
-            </Typography>
-            <NavLink
-              to={`/profile/${projectData.manager?.data?.id}`}
-              state={{ edit: false }}
-            >
-              {`${manager?.firstName} ${manager?.lastName}`}
-            </NavLink>
+        {projectData.manager?.data?.id && (
+          <Stack flexDirection="row" alignItems="center" gap={1}>
+            <Avatar
+              avatar={
+                manager?.avatar?.data?.attributes?.url
+                  ? `${process.env.REACT_APP_URI}${manager?.avatar.data?.attributes?.url}`
+                  : undefined
+              }
+              firstName={manager?.firstName}
+              lastName={manager?.lastName}
+            />
+            <Stack flexGrow="1">
+              <Typography fontSize="15px" color="GrayText">
+                Project manager
+              </Typography>
+              <NavLink
+                to={`/profile/${projectData.manager?.data?.id}`}
+                state={{ edit: false }}
+              >
+                {`${manager?.firstName} ${manager?.lastName}`}
+              </NavLink>
+            </Stack>
           </Stack>
-        </Stack>
+        )}
         <Stack flexDirection="row" alignItems="center" gap={3}>
           {getProjectType(projectData.type)}
         </Stack>
@@ -116,7 +118,6 @@ export const ProjectInfoTab = ({ id }: Props) => {
             </Stack>
           </Stack>
         )}
-
         <Stack flexDirection="row" alignItems="center" gap={3}>
           <Icon icon="person" />
           <Stack flexGrow="1">

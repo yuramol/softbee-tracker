@@ -15,8 +15,9 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useCurrentWeek, useProjects } from 'hooks';
+import { useAuthUser, useCurrentWeek, useProjects } from 'hooks';
 import { getFormattedDate } from 'helpers';
+import { useLocation } from 'react-router-dom';
 
 type TimeInspectorProps = {
   userId?: string;
@@ -24,6 +25,9 @@ type TimeInspectorProps = {
 
 export const TimeInspector = ({ userId }: TimeInspectorProps) => {
   const { weekStart, weekEnd, days, currentDay } = useCurrentWeek(new Date());
+  const { isManager } = useAuthUser();
+
+  const location = useLocation();
 
   const HOURS_PER_DAY = 5;
   const DAYS_PER_WEEK = 5;
@@ -55,7 +59,6 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
   ];
 
   const [inspectBy, setInspectBy] = useState(inspectionTypes[0]);
-
   const { totalByProjects, total } = useProjects(
     {
       users: { id: { eq: userId } },
@@ -63,6 +66,7 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
     {
       user: { id: { eq: userId } },
       date: { between: inspectBy.filter },
+      or: [{ status: { eq: null } }, { status: { eq: 'approved' } }],
     }
   );
 
@@ -117,9 +121,13 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
           <ListItemText
             sx={{ ml: 2, display: 'contents' }}
             primary={
-              <Typography
-                fontWeight={600}
-              >{`${total} / ${inspectBy.limit}`}</Typography>
+              location.pathname === '/crew' && isManager ? (
+                <Typography fontWeight={600}>{`${total} `}</Typography>
+              ) : (
+                <Typography
+                  fontWeight={600}
+                >{`${total} / ${inspectBy.limit}`}</Typography>
+              )
             }
           />
         </ListItem>

@@ -17,9 +17,9 @@ export const intervalDateSeconds = ({
 export function secondsToHmsHumanFormat(secondsTime: number) {
   const { hours, minutes, seconds } = secondsToHms(secondsTime);
 
-  const hDisplay = hours > 10 ? `${hours}h ` : `0${hours ?? 0}h `;
-  const mDisplay = minutes > 10 ? `${minutes}m ` : `0${minutes ?? 0}m `;
-  const sDisplay = seconds > 10 ? `${seconds}s ` : `0${seconds ?? 0}s `;
+  const hDisplay = hours >= 10 ? `${hours}h ` : `0${hours ?? 0}h `;
+  const mDisplay = minutes >= 10 ? `${minutes}m ` : `0${minutes ?? 0}m `;
+  const sDisplay = seconds >= 10 ? `${seconds}s ` : `0${seconds ?? 0}s `;
   return hDisplay + mDisplay + sDisplay;
 }
 

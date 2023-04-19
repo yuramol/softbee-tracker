@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   Table,
@@ -36,13 +36,12 @@ type VacationApproveModalFormProps = {
 export const VacationApproveModalForm = ({
   userId,
 }: VacationApproveModalFormProps) => {
-  const { trackers } = useNormalizedTrackers(
-    {
-      user: { id: { in: [userId] } },
-      status: { eq: Enum_Tracker_Status.New },
-    },
-    true
-  );
+  const filters = {
+    user: { id: { in: [userId] } },
+    status: { eq: Enum_Tracker_Status.New },
+  };
+
+  const { fetchTrackers, trackers } = useNormalizedTrackers(filters, false);
 
   const { updateTracker } = useUpdateTracker();
 
@@ -61,7 +60,11 @@ export const VacationApproveModalForm = ({
   const toggleOpenModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-
+  useEffect(() => {
+    fetchTrackers({
+      variables: { filters },
+    });
+  }, [userId]);
   return (
     <>
       <Button
@@ -77,89 +80,95 @@ export const VacationApproveModalForm = ({
               <Stack mb={2}>
                 <Typography variant="h6">Approve vacations</Typography>
               </Stack>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      {vacationModalHead.map((item, i) => (
-                        <TableCell sx={{ fontWeight: 600 }} key={i}>
-                          {item}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody style={{ verticalAlign: 'top' }}>
-                    {trackers?.map(({ id, attributes }) => {
-                      return (
-                        <TableRow
-                          key={id}
-                          sx={{
-                            '&:last-child td, &:last-child th': {
-                              border: 0,
-                            },
-                          }}
-                        >
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ width: 125 }}
+              {!trackers?.length ? (
+                <Typography variant="subtitle1">
+                  There is no application for leave
+                </Typography>
+              ) : (
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        {vacationModalHead.map((item, i) => (
+                          <TableCell sx={{ fontWeight: 600 }} key={i}>
+                            {item}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody style={{ verticalAlign: 'top' }}>
+                      {trackers?.map(({ id, attributes }) => {
+                        return (
+                          <TableRow
+                            key={id}
+                            sx={{
+                              '&:last-child td, &:last-child th': {
+                                border: 0,
+                              },
+                            }}
                           >
-                            {format(new Date(attributes?.date), 'd MMM y')}
-                          </TableCell>
-                          <TableCell>
-                            <Typography>{attributes?.description}</Typography>
-                          </TableCell>
-                          <TableCell align="center">
-                            <Typography>
-                              {attributes?.status ===
-                              Enum_Tracker_Status.Approved ? (
-                                <Icon color="success" icon="checkCircle" />
-                              ) : attributes?.status ===
-                                Enum_Tracker_Status.Rejected ? (
-                                <Icon color="error" icon="highlightOff" />
-                              ) : (
-                                <></>
-                              )}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Stack direction="row" gap={1}>
-                              <Button
-                                color="success"
-                                variant="contained"
-                                title="Approve"
-                                disabled={
-                                  attributes?.status ===
-                                  Enum_Tracker_Status.Approved
-                                }
-                                sx={{
-                                  textTransform: 'none',
-                                }}
-                                onClick={() => {
-                                  handleApprove(id || '');
-                                }}
-                              />
-                              <Button
-                                color="error"
-                                variant="contained"
-                                title="Reject"
-                                disabled={
-                                  attributes?.status ===
-                                  Enum_Tracker_Status.Rejected
-                                }
-                                sx={{
-                                  textTransform: 'none',
-                                }}
-                                onClick={() => handleReject(id || '')}
-                              />
-                            </Stack>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              sx={{ width: 125 }}
+                            >
+                              {format(new Date(attributes?.date), 'd MMM y')}
+                            </TableCell>
+                            <TableCell>
+                              <Typography>{attributes?.description}</Typography>
+                            </TableCell>
+                            <TableCell align="center">
+                              <Typography>
+                                {attributes?.status ===
+                                Enum_Tracker_Status.Approved ? (
+                                  <Icon color="success" icon="checkCircle" />
+                                ) : attributes?.status ===
+                                  Enum_Tracker_Status.Rejected ? (
+                                  <Icon color="error" icon="highlightOff" />
+                                ) : (
+                                  <></>
+                                )}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Stack direction="row" gap={1}>
+                                <Button
+                                  color="success"
+                                  variant="contained"
+                                  title="Approve"
+                                  disabled={
+                                    attributes?.status ===
+                                    Enum_Tracker_Status.Approved
+                                  }
+                                  sx={{
+                                    textTransform: 'none',
+                                  }}
+                                  onClick={() => {
+                                    handleApprove(id || '');
+                                  }}
+                                />
+                                <Button
+                                  color="error"
+                                  variant="contained"
+                                  title="Reject"
+                                  disabled={
+                                    attributes?.status ===
+                                    Enum_Tracker_Status.Rejected
+                                  }
+                                  sx={{
+                                    textTransform: 'none',
+                                  }}
+                                  onClick={() => handleReject(id || '')}
+                                />
+                              </Stack>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
             </Stack>
           )}
         </>

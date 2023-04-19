@@ -47,7 +47,7 @@ export const VacationWidget = () => {
             <ListItemText
               primary={
                 <Stack direction="row">
-                  <Icon icon="houseboat" />
+                  <Icon icon="sailing" />
                   <Typography ml={0.5} fontWeight={600}>
                     Vacations:
                   </Typography>
@@ -67,9 +67,9 @@ export const VacationWidget = () => {
             <ListItemText
               primary={
                 <Stack direction="row">
-                  <Icon icon="medication" />
+                  <Icon icon="medicalServices" />
                   <Typography ml={0.5} fontWeight={600}>
-                    Sick leave:
+                    Sickness:
                   </Typography>
                 </Stack>
               }
