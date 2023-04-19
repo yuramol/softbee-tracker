@@ -138,13 +138,6 @@ export enum Enum_Tracker_Status {
   Rejected = 'rejected'
 }
 
-export enum Enum_Userspermissionsuser_Position {
-  Cdo = 'cdo',
-  Cto = 'cto',
-  Designer = 'designer',
-  Developer = 'developer'
-}
-
 export enum Enum_Userspermissionsuser_Typesalary {
   Fixed = 'fixed',
   Hour = 'hour'
@@ -1360,7 +1353,7 @@ export type UsersPermissionsUser = {
   manager_projects?: Maybe<ProjectRelationResponseCollection>;
   notes?: Maybe<NoteRelationResponseCollection>;
   phone?: Maybe<Scalars['String']>;
-  position?: Maybe<Enum_Userspermissionsuser_Position>;
+  positions?: Maybe<Scalars['JSON']>;
   projects?: Maybe<ProjectRelationResponseCollection>;
   provider?: Maybe<Scalars['String']>;
   role?: Maybe<UsersPermissionsRoleEntityResponse>;
@@ -1452,7 +1445,7 @@ export type UsersPermissionsUserFiltersInput = {
   or?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
   password?: InputMaybe<StringFilterInput>;
   phone?: InputMaybe<StringFilterInput>;
-  position?: InputMaybe<StringFilterInput>;
+  positions?: InputMaybe<JsonFilterInput>;
   projects?: InputMaybe<ProjectFiltersInput>;
   provider?: InputMaybe<StringFilterInput>;
   resetPasswordToken?: InputMaybe<StringFilterInput>;
@@ -1482,7 +1475,7 @@ export type UsersPermissionsUserInput = {
   notes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   password?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
-  position?: InputMaybe<Enum_Userspermissionsuser_Position>;
+  positions?: InputMaybe<Scalars['JSON']>;
   projects?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   provider?: InputMaybe<Scalars['String']>;
   resetPasswordToken?: InputMaybe<Scalars['String']>;

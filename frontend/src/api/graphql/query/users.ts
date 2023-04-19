@@ -9,7 +9,7 @@ export const USERS_QUERY = gql`
           username
           firstName
           lastName
-          position
+          positions
           username
           avatar {
             data {

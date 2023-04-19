@@ -99,15 +99,6 @@
       "type": "string",
       "required": false
     },
-    "position": {
-      "type": "enumeration",
-      "enum": [
-        "developer",
-        "designer",
-        "cdo",
-        "cto"
-      ]
-    },
     "notes": {
       "type": "relation",
       "relation": "oneToMany",
@@ -153,6 +144,9 @@
     },
     "salary": {
       "type": "integer"
+    },
+    "positions": {
+      "type": "json"
     }
   }
 }
