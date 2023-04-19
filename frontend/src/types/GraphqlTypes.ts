@@ -138,6 +138,13 @@ export enum Enum_Tracker_Status {
   Rejected = 'rejected'
 }
 
+export enum Enum_Userspermissionsuser_Position {
+  Cdo = 'cdo',
+  Cto = 'cto',
+  Designer = 'designer',
+  Developer = 'developer'
+}
+
 export enum Enum_Userspermissionsuser_Typesalary {
   Fixed = 'fixed',
   Hour = 'hour'
@@ -173,8 +180,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = ComponentProjectSalary | I18NLocale | Note | Project | Tracker | Transaction | Transaction
-  | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = ComponentProjectSalary | I18NLocale | Note | Project | Tracker| Transaction | Transaction | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -379,9 +385,11 @@ export type MutationCreateTrackerArgs = {
   data: TrackerInput;
 };
 
+
 export type MutationCreateTransactionArgs = {
   data: TransactionInput;
 };
+
 
 export type MutationCreateUploadFileArgs = {
   data: UploadFileInput;
@@ -416,6 +424,7 @@ export type MutationDeleteProjectArgs = {
 export type MutationDeleteTrackerArgs = {
   id: Scalars['ID'];
 };
+
 
 export type MutationDeleteTransactionArgs = {
   id: Scalars['ID'];
@@ -504,6 +513,7 @@ export type MutationUpdateTrackerArgs = {
   data: TrackerInput;
   id: Scalars['ID'];
 };
+
 
 export type MutationUpdateTransactionArgs = {
   data: TransactionInput;
@@ -654,6 +664,7 @@ export type ProjectTrackersArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+
 export type ProjectTransactionsArgs = {
   filters?: InputMaybe<TransactionFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
@@ -799,15 +810,18 @@ export type QueryTrackersArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+
 export type QueryTransactionArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
+
 
 export type QueryTransactionsArgs = {
   filters?: InputMaybe<TransactionFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
+
 
 export type QueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
@@ -1346,7 +1360,7 @@ export type UsersPermissionsUser = {
   manager_projects?: Maybe<ProjectRelationResponseCollection>;
   notes?: Maybe<NoteRelationResponseCollection>;
   phone?: Maybe<Scalars['String']>;
-  positions?: Maybe<Scalars['JSON']>;
+  position?: Maybe<Enum_Userspermissionsuser_Position>;
   projects?: Maybe<ProjectRelationResponseCollection>;
   provider?: Maybe<Scalars['String']>;
   role?: Maybe<UsersPermissionsRoleEntityResponse>;
@@ -1395,6 +1409,7 @@ export type UsersPermissionsUserTrackersArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+
 export type UsersPermissionsUserTransactionsArgs = {
   filters?: InputMaybe<TransactionFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
@@ -1437,7 +1452,7 @@ export type UsersPermissionsUserFiltersInput = {
   or?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
   password?: InputMaybe<StringFilterInput>;
   phone?: InputMaybe<StringFilterInput>;
-  positions?: InputMaybe<JsonFilterInput>;
+  position?: InputMaybe<StringFilterInput>;
   projects?: InputMaybe<ProjectFiltersInput>;
   provider?: InputMaybe<StringFilterInput>;
   resetPasswordToken?: InputMaybe<StringFilterInput>;
@@ -1467,7 +1482,7 @@ export type UsersPermissionsUserInput = {
   notes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   password?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
-  positions?: InputMaybe<Scalars['JSON']>;
+  position?: InputMaybe<Enum_Userspermissionsuser_Position>;
   projects?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   provider?: InputMaybe<Scalars['String']>;
   resetPasswordToken?: InputMaybe<Scalars['String']>;
