@@ -186,7 +186,7 @@ export type GenericMorph =
   | Project
   | Tracker
   | Transaction
-  | Transaction | UploadFile
+   | UploadFile
   | UploadFolder
   | UsersPermissionsPermission
   | UsersPermissionsRole
@@ -637,12 +637,6 @@ export type ProjectTrackersArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-
-export type ProjectTransactionsArgs = {
-  filters?: InputMaybe<TransactionFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
 
 export type ProjectTransactionsArgs = {
   filters?: InputMaybe<TransactionFiltersInput>;
