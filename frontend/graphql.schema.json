@@ -1203,6 +1203,41 @@
       },
       {
         "kind": "ENUM",
+        "name": "ENUM_USERSPERMISSIONSUSER_POSITION",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "cdo",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "cto",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "designer",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "developer",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
         "name": "ENUM_USERSPERMISSIONSUSER_TYPESALARY",
         "description": null,
         "fields": null,
@@ -11542,12 +11577,12 @@
             "deprecationReason": null
           },
           {
-            "name": "positions",
+            "name": "position",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "JSON",
+              "kind": "ENUM",
+              "name": "ENUM_USERSPERMISSIONSUSER_POSITION",
               "ofType": null
             },
             "isDeprecated": false,
@@ -12158,11 +12193,11 @@
             "deprecationReason": null
           },
           {
-            "name": "positions",
+            "name": "position",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "JSONFilterInput",
+              "name": "StringFilterInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -12505,11 +12540,11 @@
             "deprecationReason": null
           },
           {
-            "name": "positions",
+            "name": "position",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "JSON",
+              "kind": "ENUM",
+              "name": "ENUM_USERSPERMISSIONSUSER_POSITION",
               "ofType": null
             },
             "defaultValue": null,
