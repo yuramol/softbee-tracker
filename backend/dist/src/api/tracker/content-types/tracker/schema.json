@@ -28,9 +28,9 @@
             "target": "api::project.project",
             "inversedBy": "trackers"
         },
-        "duration": {
-            "type": "time",
-            "required": true
+        "durationMinutes": {
+            "type": "biginteger",
+            "default": "0"
         },
         "user": {
             "type": "relation",
@@ -46,11 +46,7 @@
         "startLiveDate": {
             "type": "datetime"
         },
-        "liveDuration": {
-            "type": "time",
-            "default": "00:00"
-        },
-        "liveStatus": {
+        "live_status": {
             "type": "enumeration",
             "enum": [
                 "start",
@@ -58,6 +54,25 @@
                 "finish"
             ],
             "default": "finish"
+        },
+        "liveDurationMinutes": {
+            "type": "biginteger",
+            "default": "0"
+        },
+        "status": {
+            "type": "enumeration",
+            "enum": [
+                "new",
+                "approved",
+                "rejected"
+            ],
+            "required": false
+        },
+        "transaction": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::transaction.transaction",
+            "inversedBy": "tracker"
         }
     }
 }

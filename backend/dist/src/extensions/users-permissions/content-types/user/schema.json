@@ -99,15 +99,6 @@
             "type": "string",
             "required": false
         },
-        "position": {
-            "type": "enumeration",
-            "enum": [
-                "developer",
-                "designer",
-                "cdo",
-                "cto"
-            ]
-        },
         "notes": {
             "type": "relation",
             "relation": "oneToMany",
@@ -134,9 +125,28 @@
         },
         "manager_projects": {
             "type": "relation",
-            "relation": "manyToMany",
+            "relation": "oneToMany",
             "target": "api::project.project",
-            "inversedBy": "managers"
+            "mappedBy": "manager"
+        },
+        "transactions": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::transaction.transaction",
+            "mappedBy": "userUpdateBy"
+        },
+        "typeSalary": {
+            "type": "enumeration",
+            "enum": [
+                "fixed",
+                "hour"
+            ]
+        },
+        "salary": {
+            "type": "integer"
+        },
+        "positions": {
+            "type": "json"
         }
     }
 }
