@@ -1225,29 +1225,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "ENUM",
-        "name": "ENUM_USERSPERMISSIONSUSER_TYPESALARY",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "fixed",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "hour",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "INPUT_OBJECT",
         "name": "FileInfoInput",
         "description": null,
@@ -12043,6 +12020,30 @@
             "deprecationReason": null
           },
           {
+            "name": "transactions",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TransactionFiltersInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "typeSalary",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringFilterInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedAt",
             "description": null,
             "type": {
@@ -13484,4 +13485,3 @@
     ]
   }
 }
-
