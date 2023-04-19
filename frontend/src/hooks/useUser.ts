@@ -7,10 +7,6 @@ export const useUser = (id: string) => {
     usersPermissionsUser: UsersPermissionsUserEntityResponse;
   }>(USER_QUERY, {
     variables: { id },
-    // TODO useLazyQuery
-    // fetchPolicy: 'cache-first',
-    // nextFetchPolicy: 'cache-only',
-    skip: !id,
   });
 
   const userData = data?.usersPermissionsUser.data?.attributes;

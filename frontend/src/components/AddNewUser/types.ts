@@ -3,7 +3,7 @@ export enum CreateUserFields {
   FirstName = 'firstName',
   LastName = 'lastName',
   Email = 'email',
-  Position = 'position',
+  Positions = 'positions',
   DateEmployment = 'dateEmployment',
   Phone = 'phone',
   SalaryInfo = 'salaryInfo',
