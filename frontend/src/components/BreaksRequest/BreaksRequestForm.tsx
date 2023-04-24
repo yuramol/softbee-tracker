@@ -43,6 +43,18 @@ const modalStyle = {
 const VACATION_DAYS = 30;
 const SICKNESS_DAYS = 5;
 
+const CountDay = ({ count }: { count: number }) => (
+  <Typography component={'span'} fontWeight="600">
+    {`${count} ${count === 1 ? 'day' : 'days'}`}
+  </Typography>
+);
+const validationSchema = yup.object({
+  [BreaksRequestFields.DESCRIPTION]: yup
+    .string()
+    .min(5, 'Description must be at least 5 characters')
+    .required('Should not be empty'),
+});
+
 export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   onClose,
 }) => {
@@ -74,7 +86,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   const approvedDates = trackers?.map(
     (tracker) => new Date(tracker.attributes?.date)
   );
-  const disabledDates = (date: any) =>
+  const disabledDates = (date: Date) =>
     eachDayOfInterval({
       start: date,
       end: date,
@@ -116,17 +128,10 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     [BreaksRequestFields.STATUS]: Enum_Tracker_Status.New,
   };
 
-  const validationSchema = yup.object({
-    [BreaksRequestFields.DESCRIPTION]: yup
-      .string()
-      .min(5, 'Description must be at least 5 characters')
-      .required('Should not be empty'),
-  });
-
   const formik = useFormik<TimeEntryValues>({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const approvedDates = trackers?.map(
         (tracker) => new Date(tracker.attributes?.date)
       );
@@ -141,23 +146,20 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         (item) => !formattedDates?.includes(item)
       );
 
-      async function createTrackers() {
-        try {
-          for (const date of filteredDates) {
-            const data = {
-              ...values,
-              date: date,
-            };
-            await createTracker(data);
+      for (const date of filteredDates) {
+        const data = {
+          ...values,
+          date: date,
+        };
+        await createTracker(data)
+          .then(() => {
             enqueueSnackbar(`Request sent for ${date}`, { variant: 'success' });
-          }
-          onClose();
-        } catch (error: any) {
-          enqueueSnackbar(error.message, { variant: 'error' });
-        }
+          })
+          .catch((error) => {
+            enqueueSnackbar(error.message, { variant: 'error' });
+          });
       }
-
-      createTrackers();
+      onClose();
     },
   });
 
@@ -187,29 +189,13 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         <Icon icon="info" color="primary" />
         {selectedBreakType !== Breaks.Unpaid ? (
           <Typography>
-            You request for{' '}
-            <Typography component={'span'} fontWeight="600">
-              {`${breaksDateArray.length} ${
-                breaksDateArray.length === 1 ? 'day' : 'days'
-              }`}
-            </Typography>{' '}
-            of paid time off, from{' '}
-            <Typography component={'span'} fontWeight="600">
-              {`${breaksDaysUserHave} ${
-                breaksDaysUserHave === 1 ? 'day' : 'days'
-              }`}
-            </Typography>{' '}
-            you have.
+            You request for <CountDay count={breaksDateArray.length} /> of paid
+            time off, from <CountDay count={breaksDaysUserHave} /> you have.
           </Typography>
         ) : (
           <Typography>
-            You request for{' '}
-            <Typography component={'span'} fontWeight="600">
-              {`${breaksDateArray.length} ${
-                breaksDateArray.length === 1 ? 'day' : 'days'
-              }`}
-            </Typography>{' '}
-            of unpaid time off.
+            You request for <CountDay count={breaksDateArray.length} /> of
+            unpaid time off.
           </Typography>
         )}
       </Stack>
