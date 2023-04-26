@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import {
   addDays,
+  addMonths,
   format,
   isAfter,
   isEqual,
@@ -19,6 +20,7 @@ import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
 
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 import { useCurrentWeek } from 'hooks';
+import { Enum_Tracker_Status } from 'types/GraphqlTypes';
 
 type TrackerDayViewProps = {
   selectedDay: Date;
@@ -77,6 +79,23 @@ export const TrackerDayView = ({
 
   const isEndEdit = isFuture(addDays(new Date(days[tabsValue].fullDate), 1));
 
+  const foundElement = trackers.find((element) => {
+    return (
+      element.date === days[tabsValue].fullDate &&
+      element.trackersByProject.some((project) => {
+        return (
+          project.name === 'Vacation' &&
+          project.status !== Enum_Tracker_Status.Approved
+        );
+      })
+    );
+  });
+  const currentMonthStartDate = startOfMonth(new Date());
+  const dayFullDate = new Date(days[tabsValue].fullDate);
+  const isInCurrentMonth =
+    dayFullDate >= currentMonthStartDate &&
+    dayFullDate < startOfMonth(addMonths(currentMonthStartDate, 1));
+
   return (
     <>
       <Stack
@@ -116,7 +135,9 @@ export const TrackerDayView = ({
         tabsValue={tabsValue}
         setTabsValue={setTabsValue}
       />
-      <TrackerAddNewEntry currentDay={new Date(days[tabsValue].fullDate)} />
+      {!foundElement && isInCurrentMonth && (
+        <TrackerAddNewEntry currentDay={new Date(days[tabsValue].fullDate)} />
+      )}
     </>
   );
 };
