@@ -18,7 +18,7 @@ const CrewPage: React.FC<PageProps> = () => {
           }
         : {},
 
-    position:
+    positions:
       positionFilter.length > 1
         ? {
             eq: positionFilter,

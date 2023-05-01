@@ -13,6 +13,7 @@ import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
 import { toHoursAndMinutes } from 'components/TimePicker/utils';
+import { DescriptionTracker } from 'components/DescriptionTracker/DescriptionTracker';
 
 type ReportTableProps = {
   trackers: TrackerByDay[];
@@ -72,11 +73,11 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                                 {name}
                               </Typography>
                             )}
-                            <Typography
-                              fontWeight={projectView ? '600' : '400'}
-                            >
-                              {attributes?.description}
-                            </Typography>
+
+                            <DescriptionTracker
+                              projectView={projectView}
+                              tracker={attributes?.description || ''}
+                            />
                             <Typography variant={'body2'} mt={2}>
                               {`${attributes?.user?.data?.attributes?.firstName}
                                 ${attributes?.user?.data?.attributes?.lastName}
