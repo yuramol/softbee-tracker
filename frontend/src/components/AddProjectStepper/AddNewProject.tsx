@@ -77,7 +77,7 @@ export const AddNewProject = ({
                 el?.users?.data?.attributes?.lastName
             );
 
-            return { users: user?.id, rate: el?.rate };
+            return { id: el?.id ?? undefined, users: user?.id, rate: el?.rate };
           }),
           [CreateProjectFields.Users]: projectData?.salary?.map(
             (el) => el?.users?.data?.id ?? null

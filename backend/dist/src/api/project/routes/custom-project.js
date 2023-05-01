@@ -1,16 +1,16 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * project router.
  */
-module.exports = {
-    routes: [
-        {
+exports.default = {
+    routes: [{
             method: 'GET',
             path: '/report/pdf',
             handler: 'project.generatePdf',
             config: {
-                auth: false,
-            },
-        }
-    ]
+                policies: [],
+                middlewares: [],
+            }
+        }]
 };

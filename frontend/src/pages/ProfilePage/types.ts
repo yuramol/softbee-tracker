@@ -4,17 +4,14 @@ import {
   MutationFunctionOptions,
   OperationVariables,
 } from '@apollo/client';
-import {
-  Enum_Userspermissionsuser_Position,
-  Maybe,
-  Scalars,
-} from 'types/GraphqlTypes';
+import { Maybe, Scalars } from 'types/GraphqlTypes';
+import { UserPosition } from 'constant';
 
 export enum ProfileFields {
   UserName = 'username',
   FirstName = 'firstName',
   LastName = 'lastName',
-  Position = 'position',
+  Positions = 'positions',
   Email = 'email',
   LinkedIn = 'linkedIn',
   UpWork = 'upwork',
@@ -27,7 +24,7 @@ export type ProfileInitialValues = {
   [ProfileFields.UserName]: string;
   [ProfileFields.FirstName]: string;
   [ProfileFields.LastName]: string;
-  [ProfileFields.Position]: Enum_Userspermissionsuser_Position;
+  [ProfileFields.Positions]: UserPosition[];
   [ProfileFields.Email]: string;
   [ProfileFields.LinkedIn]: string;
   [ProfileFields.UpWork]: string;

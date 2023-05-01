@@ -4,12 +4,30 @@ import { useAuthUser, useNormalizedUsers } from 'hooks';
 import { Stack, Typography } from '@mui/material';
 import { MainWrapper, UsersList, NewUser, TimeInspector } from 'components';
 import { PageProps } from 'pages/types';
+import { CrewFilters } from './CrewFilters';
 
 const CrewPage: React.FC<PageProps> = () => {
   const { isManager, user } = useAuthUser();
-  const { users, refetch } = useNormalizedUsers();
-  const [isCreateUser, setIsCreateUser] = useState(false);
+  const [roleFilter, setRoleFilter] = useState<string>('');
+  const [positionFilter, setPositionFilter] = useState<string>('');
+  const reportFilter = {
+    role:
+      roleFilter.length > 0
+        ? {
+            id: { eq: roleFilter },
+          }
+        : {},
 
+    position:
+      positionFilter.length > 1
+        ? {
+            eq: positionFilter,
+          }
+        : {},
+  };
+
+  const { users, refetch } = useNormalizedUsers(reportFilter);
+  const [isCreateUser, setIsCreateUser] = useState(false);
   const onToggleForm = () => {
     setIsCreateUser(!isCreateUser);
     refetch();
@@ -29,7 +47,7 @@ const CrewPage: React.FC<PageProps> = () => {
               onClick={onToggleForm}
             />
           )}
-          <TimeInspector />
+          <TimeInspector userId={isManager ? undefined : user.id} />
         </>
       }
     >
@@ -39,6 +57,14 @@ const CrewPage: React.FC<PageProps> = () => {
         <>
           <Typography variant="h1">My crew</Typography>
           <Stack mt={4} spacing={2}>
+            <Stack direction="row" spacing={2} mb={4}>
+              <CrewFilters
+                roleFilter={roleFilter}
+                setRoleFilter={setRoleFilter}
+                positionFilter={positionFilter}
+                setPositionFilter={setPositionFilter}
+              />
+            </Stack>
             <UsersList usersList={users} isManager={isManager} meId={user.id} />
           </Stack>
         </>

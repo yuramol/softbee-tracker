@@ -9,7 +9,8 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
-    "codegen": "graphql-codegen --require dotenv/config --config codegen.yml"
+    "codegen": "graphql-codegen --require dotenv/config --config codegen.yml",
+    "postinstall": "yarn codegen"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",

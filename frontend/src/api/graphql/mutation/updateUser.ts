@@ -40,7 +40,7 @@ export const UPDATE_USER_MUTATION = gql`
           linkedIn
           dateEmployment
           salaryInfo
-          position
+          positions
         }
       }
     }

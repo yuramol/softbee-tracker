@@ -10,12 +10,13 @@ import {
   eachDayOfInterval,
   endOfYear,
   format,
+  isSameDay,
   isWeekend,
   startOfYear,
 } from 'date-fns';
 import * as yup from 'yup';
 
-import { useAuthUser, useBreaks } from 'hooks';
+import { useAuthUser, useBreaks, useNormalizedTrackers } from 'hooks';
 import { Icon, RangeCalendar } from 'legos';
 import { getFormattedDate, toUpperCaseFirst, formikPropsErrors } from 'helpers';
 import { Breaks } from 'constant';
@@ -23,11 +24,9 @@ import { useFormik } from 'formik';
 import { BreaksRequestFields, BreaksRequestFormProps } from './types';
 import { useSnackbar } from 'notistack';
 import { TimeEntryValues } from 'components/TrackerEntryModalForm';
-import { GraphQLError } from 'graphql';
 import { useCreateTracker } from 'hooks/useCreateTracker';
 import { getBreakIcon } from 'components/BreaksDay/getBreakIcon';
 import { Enum_Tracker_Status } from 'types/GraphqlTypes';
-import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 
 const modalStyle = {
   position: 'absolute',
@@ -66,6 +65,27 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
       },
     }
   );
+  const filters = {
+    user: { id: { in: [user.id] } },
+    status: { eq: Enum_Tracker_Status.Approved },
+  };
+
+  const { fetchTrackers, trackers } = useNormalizedTrackers(filters, false);
+  const approvedDates = trackers?.map(
+    (tracker) => new Date(tracker.attributes?.date)
+  );
+  const disabledDates = (date: any) =>
+    eachDayOfInterval({
+      start: date,
+      end: date,
+    }).some((day) =>
+      approvedDates?.some((approvedDate) => isSameDay(approvedDate, day))
+    );
+  useEffect(() => {
+    fetchTrackers({
+      variables: { filters },
+    });
+  }, [user.id]);
 
   const [selectedDates, setSelectedDates] = useState([new Date()]);
   const [breakId, setBreakId] = useState('');
@@ -107,19 +127,37 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      const data = {
-        ...values,
-        date: format(values[TIME_ENTRY_FIELDS.DATE], 'yyyy-MM-dd'),
-      };
+      const approvedDates = trackers?.map(
+        (tracker) => new Date(tracker.attributes?.date)
+      );
 
-      createTracker(data)
-        .then(() => {
-          enqueueSnackbar(`Request sent`, { variant: 'success' });
+      const formattedBreakDates = breaksDateArray.map((date) =>
+        format(date, 'yyyy-MM-dd')
+      );
+      const formattedDates = approvedDates?.map((date) =>
+        format(date, 'yyyy-MM-dd')
+      );
+      const filteredDates = formattedBreakDates.filter(
+        (item) => !formattedDates?.includes(item)
+      );
+
+      async function createTrackers() {
+        try {
+          for (const date of filteredDates) {
+            const data = {
+              ...values,
+              date: date,
+            };
+            await createTracker(data);
+            enqueueSnackbar(`Request sent for ${date}`, { variant: 'success' });
+          }
           onClose();
-        })
-        .catch((error: GraphQLError) => {
+        } catch (error: any) {
           enqueueSnackbar(error.message, { variant: 'error' });
-        });
+        }
+      }
+
+      createTrackers();
     },
   });
 
@@ -199,6 +237,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         maxDate={endOfYear(new Date())}
         selectedDates={selectedDates}
         setSelectedDates={setSelectedDates}
+        shouldDisableDate={disabledDates}
       />
       <TextField
         label="Comment"
