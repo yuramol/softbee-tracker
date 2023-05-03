@@ -15,7 +15,6 @@ type TimePickerBlockProps = {
 
 export const TimePickerBlock = ({
   number,
-  type,
   onWheel,
   onDownClick,
   onUpClick,
@@ -28,8 +27,8 @@ export const TimePickerBlock = ({
     margin="auto 12px"
     onWheel={onWheel}
   >
-    <ArrowUp onClick={onUpClick} size={36} />
+    <ArrowUp onClick={onUpClick} />
     {formatNumber(number)}
-    <ArrowDown onClick={onDownClick} size={36} />
+    <ArrowDown onClick={onDownClick} />
   </Box>
 );

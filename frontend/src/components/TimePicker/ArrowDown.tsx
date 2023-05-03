@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { SVGProps } from 'react';
 import styled from 'styled-components';
 
-const ArrowDown = (props: any) => (
+const ArrowDown = (props?: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
