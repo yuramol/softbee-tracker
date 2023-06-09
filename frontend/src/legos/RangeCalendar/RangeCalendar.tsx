@@ -119,7 +119,7 @@ export const RangeCalendar: React.FC<RangeCalendarProps> = ({
                   renderDay={(day, selectedDays, pickersDayProps) => {
                     const isBetweenDates =
                       isAfter(day, subDays(selectedDates[0], 1)) &&
-                      isBefore(day, selectedDates[1]);
+                      isBefore(subDays(day, 1), selectedDates[1]);
 
                     return (
                       <PickersDay
