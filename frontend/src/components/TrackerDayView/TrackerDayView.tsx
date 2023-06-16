@@ -7,6 +7,7 @@ import {
   isEqual,
   isFuture,
   startOfDay,
+  startOfMonth,
   subDays,
 } from 'date-fns';
 import { Typography, Button, Stack } from '@mui/material';
@@ -87,6 +88,7 @@ export const TrackerDayView = ({
     );
   });
   const currentMonthStartDate = startOfMonth(new Date());
+
   const dayFullDate = new Date(days[tabsValue].fullDate);
   const isInCurrentMonth =
     dayFullDate >= currentMonthStartDate &&
