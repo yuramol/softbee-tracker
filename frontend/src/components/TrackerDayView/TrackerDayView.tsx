@@ -4,11 +4,9 @@ import {
   addDays,
   addMonths,
   format,
-  isAfter,
   isEqual,
   isFuture,
   startOfDay,
-  startOfMonth,
   subDays,
 } from 'date-fns';
 import { Typography, Button, Stack } from '@mui/material';
@@ -21,6 +19,7 @@ import { TrackerAddNewEntry } from 'components/TrackerAddNewEntry';
 import { TrackerByDay } from 'hooks/useNormalizedTrackers';
 import { useCurrentWeek } from 'hooks';
 import { Enum_Tracker_Status } from 'types/GraphqlTypes';
+import { getCanAddEditTracks } from 'helpers/getCanAddEditTracks';
 
 type TrackerDayViewProps = {
   selectedDay: Date;
@@ -72,10 +71,7 @@ export const TrackerDayView = ({
     startOfDay(new Date(days[tabsValue].fullDate))
   );
 
-  const isStartEditForEmployee = isAfter(
-    startOfMonth(currentWeekDay),
-    subDays(startOfDay(new Date(days[tabsValue].fullDate)), 1)
-  );
+  const isStartEditForEmployee = getCanAddEditTracks();
 
   const isEndEdit = isFuture(addDays(new Date(days[tabsValue].fullDate), 1));
 

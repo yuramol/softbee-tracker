@@ -9,6 +9,7 @@ import { TimePicker } from 'components';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
 import { formikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
+import { getCanAddEditTracks } from 'helpers/getCanAddEditTracks';
 
 const modalStyle = {
   position: 'absolute',
@@ -95,6 +96,9 @@ export const TrackerEntryForm = ({
   });
 
   const { setFieldValue, handleChange, handleSubmit, values } = formik;
+  const startMonthPicker = getCanAddEditTracks()
+    ? startOfMonth(subMonths(new Date(), 0))
+    : startOfMonth(subMonths(new Date(), 1));
 
   return (
     <FormikContext.Provider value={formik}>
@@ -108,7 +112,7 @@ export const TrackerEntryForm = ({
               <Stack direction="row" gap={3}>
                 <CalendarPickerFormik
                   field={TIME_ENTRY_FIELDS.DATE}
-                  minDate={startOfMonth(subMonths(new Date(), 0))}
+                  minDate={startMonthPicker}
                   disableFuture
                   views={['day']}
                 />

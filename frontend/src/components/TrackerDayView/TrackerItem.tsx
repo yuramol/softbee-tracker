@@ -30,6 +30,7 @@ import { breaksTitles } from 'constant';
 import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 import { toHoursAndMinutes } from 'components/TimePicker/utils';
 import { DescriptionTracker } from 'components/DescriptionTracker/DescriptionTracker';
+import { getCanAddEditTracks } from 'helpers/getCanAddEditTracks';
 
 type TrackerItemProps = {
   tracker: TrackerEntity;
@@ -105,6 +106,8 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
     return isThisMonth(date);
   };
 
+  const disableButton = !isCurrentMonth() && getCanAddEditTracks();
+
   return (
     <Grid alignItems="center" borderBottom={1} borderColor="gray" py={4}>
       {breaksTitles.includes(
@@ -165,7 +168,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                     )}
                   </Typography>
                   <IconButton
-                    disabled={!isCurrentMonth()}
+                    disabled={disableButton}
                     sx={{ width: '56px' }}
                     color="primary"
                     onClick={toggleOpenModal}
@@ -182,7 +185,7 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
                     <Icon icon="playArrow" size="inherit" />
                   </IconButton>
                   <IconButton
-                    disabled={!isCurrentMonth()}
+                    disabled={disableButton}
                     sx={{ width: '56px' }}
                     color="error"
                     onClick={(e) => handleClickDeleteButton(e.currentTarget)}
