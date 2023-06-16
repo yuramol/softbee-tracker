@@ -72,6 +72,7 @@ export const TrackerEntryForm = ({
     [TIME_ENTRY_FIELDS.DESCRIPTION]: yup
       .string()
       .min(5, 'Description must be at least 5 characters')
+      .max(100, 'Description must be at max 100 characters')
       .required('Should not be empty'),
   });
 
@@ -162,6 +163,7 @@ export const TrackerEntryForm = ({
               name={TIME_ENTRY_FIELDS.DESCRIPTION}
               {...formikPropsErrors(TIME_ENTRY_FIELDS.DESCRIPTION, formik)}
               onChange={handleChange}
+              inputProps={{ maxLength: 1000 }}
             />
           </Stack>
 

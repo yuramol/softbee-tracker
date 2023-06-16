@@ -15,8 +15,5 @@ export const validationSchema = yup.object({
     .required('Should not be empty')
     .matches(/^[0-9]+$/, 'Must be only digits')
     .min(10, 'Phone must be at least 10 characters'),
-  [ProfileFields.SalaryInfo]: yup
-    .number()
-    .typeError('Must be a number')
-    .required('Should not be empty'),
+  [ProfileFields.SalaryInfo]: yup.number().typeError('Must be a number'),
 });

@@ -3,6 +3,8 @@ import { useLazyQuery } from '@apollo/client';
 import { TRACKERS_QUERY } from 'api';
 import { useEffect } from 'react';
 import {
+  Enum_Tracker_Live_Status,
+  Enum_Tracker_Status,
   TrackerEntity,
   TrackerEntityResponseCollection,
   TrackerFiltersInput,
@@ -13,6 +15,8 @@ type TrackerByProject = {
   trackers: TrackerEntity[];
   total: number;
   status: string;
+  live: Enum_Tracker_Live_Status;
+  id?: string;
 };
 
 export type TrackerByDay = {
@@ -20,6 +24,7 @@ export type TrackerByDay = {
   trackersByProject: TrackerByProject[];
   total: number;
   status: string;
+  live: string;
 };
 
 export const useNormalizedTrackers = (
@@ -47,6 +52,8 @@ export const useNormalizedTrackers = (
       trackers: [tracker],
       total: tracker.attributes?.durationMinutes ?? 0,
       status: tracker.attributes?.status ?? '',
+      live: tracker.attributes?.live_status || Enum_Tracker_Live_Status.Finish,
+      id: tracker.id || undefined,
     };
 
     const trackerByDay: TrackerByDay = {
@@ -54,6 +61,7 @@ export const useNormalizedTrackers = (
       trackersByProject: [trackerByProject],
       total: tracker.attributes?.durationMinutes ?? 0,
       status: tracker.attributes?.status ?? '',
+      live: tracker.attributes?.live_status || Enum_Tracker_Live_Status.Finish,
     };
 
     const findTrackerByDay = normalizedTrackers.find(
@@ -66,16 +74,16 @@ export const useNormalizedTrackers = (
       );
 
       findTrackerByDay.total =
-        tracker.attributes?.status !== 'new' &&
-        tracker.attributes?.status !== 'rejected'
+        tracker.attributes?.status !== Enum_Tracker_Status.New &&
+        tracker.attributes?.status !== Enum_Tracker_Status.Rejected
           ? findTrackerByDay.total + tracker.attributes?.durationMinutes ?? 0
           : findTrackerByDay.total;
 
       if (findTrackerByProject) {
         findTrackerByProject.trackers.push(tracker);
         findTrackerByProject.total =
-          tracker.attributes?.status !== 'new' &&
-          tracker.attributes?.status !== 'rejected'
+          tracker.attributes?.status !== Enum_Tracker_Status.New &&
+          tracker.attributes?.status !== Enum_Tracker_Status.Rejected
             ? findTrackerByProject.total +
                 tracker.attributes?.durationMinutes ?? 0
             : findTrackerByProject.total;

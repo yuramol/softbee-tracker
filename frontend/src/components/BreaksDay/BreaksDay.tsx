@@ -19,11 +19,9 @@ export const BreaksDay = ({
         <Typography ml={0.5} fontWeight={600}>
           {breaks}
         </Typography>
-        {(status === 'new' || status === 'rejected') && (
-          <Typography ml={0.5} fontStyle="italic">
-            {`(${status}, not tracked)`}
-          </Typography>
-        )}
+        <Typography ml={0.5} fontStyle="italic">
+          {status === 'approved' ? 'Approved' : 'Rejected'}
+        </Typography>
       </Stack>
 
       {description && (
