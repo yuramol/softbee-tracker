@@ -65,7 +65,7 @@ export const ProjectsList = ({
                 <Link to={`/project/${project.id}`} component={NavLink}>
                   {project.attributes?.name}
                 </Link>
-                <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.start}`}</Typography>
+                <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.end}`}</Typography>
               </Grid>
             </Grid>
             {manager && (

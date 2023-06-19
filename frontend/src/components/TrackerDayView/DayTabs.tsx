@@ -1,6 +1,12 @@
 import React, { useMemo } from 'react';
 import { Stack, Tab, Tabs, Typography } from '@mui/material';
-import { isAfter, isFuture, startOfDay, startOfMonth } from 'date-fns';
+import {
+  isAfter,
+  isFuture,
+  startOfDay,
+  startOfMonth,
+  subMonths,
+} from 'date-fns';
 
 import { PanelTab } from './PanelTab';
 import { useCurrentWeek } from 'hooks';
@@ -33,6 +39,7 @@ export const DayTabs: React.FC<Props> = ({
 
     return getHours(totalTime);
   }, [days]);
+  const startOfPrevMonth = startOfMonth(subMonths(new Date(), 2));
 
   return (
     <>
@@ -65,10 +72,8 @@ export const DayTabs: React.FC<Props> = ({
                   </>
                 }
                 disabled={
-                  isAfter(
-                    startOfMonth(currentWeekDay),
-                    startOfDay(new Date(fullDate))
-                  ) || isFuture(new Date(fullDate))
+                  isAfter(startOfPrevMonth, startOfDay(new Date(fullDate))) ||
+                  isFuture(new Date(fullDate))
                 }
               />
             );

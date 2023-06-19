@@ -29,6 +29,7 @@ import { BreaksDay } from 'components';
 import { breaksTitles } from 'constant';
 import { TIME_ENTRY_FIELDS } from 'components/TrackerEntryModalForm/TrackerEntryForm';
 import { toHoursAndMinutes } from 'components/TimePicker/utils';
+import { DescriptionTracker } from 'components/DescriptionTracker/DescriptionTracker';
 import { getCanAddEditTracks } from 'helpers/getCanAddEditTracks';
 
 type TrackerItemProps = {
@@ -139,7 +140,11 @@ export const TrackerItem = ({ tracker }: TrackerItemProps) => {
               <Typography variant="h6">
                 {tracker.attributes?.project?.data?.attributes?.name ?? ''}
               </Typography>
-              <Typography>{tracker.attributes?.description}</Typography>
+              {
+                <DescriptionTracker
+                  tracker={tracker.attributes?.description || ''}
+                />
+              }
             </Grid>
             <Grid item container xs={5} gap={1} alignItems="center">
               {tracker.attributes?.live_status === 'start' ? (
