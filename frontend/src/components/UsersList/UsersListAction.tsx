@@ -2,10 +2,18 @@ import React, { Fragment, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { Icon } from 'legos';
-import { useMutation } from '@apollo/client';
+import {
+  ApolloQueryResult,
+  OperationVariables,
+  useMutation,
+} from '@apollo/client';
 import { DELETE_USERS_PERMISSIONS_USER } from 'api';
-import { Maybe, Scalars } from 'types/GraphqlTypes';
-import { useNormalizedUsers, useNotification } from 'hooks';
+import {
+  Maybe,
+  Scalars,
+  UsersPermissionsUserEntityResponseCollection,
+} from 'types/GraphqlTypes';
+import { useNotification } from 'hooks';
 import {
   IconButton,
   Stack,
@@ -23,6 +31,11 @@ type UsersListActionProps = {
   lastName?: string;
   isManager?: boolean;
   meId?: string;
+  refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<
+    ApolloQueryResult<{
+      usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
+    }>
+  >;
 };
 
 export const UsersListAction = ({
@@ -31,9 +44,9 @@ export const UsersListAction = ({
   lastName,
   isManager,
   meId,
+  refetch,
 }: UsersListActionProps) => {
   const navigate = useNavigate();
-  const { refetch } = useNormalizedUsers();
 
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
