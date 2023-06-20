@@ -22,11 +22,6 @@ export type CreateProjectStep = {
   fields: CreateProjectFields[];
 };
 
-export type ProjectType = {
-  label: string;
-  value: Enum_Project_Type;
-};
-
 export type Salary = {
   users: string;
   rate: number;
