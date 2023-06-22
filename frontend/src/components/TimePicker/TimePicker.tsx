@@ -21,7 +21,6 @@ import {
   toHoursAndMinutes,
 } from './utils';
 import { TimePickerBlock } from './TimePickerBlock';
-import { Maybe } from 'types/GraphqlTypes';
 import { Stack } from '@mui/system';
 
 interface TimePickerProps {
@@ -32,7 +31,7 @@ interface TimePickerProps {
   to?: number;
   width?: string;
   onChange: (value: number, submit?: boolean) => void;
-  id?: Maybe<string>;
+  id?: string;
   error?: boolean;
   name?: string;
   helperText?: string;
