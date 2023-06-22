@@ -4,19 +4,26 @@ import { Stack, Typography } from '@mui/material';
 import {
   Enum_Tracker_Status,
   UsersPermissionsUserEntity,
+  UsersPermissionsUserEntityResponseCollection,
 } from 'types/GraphqlTypes';
 import { Avatar, NavLink, PulseDot } from 'legos';
 
 import { UsersListAction } from './UsersListAction';
 import { useNormalizedTrackers } from 'hooks';
+import { ApolloQueryResult, OperationVariables } from '@apollo/client';
 
 type Props = {
   usersList?: UsersPermissionsUserEntity[];
   isManager?: boolean;
   meId?: string;
+  refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<
+    ApolloQueryResult<{
+      usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
+    }>
+  >;
 };
 
-export const UsersList = ({ usersList, isManager, meId }: Props) => {
+export const UsersList = ({ usersList, isManager, meId, refetch }: Props) => {
   const filters = {
     status: { eq: Enum_Tracker_Status.New },
   };
@@ -88,6 +95,7 @@ export const UsersList = ({ usersList, isManager, meId }: Props) => {
             lastName={attributes?.lastName}
             isManager={isManager}
             meId={meId}
+            refetch={refetch}
           />
         </Stack>
       ))}
