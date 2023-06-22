@@ -9,11 +9,11 @@ import {
 import { FormikValues, useFormikContext } from 'formik';
 
 import { CalendarPickerFormik } from 'legos';
-import { CreateProjectFields, ProjectType } from './types';
+import { CreateProjectFields } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
 import { formikPropsErrors } from 'helpers';
 
-export const projectTypes: ProjectType[] = [
+export const projectTypes = [
   {
     label: 'Time & Material',
     value: Enum_Project_Type.TimeMaterial,
