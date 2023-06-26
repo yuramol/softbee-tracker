@@ -7,17 +7,7 @@ module.exports = {
       cwd: './backend',
       env: {
         NODE_ENV: 'development',
-        PORT: 1337,
-      },
-    },
-    {
-      name: 'dev.track.sofrtbee.io',
-      script: 'npm',
-      args: 'start',
-      cwd: './frontend-shop',
-      env: {
-        NODE_ENV: 'development',
-        PORT: 8081,
+        PORT: 1338,
       },
     },
     {
@@ -39,7 +29,7 @@ module.exports = {
       cwd: './backend',
       env: {
         NODE_ENV: 'production',
-        PORT: 1437,
+        PORT: 1337,
       },
     },
     {
