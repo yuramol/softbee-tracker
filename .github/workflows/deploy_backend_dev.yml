@@ -1,0 +1,91 @@
+name: Deploy BACKEND to VPS (dev)
+
+on: workflow_dispatch
+
+env:
+  BUILD_PATH: ${{ secrets.DEV_PATH_TO_DEPLOY }}/backend
+  BRANCH: dev
+
+jobs:
+  Update-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull changes in dev server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          script: |
+            cd ${{ secrets.DEV_PATH_TO_DEPLOY }}
+            branch=$(git rev-parse --abbrev-ref HEAD)   # chech current branch
+            echo "Current branch is $branch"
+            if [[ "$branch" != "${{ env.BRANCH }}" ]]; then           
+              git checkout ${{ env.BRANCH }}
+            fi
+            git fetch --all
+            git reset --hard origin/${{ env.BRANCH }}
+            git pull
+
+      - name: Install deps in dev server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          script: |
+            cd ${{ secrets.DEV_PATH_TO_DEPLOY }}/backend
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            npm install
+
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install npm dependencies
+        run: |
+          cd backend
+          ls
+          npm install
+
+      - name: Run build task
+        run: |
+          cd backend
+          npm run strapi build --if-present
+
+      - name: Deploy Build to Server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          source: 'backend/dist'
+          target: ${{ secrets.DEV_PATH_TO_DEPLOY }}
+
+  Restart-PM2-service:
+    runs-on: ubuntu-latest
+    needs: [build-backend, Update-server]
+    steps:
+      - name: Restart PM2 service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd ${{ secrets.DEV_PATH_TO_DEPLOY }}
+            pm2 restart ecosystem.config.js --only dev.strapi.track.softbee.io
