@@ -4,9 +4,9 @@ on: workflow_dispatch
 
 env:
   BRANCH: dev
-  DEV_REACT_APP_GRAPHQL_URI: ${{ vars.DEV_REACT_APP_URI }}
-  DEV_REACT_APP_URI: ${{ vars.DEV_REACT_APP_URI }}
-  DEV_REACT_APP_API_TOKEN: ${{ secrets.DEV_REACT_APP_URI }}
+  REACT_APP_GRAPHQL_URI: ${{ vars.DEV_REACT_APP_URI }}
+  REACT_APP_URI: ${{ vars.DEV_REACT_APP_URI }}
+  REACT_APP_API_TOKEN: ${{ secrets.DEV_REACT_APP_URI }}
 
 jobs:
   Update-server:
