@@ -8,6 +8,7 @@ import { ProjectInfoTab } from 'components/ProjectTabs/ProjectInfoTab';
 import { Scalars } from 'types/GraphqlTypes';
 import { ProjectReportTab } from 'components/ProjectTabs/ProjectReportTab';
 import { ProjectTransactionsTab } from './ProjectTransactionsTab';
+import { ProjectAgreements } from './ProjectAgreements/ProjectAgreements';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -61,6 +62,7 @@ export const ProjectTabs: FC<ProjectTabsProps> = ({ id }) => {
           }}
         >
           <Tab label="Project info" sx={{ fontWeight: '600' }} />
+          <Tab label="Agreements" sx={{ fontWeight: '600' }} />
           <Tab label="Report" sx={{ fontWeight: '600' }} />
           <Tab label="Profit&Loss" sx={{ fontWeight: '600' }} />
         </Tabs>
@@ -70,9 +72,12 @@ export const ProjectTabs: FC<ProjectTabsProps> = ({ id }) => {
           <ProjectInfoTab id={id} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ProjectReportTab projectId={id} />
+          <ProjectAgreements projectId={id} />
         </TabPanel>
         <TabPanel value={value} index={2}>
+          <ProjectReportTab projectId={id} />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
           <ProjectTransactionsTab projectId={id} />
         </TabPanel>
       </Grid>
