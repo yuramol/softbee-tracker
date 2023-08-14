@@ -4,8 +4,9 @@ export const PROJECTS_QUERY = gql`
   query ProjectsByUserId(
     $projectFilters: ProjectFiltersInput!
     $trackerFilters: TrackerFiltersInput!
+    $sort: [String!]
   ) {
-    projects(filters: $projectFilters, pagination: { limit: -1 }, sort: "id") {
+    projects(filters: $projectFilters, pagination: { limit: -1 }, sort: $sort) {
       data {
         id
         attributes {

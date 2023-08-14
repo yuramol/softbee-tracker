@@ -35,7 +35,10 @@ export const useNormalizedUsers = (
   const { data, loading, refetch } = useQuery<{
     usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
   }>(USERS_QUERY, {
-    ...(filters ? { variables: { filters } } : {}),
+    variables: {
+      ...(filters ? filters : {}),
+      sort: ['firstName'],
+    },
     fetchPolicy: 'cache-first',
   });
 

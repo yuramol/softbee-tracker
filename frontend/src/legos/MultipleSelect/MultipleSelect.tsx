@@ -106,6 +106,10 @@ export const MultipleSelect = ({
                     setValue?.([]);
                   }
                 }}
+                sx={{
+                  position: 'absolute !important',
+                  right: '0 !important',
+                }}
               >
                 <Icon icon="clear" size="small" />
               </IconButton>

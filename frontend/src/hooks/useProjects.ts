@@ -41,6 +41,7 @@ export const useProjects = (
       projectFilters: {
         ...projectFilters,
       },
+      sort: ['name'],
       trackerFilters: { live: { eq: false }, ...trackerFilters },
     },
   });
