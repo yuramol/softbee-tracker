@@ -90,10 +90,6 @@ export const TimePicker = ({
       }
     : {};
 
-  useEffect(() => {
-    setDurationValue(toHoursAndMinutes(value));
-  }, [value]);
-
   const closeDialog = () => {
     if (durationValue === initialDurationValue) {
       setOpen(false);
@@ -146,6 +142,10 @@ export const TimePicker = ({
     onChange(hoursAndMinutesToMinutes(hours, minutes));
   };
 
+  const handleOnBlur = () => {
+    setDurationValue(toHoursAndMinutes(value));
+  };
+
   return (
     <Box
       width={width ?? '100%'}
@@ -158,6 +158,7 @@ export const TimePicker = ({
         <Input
           disabled={disabled}
           onChange={(value) => handleOnChange(`${value.target.value}`)}
+          onBlur={handleOnBlur}
           value={durationValue}
           name={name}
           error={error}
