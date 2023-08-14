@@ -14,8 +14,6 @@ import { useProject } from 'hooks';
 export const ProjectAgreements = ({ projectId }: { projectId: string }) => {
   const { projectData } = useProject(projectId);
 
-  const MOCKProjectData = [{ project: projectData?.name, rate: 30 }];
-
   return (
     <Stack>
       <Typography fontSize={18} mb={2}>
@@ -25,17 +23,17 @@ export const ProjectAgreements = ({ projectId }: { projectId: string }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Project</TableCell>
+              <TableCell>{`Project - ${projectData?.name}`}</TableCell>
               <TableCell>Rate, $</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {MOCKProjectData.map(({ project, rate }) => (
-              <TableRow key={`${project}-${rate}`}>
+            {projectData?.salary?.map((item) => (
+              <TableRow key={`${item?.id}-${item?.rate}`}>
                 <TableCell component="th" scope="row">
-                  {project}
+                  {`${item?.users?.data?.attributes?.firstName} ${item?.users?.data?.attributes?.lastName}`}
                 </TableCell>
-                <TableCell>{rate}</TableCell>
+                <TableCell>{item?.rate}</TableCell>
               </TableRow>
             ))}
           </TableBody>
