@@ -66,7 +66,9 @@ export const ProjectInfoTab = ({ id }: Props) => {
     <Stack flexDirection="row" gap={8}>
       <Stack gap={4}>
         <Stack>
-          <Typography variant="h1">{projectData.name}</Typography>
+          <Typography variant="h1" mb={2}>
+            {projectData.name}
+          </Typography>
           <Typography fontSize="15px" color="GrayText">
             Project details
           </Typography>
