@@ -10,18 +10,18 @@ Custom time tracker with next functions:
 - add/edit/delete project
 
 The main tech stack:
-# Frontend
+## Frontend
 - React
 - Material UI
 - TypeScript
 - JavaScript
 
-# BackEnd
+## BackEnd
 - Node.js
 - Strapi
 
-# API
+## API
 - GraphQL + Apollo
 
-# DB
+## DB
 - PostgreSQL
