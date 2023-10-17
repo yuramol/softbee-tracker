@@ -43,11 +43,15 @@ jobs:
 
       - name: Install npm dependencies
         run: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
           cd frontend
           npm install --legacy-peer-deps && npm run codegen
 
       - name: Run build task
         run: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
           cd frontend
           npm run build --if-present
 
