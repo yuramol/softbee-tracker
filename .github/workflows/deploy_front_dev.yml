@@ -51,7 +51,6 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd frontend
-          npm i yarn
           npm install -ci
 
       - name: Run build task
@@ -59,7 +58,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd frontend
-          npm run build --if-present
+          npm run build 
 
       # - name: Delete previos build in server
       #   uses: appleboy/ssh-action@v0.1.10
