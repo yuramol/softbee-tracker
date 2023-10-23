@@ -54,12 +54,12 @@ jobs:
           npm install -ci
 
       - name: Run build task
+        timeout-minutes: 5
         run: |
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd frontend
           npm run build 
-
       # - name: Delete previos build in server
       #   uses: appleboy/ssh-action@v0.1.10
       #   with:
