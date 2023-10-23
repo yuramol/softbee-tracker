@@ -1,6 +1,10 @@
 name: Deploy Front to VPS (dev)
 
-on: workflow_dispatch
+on:
+ push:
+    branches:
+    - dev
+  workflow_dispatch:
 
 env:
   BRANCH: dev
@@ -9,34 +13,34 @@ env:
   REACT_APP_API_TOKEN: ${{ secrets.DEV_REACT_APP_URI }}
 
 jobs:
-  Update-server:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Pull changes in dev server
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USERNAME }}
-          password: ${{ secrets.DEV_SSH_PASSWORD }}
-          port: ${{ secrets.DEV_SSH_PORT }}
-          script: |
-            cd ${{ secrets.DEV_PATH_TO_DEPLOY }}
-            branch=$(git rev-parse --abbrev-ref HEAD)   # chech current branch
-            echo "Current branch is $branch"
-            if [[ "$branch" != "${{ env.BRANCH }}" ]]; then           
-              git checkout ${{ env.BRANCH }}
-            fi
-            git fetch --all
-            git reset --hard origin/${{ env.BRANCH }}
-            git pull
+  # Update-server:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Pull changes in dev server
+  #       uses: appleboy/ssh-action@v0.1.10
+  #       with:
+  #         host: ${{ secrets.DEV_SSH_HOST }}
+  #         username: ${{ secrets.DEV_SSH_USERNAME }}
+  #         password: ${{ secrets.DEV_SSH_PASSWORD }}
+  #         port: ${{ secrets.DEV_SSH_PORT }}
+  #         script: |
+  #           cd ${{ secrets.DEV_PATH_TO_DEPLOY }}
+  #           branch=$(git rev-parse --abbrev-ref HEAD)   # chech current branch
+  #           echo "Current branch is $branch"
+  #           if [[ "$branch" != "${{ env.BRANCH }}" ]]; then           
+  #             git checkout ${{ env.BRANCH }}
+  #           fi
+  #           git fetch --all
+  #           git reset --hard origin/${{ env.BRANCH }}
+  #           git pull
 
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
+      # - name: Install Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '16.x'
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -55,31 +59,31 @@ jobs:
           cd frontend
           npm run build --if-present
 
-      - name: Delete previos build in server
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USERNAME }}
-          password: ${{ secrets.DEV_SSH_PASSWORD }}
-          port: ${{ secrets.DEV_SSH_PORT }}
-          script: |
-            # cd ${{ secrets.DEV_PATH_TO_DEPLOY }}/frontend
-            if [ -d '${{ secrets.DEV_PATH_TO_DEPLOY }}/frontend/build' ]; then
-              echo "Build finded! EXTERMINATE!!!!"
-              rm -rf ${{ secrets.DEV_PATH_TO_DEPLOY }}/frontend/build
-            else
-              echo "Build not exist. Continue working"
-            fi
+      # - name: Delete previos build in server
+      #   uses: appleboy/ssh-action@v0.1.10
+      #   with:
+      #     host: ${{ secrets.DEV_SSH_HOST }}
+      #     username: ${{ secrets.DEV_SSH_USERNAME }}
+      #     password: ${{ secrets.DEV_SSH_PASSWORD }}
+      #     port: ${{ secrets.DEV_SSH_PORT }}
+      #     script: |
+      #       # cd ${{ secrets.DEV_PATH_TO_DEPLOY }}/frontend
+      #       if [ -d '${{ secrets.DEV_PATH_TO_DEPLOY }}/frontend/build' ]; then
+      #         echo "Build finded! EXTERMINATE!!!!"
+      #         rm -rf ${{ secrets.DEV_PATH_TO_DEPLOY }}/frontend/build
+      #       else
+      #         echo "Build not exist. Continue working"
+      #       fi
 
-      - name: Deploy Build to Server
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USERNAME }}
-          password: ${{ secrets.DEV_SSH_PASSWORD }}
-          port: ${{ secrets.DEV_SSH_PORT }}
-          source: 'frontend/build,frontend/public'
-          target: ${{ secrets.DEV_PATH_TO_DEPLOY }}
+      # - name: Deploy Build to Server
+      #   uses: appleboy/scp-action@v0.1.4
+      #   with:
+      #     host: ${{ secrets.DEV_SSH_HOST }}
+      #     username: ${{ secrets.DEV_SSH_USERNAME }}
+      #     password: ${{ secrets.DEV_SSH_PASSWORD }}
+      #     port: ${{ secrets.DEV_SSH_PORT }}
+      #     source: 'frontend/build,frontend/public'
+      #     target: ${{ secrets.DEV_PATH_TO_DEPLOY }}
 
   # Restart-PM2-service-shop:
   #   runs-on: ubuntu-latest
