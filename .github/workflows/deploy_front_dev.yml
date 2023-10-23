@@ -51,6 +51,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd frontend
+          npm i yarn
           npm install -ci
 
       - name: Run build task
