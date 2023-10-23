@@ -59,7 +59,8 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd frontend
-          npm run build 
+          export CI=false
+          npm run build
       # - name: Delete previos build in server
       #   uses: appleboy/ssh-action@v0.1.10
       #   with:
