@@ -1,14 +1,14 @@
-name: Deploy BACKEND to VPS (dev)
+name: Deploy BACKEND to VPS (prod)
 
 on: 
   workflow_dispatch:
   push:
     branches:
-      - dev
+      - main
 
 env:
-  BUILD_PATH: ${{ secrets.DEV_PATH_TO_DEPLOY }}/backend
-  BRANCH: dev
+  BUILD_PATH: ${{ secrets.PROD_PATH_TO_DEPLOY }}/backend
+  BRANCH: main
 
 jobs:
   Update-server:
@@ -17,12 +17,12 @@ jobs:
       - name: Pull changes in dev server
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USERNAME }}
-          password: ${{ secrets.DEV_SSH_PASSWORD }}
-          port: ${{ secrets.DEV_SSH_PORT }}
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USERNAME }}
+          password: ${{ secrets.PROD_SSH_PASSWORD }}
+          port: ${{ secrets.PROD_SSH_PORT }}
           script: |
-            cd ${{ secrets.DEV_PATH_TO_DEPLOY }}
+            cd ${{ secrets.PROD_PATH_TO_DEPLOY }}
             branch=$(git rev-parse --abbrev-ref HEAD)   # chech current branch
             echo "Current branch is $branch"
             if [[ "$branch" != "${{ env.BRANCH }}" ]]; then           
@@ -35,12 +35,12 @@ jobs:
       - name: Install deps in dev server
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USERNAME }}
-          password: ${{ secrets.DEV_SSH_PASSWORD }}
-          port: ${{ secrets.DEV_SSH_PORT }}
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USERNAME }}
+          password: ${{ secrets.PROD_SSH_PASSWORD }}
+          port: ${{ secrets.PROD_SSH_PORT }}
           script: |
-            cd ${{ secrets.DEV_PATH_TO_DEPLOY }}/backend
+            cd ${{ secrets.PROD_PATH_TO_DEPLOY }}/backend
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm install
@@ -70,12 +70,12 @@ jobs:
       - name: Deploy Build to Server
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USERNAME }}
-          password: ${{ secrets.DEV_SSH_PASSWORD }}
-          port: ${{ secrets.DEV_SSH_PORT }}
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USERNAME }}
+          password: ${{ secrets.PROD_SSH_PASSWORD }}
+          port: ${{ secrets.PROD_SSH_PORT }}
           source: 'backend/dist'
-          target: ${{ secrets.DEV_PATH_TO_DEPLOY }}
+          target: ${{ secrets.PROD_PATH_TO_DEPLOY }}
 
   Restart-PM2-service:
     runs-on: ubuntu-latest
@@ -84,12 +84,12 @@ jobs:
       - name: Restart PM2 service
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USERNAME }}
-          password: ${{ secrets.DEV_SSH_PASSWORD }}
-          port: ${{ secrets.DEV_SSH_PORT }}
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USERNAME }}
+          password: ${{ secrets.PROD_SSH_PASSWORD }}
+          port: ${{ secrets.PROD_SSH_PORT }}
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd ${{ secrets.DEV_PATH_TO_DEPLOY }}
-            pm2 restart ecosystem.config.js --only dev.strapi.track.softbee.io
+            cd ${{ secrets.PROD_PATH_TO_DEPLOY }}
+            pm2 restart ecosystem.config.js --only strapi.track.softbee.io
