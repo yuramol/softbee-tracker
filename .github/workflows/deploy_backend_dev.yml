@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - dev
+
 env:
   BUILD_PATH: ${{ secrets.DEV_PATH_TO_DEPLOY }}/backend
   BRANCH: dev
