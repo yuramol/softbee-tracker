@@ -62,6 +62,7 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
   const { totalByProjects, total } = useProjects(
     {
       users: { id: { eq: userId } },
+      status: { eq: 'active' },
     },
     {
       user: { id: { eq: userId } },
@@ -73,7 +74,6 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
   const handleClickButton = (index: number) => {
     setInspectBy(inspectionTypes[index]);
   };
-
   return (
     <>
       <ButtonGroup size="small" fullWidth>
