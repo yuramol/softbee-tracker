@@ -36,7 +36,7 @@ export const useNormalizedUsers = (
     usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
   }>(USERS_QUERY, {
     variables: {
-      ...(filters ? filters : {}),
+      filters: filters ? filters : {},
       sort: ['firstName'],
     },
     fetchPolicy: 'cache-first',

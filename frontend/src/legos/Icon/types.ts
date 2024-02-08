@@ -30,7 +30,8 @@ export type IconsNames =
   | 'houseboat'
   | 'medication'
   | 'checkCircle'
-  | 'highlightOff';
+  | 'highlightOff'
+  | 'unarchiveOutlined';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;

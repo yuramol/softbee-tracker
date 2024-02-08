@@ -2,7 +2,12 @@ import React from 'react';
 import { Grid, IconButton, Link, Typography } from '@mui/material';
 
 import { Avatar, Icon, NavLink } from 'legos';
-import { ProjectEntity, Enum_Project_Type } from 'types/GraphqlTypes';
+import {
+  ProjectEntity,
+  Enum_Project_Type,
+  Enum_Project_Status,
+} from 'types/GraphqlTypes';
+import { useUpdateProject } from 'hooks';
 
 type ProjectsListProps = {
   projectsList?: ProjectEntity[];
@@ -32,6 +37,8 @@ export const ProjectsList = ({
     setIsCreateProject(true);
     setProjectId(id);
   };
+
+  const { updateProject } = useUpdateProject();
 
   return (
     <>
@@ -107,11 +114,31 @@ export const ProjectsList = ({
               >
                 <Icon icon="editOutlined" />
               </IconButton>
-              <Link to={`/project/${project.id}`} component={NavLink}>
-                <IconButton aria-label="archive">
+              {project.attributes?.status === 'active' ? (
+                <IconButton
+                  aria-label="archive"
+                  onClick={() =>
+                    updateProject(project.id as string, {
+                      name: project.attributes?.name,
+                      status: 'archived' as Enum_Project_Status,
+                    })
+                  }
+                >
                   <Icon icon="archiveOutlined" />
                 </IconButton>
-              </Link>
+              ) : (
+                <IconButton
+                  aria-label="archive"
+                  onClick={() =>
+                    updateProject(project.id as string, {
+                      name: project.attributes?.name,
+                      status: 'active' as Enum_Project_Status,
+                    })
+                  }
+                >
+                  <Icon icon="unarchiveOutlined" />
+                </IconButton>
+              )}
             </Grid>
           </Grid>
         );
