@@ -31,6 +31,7 @@ import {
   Medication,
   CheckCircleOutline,
   HighlightOff,
+  UnarchiveOutlined,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -51,6 +52,7 @@ export const IconsMap: IconsNamesMapType = {
   menu: Menu,
   editOutlined: EditOutlined,
   archiveOutlined: ArchiveOutlined,
+  unarchiveOutlined: UnarchiveOutlined,
   moneyOff: MoneyOff,
   paidOutlined: PaidOutlined,
   add: Add,
