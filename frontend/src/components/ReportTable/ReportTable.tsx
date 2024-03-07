@@ -57,7 +57,10 @@ export const ReportTable: React.FC<ReportTableProps> = ({
                       <TableCell>
                         {breaksTitles.includes(name as string) ? (
                           <>
-                            <BreaksDay breaks={name} />
+                            <BreaksDay
+                              breaks={name}
+                              status={attributes?.status}
+                            />
                             <Typography>{attributes?.description}</Typography>
                             <Typography variant="body2" mt={2}>
                               {`${attributes?.user?.data?.attributes?.firstName}
