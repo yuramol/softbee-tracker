@@ -73,8 +73,8 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
 
   const totalTrackedWithoutVacations = useMemo(() => {
     let totalTime = 0;
-    normalizedTrackers.forEach(({ total, trackersByProject }) => {
-      trackersByProject.forEach(({ name }) => {
+    normalizedTrackers.forEach(({ trackersByProject }) => {
+      trackersByProject.forEach(({ name, total }) => {
         if (breaksTitles.includes(name as string)) {
           totalTime += total;
         } else {
