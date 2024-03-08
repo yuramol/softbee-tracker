@@ -1,6 +1,10 @@
 import React, { Fragment, useState } from 'react';
 
-import { useMutation } from '@apollo/client';
+import {
+  ApolloQueryResult,
+  OperationVariables,
+  useMutation,
+} from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import {
   IconButton,
@@ -12,11 +16,14 @@ import {
   Button,
   Box,
 } from '@mui/material';
-
+import {
+  Maybe,
+  Scalars,
+  UsersPermissionsUserEntityResponseCollection,
+} from 'types/GraphqlTypes';
 import { Icon } from 'legos';
 import { useNotification } from 'hooks';
-import { UPDATE_USER_MUTATION } from 'api';
-import { Maybe, Scalars } from 'types/GraphqlTypes';
+import { DELETE_USERS_PERMISSIONS_USER, UPDATE_USER_MUTATION } from 'api';
 
 type UsersListActionProps = {
   id?: Maybe<Scalars['ID']>;
@@ -25,6 +32,11 @@ type UsersListActionProps = {
   lastName?: string;
   isManager?: boolean;
   meId?: string;
+  refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<
+    ApolloQueryResult<{
+      usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
+    }>
+  >;
 };
 
 export const UsersListAction = ({
@@ -34,6 +46,7 @@ export const UsersListAction = ({
   lastName,
   firstName,
   isManager,
+  refetch,
 }: UsersListActionProps) => {
   const navigate = useNavigate();
 
@@ -42,6 +55,9 @@ export const UsersListAction = ({
   const notification = useNotification();
 
   const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
+  const [deleteUsersPermissionsUser] = useMutation(
+    DELETE_USERS_PERMISSIONS_USER
+  );
 
   const handleClickDeleteButton = (el: HTMLElement) => {
     setAnchorEl(anchorEl ? null : el);
@@ -52,7 +68,7 @@ export const UsersListAction = ({
     setIsPopperOpen(false);
   };
 
-  const handleDeleteUser = () => {
+  const handleBlockUser = () => {
     if (meId === id) {
       handleClickAway();
       return notification({
@@ -81,6 +97,28 @@ export const UsersListAction = ({
       });
   };
 
+  const handleDeleteUser = () => {
+    try {
+      if (meId === id) {
+        handleClickAway();
+        return notification({
+          message: `It’s not possible to delete your account`,
+          variant: 'warning',
+        });
+      }
+
+      deleteUsersPermissionsUser({ variables: { id } });
+      handleClickAway();
+      refetch();
+      notification({
+        message: `${firstName} ${lastName} deleted`,
+        variant: 'success',
+      });
+    } catch (error) {
+      notification({ error });
+    }
+  };
+
   const goToProfile = () => {
     navigate(`/profile/${id}`, { state: { edit: isManager } });
   };
@@ -102,6 +140,13 @@ export const UsersListAction = ({
                 <Icon icon="block" />
               </IconButton>
             </Tooltip>
+            {/* <Tooltip title="Delete this user">
+              <IconButton
+                onClick={(e) => handleClickDeleteButton(e.currentTarget)}
+              >
+                <Icon icon="deleteOutline" />
+              </IconButton>
+            </Tooltip> */}
           </Stack>
         ) : (
           <Stack direction="row">
@@ -139,7 +184,7 @@ export const UsersListAction = ({
                   size="small"
                   variant="outlined"
                   color="error"
-                  onClick={handleDeleteUser}
+                  onClick={handleBlockUser}
                 >
                   Yes
                 </Button>
