@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
+import { ApolloQueryResult, OperationVariables } from '@apollo/client';
 
 import {
   Enum_Tracker_Status,
   UsersPermissionsUserEntity,
+  UsersPermissionsUserEntityResponseCollection,
 } from 'types/GraphqlTypes';
 import { useNormalizedTrackers } from 'hooks';
 import { Avatar, NavLink, PulseDot } from 'legos';
@@ -13,9 +15,14 @@ type Props = {
   usersList?: UsersPermissionsUserEntity[];
   isManager?: boolean;
   meId?: string;
+  refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<
+    ApolloQueryResult<{
+      usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
+    }>
+  >;
 };
 
-export const UsersList = ({ usersList, isManager, meId }: Props) => {
+export const UsersList = ({ usersList, isManager, meId, refetch }: Props) => {
   const filters = {
     status: { eq: Enum_Tracker_Status.New },
   };
@@ -93,6 +100,7 @@ export const UsersList = ({ usersList, isManager, meId }: Props) => {
             lastName={attributes?.lastName}
             isManager={isManager}
             meId={meId}
+            refetch={refetch}
           />
         </Stack>
       ))}

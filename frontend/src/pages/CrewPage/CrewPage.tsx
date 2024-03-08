@@ -67,7 +67,12 @@ const CrewPage: React.FC<PageProps> = () => {
                 setPositionFilter={setPositionFilter}
               />
             </Stack>
-            <UsersList usersList={users} isManager={isManager} meId={user.id} />
+            <UsersList
+              usersList={users}
+              isManager={isManager}
+              meId={user.id}
+              refetch={refetch}
+            />
           </Stack>
         </>
       )}
