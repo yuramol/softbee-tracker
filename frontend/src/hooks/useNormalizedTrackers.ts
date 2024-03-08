@@ -42,6 +42,7 @@ export const useNormalizedTrackers = (
       });
     }
   }, []);
+
   const normalizedTrackers: TrackerByDay[] = [];
   data?.trackers.data.forEach((tracker) => {
     const date = tracker.attributes?.date;

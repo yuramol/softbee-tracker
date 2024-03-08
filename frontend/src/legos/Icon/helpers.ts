@@ -32,6 +32,7 @@ import {
   CheckCircleOutline,
   HighlightOff,
   UnarchiveOutlined,
+  Block,
 } from '@mui/icons-material';
 
 import { IconsNamesMapType } from './types';
@@ -70,4 +71,5 @@ export const IconsMap: IconsNamesMapType = {
   medication: Medication,
   checkCircle: CheckCircleOutline,
   highlightOff: HighlightOff,
+  block: Block,
 };
