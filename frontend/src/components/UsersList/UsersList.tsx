@@ -4,26 +4,18 @@ import { Stack, Typography } from '@mui/material';
 import {
   Enum_Tracker_Status,
   UsersPermissionsUserEntity,
-  UsersPermissionsUserEntityResponseCollection,
 } from 'types/GraphqlTypes';
-import { Avatar, NavLink, PulseDot } from 'legos';
-
-import { UsersListAction } from './UsersListAction';
 import { useNormalizedTrackers } from 'hooks';
-import { ApolloQueryResult, OperationVariables } from '@apollo/client';
+import { Avatar, NavLink, PulseDot } from 'legos';
+import { UsersListAction } from './UsersListAction';
 
 type Props = {
   usersList?: UsersPermissionsUserEntity[];
   isManager?: boolean;
   meId?: string;
-  refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<
-    ApolloQueryResult<{
-      usersPermissionsUsers: UsersPermissionsUserEntityResponseCollection;
-    }>
-  >;
 };
 
-export const UsersList = ({ usersList, isManager, meId, refetch }: Props) => {
+export const UsersList = ({ usersList, isManager, meId }: Props) => {
   const filters = {
     status: { eq: Enum_Tracker_Status.New },
   };
@@ -50,6 +42,7 @@ export const UsersList = ({ usersList, isManager, meId, refetch }: Props) => {
       variables: { filters },
     });
   }, [usersList]);
+
   return (
     <>
       {usersList?.map(({ id, attributes }) => (
@@ -82,20 +75,24 @@ export const UsersList = ({ usersList, isManager, meId, refetch }: Props) => {
             </Stack>
             <div>
               <NavLink to={`/profile/${id}`} state={{ edit: false }}>
-                {`${attributes?.firstName} ${attributes?.lastName?.charAt(0)}.`}
+                {`${attributes?.firstName} ${attributes?.lastName?.charAt(
+                  0
+                )}. ${attributes?.blocked ? '(blocked)' : ''}`}
               </NavLink>
               <Typography fontSize="10px">
-                {`${attributes?.role?.data?.attributes?.name} | ${attributes?.positions}`}
+                {`${attributes?.role?.data?.attributes?.name} ${
+                  attributes?.positions ? '|' : ''
+                } ${attributes?.positions ?? ''}`}
               </Typography>
             </div>
           </Stack>
           <UsersListAction
             id={id}
+            blocked={attributes?.blocked}
             firstName={attributes?.firstName}
             lastName={attributes?.lastName}
             isManager={isManager}
             meId={meId}
-            refetch={refetch}
           />
         </Stack>
       ))}
