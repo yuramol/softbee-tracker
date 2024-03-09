@@ -15,6 +15,7 @@ export const USERS_QUERY = gql`
           lastName
           positions
           username
+          blocked
           avatar {
             data {
               id

@@ -31,7 +31,8 @@ export type IconsNames =
   | 'medication'
   | 'checkCircle'
   | 'highlightOff'
-  | 'unarchiveOutlined';
+  | 'unarchiveOutlined'
+  | 'block';
 
 export type IconsNamesMapType = {
   [key in IconsNames]: React.ElementType;

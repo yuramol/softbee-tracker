@@ -1,19 +1,11 @@
 import React, { Fragment, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
-import { Icon } from 'legos';
 import {
   ApolloQueryResult,
   OperationVariables,
   useMutation,
 } from '@apollo/client';
-import { DELETE_USERS_PERMISSIONS_USER } from 'api';
-import {
-  Maybe,
-  Scalars,
-  UsersPermissionsUserEntityResponseCollection,
-} from 'types/GraphqlTypes';
-import { useNotification } from 'hooks';
+import { useNavigate } from 'react-router-dom';
 import {
   IconButton,
   Stack,
@@ -22,11 +14,20 @@ import {
   Typography,
   ClickAwayListener,
   Button,
+  Box,
 } from '@mui/material';
-import { Box } from '@mui/system';
+import {
+  Maybe,
+  Scalars,
+  UsersPermissionsUserEntityResponseCollection,
+} from 'types/GraphqlTypes';
+import { Icon } from 'legos';
+import { useNotification } from 'hooks';
+import { DELETE_USERS_PERMISSIONS_USER, UPDATE_USER_MUTATION } from 'api';
 
 type UsersListActionProps = {
   id?: Maybe<Scalars['ID']>;
+  blocked?: Maybe<boolean>;
   firstName?: string;
   lastName?: string;
   isManager?: boolean;
@@ -40,10 +41,11 @@ type UsersListActionProps = {
 
 export const UsersListAction = ({
   id,
-  firstName,
-  lastName,
-  isManager,
   meId,
+  blocked,
+  lastName,
+  firstName,
+  isManager,
   refetch,
 }: UsersListActionProps) => {
   const navigate = useNavigate();
@@ -51,9 +53,12 @@ export const UsersListAction = ({
   const [isPopperOpen, setIsPopperOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const notification = useNotification();
+
+  const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
   const [deleteUsersPermissionsUser] = useMutation(
     DELETE_USERS_PERMISSIONS_USER
   );
+
   const handleClickDeleteButton = (el: HTMLElement) => {
     setAnchorEl(anchorEl ? null : el);
     setIsPopperOpen(true);
@@ -63,7 +68,36 @@ export const UsersListAction = ({
     setIsPopperOpen(false);
   };
 
-  const deleteUser = () => {
+  const handleBlockUser = () => {
+    if (meId === id) {
+      handleClickAway();
+      return notification({
+        message: `It’s not possible to block your account`,
+        variant: 'warning',
+      });
+    }
+
+    updateUserMutation({
+      variables: {
+        id,
+        data: {
+          blocked: blocked ? false : true,
+        },
+      },
+    })
+      .then(() => {
+        notification({
+          message: `The user is ${blocked ? 'unblocked' : 'blocked'}`,
+          variant: 'success',
+        });
+        handleClickAway();
+      })
+      .catch((error) => {
+        notification({ error });
+      });
+  };
+
+  const handleDeleteUser = () => {
     try {
       if (meId === id) {
         handleClickAway();
@@ -99,13 +133,20 @@ export const UsersListAction = ({
                 <Icon icon="editOutlined" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Delete this user">
+            <Tooltip title={`${blocked ? 'Unblock' : 'Block'} this user`}>
+              <IconButton
+                onClick={(e) => handleClickDeleteButton(e.currentTarget)}
+              >
+                <Icon icon="block" />
+              </IconButton>
+            </Tooltip>
+            {/* <Tooltip title="Delete this user">
               <IconButton
                 onClick={(e) => handleClickDeleteButton(e.currentTarget)}
               >
                 <Icon icon="deleteOutline" />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
           </Stack>
         ) : (
           <Stack direction="row">
@@ -128,7 +169,7 @@ export const UsersListAction = ({
               textAlign="center"
             >
               <Typography marginBottom={2}>
-                Remove {`${firstName} ${lastName}`}?
+                {`${blocked ? 'Unblock' : 'Block'} ${firstName} ${lastName}`}?
               </Typography>
 
               <Stack direction="row" justifyContent="center" gap={2}>
@@ -143,7 +184,7 @@ export const UsersListAction = ({
                   size="small"
                   variant="outlined"
                   color="error"
-                  onClick={deleteUser}
+                  onClick={handleBlockUser}
                 >
                   Yes
                 </Button>

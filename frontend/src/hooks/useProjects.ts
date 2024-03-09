@@ -3,6 +3,7 @@ import { useLazyQuery } from '@apollo/client';
 
 import { PROJECTS_QUERY } from 'api';
 import {
+  Enum_Project_Status,
   Maybe,
   ProjectEntity,
   ProjectEntityResponseCollection,
@@ -78,10 +79,12 @@ export const useProjects = (
   });
 
   projects?.forEach(({ id, attributes }) => {
-    projectsChoices.push({
-      value: id,
-      label: attributes?.name,
-    });
+    if (attributes?.status === Enum_Project_Status.Active) {
+      projectsChoices.push({
+        value: id,
+        label: attributes?.name,
+      });
+    }
   });
 
   const total = getTotalTime(allTrackers);

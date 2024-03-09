@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   endOfMonth,
   startOfMonth,
@@ -15,9 +16,9 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useAuthUser, useCurrentWeek, useProjects } from 'hooks';
+import { Breaks } from 'constant';
 import { getFormattedDate } from 'helpers';
-import { useLocation } from 'react-router-dom';
+import { useAuthUser, useCurrentWeek, useProjects } from 'hooks';
 
 type TimeInspectorProps = {
   userId?: string;
@@ -71,6 +72,39 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
     }
   );
 
+  const vacationTime = totalByProjects
+    ?.filter(
+      (item) =>
+        item.name?.toLowerCase() === Breaks.Vacation ||
+        item.name?.toLowerCase() === Breaks.Sickness ||
+        item.name?.toLowerCase() === Breaks.Unpaid
+    )
+    .reduce(
+      (acc, val) => {
+        const [hoursStr, minutesStr] = val.total.split(':');
+        const hours = parseInt(hoursStr, 10);
+        const minutes = parseInt(minutesStr, 10);
+
+        acc.hours += hours;
+        acc.minutes += minutes;
+
+        if (acc.minutes >= 60) {
+          acc.hours += Math.floor(acc.minutes / 60);
+          acc.minutes %= 60;
+        }
+
+        return acc;
+      },
+      { hours: 0, minutes: 0 }
+    );
+
+  const projects = totalByProjects?.filter(
+    (item) =>
+      item.name?.toLowerCase() !== Breaks.Vacation &&
+      item.name?.toLowerCase() !== Breaks.Sickness &&
+      item.name?.toLowerCase() !== Breaks.Unpaid
+  );
+
   const handleClickButton = (index: number) => {
     setInspectBy(inspectionTypes[index]);
   };
@@ -88,8 +122,8 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
         ))}
       </ButtonGroup>
       <List disablePadding sx={{ my: 4 }}>
-        {(totalByProjects?.length as number) > 0 ? (
-          totalByProjects?.map(({ name, total }) => (
+        {projects?.length > 0 ? (
+          projects?.map(({ name, total }) => (
             <ListItem key={name} disableGutters disablePadding>
               <ListItemText
                 primaryTypographyProps={{
@@ -113,6 +147,27 @@ export const TimeInspector = ({ userId }: TimeInspectorProps) => {
             <ListItemText primary="You are not attached to any project" />
           </ListItem>
         )}
+        <ListItem disableGutters disablePadding>
+          <ListItemText
+            primaryTypographyProps={{
+              style: {
+                paddingRight: '100px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              },
+            }}
+            primary="Vacation"
+          />
+          <ListItemText
+            sx={{ ml: 2, display: 'contents' }}
+            primary={`${vacationTime.hours}:${
+              vacationTime.minutes < 10
+                ? `0${vacationTime.minutes}`
+                : vacationTime.minutes
+            }`}
+          />
+        </ListItem>
         <Divider sx={{ my: 2 }} />
         <ListItem disableGutters disablePadding>
           <ListItemText

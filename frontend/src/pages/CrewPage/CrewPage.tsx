@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Button } from 'legos';
-import { useAuthUser, useNormalizedUsers } from 'hooks';
 import { Stack, Typography } from '@mui/material';
-import { MainWrapper, UsersList, NewUser, TimeInspector } from 'components';
+
+import { Button } from 'legos';
 import { PageProps } from 'pages/types';
 import { CrewFilters } from './CrewFilters';
+import { useAuthUser, useNormalizedUsers } from 'hooks';
+import { MainWrapper, UsersList, NewUser, TimeInspector } from 'components';
 
 const CrewPage: React.FC<PageProps> = () => {
   const { isManager, user } = useAuthUser();
@@ -28,6 +29,7 @@ const CrewPage: React.FC<PageProps> = () => {
 
   const { users, refetch } = useNormalizedUsers(reportFilter);
   const [isCreateUser, setIsCreateUser] = useState(false);
+
   const onToggleForm = () => {
     setIsCreateUser(!isCreateUser);
     refetch();
