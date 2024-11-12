@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import { Drawer, IconButton, Stack, Typography } from '@mui/material';
 
-import { ProjectsList } from 'components/ProjectsList/ProjectsList';
-import { ProjectFilters } from './ProjectFilters';
-import { MainWrapper, AddNewProject, TimeInspector } from 'components';
 import { Button } from 'legos';
 import { useProjects } from 'hooks';
 import { PageProps } from 'pages/types';
+import { ProjectFilters } from './ProjectFilters';
+import { ProjectsList } from 'components/ProjectsList/ProjectsList';
+import { MainWrapper, AddNewProject, TimeInspector } from 'components';
 
 const ProjectPage: React.FC<PageProps> = ({ title }) => {
   const { projects } = useProjects();
+  const [openDrawer, setOpenDrawer] = useState(false);
+
   const [isCreateProject, setIsCreateProject] = useState(false);
   const [searchFilter, setSearchFilter] = useState('');
   const [managerFilter, setManagerFilter] = useState<string[]>([]);
@@ -33,6 +36,8 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
     return false;
   });
 
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
+
   return (
     <MainWrapper
       sidebar={
@@ -51,6 +56,13 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
         </>
       }
     >
+      <Button
+        sx={{ mb: 2, display: { lg: 'none' } }}
+        variant="contained"
+        title="Open sidebar"
+        size="large"
+        onClick={toggleDrawer}
+      />
       {isCreateProject ? (
         <AddNewProject
           setIsCreateProject={setIsCreateProject}
@@ -78,6 +90,27 @@ const ProjectPage: React.FC<PageProps> = ({ title }) => {
           </Stack>
         </>
       )}
+      <Drawer open={openDrawer} onClose={toggleDrawer} sx={{ m: 4 }}>
+        <Stack position="relative" flexDirection="column" p={4} pt={8}>
+          <IconButton
+            onClick={toggleDrawer}
+            sx={{ position: 'absolute', top: 5, right: 5 }}
+          >
+            <Close />
+          </IconButton>
+          {!isCreateProject && (
+            <Button
+              sx={{ mb: 2 }}
+              fullWidth
+              variant="contained"
+              title="Add new project"
+              size="large"
+              onClick={onToggleForm}
+            />
+          )}
+          <TimeInspector />
+        </Stack>
+      </Drawer>
     </MainWrapper>
   );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
-import { ButtonGroup } from '@mui/material';
-import { Button, MultipleSelect } from 'legos';
-import { SearchInput } from 'legos/SearchInput';
+import { ButtonGroup, Stack } from '@mui/material';
+
 import { useNormalizedUsers } from 'hooks';
+import { Button, MultipleSelect, SearchInput } from 'legos';
 
 type ProjectFiltersProps = {
   searchFilter: string;
@@ -30,7 +30,7 @@ export const ProjectFilters = ({
   const { managersChoices } = useNormalizedUsers();
 
   return (
-    <>
+    <Stack width="100%" flexDirection="row" flexWrap="wrap" gap={3}>
       <SearchInput
         sx={{ flexGrow: '1' }}
         value={searchFilter}
@@ -42,7 +42,7 @@ export const ProjectFilters = ({
         label="Project manager"
         variant="outlined"
         size="small"
-        sx={{ width: 200 }}
+        sx={{ width: { xs: '100%', sm: 200 } }}
         items={managersChoices}
         value={managerFilter}
         setValue={(value) => onManagerFilterChange(value as string[])}
@@ -58,6 +58,6 @@ export const ProjectFilters = ({
           />
         ))}
       </ButtonGroup>
-    </>
+    </Stack>
   );
 };

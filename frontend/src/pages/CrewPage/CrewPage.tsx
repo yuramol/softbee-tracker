@@ -97,19 +97,17 @@ const CrewPage: React.FC<PageProps> = () => {
           >
             <Close />
           </IconButton>
-          <>
-            {isManager && !isCreateUser && (
-              <Button
-                sx={{ mb: 2 }}
-                fullWidth
-                variant="contained"
-                title="Add new user"
-                size="large"
-                onClick={onToggleForm}
-              />
-            )}
-            <TimeInspector userId={isManager ? undefined : user.id} />
-          </>
+          {isManager && !isCreateUser && (
+            <Button
+              sx={{ mb: 2 }}
+              fullWidth
+              variant="contained"
+              title="Add new user"
+              size="large"
+              onClick={onToggleForm}
+            />
+          )}
+          <TimeInspector userId={isManager ? undefined : user.id} />
         </Stack>
       </Drawer>
     </MainWrapper>
