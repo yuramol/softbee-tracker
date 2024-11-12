@@ -33,7 +33,7 @@ export const ReportPageSidebar: React.FC<Props> = ({
   setSelectedProjects,
 }) => {
   const { isManager } = useAuthUser();
-  const { usersChoices } = useNormalizedUsers();
+  const { usersChoices } = useNormalizedUsers({ blocked: { eq: false } });
   const { projectsChoices } = useProjects();
   const { downloadPDF } = useReportPDF();
   const handleDownload = () => {
