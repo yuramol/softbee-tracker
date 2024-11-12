@@ -26,8 +26,9 @@ export const MainWrapper: React.FC<Props> = ({
           item
           height="100%"
           order={left ? 1 : 'unset'}
-          md={sidebar ? 9 : 12}
-          paddingRight={sidebar ? 6 : 0}
+          lg={sidebar ? 9 : 12}
+          paddingRight={sidebar ? { lg: 6 } : 0}
+          width="100%"
           sx={
             loginPage
               ? {
@@ -41,7 +42,7 @@ export const MainWrapper: React.FC<Props> = ({
           {children}
         </Grid>
         {sidebar && (
-          <Grid item md={3}>
+          <Grid item md={3} display={{ xs: 'none', lg: 'grid' }}>
             {sidebar}
           </Grid>
         )}

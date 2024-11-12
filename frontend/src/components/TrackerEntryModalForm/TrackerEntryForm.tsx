@@ -16,7 +16,6 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 1,
@@ -103,7 +102,7 @@ export const TrackerEntryForm = ({
   return (
     <FormikContext.Provider value={formik}>
       <form onSubmit={handleSubmit}>
-        <Stack sx={modalStyle}>
+        <Stack width="100%" maxWidth="600px" sx={modalStyle}>
           <Stack>
             <Typography variant="h6">{titleForm}</Typography>
           </Stack>

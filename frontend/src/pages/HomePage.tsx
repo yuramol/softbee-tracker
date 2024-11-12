@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import { Button, Drawer, Stack, Typography } from '@mui/material';
 
 import {
   MainWrapper,
@@ -14,6 +15,8 @@ import { PageProps } from './types';
 
 const HomePage: React.FC<PageProps> = ({ title }) => {
   const { user } = useAuthUser();
+  const [openDrawer, setOpenDrawer] = useState(false);
+
   const [selectedDay, setSelectedDay] = useState(new Date());
 
   const [startMonth, setStartMonth] = useState(
@@ -39,6 +42,8 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     });
   }, [user.id]);
 
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
+
   return user.id ? (
     <MainWrapper
       sidebar={
@@ -55,7 +60,35 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
         </>
       }
     >
-      <Typography variant="h1">{title}</Typography>
+      <Typography variant="h1" mb={2}>
+        {title}
+      </Typography>
+      <Button
+        variant="contained"
+        onClick={toggleDrawer}
+        sx={{ display: { lg: 'none' } }}
+      >
+        Open sidebar
+      </Button>
+      <Drawer open={openDrawer} onClose={toggleDrawer} sx={{ m: 4 }}>
+        <Stack position="relative" flexDirection="column" p={4} pt={8}>
+          <Button
+            onClick={toggleDrawer}
+            sx={{ position: 'absolute', top: 5, right: 5 }}
+          >
+            <Close />
+          </Button>
+          <VacationWidget />
+          <TimeInspector userId={user.id} />
+          <TrackerCalendar
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+            trackers={normalizedTrackers}
+            setStartMonth={setStartMonth}
+            setEndMonth={setEndMonth}
+          />
+        </Stack>
+      </Drawer>
       <TrackerDayView selectedDay={selectedDay} trackers={normalizedTrackers} />
     </MainWrapper>
   ) : null;

@@ -6,6 +6,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import {
   eachDayOfInterval,
@@ -34,7 +35,6 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 1,
@@ -53,6 +53,8 @@ const CountDay = ({ count }: { count: number }) => (
 export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   onClose,
 }) => {
+  const mdScreen = useMediaQuery((theme: any) => theme.breakpoints.up('md'));
+
   const { user } = useAuthUser();
   const { enqueueSnackbar } = useSnackbar();
   const { createTracker } = useCreateTracker();
@@ -177,7 +179,14 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   }, [loading]);
 
   return (
-    <Stack component="form" gap={4} sx={modalStyle} onSubmit={handleSubmit}>
+    <Stack
+      component="form"
+      width="100%"
+      maxWidth="600px"
+      gap={4}
+      sx={modalStyle}
+      onSubmit={handleSubmit}
+    >
       <Typography variant="h6">Request leave</Typography>
       <Box>
         <Stack
@@ -220,7 +229,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
                 ? 'contained'
                 : 'outlined'
             }
-            startIcon={getBreakIcon(label)}
+            startIcon={mdScreen ? getBreakIcon(label) : undefined}
             onClick={() => {
               setFieldValue(BreaksRequestFields.PROJECT, value);
               setBreakId(value as string);
