@@ -1,16 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { Close } from '@mui/icons-material';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
-import { Stack, Typography } from '@mui/material';
+import { Drawer, IconButton, Stack, Typography } from '@mui/material';
 
-import { MainWrapper, ReportTable } from '../../components';
+import { Button } from 'legos';
 import { PageProps } from '../types';
-import { useNormalizedTrackers, useAuthUser } from 'hooks';
+import { breaksTitles } from 'constant';
 import { getFormattedDate, getHours } from 'helpers';
 import { ReportPageSidebar } from './ReportPageSidebar';
-import { breaksTitles } from 'constant';
+import { useNormalizedTrackers, useAuthUser } from 'hooks';
+import { MainWrapper, ReportTable } from '../../components';
 
 const ReportPage: React.FC<PageProps> = ({ title }) => {
   const { user, isManager } = useAuthUser();
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const [selectedDates, setSelectedDates] = useState([
     startOfMonth(new Date()),
@@ -97,9 +100,18 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
     setSelectedProjects,
   };
 
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
+
   return (
     <MainWrapper sidebar={<ReportPageSidebar {...reportSidebarProps} />}>
       <Typography variant="h1">{title}</Typography>
+      <Button
+        sx={{ my: 2, display: { lg: 'none' } }}
+        variant="contained"
+        title="Open sidebar"
+        size="large"
+        onClick={toggleDrawer}
+      />
       <Stack mt={6} flexDirection="row" justifyContent="space-between">
         <Stack flexDirection="row" gap={2}>
           <Typography fontWeight="600">Period:</Typography>
@@ -125,6 +137,17 @@ const ReportPage: React.FC<PageProps> = ({ title }) => {
       <Stack mt={6}>
         <ReportTable trackers={normalizedTrackers} isShowVacation={checked} />
       </Stack>
+      <Drawer open={openDrawer} onClose={toggleDrawer} sx={{ m: 4 }}>
+        <Stack position="relative" flexDirection="column" p={4} pt={8}>
+          <IconButton
+            onClick={toggleDrawer}
+            sx={{ position: 'absolute', top: 5, right: 5 }}
+          >
+            <Close />
+          </IconButton>
+          <ReportPageSidebar {...reportSidebarProps} />
+        </Stack>
+      </Drawer>
     </MainWrapper>
   );
 };

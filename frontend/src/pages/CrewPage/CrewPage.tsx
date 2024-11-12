@@ -60,7 +60,7 @@ const CrewPage: React.FC<PageProps> = () => {
       }
     >
       <Button
-        sx={{ mb: 2 }}
+        sx={{ mb: 2, display: { lg: 'none' } }}
         variant="contained"
         title="Open sidebar"
         size="large"

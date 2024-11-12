@@ -63,7 +63,7 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
     >
       <Typography variant="h1">{title}</Typography>
       <Button
-        sx={{ my: 2 }}
+        sx={{ my: 2, display: { lg: 'none' } }}
         variant="contained"
         title="Open sidebar"
         size="large"
