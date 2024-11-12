@@ -72,25 +72,32 @@ const LoginPage: React.FC<PageProps> = ({ title }) => {
   });
 
   return (
-    <MainWrapper>
-      <Stack direction="row" alignItems="center" height={'100%'}>
+    <MainWrapper loginPage>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        height="100%"
+        width="100%"
+      >
         <Stack
-          flexBasis="60%"
-          height={'100%'}
+          flexBasis={{ md: '60%' }}
+          height="100%"
           sx={{
             backgroundImage: 'url(https://source.unsplash.com/random)',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundColor: (t) => t.palette.grey[200],
+            display: { xs: 'none', md: 'flex' },
           }}
         />
         <Stack
           component="form"
           flexGrow={1}
           spacing={4}
-          paddingLeft={10}
-          paddingRight={10}
+          paddingLeft={{ md: 10 }}
+          paddingRight={{ md: 10 }}
           paddingY={20}
           onSubmit={handleSubmit}
         >
