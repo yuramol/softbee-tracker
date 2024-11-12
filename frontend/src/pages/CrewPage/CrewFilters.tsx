@@ -1,10 +1,12 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Box, IconButton } from '@mui/material';
-import { Select } from 'legos';
-import { employeePositionChoices } from 'constant';
-import ClearIcon from '@mui/icons-material/Clear';
-import { useRoles } from 'hooks';
 import { Stack } from '@mui/system';
+import { Box, IconButton } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+
+import { Select } from 'legos';
+import { useRoles } from 'hooks';
+import { employeePositionChoices } from 'constant';
+
 type CrewFiltersProps = {
   roleFilter: string;
   setRoleFilter: Dispatch<SetStateAction<string>>;
@@ -38,8 +40,8 @@ export const CrewFilters = ({
     setPositionFilter('');
   };
   return (
-    <Stack direction="row" gap={3}>
-      <Box width="600px" display="flex">
+    <Stack width="100%" direction="row" gap={3}>
+      <Box width="100%" maxWidth="600px" display="flex">
         <Select
           endAdornment={
             <IconButton

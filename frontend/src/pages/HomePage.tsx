@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Close } from '@mui/icons-material';
-import { Button, Drawer, Stack, Typography } from '@mui/material';
+import { Drawer, IconButton, Stack, Typography } from '@mui/material';
+import { addDays, endOfMonth, format, startOfMonth, subMonths } from 'date-fns';
 
 import {
   MainWrapper,
@@ -9,9 +10,9 @@ import {
   TrackerDayView,
   VacationWidget,
 } from '../components';
-import { useAuthUser, useNormalizedTrackers } from 'hooks';
-import { addDays, endOfMonth, format, startOfMonth, subMonths } from 'date-fns';
+import { Button } from 'legos';
 import { PageProps } from './types';
+import { useAuthUser, useNormalizedTrackers } from 'hooks';
 
 const HomePage: React.FC<PageProps> = ({ title }) => {
   const { user } = useAuthUser();
@@ -60,24 +61,22 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
         </>
       }
     >
-      <Typography variant="h1" mb={2}>
-        {title}
-      </Typography>
+      <Typography variant="h1">{title}</Typography>
       <Button
+        sx={{ my: 2 }}
         variant="contained"
+        title="Open sidebar"
+        size="large"
         onClick={toggleDrawer}
-        sx={{ display: { lg: 'none' } }}
-      >
-        Open sidebar
-      </Button>
+      />
       <Drawer open={openDrawer} onClose={toggleDrawer} sx={{ m: 4 }}>
         <Stack position="relative" flexDirection="column" p={4} pt={8}>
-          <Button
+          <IconButton
             onClick={toggleDrawer}
             sx={{ position: 'absolute', top: 5, right: 5 }}
           >
             <Close />
-          </Button>
+          </IconButton>
           <VacationWidget />
           <TimeInspector userId={user.id} />
           <TrackerCalendar

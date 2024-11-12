@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import { Drawer, IconButton, Stack, Typography } from '@mui/material';
 
 import { Button } from 'legos';
 import { PageProps } from 'pages/types';
@@ -9,6 +10,8 @@ import { MainWrapper, UsersList, NewUser, TimeInspector } from 'components';
 
 const CrewPage: React.FC<PageProps> = () => {
   const { isManager, user } = useAuthUser();
+  const [openDrawer, setOpenDrawer] = useState(false);
+
   const [roleFilter, setRoleFilter] = useState<string>('');
   const [positionFilter, setPositionFilter] = useState<string>('');
   const reportFilter = {
@@ -31,9 +34,12 @@ const CrewPage: React.FC<PageProps> = () => {
   const [isCreateUser, setIsCreateUser] = useState(false);
 
   const onToggleForm = () => {
+    setOpenDrawer(false);
     setIsCreateUser(!isCreateUser);
     refetch();
   };
+
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
   return (
     <MainWrapper
@@ -53,6 +59,13 @@ const CrewPage: React.FC<PageProps> = () => {
         </>
       }
     >
+      <Button
+        sx={{ mb: 2 }}
+        variant="contained"
+        title="Open sidebar"
+        size="large"
+        onClick={toggleDrawer}
+      />
       {isCreateUser ? (
         <NewUser onToggleForm={onToggleForm} />
       ) : (
@@ -76,6 +89,29 @@ const CrewPage: React.FC<PageProps> = () => {
           </Stack>
         </>
       )}
+      <Drawer open={openDrawer} onClose={toggleDrawer} sx={{ m: 4 }}>
+        <Stack position="relative" flexDirection="column" p={4} pt={8}>
+          <IconButton
+            onClick={toggleDrawer}
+            sx={{ position: 'absolute', top: 5, right: 5 }}
+          >
+            <Close />
+          </IconButton>
+          <>
+            {isManager && !isCreateUser && (
+              <Button
+                sx={{ mb: 2 }}
+                fullWidth
+                variant="contained"
+                title="Add new user"
+                size="large"
+                onClick={onToggleForm}
+              />
+            )}
+            <TimeInspector userId={isManager ? undefined : user.id} />
+          </>
+        </Stack>
+      </Drawer>
     </MainWrapper>
   );
 };
