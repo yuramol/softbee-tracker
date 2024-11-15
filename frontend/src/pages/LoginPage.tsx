@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import { Stack, Typography, TextField, Button } from '@mui/material';
@@ -9,6 +9,7 @@ import { useAuthUser, useNotification } from 'hooks';
 import { MainWrapper } from 'components';
 import { UsersPermissionsLoginPayload } from 'types/GraphqlTypes';
 import { PageProps } from './types';
+import { ForgotPasswordForm } from 'components/ForgotPasswordForm/ForgotPasswordForm';
 
 enum LoginFields {
   Identifier = 'identifier',
@@ -16,6 +17,8 @@ enum LoginFields {
 }
 
 const LoginPage: React.FC<PageProps> = ({ title }) => {
+  const [isForgotPasswordForm, setIsForgotPasswordForm] = useState(false);
+
   const { login } = useAuthUser();
   const notification = useNotification();
   const [loginMutation, { loading }] = useMutation<{
@@ -71,6 +74,9 @@ const LoginPage: React.FC<PageProps> = ({ title }) => {
     },
   });
 
+  const toggleForgotPassword = () =>
+    setIsForgotPasswordForm(!isForgotPasswordForm);
+
   return (
     <MainWrapper loginPage>
       <Stack
@@ -92,56 +98,70 @@ const LoginPage: React.FC<PageProps> = ({ title }) => {
             display: { xs: 'none', md: 'flex' },
           }}
         />
-        <Stack
-          component="form"
-          flexGrow={1}
-          spacing={4}
-          paddingLeft={{ md: 10 }}
-          paddingRight={{ md: 10 }}
-          paddingY={20}
-          onSubmit={handleSubmit}
-        >
-          <Typography variant="h4" component="h1" align="center">
-            {title}
-          </Typography>
-          <TextField
-            variant="outlined"
-            label="Email"
-            type="email"
-            name={LoginFields.Identifier}
-            value={values[LoginFields.Identifier]}
-            onChange={handleChange}
-            error={
-              touched[LoginFields.Identifier] &&
-              !!errors[LoginFields.Identifier]
-            }
-            helperText={
-              touched[LoginFields.Identifier] && errors[LoginFields.Identifier]
-            }
-          />
-          <TextField
-            variant="outlined"
-            label="Password"
-            type={LoginFields.Password}
-            name={LoginFields.Password}
-            value={values[LoginFields.Password]}
-            onChange={handleChange}
-            error={
-              touched[LoginFields.Password] && !!errors[LoginFields.Password]
-            }
-            helperText={
-              touched[LoginFields.Password] && errors[LoginFields.Password]
-            }
-          />
-          <Button
-            variant="contained"
-            type="submit"
-            size="large"
-            disabled={isSubmitting}
+        {isForgotPasswordForm ? (
+          <ForgotPasswordForm toggleForgotPassword={toggleForgotPassword} />
+        ) : (
+          <Stack
+            component="form"
+            flexGrow={1}
+            spacing={4}
+            paddingLeft={{ md: 10 }}
+            paddingRight={{ md: 10 }}
+            paddingY={20}
+            onSubmit={handleSubmit}
           >
-            {loading ? 'Loading...' : 'Login'}
-          </Button>
-        </Stack>
+            <Typography variant="h4" component="h1" align="center">
+              {title}
+            </Typography>
+            <TextField
+              variant="outlined"
+              label="Email"
+              type="email"
+              name={LoginFields.Identifier}
+              value={values[LoginFields.Identifier]}
+              onChange={handleChange}
+              error={
+                touched[LoginFields.Identifier] &&
+                !!errors[LoginFields.Identifier]
+              }
+              helperText={
+                touched[LoginFields.Identifier] &&
+                errors[LoginFields.Identifier]
+              }
+            />
+            <div className="flex flex-col gap-2">
+              <TextField
+                variant="outlined"
+                label="Password"
+                type={LoginFields.Password}
+                name={LoginFields.Password}
+                value={values[LoginFields.Password]}
+                onChange={handleChange}
+                error={
+                  touched[LoginFields.Password] &&
+                  !!errors[LoginFields.Password]
+                }
+                helperText={
+                  touched[LoginFields.Password] && errors[LoginFields.Password]
+                }
+              />
+              <p
+                className="hover:text-slate-700 cursor-pointer ml-auto"
+                onClick={toggleForgotPassword}
+              >
+                Forgot Password?
+              </p>
+            </div>
+            <Button
+              variant="contained"
+              type="submit"
+              size="large"
+              disabled={isSubmitting}
+            >
+              {loading ? 'Loading...' : 'Login'}
+            </Button>
+          </Stack>
+        )}
       </Stack>
     </MainWrapper>
   );
