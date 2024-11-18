@@ -46,11 +46,16 @@ export const useNormalizedUsers = (
   const managers: UsersPermissionsUserEntity[] = [];
   const employees: UsersPermissionsUserEntity[] = [];
   const usersChoices: Choices[] = [];
+  const activeUsers: Choices[] = [];
   const managersChoices: Choices[] = [];
   const employeesChoices: Choices[] = [];
 
   users?.forEach(({ id, attributes }) => {
     usersChoices.push(getUserChoicesData(id, attributes));
+
+    if (!attributes?.blocked) {
+      activeUsers.push(getUserChoicesData(id, attributes));
+    }
 
     if (attributes?.role?.data?.attributes?.type === Role.Manager) {
       managers.push(getUserData(id, attributes));
@@ -71,6 +76,7 @@ export const useNormalizedUsers = (
     managers,
     employees,
     usersChoices,
+    activeUsers,
     managersChoices,
     employeesChoices,
     loading,
