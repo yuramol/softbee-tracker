@@ -2,7 +2,12 @@ import React, { FC, useState } from 'react';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import { useMutation } from '@apollo/client';
 import { Button, Stack, TextField, Typography } from '@mui/material';
+
+import { useNotification } from 'hooks';
+import { UsersPermissionsPasswordPayload } from 'types/GraphqlTypes';
+import { FORGOT_PASSWORD_MUTATION } from 'api/graphql/mutation/forgotPassword';
 
 interface Props {
   toggleForgotPassword: () => void;
@@ -13,6 +18,11 @@ enum ForgotPasswordFields {
 }
 
 export const ForgotPasswordForm: FC<Props> = ({ toggleForgotPassword }) => {
+  const [forgotPasswordMutation, { loading }] = useMutation<{
+    email: UsersPermissionsPasswordPayload;
+  }>(FORGOT_PASSWORD_MUTATION);
+  const notification = useNotification();
+
   const [isResetPassword, setIsResetPassword] = useState(false);
 
   const initialValues = {
@@ -26,15 +36,40 @@ export const ForgotPasswordForm: FC<Props> = ({ toggleForgotPassword }) => {
       .required('Should not be empty'),
   });
 
-  const { values, errors, touched, isSubmitting, handleChange, handleSubmit } =
-    useFormik({
-      initialValues,
-      validationSchema,
-      onSubmit: (values) => {
-        setIsResetPassword(true);
-        console.log('DEBUG === test', test);
-      },
-    });
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+    setErrors,
+    setSubmitting,
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: ({ email }) => {
+      forgotPasswordMutation({
+        variables: {
+          email: email,
+        },
+      })
+        .then(() => {
+          notification({
+            message:
+              'Password Reset Successful, please confirm your email by clicking the link in the verification email we sent to you.',
+            variant: 'success',
+          });
+          setIsResetPassword(true);
+        })
+        .catch((error) => {
+          setErrors({
+            [ForgotPasswordFields.Email]: error?.message,
+          });
+          setSubmitting(false);
+        });
+    },
+  });
 
   return (
     <>
@@ -103,7 +138,7 @@ export const ForgotPasswordForm: FC<Props> = ({ toggleForgotPassword }) => {
             size="large"
             disabled={isSubmitting}
           >
-            Send
+            {loading ? 'Loading...' : 'Send'}
           </Button>
         </Stack>
       )}

@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { toast } from 'sonner';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
@@ -24,6 +23,7 @@ import {
 } from 'components/ui/AlertDialog';
 import { Input } from 'components/ui/Input';
 import { Button } from 'components/ui/Button';
+import { useNotification } from 'hooks';
 
 export function ColumnActions({
   title,
@@ -32,7 +32,8 @@ export function ColumnActions({
   title: string;
   id: UniqueIdentifier;
 }) {
-  const [open, setIsOpen] = React.useState(false);
+  const notification = useNotification();
+
   const [name, setName] = React.useState(title);
   const updateCol = useTaskStore(
     (state: { updateCol: any }) => state.updateCol
@@ -51,7 +52,10 @@ export function ColumnActions({
           e.preventDefault();
           setIsEditDisable(!editDisable);
           updateCol(id, name);
-          toast(`${title} updated to ${name}`);
+          notification({
+            message: `${title} updated to ${name}`,
+            variant: 'success',
+          });
         }}
       >
         <Input
@@ -110,7 +114,10 @@ export function ColumnActions({
 
                 setShowDeleteDialog(false);
                 removeCol(id);
-                toast('This column has been deleted.');
+                notification({
+                  message: 'This column has been deleted.',
+                  variant: 'success',
+                });
               }}
             >
               Delete

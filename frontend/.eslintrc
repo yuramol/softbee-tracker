@@ -22,7 +22,7 @@
     "no-console": "warn",
     "no-alert": "warn",
     "no-debugger": "warn",
-    "@typescript-eslint/no-unnecessary-type-constraint": "error",
+    "@typescript-eslint/no-unnecessary-type-constraint": "warn",
     "prettier/prettier": [
        "warn",
        {

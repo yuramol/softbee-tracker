@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { toast } from 'sonner';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
 import { cva } from 'class-variance-authority';
@@ -26,6 +25,7 @@ import { Badge } from 'components/ui/Badge';
 import { Button } from 'components/ui/Button';
 import { Task, useTaskStore } from 'lib/store';
 import { Card, CardContent, CardHeader } from 'components/ui/Card';
+import { useNotification } from 'hooks';
 
 interface TaskCardProps {
   task: Task;
@@ -40,6 +40,8 @@ export interface TaskDragData {
 }
 
 export function TaskCard({ task, isOverlay }: TaskCardProps) {
+  const notification = useNotification();
+
   const {
     setNodeRef,
     attributes,
@@ -138,7 +140,10 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
 
                   setShowDeleteDialog(false);
                   removeTask(task.id);
-                  toast('This task has been deleted.');
+                  notification({
+                    message: 'This task has been deleted.',
+                    variant: 'success',
+                  });
                 }}
               >
                 Delete
