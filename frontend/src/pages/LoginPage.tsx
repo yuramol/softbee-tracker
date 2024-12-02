@@ -88,7 +88,7 @@ const LoginPage: React.FC<PageProps> = ({ title }) => {
         width="100%"
       >
         <Stack
-          flexBasis={{ md: '60%' }}
+          flexBasis={{ lg: '60%' }}
           height="100%"
           sx={{
             backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -106,8 +106,8 @@ const LoginPage: React.FC<PageProps> = ({ title }) => {
             component="form"
             flexGrow={1}
             spacing={4}
-            paddingLeft={{ md: 10 }}
-            paddingRight={{ md: 10 }}
+            paddingLeft={{ lg: 10 }}
+            paddingRight={{ lg: 10 }}
             paddingY={20}
             onSubmit={handleSubmit}
           >

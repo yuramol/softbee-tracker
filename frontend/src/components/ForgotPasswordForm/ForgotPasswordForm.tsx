@@ -62,9 +62,10 @@ export const ForgotPasswordForm: FC<Props> = ({ toggleForgotPassword }) => {
           });
           setIsResetPassword(true);
         })
-        .catch((error) => {
+        .catch(() => {
           setErrors({
-            [ForgotPasswordFields.Email]: error?.message,
+            [ForgotPasswordFields.Email]:
+              'Error while resetting password, try again later',
           });
           setSubmitting(false);
         });

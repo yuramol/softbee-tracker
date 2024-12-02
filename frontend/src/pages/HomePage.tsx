@@ -69,7 +69,17 @@ const HomePage: React.FC<PageProps> = ({ title }) => {
         size="large"
         onClick={toggleDrawer}
       />
-      <Drawer open={openDrawer} onClose={toggleDrawer} sx={{ m: 4 }}>
+      <Drawer
+        open={openDrawer}
+        onClose={toggleDrawer}
+        sx={{
+          m: 4,
+          '& .MuiPaper-root': {
+            width: '100%',
+            maxWidth: 'fit-content',
+          },
+        }}
+      >
         <Stack position="relative" flexDirection="column" p={4} pt={8}>
           <IconButton
             onClick={toggleDrawer}
