@@ -33,7 +33,10 @@ export const ReportPageSidebar: React.FC<Props> = ({
   setSelectedProjects,
 }) => {
   const { isManager } = useAuthUser();
-  const { usersChoices } = useNormalizedUsers({ blocked: { eq: false } });
+  const { activeUsers, usersChoices } = useNormalizedUsers({
+    blocked: { eq: false },
+  });
+
   const { projectsChoices } = useProjects();
   const { downloadPDF } = useReportPDF();
   const handleDownload = () => {
@@ -42,7 +45,7 @@ export const ReportPageSidebar: React.FC<Props> = ({
     if (selectedEmployees.length > 0) {
       usersIds = selectedEmployees.join('&usersIds=');
     } else {
-      usersIds = usersChoices.map((item) => item.value).join('&usersIds=');
+      usersIds = activeUsers.map((item) => item.value).join('&usersIds=');
     }
     if (selectedProjects.length > 0) {
       projectsIds = selectedProjects.join('&projectsIds=');
@@ -84,7 +87,7 @@ export const ReportPageSidebar: React.FC<Props> = ({
           label="Employees"
           size="small"
           variant="outlined"
-          items={usersChoices}
+          items={activeUsers}
           value={selectedEmployees}
           setValue={setSelectedEmployees}
         />
