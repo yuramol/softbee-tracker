@@ -5,6 +5,7 @@ import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import { Icon } from 'legos';
 import { Breaks } from 'constant';
 import { BreaksRequest } from 'components/BreaksRequest';
+import { Enum_Tracker_Status } from 'types/GraphqlTypes';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 
 interface Props {
@@ -50,7 +51,10 @@ export const VacationWidget: FC<Props> = ({ userId, isCrewProfile }) => {
   let sicknessDays = 0;
 
   normalizedTrackers?.forEach((el) => {
-    if (el?.trackersByProject[0].name?.toLowerCase() === Breaks.Vacation) {
+    if (
+      el?.trackersByProject[0].name?.toLowerCase() === Breaks.Vacation &&
+      el?.trackersByProject[0].status === Enum_Tracker_Status.Approved
+    ) {
       vacationDays += 1;
     }
     if (el?.trackersByProject[0].name?.toLowerCase() === Breaks.Sickness) {
@@ -84,7 +88,7 @@ export const VacationWidget: FC<Props> = ({ userId, isCrewProfile }) => {
               primary={
                 <Typography
                   fontWeight={600}
-                >{`${vacationDays} / 30`}</Typography>
+                >{`${vacationDays} / 25`}</Typography>
               }
             />
           </ListItem>

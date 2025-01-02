@@ -14,7 +14,12 @@ export const TrackerEntryModalForm = ({
   ...rest
 }: TrackerEntryModalFormProps) => {
   return (
-    <Modal open={open} closeAfterTransition onClose={onClose}>
+    <Modal
+      open={open}
+      closeAfterTransition
+      onClose={onClose}
+      sx={{ mx: { xs: 2, md: 0 } }}
+    >
       <>{open && <TrackerEntryForm onClose={onClose} {...rest} />}</>
     </Modal>
   );

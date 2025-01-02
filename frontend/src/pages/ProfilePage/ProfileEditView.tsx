@@ -103,6 +103,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
+          gap={2}
         >
           <Typography variant="h1">
             {formatUserFullName(userData?.firstName, userData?.lastName)}
@@ -135,7 +136,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
             </Stack>
           )}
         </Stack>
-        <Stack flexDirection="row" gap={8}>
+        <Stack flexDirection={{ xs: 'column', sm: 'row' }} gap={8}>
           <AvatarUpload
             canEdit={canEdit}
             firstName={values[ProfileFields.FirstName]}

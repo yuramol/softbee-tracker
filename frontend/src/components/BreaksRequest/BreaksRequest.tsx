@@ -19,7 +19,12 @@ export const BreaksRequest = () => {
         fullWidth
       />
 
-      <Modal closeAfterTransition open={isOpenModal} onClose={toggleOpenModal}>
+      <Modal
+        closeAfterTransition
+        open={isOpenModal}
+        onClose={toggleOpenModal}
+        sx={{ mx: { xs: 2, md: 0 } }}
+      >
         <>{isOpenModal && <BreaksRequestForm onClose={toggleOpenModal} />}</>
       </Modal>
     </Stack>

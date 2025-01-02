@@ -64,7 +64,8 @@ export const UsersList = ({ usersList, isManager, meId, refetch }: Props) => {
             direction="row"
             alignItems="center"
             spacing={1}
-            width="300px"
+            width="100%"
+            maxWidth="300px"
           >
             <Stack position="relative">
               <Avatar
