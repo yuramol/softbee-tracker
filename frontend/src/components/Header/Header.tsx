@@ -38,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ pages }) => {
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <MenuAppBar
-            pages={mainMenu}
+            pages={[...mainMenu, ...secondaryMenu]}
             anchorElNav={anchorElNav}
             handleOpenNavMenu={handleOpenNavMenu}
             handleCloseNavMenu={handleCloseNavMenu}

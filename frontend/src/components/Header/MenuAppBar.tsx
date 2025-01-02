@@ -1,9 +1,13 @@
 import React from 'react';
-import { IconButton, Menu, MenuItem, Box } from '@mui/material';
+import { IconButton, Menu, MenuItem, Box, Button } from '@mui/material';
 
 import { NavButton } from './NavButton';
 import { HeaderProps } from './types';
 import { Icon } from 'legos';
+import { theme } from 'theme';
+import { useAuthUser } from 'hooks';
+
+import { pages as constPages } from 'constant';
 
 interface MenuAppBarProps extends HeaderProps {
   anchorElNav: null | HTMLElement;
@@ -17,6 +21,7 @@ export const MenuAppBar: React.FC<MenuAppBarProps> = ({
   handleOpenNavMenu,
   handleCloseNavMenu,
 }) => {
+  const { isAuth, user, logout } = useAuthUser();
   return (
     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
       <IconButton
@@ -43,11 +48,35 @@ export const MenuAppBar: React.FC<MenuAppBarProps> = ({
         open={Boolean(anchorElNav)}
         onClose={handleCloseNavMenu}
       >
-        {pages.map((page) => (
-          <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-            <NavButton {...page} />
+        {isAuth &&
+          user &&
+          pages.map((page) => (
+            <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+              <NavButton {...page} />
+            </MenuItem>
+          ))}
+        {isAuth ? (
+          <MenuItem
+            onClick={(e) => {
+              handleCloseNavMenu(e);
+              logout();
+            }}
+          >
+            <Button
+              sx={{
+                px: '15px',
+                color: theme.palette.common.grey,
+                fontWeight: '700',
+              }}
+            >
+              Logout
+            </Button>
           </MenuItem>
-        ))}
+        ) : (
+          <MenuItem onClick={handleCloseNavMenu}>
+            <NavButton {...constPages[0]} />
+          </MenuItem>
+        )}
       </Menu>
     </Box>
   );

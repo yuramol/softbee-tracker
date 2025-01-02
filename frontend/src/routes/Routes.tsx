@@ -34,7 +34,7 @@ export const AppRouter = () => {
         {isAuth && (
           <>
             <Route path="/login" element={<Navigate to="/" replace />} />
-            <Route path="/register" element={<Navigate to="/" replace />} />
+            {/* <Route path="/register" element={<Navigate to="/" replace />} /> */}
           </>
         )}
         {currentPages.map(({ index, name, href, Component }) => (
