@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from '@mui/system';
-import { Grid, useMediaQuery } from '@mui/material';
+import { Grid, Theme, useMediaQuery } from '@mui/material';
 
 type Props = {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ export const MainWrapper: React.FC<Props> = ({
   left,
   loginPage,
 }) => {
-  const lgScreen = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
+  const lgScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   return (
     <Container

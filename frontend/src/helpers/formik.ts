@@ -1,9 +1,4 @@
-import {
-  FormikErrors,
-  FormikTouched,
-  FormikValues,
-  useFormikContext,
-} from 'formik';
+import { FormikErrors, FormikTouched, FormikValues } from 'formik';
 
 type Formik = {
   errors: FormikErrors<FormikValues>;
@@ -11,9 +6,8 @@ type Formik = {
 };
 
 //@ts-nocheck
-export const useFormikPropsErrors = ( formik?: Formik) => {
-  const context = useFormikContext<FormikValues>();
-  const { touched, errors } = formik ?? context;
+export const useFormikPropsErrors = (formik: Formik) => {
+  const { touched, errors } = formik;
 
   const getPropsErrors = (field: string) => ({
     error: touched[field] && !!errors[field],

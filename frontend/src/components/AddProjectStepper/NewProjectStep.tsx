@@ -29,9 +29,9 @@ export const projectTypes = [
 ];
 
 export const NewProjectStep = () => {
-  const { values, handleChange, setFieldValue } =
-    useFormikContext<FormikValues>();
-  const { getPropsErrors } = useFormikPropsErrors();
+  const context = useFormikContext<FormikValues>();
+  const { values, handleChange, setFieldValue } = context;
+  const { getPropsErrors } = useFormikPropsErrors(context);
   return (
     <>
       <Typography
