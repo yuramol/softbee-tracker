@@ -16,6 +16,10 @@ export const TrackerPause = ({ tracker }: TrackerPauseProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const { pauseTracker } = usePauseTracker();
 
+  const duration = useDurationTimer(
+    parseISO(tracker.attributes?.startLiveDate)
+  );
+
   if (!tracker.attributes) return null;
   const isLiveStatusStart =
     tracker.attributes.live_status === Enum_Tracker_Live_Status.Start;
@@ -29,9 +33,7 @@ export const TrackerPause = ({ tracker }: TrackerPauseProps) => {
         enqueueSnackbar(error.message, { variant: 'error' });
       });
   };
-  const duration = useDurationTimer(
-    parseISO(tracker.attributes?.startLiveDate)
-  );
+
   const [hours, minutes, seconds] = duration
     .split(/\D+/)
     .map((part) => parseInt(part));

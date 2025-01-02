@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { Select, CalendarPickerFormik } from 'legos';
 import { TimePicker } from 'components';
 import { useAuthUser, useNormalizedUsers, useProjects } from 'hooks';
-import { formikPropsErrors } from 'helpers';
+import { useFormikPropsErrors } from 'helpers';
 import { TimeEntryValues, TrackerEntryFormProps } from './types';
 import { getCanAddEditTracks } from 'helpers/getCanAddEditTracks';
 
@@ -94,6 +94,8 @@ export const TrackerEntryForm = ({
     onSubmit: (values) => onSubmit(values),
   });
 
+  const { getPropsErrors } = useFormikPropsErrors(formik);
+
   const { setFieldValue, handleChange, handleSubmit, values } = formik;
   const startMonthPicker = getCanAddEditTracks()
     ? startOfMonth(subMonths(new Date(), 0))
@@ -122,7 +124,7 @@ export const TrackerEntryForm = ({
                     setFieldValue(`${TIME_ENTRY_FIELDS.DURATION}`, value);
                   }}
                   name={TIME_ENTRY_FIELDS.DURATION}
-                  {...formikPropsErrors(TIME_ENTRY_FIELDS.DURATION, formik)}
+                  {...getPropsErrors(TIME_ENTRY_FIELDS.DURATION)}
                 />
               </Stack>
             )}
@@ -133,7 +135,7 @@ export const TrackerEntryForm = ({
                 items={usersChoices}
                 value={values[TIME_ENTRY_FIELDS.USER]}
                 name={TIME_ENTRY_FIELDS.USER}
-                {...formikPropsErrors(TIME_ENTRY_FIELDS.PROJECT, formik)}
+                {...getPropsErrors(TIME_ENTRY_FIELDS.PROJECT)}
                 variant="outlined"
                 onChange={handleChange}
               />
@@ -148,7 +150,7 @@ export const TrackerEntryForm = ({
                     : ''
                 }
                 name={TIME_ENTRY_FIELDS.PROJECT}
-                {...formikPropsErrors(TIME_ENTRY_FIELDS.PROJECT, formik)}
+                {...getPropsErrors(TIME_ENTRY_FIELDS.PROJECT)}
                 variant="outlined"
                 onChange={handleChange}
               />
@@ -160,7 +162,7 @@ export const TrackerEntryForm = ({
               rows={4}
               value={values[TIME_ENTRY_FIELDS.DESCRIPTION]}
               name={TIME_ENTRY_FIELDS.DESCRIPTION}
-              {...formikPropsErrors(TIME_ENTRY_FIELDS.DESCRIPTION, formik)}
+              {...getPropsErrors(TIME_ENTRY_FIELDS.DESCRIPTION)}
               onChange={handleChange}
               inputProps={{ maxLength: 1000 }}
             />

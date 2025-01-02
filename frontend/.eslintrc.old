@@ -1,5 +1,5 @@
 {
-  "env": { 
+  "env": {
     "browser": true,
     "es2021": true
   },
@@ -24,12 +24,12 @@
     "no-debugger": "warn",
     "@typescript-eslint/no-unnecessary-type-constraint": "warn",
     "prettier/prettier": [
-       "warn",
-       {
-         "tabWidth": 2,
-         "singleQuote": true,
-         "trailingComma": "es5"
-       }
-     ]
+      "warn",
+      {
+        "tabWidth": 2,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    ]
   }
 }

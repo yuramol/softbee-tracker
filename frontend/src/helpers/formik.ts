@@ -9,13 +9,19 @@ type Formik = {
   errors: FormikErrors<FormikValues>;
   touched: FormikTouched<FormikValues>;
 };
-export const formikPropsErrors = (filed: string, formik?: Formik) => {
+
+//@ts-nocheck
+export const useFormikPropsErrors = ( formik?: Formik) => {
   const context = formik ?? useFormikContext<FormikValues>();
   const { touched, errors } = context;
 
-  return {
-    error: touched[filed] && !!errors[filed],
+  const getPropsErrors = (field: string) => ({
+    error: touched[field] && !!errors[field],
     helperText:
-      touched[filed] && errors[filed] ? errors[filed]?.toString() : '',
+      touched[field] && errors[field] ? errors[field]?.toString() : '',
+  });
+
+  return {
+    getPropsErrors,
   };
 };

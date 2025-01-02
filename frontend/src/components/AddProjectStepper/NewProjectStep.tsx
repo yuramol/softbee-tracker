@@ -11,7 +11,7 @@ import { FormikValues, useFormikContext } from 'formik';
 import { CalendarPickerFormik } from 'legos';
 import { CreateProjectFields } from './types';
 import { Enum_Project_Type } from 'types/GraphqlTypes';
-import { formikPropsErrors } from 'helpers';
+import { useFormikPropsErrors } from 'helpers';
 
 export const projectTypes = [
   {
@@ -31,7 +31,7 @@ export const projectTypes = [
 export const NewProjectStep = () => {
   const { values, handleChange, setFieldValue } =
     useFormikContext<FormikValues>();
-
+  const { getPropsErrors } = useFormikPropsErrors();
   return (
     <>
       <Typography
@@ -72,7 +72,7 @@ export const NewProjectStep = () => {
               : ''
           }
           multiline
-          {...formikPropsErrors(CreateProjectFields.Name)}
+          {...getPropsErrors(CreateProjectFields.Name)}
           onChange={handleChange}
         />
         <TextField
@@ -83,7 +83,7 @@ export const NewProjectStep = () => {
               ? values[CreateProjectFields.Client]
               : ''
           }
-          {...formikPropsErrors(CreateProjectFields.Client)}
+          {...getPropsErrors(CreateProjectFields.Client)}
           onChange={handleChange}
         />
         <Stack direction="row" spacing={2}>

@@ -5,7 +5,7 @@ import { useFormik, FormikContext } from 'formik';
 import * as yup from 'yup';
 
 import { CalendarPickerFormik, MultipleSelect, Select } from 'legos';
-import { formikPropsErrors, getFormattedDate } from 'helpers';
+import { useFormikPropsErrors, getFormattedDate } from 'helpers';
 import { CREATE_USER_MUTATION } from 'api';
 import { CreateUserFields, UserProps } from './types';
 import { useNotification, useRoles } from 'hooks';
@@ -74,6 +74,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
         });
     },
   });
+  const { getPropsErrors } = useFormikPropsErrors(formik);
 
   const { values, setFieldValue, handleChange, handleSubmit } = formik;
 
@@ -97,7 +98,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             label="User name"
             name={CreateUserFields.UserName}
             value={values[CreateUserFields.UserName]}
-            {...formikPropsErrors(CreateUserFields.UserName, formik)}
+            {...getPropsErrors(CreateUserFields.UserName)}
             onChange={handleChange}
           />
           <TextField
@@ -105,7 +106,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             label="Password"
             name={CreateUserFields.Password}
             value={values[CreateUserFields.Password]}
-            {...formikPropsErrors(CreateUserFields.Password, formik)}
+            {...getPropsErrors(CreateUserFields.Password)}
             onChange={handleChange}
           />
         </Stack>
@@ -115,7 +116,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             label="First name"
             name={CreateUserFields.FirstName}
             value={values[CreateUserFields.FirstName]}
-            {...formikPropsErrors(CreateUserFields.FirstName, formik)}
+            {...getPropsErrors(CreateUserFields.FirstName)}
             onChange={handleChange}
           />
           <TextField
@@ -123,7 +124,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             label="Last name"
             name={CreateUserFields.LastName}
             value={values[CreateUserFields.LastName]}
-            {...formikPropsErrors(CreateUserFields.LastName, formik)}
+            {...getPropsErrors(CreateUserFields.LastName)}
             onChange={handleChange}
           />
         </Stack>
@@ -133,7 +134,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             label="Email"
             name={CreateUserFields.Email}
             value={values[CreateUserFields.Email]}
-            {...formikPropsErrors(CreateUserFields.Email, formik)}
+            {...getPropsErrors(CreateUserFields.Email)}
             onChange={handleChange}
           />
           <TextField
@@ -141,7 +142,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             label="Phone"
             name={CreateUserFields.Phone}
             value={values[CreateUserFields.Phone]}
-            {...formikPropsErrors(CreateUserFields.Phone, formik)}
+            {...getPropsErrors(CreateUserFields.Phone)}
             onChange={handleChange}
           />
         </Stack>
@@ -151,7 +152,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             items={rolesChoices}
             value={values[CreateUserFields.Role]}
             name={CreateUserFields.Role}
-            {...formikPropsErrors(CreateUserFields.Role, formik)}
+            {...getPropsErrors(CreateUserFields.Role)}
             variant="outlined"
             onChange={handleChange}
           />
@@ -173,7 +174,7 @@ export const NewUser: React.FC<UserProps> = ({ onToggleForm }) => {
             }
             value={values[CreateUserFields.Positions]}
             onChange={handleChange}
-            {...formikPropsErrors(CreateUserFields.Positions, formik)}
+            {...getPropsErrors(CreateUserFields.Positions)}
           />
           <CalendarPickerFormik
             label="Date Employment"

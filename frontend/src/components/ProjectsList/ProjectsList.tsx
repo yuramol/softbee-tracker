@@ -70,9 +70,9 @@ export const ProjectsList = ({
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
               >
-                <Link to={`/project/${project.id}`} component={NavLink}>
+                <NavLink to={`/project/${project.id}`}>
                   {project.attributes?.name}
-                </Link>
+                </NavLink>
                 <Typography
                   fontSize="10px"
                   whiteSpace="normal"

@@ -22,19 +22,18 @@ export const NavButton: React.FC<Page> = ({ name, href }) => {
   );
 
   return (
-    <Button
+    <NavLink
       sx={{
         px: '15px',
         color: theme.palette.common.grey,
         fontWeight: '700',
       }}
-      component={NavLink}
       to={href}
       disabled={name === 'Register' ? true : false}
     >
       {name}
 
       {name === 'Crew' && normalizedTrackers.length > 0 ? <PulseDot /> : null}
-    </Button>
+    </NavLink>
   );
 };

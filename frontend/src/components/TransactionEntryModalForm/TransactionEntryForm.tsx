@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { Select, CalendarPickerFormik } from 'legos';
 import { TimePicker } from 'components';
 import { useNormalizedUsers, useProjects } from 'hooks';
-import { formikPropsErrors } from 'helpers';
+import { useFormikPropsErrors } from 'helpers';
 import { TransactionEntryValues, TransactionEntryFormProps } from './types';
 
 const modalStyle = {
@@ -93,6 +93,8 @@ export const TransactionEntryForm = ({
     onSubmit: (values) => onSubmit(values),
   });
 
+  const { getPropsErrors } = useFormikPropsErrors(formik);
+
   const { setFieldValue, handleChange, handleSubmit, values } = formik;
 
   return (
@@ -120,10 +122,7 @@ export const TransactionEntryForm = ({
                     );
                   }}
                   name={TRANSACTION_ENTRY_FIELDS.DURATION}
-                  {...formikPropsErrors(
-                    TRANSACTION_ENTRY_FIELDS.DURATION,
-                    formik
-                  )}
+                  {...getPropsErrors(TRANSACTION_ENTRY_FIELDS.DURATION)}
                 />
               </Stack>
             )}
@@ -134,7 +133,7 @@ export const TransactionEntryForm = ({
                 items={usersChoices}
                 value={values[TRANSACTION_ENTRY_FIELDS.USER]}
                 name={TRANSACTION_ENTRY_FIELDS.USER}
-                {...formikPropsErrors(TRANSACTION_ENTRY_FIELDS.PROJECT, formik)}
+                {...getPropsErrors(TRANSACTION_ENTRY_FIELDS.PROJECT)}
                 variant="outlined"
                 onChange={handleChange}
               />
@@ -149,7 +148,7 @@ export const TransactionEntryForm = ({
                     : ''
                 }
                 name={TRANSACTION_ENTRY_FIELDS.PROJECT}
-                {...formikPropsErrors(TRANSACTION_ENTRY_FIELDS.PROJECT, formik)}
+                {...getPropsErrors(TRANSACTION_ENTRY_FIELDS.PROJECT)}
                 variant="outlined"
                 onChange={handleChange}
               />
@@ -161,10 +160,7 @@ export const TransactionEntryForm = ({
               rows={4}
               value={values[TRANSACTION_ENTRY_FIELDS.DESCRIPTION]}
               name={TRANSACTION_ENTRY_FIELDS.DESCRIPTION}
-              {...formikPropsErrors(
-                TRANSACTION_ENTRY_FIELDS.DESCRIPTION,
-                formik
-              )}
+              {...getPropsErrors(TRANSACTION_ENTRY_FIELDS.DESCRIPTION)}
               onChange={handleChange}
             />
           </Stack>

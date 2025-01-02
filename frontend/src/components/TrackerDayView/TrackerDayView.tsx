@@ -37,7 +37,6 @@ export const TrackerDayView = ({
   const [tabsValue, setTabsValue] = useState(currentDay);
 
   useEffect(() => {
-    const { currentDay } = useCurrentWeek(selectedDay);
     setCurrentWeekDay(selectedDay);
     setTabsValue(currentDay);
   }, [selectedDay]);

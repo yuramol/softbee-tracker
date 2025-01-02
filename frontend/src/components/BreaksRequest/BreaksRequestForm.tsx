@@ -20,7 +20,11 @@ import * as yup from 'yup';
 
 import { useAuthUser, useBreaks, useNormalizedTrackers } from 'hooks';
 import { Icon, RangeCalendar } from 'legos';
-import { getFormattedDate, toUpperCaseFirst, formikPropsErrors } from 'helpers';
+import {
+  getFormattedDate,
+  toUpperCaseFirst,
+  getFormikPropsErrors,
+} from 'helpers';
 import { Breaks } from 'constant';
 import { useFormik } from 'formik';
 import { BreaksRequestFields, BreaksRequestFormProps } from './types';
@@ -87,8 +91,9 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     eachDayOfInterval({
       start: date,
       end: date,
-    }).some((day) =>
-      approvedDates?.some((approvedDate) => isSameDay(approvedDate, day))
+    }).some(
+      (day) =>
+        approvedDates?.some((approvedDate) => isSameDay(approvedDate, day))
     );
   useEffect(() => {
     fetchTrackers({
@@ -253,7 +258,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         rows={4}
         value={values[BreaksRequestFields.DESCRIPTION]}
         name={BreaksRequestFields.DESCRIPTION}
-        {...formikPropsErrors(BreaksRequestFields.DESCRIPTION, formik)}
+        {...getFormikPropsErrors(BreaksRequestFields.DESCRIPTION, formik)}
         onChange={handleChange}
       />
       <Stack direction="row" gap={2} justifyContent="flex-end">
