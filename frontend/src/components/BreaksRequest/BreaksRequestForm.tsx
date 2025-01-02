@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   Stack,
   TextField,
+  Theme,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -23,7 +24,7 @@ import { Icon, RangeCalendar } from 'legos';
 import {
   getFormattedDate,
   toUpperCaseFirst,
-  getFormikPropsErrors,
+  useFormikPropsErrors,
 } from 'helpers';
 import { Breaks } from 'constant';
 import { useFormik } from 'formik';
@@ -57,7 +58,7 @@ const CountDay = ({ count }: { count: number }) => (
 export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   onClose,
 }) => {
-  const mdScreen = useMediaQuery((theme: any) => theme.breakpoints.up('md'));
+  const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const { user } = useAuthUser();
   const { enqueueSnackbar } = useSnackbar();
@@ -171,6 +172,8 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     },
   });
 
+  const { getPropsErrors } = useFormikPropsErrors(formik);
+
   const { values, handleChange, handleSubmit, setFieldValue } = formik;
 
   useEffect(() => {
@@ -258,7 +261,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         rows={4}
         value={values[BreaksRequestFields.DESCRIPTION]}
         name={BreaksRequestFields.DESCRIPTION}
-        {...getFormikPropsErrors(BreaksRequestFields.DESCRIPTION, formik)}
+        {...getPropsErrors(BreaksRequestFields.DESCRIPTION)}
         onChange={handleChange}
       />
       <Stack direction="row" gap={2} justifyContent="flex-end">

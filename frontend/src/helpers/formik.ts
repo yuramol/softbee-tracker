@@ -12,8 +12,8 @@ type Formik = {
 
 //@ts-nocheck
 export const useFormikPropsErrors = ( formik?: Formik) => {
-  const context = formik ?? useFormikContext<FormikValues>();
-  const { touched, errors } = context;
+  const context = useFormikContext<FormikValues>();
+  const { touched, errors } = formik ?? context;
 
   const getPropsErrors = (field: string) => ({
     error: touched[field] && !!errors[field],
