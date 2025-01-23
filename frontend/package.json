@@ -10,7 +10,7 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "codegen": "graphql-codegen --require dotenv/config --config codegen.yml",
-    "postinstall": "yarn codegen"
+    "postinstall": "npm run codegen"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",

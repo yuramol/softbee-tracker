@@ -46,7 +46,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd frontend
-          npm install -ci
+          npm install --legacy-peer-deps -ci
 
       - name: Run build task
         timeout-minutes: 5
