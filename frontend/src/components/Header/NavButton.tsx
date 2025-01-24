@@ -14,8 +14,8 @@ export const NavButton: React.FC<Page> = ({ name, href }) => {
     true
   );
 
-  return (
-    <NavLink to={href} disabled={name === 'Register' ? true : false}>
+  return name === 'Register' ? null : (
+    <NavLink to={href}>
       <Button
         sx={{
           px: '15px',
