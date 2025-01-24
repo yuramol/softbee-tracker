@@ -31,6 +31,7 @@ export type BooleanFilterInput = {
   lt?: InputMaybe<Scalars['Boolean']>;
   lte?: InputMaybe<Scalars['Boolean']>;
   ne?: InputMaybe<Scalars['Boolean']>;
+  nei?: InputMaybe<Scalars['Boolean']>;
   not?: InputMaybe<BooleanFilterInput>;
   notContains?: InputMaybe<Scalars['Boolean']>;
   notContainsi?: InputMaybe<Scalars['Boolean']>;
@@ -76,6 +77,7 @@ export type DateFilterInput = {
   lt?: InputMaybe<Scalars['Date']>;
   lte?: InputMaybe<Scalars['Date']>;
   ne?: InputMaybe<Scalars['Date']>;
+  nei?: InputMaybe<Scalars['Date']>;
   not?: InputMaybe<DateFilterInput>;
   notContains?: InputMaybe<Scalars['Date']>;
   notContainsi?: InputMaybe<Scalars['Date']>;
@@ -100,6 +102,7 @@ export type DateTimeFilterInput = {
   lt?: InputMaybe<Scalars['DateTime']>;
   lte?: InputMaybe<Scalars['DateTime']>;
   ne?: InputMaybe<Scalars['DateTime']>;
+  nei?: InputMaybe<Scalars['DateTime']>;
   not?: InputMaybe<DateTimeFilterInput>;
   notContains?: InputMaybe<Scalars['DateTime']>;
   notContainsi?: InputMaybe<Scalars['DateTime']>;
@@ -163,6 +166,7 @@ export type FloatFilterInput = {
   lt?: InputMaybe<Scalars['Float']>;
   lte?: InputMaybe<Scalars['Float']>;
   ne?: InputMaybe<Scalars['Float']>;
+  nei?: InputMaybe<Scalars['Float']>;
   not?: InputMaybe<FloatFilterInput>;
   notContains?: InputMaybe<Scalars['Float']>;
   notContainsi?: InputMaybe<Scalars['Float']>;
@@ -225,6 +229,7 @@ export type IdFilterInput = {
   lt?: InputMaybe<Scalars['ID']>;
   lte?: InputMaybe<Scalars['ID']>;
   ne?: InputMaybe<Scalars['ID']>;
+  nei?: InputMaybe<Scalars['ID']>;
   not?: InputMaybe<IdFilterInput>;
   notContains?: InputMaybe<Scalars['ID']>;
   notContainsi?: InputMaybe<Scalars['ID']>;
@@ -249,6 +254,7 @@ export type IntFilterInput = {
   lt?: InputMaybe<Scalars['Int']>;
   lte?: InputMaybe<Scalars['Int']>;
   ne?: InputMaybe<Scalars['Int']>;
+  nei?: InputMaybe<Scalars['Int']>;
   not?: InputMaybe<IntFilterInput>;
   notContains?: InputMaybe<Scalars['Int']>;
   notContainsi?: InputMaybe<Scalars['Int']>;
@@ -273,6 +279,7 @@ export type JsonFilterInput = {
   lt?: InputMaybe<Scalars['JSON']>;
   lte?: InputMaybe<Scalars['JSON']>;
   ne?: InputMaybe<Scalars['JSON']>;
+  nei?: InputMaybe<Scalars['JSON']>;
   not?: InputMaybe<JsonFilterInput>;
   notContains?: InputMaybe<Scalars['JSON']>;
   notContainsi?: InputMaybe<Scalars['JSON']>;
@@ -297,6 +304,7 @@ export type LongFilterInput = {
   lt?: InputMaybe<Scalars['Long']>;
   lte?: InputMaybe<Scalars['Long']>;
   ne?: InputMaybe<Scalars['Long']>;
+  nei?: InputMaybe<Scalars['Long']>;
   not?: InputMaybe<LongFilterInput>;
   notContains?: InputMaybe<Scalars['Long']>;
   notContainsi?: InputMaybe<Scalars['Long']>;
@@ -882,6 +890,7 @@ export type StringFilterInput = {
   lt?: InputMaybe<Scalars['String']>;
   lte?: InputMaybe<Scalars['String']>;
   ne?: InputMaybe<Scalars['String']>;
+  nei?: InputMaybe<Scalars['String']>;
   not?: InputMaybe<StringFilterInput>;
   notContains?: InputMaybe<Scalars['String']>;
   notContainsi?: InputMaybe<Scalars['String']>;

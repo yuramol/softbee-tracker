@@ -197,6 +197,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nei",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "not",
             "description": null,
             "type": {
@@ -676,6 +688,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nei",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "not",
             "description": null,
             "type": {
@@ -960,6 +984,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1465,6 +1501,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -2126,6 +2174,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nei",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "not",
             "description": null,
             "type": {
@@ -2410,6 +2470,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -2716,6 +2788,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nei",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "JSON",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "not",
             "description": null,
             "type": {
@@ -3000,6 +3084,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Long",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -7012,6 +7108,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
