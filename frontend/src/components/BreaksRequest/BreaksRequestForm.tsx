@@ -5,7 +5,9 @@ import {
   ButtonGroup,
   Stack,
   TextField,
+  Theme,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import {
   eachDayOfInterval,
@@ -19,7 +21,11 @@ import * as yup from 'yup';
 
 import { useAuthUser, useBreaks, useNormalizedTrackers } from 'hooks';
 import { Icon, RangeCalendar } from 'legos';
-import { getFormattedDate, toUpperCaseFirst, formikPropsErrors } from 'helpers';
+import {
+  getFormattedDate,
+  toUpperCaseFirst,
+  useFormikPropsErrors,
+} from 'helpers';
 import { Breaks } from 'constant';
 import { useFormik } from 'formik';
 import { BreaksRequestFields, BreaksRequestFormProps } from './types';
@@ -34,7 +40,6 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 1,
@@ -53,6 +58,8 @@ const CountDay = ({ count }: { count: number }) => (
 export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   onClose,
 }) => {
+  const mdScreen = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+
   const { user } = useAuthUser();
   const { enqueueSnackbar } = useSnackbar();
   const { createTracker } = useCreateTracker();
@@ -85,8 +92,9 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     eachDayOfInterval({
       start: date,
       end: date,
-    }).some((day) =>
-      approvedDates?.some((approvedDate) => isSameDay(approvedDate, day))
+    }).some(
+      (day) =>
+        approvedDates?.some((approvedDate) => isSameDay(approvedDate, day))
     );
   useEffect(() => {
     fetchTrackers({
@@ -164,6 +172,8 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
     },
   });
 
+  const { getPropsErrors } = useFormikPropsErrors(formik);
+
   const { values, handleChange, handleSubmit, setFieldValue } = formik;
 
   useEffect(() => {
@@ -177,7 +187,14 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
   }, [loading]);
 
   return (
-    <Stack component="form" gap={4} sx={modalStyle} onSubmit={handleSubmit}>
+    <Stack
+      component="form"
+      width="100%"
+      maxWidth="600px"
+      gap={4}
+      sx={modalStyle}
+      onSubmit={handleSubmit}
+    >
       <Typography variant="h6">Request leave</Typography>
       <Box>
         <Stack
@@ -220,7 +237,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
                 ? 'contained'
                 : 'outlined'
             }
-            startIcon={getBreakIcon(label)}
+            startIcon={mdScreen ? getBreakIcon(label) : undefined}
             onClick={() => {
               setFieldValue(BreaksRequestFields.PROJECT, value);
               setBreakId(value as string);
@@ -244,7 +261,7 @@ export const BreaksRequestForm: React.FC<BreaksRequestFormProps> = ({
         rows={4}
         value={values[BreaksRequestFields.DESCRIPTION]}
         name={BreaksRequestFields.DESCRIPTION}
-        {...formikPropsErrors(BreaksRequestFields.DESCRIPTION, formik)}
+        {...getPropsErrors(BreaksRequestFields.DESCRIPTION)}
         onChange={handleChange}
       />
       <Stack direction="row" gap={2} justifyContent="flex-end">

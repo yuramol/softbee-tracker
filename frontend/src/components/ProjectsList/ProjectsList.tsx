@@ -53,7 +53,8 @@ export const ProjectsList = ({
           >
             <Grid
               item
-              xs={5}
+              xs={7}
+              sm={5}
               container
               direction="row"
               alignItems="center"
@@ -69,22 +70,25 @@ export const ProjectsList = ({
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
               >
-                <Link to={`/project/${project.id}`} component={NavLink}>
+                <NavLink to={`/project/${project.id}`}>
                   {project.attributes?.name}
-                </Link>
-                <Typography fontSize="10px">{`${project.attributes?.start} - ${project.attributes?.end}`}</Typography>
+                </NavLink>
+                <Typography
+                  fontSize="10px"
+                  whiteSpace="normal"
+                >{`${project.attributes?.start} - ${project.attributes?.end}`}</Typography>
               </Grid>
             </Grid>
             {manager && (
-              <Grid item xs={5}>
+              <Grid item xs={4} sm={5}>
                 <Grid
                   container
                   direction="row"
                   alignItems="center"
                   spacing={1}
-                  width="300px"
+                  width={{ md: '300px' }}
                 >
-                  <Grid item>
+                  <Grid item display={{ xs: 'none', sm: 'block' }}>
                     <Avatar
                       avatar={
                         manager?.avatar?.data?.attributes?.url
@@ -107,7 +111,7 @@ export const ProjectsList = ({
               </Grid>
             )}
 
-            <Grid item xs={2}>
+            <Grid item xs={1} sm={2}>
               <IconButton
                 onClick={() => handlerEditProject(project.id as string)}
                 aria-label="edit"

@@ -16,7 +16,7 @@ import {
 } from 'legos';
 import {
   formatUserFullName,
-  formikPropsErrors,
+  useFormikPropsErrors,
   getFormattedDate,
 } from 'helpers';
 import { validationSchema } from './helpers';
@@ -84,17 +84,12 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
     },
   });
 
+  const { getPropsErrors } = useFormikPropsErrors(formik);
+
   const canEdit = id === user.id || isManager;
   const isDisabled = isManager ? !isEdit : !isManager;
-  const {
-    values,
-    errors,
-    touched,
-    resetForm,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-  } = formik;
+  const { values, resetForm, handleChange, handleSubmit, setFieldValue } =
+    formik;
 
   return (
     <FormikContext.Provider value={formik}>
@@ -103,6 +98,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
+          gap={2}
         >
           <Typography variant="h1">
             {formatUserFullName(userData?.firstName, userData?.lastName)}
@@ -135,7 +131,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
             </Stack>
           )}
         </Stack>
-        <Stack flexDirection="row" gap={8}>
+        <Stack flexDirection={{ xs: 'column', sm: 'row' }} gap={8}>
           <AvatarUpload
             canEdit={canEdit}
             firstName={values[ProfileFields.FirstName]}
@@ -165,16 +161,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                     readOnly: !isEdit,
                     disableUnderline: !isEdit,
                   }}
-                  helperText={
-                    touched[ProfileFields.FirstName] &&
-                    errors[ProfileFields.FirstName]
-                  }
-                  error={
-                    !!(
-                      touched[ProfileFields.FirstName] &&
-                      errors[ProfileFields.FirstName]
-                    )
-                  }
+                  {...getPropsErrors(ProfileFields.FirstName)}
                 />
               </Stack>
             </Stack>
@@ -192,16 +179,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                     readOnly: !isEdit,
                     disableUnderline: !isEdit,
                   }}
-                  helperText={
-                    touched[ProfileFields.LastName] &&
-                    errors[ProfileFields.LastName]
-                  }
-                  error={
-                    !!(
-                      touched[ProfileFields.LastName] &&
-                      errors[ProfileFields.LastName]
-                    )
-                  }
+                  {...getPropsErrors(ProfileFields.LastName)}
                 />
               </Stack>
             </Stack>
@@ -229,7 +207,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                     }
                     value={values[ProfileFields.Positions]}
                     onChange={handleChange}
-                    {...formikPropsErrors(ProfileFields.Positions, formik)}
+                    {...getPropsErrors(ProfileFields.Positions)}
                   />
                 ) : (
                   <Select
@@ -270,16 +248,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                       readOnly: !isEdit,
                       disableUnderline: !isEdit,
                     }}
-                    helperText={
-                      touched[ProfileFields.Email] &&
-                      errors[ProfileFields.Email]
-                    }
-                    error={
-                      !!(
-                        touched[ProfileFields.Email] &&
-                        errors[ProfileFields.Email]
-                      )
-                    }
+                    {...getPropsErrors(ProfileFields.Email)}
                   />
                 )}
               </Stack>
@@ -307,16 +276,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                       readOnly: !isEdit,
                       disableUnderline: !isEdit,
                     }}
-                    helperText={
-                      touched[ProfileFields.LinkedIn] &&
-                      errors[ProfileFields.LinkedIn]
-                    }
-                    error={
-                      !!(
-                        touched[ProfileFields.LinkedIn] &&
-                        errors[ProfileFields.LinkedIn]
-                      )
-                    }
+                    {...getPropsErrors(ProfileFields.LinkedIn)}
                   />
                 )}
               </Stack>
@@ -344,16 +304,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                       readOnly: !isEdit,
                       disableUnderline: !isEdit,
                     }}
-                    helperText={
-                      touched[ProfileFields.UpWork] &&
-                      errors[ProfileFields.UpWork]
-                    }
-                    error={
-                      !!(
-                        touched[ProfileFields.UpWork] &&
-                        errors[ProfileFields.UpWork]
-                      )
-                    }
+                    {...getPropsErrors(ProfileFields.UpWork)}
                   />
                 )}
               </Stack>
@@ -380,16 +331,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                       readOnly: !isEdit,
                       disableUnderline: !isEdit,
                     }}
-                    helperText={
-                      touched[ProfileFields.Phone] &&
-                      errors[ProfileFields.Phone]
-                    }
-                    error={
-                      !!(
-                        touched[ProfileFields.Phone] &&
-                        errors[ProfileFields.Phone]
-                      )
-                    }
+                    {...getPropsErrors(ProfileFields.Phone)}
                   />
                 )}
               </Stack>
@@ -423,16 +365,7 @@ export const ProfileEditView = ({ id, enableEdit }: Props) => {
                       readOnly: isDisabled,
                       disableUnderline: isDisabled,
                     }}
-                    helperText={
-                      touched[ProfileFields.SalaryInfo] &&
-                      errors[ProfileFields.SalaryInfo]
-                    }
-                    error={
-                      !!(
-                        touched[ProfileFields.SalaryInfo] &&
-                        errors[ProfileFields.SalaryInfo]
-                      )
-                    }
+                    {...getPropsErrors(ProfileFields.SalaryInfo)}
                   />
                 </Stack>
               </Stack>

@@ -1,21 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { endOfYear, format, startOfYear } from 'date-fns';
 import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 
 import { Icon } from 'legos';
 import { Breaks } from 'constant';
 import { BreaksRequest } from 'components/BreaksRequest';
+import { Enum_Tracker_Status } from 'types/GraphqlTypes';
 import { useAuthUser, useNormalizedTrackers } from 'hooks';
 
-export const VacationWidget = () => {
+interface Props {
+  userId?: string;
+  isCrewProfile?: boolean;
+}
+
+export const VacationWidget: FC<Props> = ({ userId, isCrewProfile }) => {
   const { user } = useAuthUser();
 
   const startYear = format(startOfYear(new Date()), 'YYY-MM-dd');
   const endYear = format(endOfYear(new Date()), 'YYY-MM-dd');
   const vacationProjects = ['14', '16', '15'];
+
+  const currentUserId = isCrewProfile && userId ? userId : user.id;
+
   const { normalizedTrackers, fetchTrackers } = useNormalizedTrackers(
     {
-      user: { id: { in: [user.id] } },
+      user: { id: { in: [currentUserId] } },
       date: { between: [startYear, endYear] },
       project: {
         id: { in: vacationProjects },
@@ -28,7 +37,7 @@ export const VacationWidget = () => {
     fetchTrackers({
       variables: {
         filters: {
-          user: { id: { in: [user.id] } },
+          user: { id: { in: [currentUserId] } },
           date: { between: [startYear, endYear] },
           project: {
             id: { in: vacationProjects },
@@ -42,7 +51,10 @@ export const VacationWidget = () => {
   let sicknessDays = 0;
 
   normalizedTrackers?.forEach((el) => {
-    if (el?.trackersByProject[0].name?.toLowerCase() === Breaks.Vacation) {
+    if (
+      el?.trackersByProject[0].name?.toLowerCase() === Breaks.Vacation &&
+      el?.trackersByProject[0].status === Enum_Tracker_Status.Approved
+    ) {
       vacationDays += 1;
     }
     if (el?.trackersByProject[0].name?.toLowerCase() === Breaks.Sickness) {
@@ -53,9 +65,11 @@ export const VacationWidget = () => {
   return (
     <>
       <Stack gap={3} mb={3}>
-        <Stack gap={1}>
-          <BreaksRequest />
-        </Stack>
+        {(userId && isCrewProfile && userId === user.id) || !isCrewProfile ? (
+          <Stack gap={1}>
+            <BreaksRequest />
+          </Stack>
+        ) : null}
 
         <List disablePadding>
           <ListItem disableGutters disablePadding>
@@ -74,7 +88,7 @@ export const VacationWidget = () => {
               primary={
                 <Typography
                   fontWeight={600}
-                >{`${vacationDays} / 30`}</Typography>
+                >{`${vacationDays} / 25`}</Typography>
               }
             />
           </ListItem>

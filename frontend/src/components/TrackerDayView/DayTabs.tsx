@@ -56,6 +56,11 @@ export const DayTabs: React.FC<Props> = ({
           onChange={(_, newValue) => {
             setTabsValue(newValue);
           }}
+          sx={{
+            '& .MuiTabs-scroller': {
+              overflow: 'auto !important',
+            },
+          }}
         >
           {days.map(({ day, fullDate }) => {
             const trackersByDay = trackers.find(
@@ -79,7 +84,7 @@ export const DayTabs: React.FC<Props> = ({
             );
           })}
         </Tabs>
-        <Stack>
+        <Stack whiteSpace="nowrap">
           <Typography fontWeight={600}>Week Total</Typography>
           <Typography textAlign="right">{totalByWeek}</Typography>
         </Stack>

@@ -1,10 +1,12 @@
 {
   "__schema": {
     "queryType": {
-      "name": "Query"
+      "name": "Query",
+      "kind": "OBJECT"
     },
     "mutationType": {
-      "name": "Mutation"
+      "name": "Mutation",
+      "kind": "OBJECT"
     },
     "subscriptionType": null,
     "types": [
@@ -12,6 +14,7 @@
         "kind": "SCALAR",
         "name": "Boolean",
         "description": "The `Boolean` scalar type represents `true` or `false`.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -22,6 +25,7 @@
         "kind": "INPUT_OBJECT",
         "name": "BooleanFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -182,6 +186,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -305,6 +321,7 @@
         "kind": "OBJECT",
         "name": "ComponentProjectSalary",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -360,6 +377,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ComponentProjectSalaryFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -439,6 +457,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ComponentProjectSalaryInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -486,6 +505,7 @@
         "kind": "SCALAR",
         "name": "Date",
         "description": "A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -496,6 +516,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DateFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -656,6 +677,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -779,6 +812,7 @@
         "kind": "SCALAR",
         "name": "DateTime",
         "description": "A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -789,6 +823,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DateTimeFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -949,6 +984,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1072,6 +1119,7 @@
         "kind": "ENUM",
         "name": "ENUM_NOTE_TYPE",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1095,6 +1143,7 @@
         "kind": "ENUM",
         "name": "ENUM_PROJECT_STATUS",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1118,6 +1167,7 @@
         "kind": "ENUM",
         "name": "ENUM_PROJECT_TYPE",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1147,6 +1197,7 @@
         "kind": "ENUM",
         "name": "ENUM_TRACKER_LIVE_STATUS",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1176,6 +1227,7 @@
         "kind": "ENUM",
         "name": "ENUM_TRACKER_STATUS",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1205,6 +1257,7 @@
         "kind": "ENUM",
         "name": "ENUM_USERSPERMISSIONSUSER_TYPESALARY",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1228,6 +1281,7 @@
         "kind": "INPUT_OBJECT",
         "name": "FileInfoInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1275,6 +1329,7 @@
         "kind": "SCALAR",
         "name": "Float",
         "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1285,6 +1340,7 @@
         "kind": "INPUT_OBJECT",
         "name": "FloatFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1445,6 +1501,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1568,6 +1636,7 @@
         "kind": "UNION",
         "name": "GenericMorph",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1634,6 +1703,7 @@
         "kind": "OBJECT",
         "name": "I18NLocale",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "code",
@@ -1693,6 +1763,7 @@
         "kind": "OBJECT",
         "name": "I18NLocaleEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -1728,6 +1799,7 @@
         "kind": "OBJECT",
         "name": "I18NLocaleEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -1751,6 +1823,7 @@
         "kind": "OBJECT",
         "name": "I18NLocaleEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -1802,6 +1875,7 @@
         "kind": "INPUT_OBJECT",
         "name": "I18NLocaleFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1917,6 +1991,7 @@
         "kind": "SCALAR",
         "name": "ID",
         "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1927,6 +2002,7 @@
         "kind": "INPUT_OBJECT",
         "name": "IDFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2087,6 +2163,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -2210,6 +2298,7 @@
         "kind": "SCALAR",
         "name": "Int",
         "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2220,6 +2309,7 @@
         "kind": "INPUT_OBJECT",
         "name": "IntFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2380,6 +2470,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -2503,6 +2605,7 @@
         "kind": "SCALAR",
         "name": "JSON",
         "description": "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2513,6 +2616,7 @@
         "kind": "INPUT_OBJECT",
         "name": "JSONFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2673,6 +2777,18 @@
           },
           {
             "name": "ne",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "JSON",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nei",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -2796,6 +2912,7 @@
         "kind": "SCALAR",
         "name": "Long",
         "description": "The `BigInt` scalar type represents non-fractional signed whole numeric values.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2806,6 +2923,7 @@
         "kind": "INPUT_OBJECT",
         "name": "LongFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2977,6 +3095,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nei",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Long",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "not",
             "description": null,
             "type": {
@@ -3089,6 +3219,7 @@
         "kind": "OBJECT",
         "name": "Mutation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "changePassword",
@@ -4414,6 +4545,7 @@
         "kind": "OBJECT",
         "name": "Note",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "content",
@@ -4517,6 +4649,7 @@
         "kind": "OBJECT",
         "name": "NoteEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -4552,6 +4685,7 @@
         "kind": "OBJECT",
         "name": "NoteEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -4575,6 +4709,7 @@
         "kind": "OBJECT",
         "name": "NoteEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -4626,6 +4761,7 @@
         "kind": "INPUT_OBJECT",
         "name": "NoteFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -4777,6 +4913,7 @@
         "kind": "INPUT_OBJECT",
         "name": "NoteInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -4848,6 +4985,7 @@
         "kind": "OBJECT",
         "name": "NoteRelationResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -4883,6 +5021,7 @@
         "kind": "OBJECT",
         "name": "Pagination",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "page",
@@ -4958,6 +5097,7 @@
         "kind": "INPUT_OBJECT",
         "name": "PaginationArg",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -5017,6 +5157,7 @@
         "kind": "OBJECT",
         "name": "Project",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "client",
@@ -5445,6 +5586,7 @@
         "kind": "OBJECT",
         "name": "ProjectEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -5480,6 +5622,7 @@
         "kind": "OBJECT",
         "name": "ProjectEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -5503,6 +5646,7 @@
         "kind": "OBJECT",
         "name": "ProjectEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -5554,6 +5698,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ProjectFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -5801,6 +5946,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ProjectInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -6000,6 +6146,7 @@
         "kind": "OBJECT",
         "name": "ProjectRelationResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -6035,6 +6182,7 @@
         "kind": "OBJECT",
         "name": "Query",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "i18NLocale",
@@ -6760,6 +6908,7 @@
         "kind": "OBJECT",
         "name": "ResponseCollectionMeta",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "pagination",
@@ -6787,6 +6936,7 @@
         "kind": "SCALAR",
         "name": "String",
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -6797,6 +6947,7 @@
         "kind": "INPUT_OBJECT",
         "name": "StringFilterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -6968,6 +7119,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nei",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "not",
             "description": null,
             "type": {
@@ -7080,6 +7243,7 @@
         "kind": "OBJECT",
         "name": "Tracker",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -7255,6 +7419,7 @@
         "kind": "OBJECT",
         "name": "TrackerEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -7290,6 +7455,7 @@
         "kind": "OBJECT",
         "name": "TrackerEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -7313,6 +7479,7 @@
         "kind": "OBJECT",
         "name": "TrackerEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -7364,6 +7531,7 @@
         "kind": "INPUT_OBJECT",
         "name": "TrackerFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -7587,6 +7755,7 @@
         "kind": "INPUT_OBJECT",
         "name": "TrackerInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -7730,6 +7899,7 @@
         "kind": "OBJECT",
         "name": "TrackerRelationResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -7765,6 +7935,7 @@
         "kind": "OBJECT",
         "name": "Transaction",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "amount",
@@ -7904,6 +8075,7 @@
         "kind": "OBJECT",
         "name": "TransactionEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -7939,6 +8111,7 @@
         "kind": "OBJECT",
         "name": "TransactionEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -7962,6 +8135,7 @@
         "kind": "OBJECT",
         "name": "TransactionEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -8013,6 +8187,7 @@
         "kind": "INPUT_OBJECT",
         "name": "TransactionFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8200,6 +8375,7 @@
         "kind": "INPUT_OBJECT",
         "name": "TransactionInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8307,6 +8483,7 @@
         "kind": "OBJECT",
         "name": "TransactionRelationResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -8342,6 +8519,7 @@
         "kind": "SCALAR",
         "name": "Upload",
         "description": "The `Upload` scalar type represents a file upload.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -8352,6 +8530,7 @@
         "kind": "OBJECT",
         "name": "UploadFile",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "alternativeText",
@@ -8595,6 +8774,7 @@
         "kind": "OBJECT",
         "name": "UploadFileEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -8630,6 +8810,7 @@
         "kind": "OBJECT",
         "name": "UploadFileEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -8653,6 +8834,7 @@
         "kind": "OBJECT",
         "name": "UploadFileEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -8704,6 +8886,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UploadFileFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8987,6 +9170,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UploadFileInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9190,6 +9374,7 @@
         "kind": "OBJECT",
         "name": "UploadFileRelationResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -9225,6 +9410,7 @@
         "kind": "OBJECT",
         "name": "UploadFolder",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "children",
@@ -9426,6 +9612,7 @@
         "kind": "OBJECT",
         "name": "UploadFolderEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -9461,6 +9648,7 @@
         "kind": "OBJECT",
         "name": "UploadFolderEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -9484,6 +9672,7 @@
         "kind": "OBJECT",
         "name": "UploadFolderEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -9535,6 +9724,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UploadFolderFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9698,6 +9888,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UploadFolderInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9789,6 +9980,7 @@
         "kind": "OBJECT",
         "name": "UploadFolderRelationResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -9824,6 +10016,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsCreateRolePayload",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "ok",
@@ -9851,6 +10044,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsDeleteRolePayload",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "ok",
@@ -9878,6 +10072,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UsersPermissionsLoginInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9937,6 +10132,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsLoginPayload",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "jwt",
@@ -9976,6 +10172,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsMe",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "blocked",
@@ -10067,6 +10264,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsMeRole",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -10134,6 +10332,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsPasswordPayload",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "ok",
@@ -10161,6 +10360,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsPermission",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "action",
@@ -10224,6 +10424,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsPermissionEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -10259,6 +10460,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UsersPermissionsPermissionFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -10374,6 +10576,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsPermissionRelationResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -10409,6 +10612,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UsersPermissionsRegisterInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -10468,6 +10672,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsRole",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -10649,6 +10854,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsRoleEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -10684,6 +10890,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsRoleEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -10707,6 +10914,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsRoleEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -10758,6 +10966,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UsersPermissionsRoleFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -10909,6 +11118,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UsersPermissionsRoleInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -10988,6 +11198,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsUpdateRolePayload",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "ok",
@@ -11015,6 +11226,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsUser",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "avatar",
@@ -11588,6 +11800,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsUserEntity",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "attributes",
@@ -11623,6 +11836,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsUserEntityResponse",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -11646,6 +11860,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsUserEntityResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -11697,6 +11912,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UsersPermissionsUserFiltersInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -12088,6 +12304,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UsersPermissionsUserInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -12435,6 +12652,7 @@
         "kind": "OBJECT",
         "name": "UsersPermissionsUserRelationResponseCollection",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "data",
@@ -12470,6 +12688,7 @@
         "kind": "OBJECT",
         "name": "__Directive",
         "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -12586,6 +12805,7 @@
         "kind": "ENUM",
         "name": "__DirectiveLocation",
         "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -12711,6 +12931,7 @@
         "kind": "OBJECT",
         "name": "__EnumValue",
         "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -12778,6 +12999,7 @@
         "kind": "OBJECT",
         "name": "__Field",
         "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -12898,6 +13120,7 @@
         "kind": "OBJECT",
         "name": "__InputValue",
         "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -12993,6 +13216,7 @@
         "kind": "OBJECT",
         "name": "__Schema",
         "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -13104,6 +13328,7 @@
         "kind": "OBJECT",
         "name": "__Type",
         "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "kind",
@@ -13307,6 +13532,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "isOneOf",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -13318,6 +13555,7 @@
         "kind": "ENUM",
         "name": "__TypeKind",
         "description": "An enum describing what kind of type a given `__Type` is.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,

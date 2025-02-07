@@ -6,12 +6,14 @@ import {
   Tooltip,
   MenuItem,
   Typography,
+  Button,
 } from '@mui/material';
 
-import { HeaderButton, NavButton } from './NavButton';
+import { NavButton } from './NavButton';
 import { HeaderProps } from './types';
 import { useAuthUser, useUser } from 'hooks';
 import { Avatar } from 'legos';
+import { theme } from 'theme';
 
 interface HeaderAvatarProps extends HeaderProps {
   anchorElUser: null | HTMLElement;
@@ -32,7 +34,7 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
     : '';
 
   return isAuth && userData ? (
-    <Box sx={{ flexGrow: 0 }}>
+    <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
       <Tooltip
         title={
           <Box display="flex" flexDirection="column" textAlign="center">
@@ -79,7 +81,15 @@ export const HeaderAvatar: React.FC<HeaderAvatarProps> = ({
             logout();
           }}
         >
-          <HeaderButton>Logout</HeaderButton>
+          <Button
+            sx={{
+              px: '15px',
+              color: theme.palette.common.grey,
+              fontWeight: '700',
+            }}
+          >
+            Logout
+          </Button>
         </MenuItem>
       </Menu>
     </Box>

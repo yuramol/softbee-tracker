@@ -77,7 +77,7 @@ export const useNormalizedTrackers = (
       findTrackerByDay.total =
         tracker.attributes?.status !== Enum_Tracker_Status.New &&
         tracker.attributes?.status !== Enum_Tracker_Status.Rejected
-          ? findTrackerByDay.total + tracker.attributes?.durationMinutes ?? 0
+          ? findTrackerByDay.total + tracker.attributes?.durationMinutes
           : findTrackerByDay.total;
 
       if (findTrackerByProject) {
@@ -85,8 +85,7 @@ export const useNormalizedTrackers = (
         findTrackerByProject.total =
           tracker.attributes?.status !== Enum_Tracker_Status.New &&
           tracker.attributes?.status !== Enum_Tracker_Status.Rejected
-            ? findTrackerByProject.total +
-                tracker.attributes?.durationMinutes ?? 0
+            ? findTrackerByProject.total + tracker.attributes?.durationMinutes
             : findTrackerByProject.total;
       } else {
         findTrackerByDay.trackersByProject.push(trackerByProject);

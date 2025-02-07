@@ -1,17 +1,10 @@
 import React from 'react';
 import { Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { NavLink, PulseDot } from 'legos';
 import { theme } from 'theme';
 import { Page } from './types';
 import { useNormalizedTrackers } from 'hooks';
 import { Enum_Tracker_Status } from 'types/GraphqlTypes';
-
-export const HeaderButton = styled(Button)(() => ({
-  px: '15px',
-  color: theme.palette.common.grey,
-  fontWeight: '700',
-}));
 
 export const NavButton: React.FC<Page> = ({ name, href }) => {
   const { normalizedTrackers } = useNormalizedTrackers(
@@ -21,20 +14,19 @@ export const NavButton: React.FC<Page> = ({ name, href }) => {
     true
   );
 
-  return (
-    <Button
-      sx={{
-        px: '15px',
-        color: theme.palette.common.grey,
-        fontWeight: '700',
-      }}
-      component={NavLink}
-      to={href}
-      disabled={name === 'Register' ? true : false}
-    >
-      {name}
+  return name === 'Register' ? null : (
+    <NavLink to={href}>
+      <Button
+        sx={{
+          px: '15px',
+          color: theme.palette.common.grey,
+          fontWeight: '700',
+        }}
+      >
+        {name}
 
-      {name === 'Crew' && normalizedTrackers.length > 0 ? <PulseDot /> : null}
-    </Button>
+        {name === 'Crew' && normalizedTrackers.length > 0 ? <PulseDot /> : null}
+      </Button>
+    </NavLink>
   );
 };

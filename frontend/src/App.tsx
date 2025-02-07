@@ -5,6 +5,8 @@ import { GlobalStyles } from '@mui/material';
 import { AppRouter } from './routes';
 import { globalStyles } from 'theme/globalStyles';
 
+import './global.css';
+
 export const App = () => {
   return (
     <BrowserRouter>

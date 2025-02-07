@@ -1,36 +1,39 @@
 {
   "name": "backend",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "description": "A Strapi application",
+  "license": "MIT",
+  "author": {
+    "name": "A Strapi developer"
+  },
   "scripts": {
+    "build": "strapi build",
     "develop": "strapi develop",
     "start": "strapi start",
-    "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
   "dependencies": {
-    "@strapi/plugin-documentation": "^4.4.3",
-    "@strapi/plugin-graphql": "^4.4.3",
-    "@strapi/plugin-i18n": "^4.4.3",
-    "@strapi/plugin-users-permissions": "^4.4.3",
-    "@strapi/strapi": "^4.4.3",
+    "@strapi/plugin-documentation": "4.25.20",
+    "@strapi/plugin-graphql": "4.25.20",
+    "@strapi/plugin-i18n": "4.25.20",
+    "@strapi/plugin-users-permissions": "4.25.20",
+    "@strapi/strapi": "4.25.20",
     "better-sqlite3": "7.4.6",
     "date-fns": "^2.29.3",
     "html-pdf": "^3.0.1",
     "html-pdf-node": "^1.0.8",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^5.3.4",
+    "styled-components": "^5.3.11"
   },
-  "author": {
-    "name": "A Strapi developer"
+  "engines": {
+    "node": ">=14.19.1 <=18.x.x",
+    "npm": ">=6.0.0"
   },
   "strapi": {
     "uuid": "a758d0d8-7f78-492b-b473-89172f13eab7"
-  },
-  "engines": {
-    "node": ">=14.19.1 <=16.x.x",
-    "npm": ">=6.0.0"
-  },
-  "license": "MIT"
+  }
 }

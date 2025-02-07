@@ -10,7 +10,7 @@ import { useAuthUser } from 'hooks';
 import { Stack } from '@mui/system';
 
 const ProfileViewPage = () => {
-  const { isManager } = useAuthUser();
+  const { isManager, user } = useAuthUser();
   const { userId } = useParams();
   const { state } = useLocation();
 
@@ -21,8 +21,10 @@ const ProfileViewPage = () => {
     <MainWrapper
       sidebar={
         <Stack gap={2}>
-          <VacationApproveModalForm userId={userId || ''} />
-          <VacationWidget />
+          {!(isManager && userId === user.id) ? (
+            <VacationApproveModalForm userId={userId || ''} />
+          ) : null}
+          <VacationWidget userId={userId} isCrewProfile />
         </Stack>
       }
     >

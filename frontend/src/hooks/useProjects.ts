@@ -48,19 +48,21 @@ export const useProjects = (
   });
 
   useEffect(() => {
-    load().then(({ data }) => {
-      projectsData.current = data?.projects.data;
+    load().then(({ data: projData }) => {
+      if (projData?.projects.data) {
+        projectsData.current = projData?.projects.data;
 
-      const exceptionProjects = ['Unpaid', 'Vacation', 'Sickness'];
+        const exceptionProjects = ['Unpaid', 'Vacation', 'Sickness'];
 
-      setAllProjects([...(projectsData.current as ProjectEntity[])]);
+        setAllProjects([...(projectsData.current as ProjectEntity[])]);
 
-      setProjects([
-        ...(projectsData.current?.filter(
-          ({ attributes }) =>
-            !exceptionProjects.includes(attributes?.name as string)
-        ) as ProjectEntity[]),
-      ]);
+        setProjects([
+          ...(projectsData.current?.filter(
+            ({ attributes }) =>
+              !exceptionProjects.includes(attributes?.name as string)
+          ) as ProjectEntity[]),
+        ]);
+      }
     });
   }, [data]);
 

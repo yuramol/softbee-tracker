@@ -74,4 +74,12 @@ export const pages = [
     role: [Role.Employee, Role.Manager],
     Component: lazy(() => import('pages/ReportPage/ReportPage')),
   },
+  // {
+  //   index: false,
+  //   name: 'Kanban',
+  //   href: '/kanban',
+  //   menuType: [MenuType.Main],
+  //   role: [Role.Employee, Role.Manager],
+  //   Component: lazy(() => import('pages/KanbanPage/KanbanPage')),
+  // },
 ];
