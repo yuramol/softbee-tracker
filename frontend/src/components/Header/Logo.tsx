@@ -1,10 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import LogoMain from '../../assets/SoftBee_Logo.svg';
+import LogoMain from "../../assets/SoftBee_Logo.png";
 
 export const Logo = () => (
   <Link to="/">
-    <img alt="logo" src={LogoMain} width="100px" />
+    <img alt="logo" src={LogoMain} width="90px" />
   </Link>
 );
