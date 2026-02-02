@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import LogoMain from "../../assets/SoftBee_Logo.png";
+import LogoMain from "../../assets/SoftBee_Logo.webp";
 
 export const Logo = () => (
   <Link to="/">
